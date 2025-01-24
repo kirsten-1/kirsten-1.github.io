@@ -3,13 +3,13 @@
 
 ---
 layout: post
-title: "Burpsuite"
-subtitle: "Repeater模块无法返回response"
+title: "书籍阅读-Python灰帽子–黑客与逆向工程师的Python编程之道"
+subtitle: "Python灰帽子–黑客与逆向工程师的Python编程之道"
 date: 2024-05-26
 author: "Hilda"
 header-img: "img/post-bg-2015.jpg"
 tags:
-- Burpsuite
+- 书籍阅读
 ---
 
 # <Python灰帽子–黑客与逆向工程师的Python编程之道>
