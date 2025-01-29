@@ -89,11 +89,11 @@ tags:
 
 在第八章，我们以数学方式重新阐述了机器学习的三个组成部分（数据、模型和参数估计）。此外，我们还提供了一些构建实验设置的指导原则，以防止对机器学习系统的评估过于乐观。回顾一下，目标是建立一个在未见过的数据上表现良好的预测器。
 
-**线性回归(`linear regression`)**:在第九章，我们将详细探讨线性回归，其中我们的线性回归目标是找到将输入 \( $x \in \mathbb{R}^D $\) 映射到相应观测函数值 \( $y \in \mathbb{R} $\) 的函数，我们可以将其解释为各自输入的**标签(`label`)**。我们将讨论通过**最大似然估计(`maximum likelihood estimation`)**和**最大后验估计(`maximum a posteriori estimation`)**进行的经典模型拟合`fitting`（参数估计`parameter estimation`），以及**贝叶斯线性回归(`Bayesian linear regression`)**，在贝叶斯线性回归中，我们**对参数进行积分(`integrate the parameters out`)**而不是优化它们。
+**线性回归(`linear regression`)**:在第九章，我们将详细探讨线性回归，其中我们的线性回归目标是找到将输入 ( $x in \mathbb{R}^D $) 映射到相应观测函数值 ( $y in \mathbb{R} $) 的函数，我们可以将其解释为各自输入的**标签(`label`)**。我们将讨论通过**最大似然估计(`maximum likelihood estimation`)**和**最大后验估计(`maximum a posteriori estimation`)**进行的经典模型拟合`fitting`（参数估计`parameter estimation`），以及**贝叶斯线性回归(`Bayesian linear regression`)**，在贝叶斯线性回归中，我们**对参数进行积分(`integrate the parameters out`)**而不是优化它们。
 
-**降维(`dimensionality reduction`)**:第十章专注于降维，这是图1.1中的第二个支柱，采用**主成分分析方法(`principal component analysis,PCA`)**。降维的主要目标是找到高维数据$x \in \mathbb{R}^D $的紧凑、低维表示形式，这通常比原始数据更容易分析。与回归不同，降维只关注建模数据——数据点 x 没有任何标签。
+**降维(`dimensionality reduction`)**:第十章专注于降维，这是图1.1中的第二个支柱，采用**主成分分析方法(`principal component analysis,PCA`)**。降维的主要目标是找到高维数据$x in \mathbb{R}^D $的紧凑、低维表示形式，这通常比原始数据更容易分析。与回归不同，降维只关注建模数据——数据点 x 没有任何标签。
 
-**密度估计(`density estimation`)**:在第11章，我们将进入第三个支柱：密度估计。密度估计的目标是找到一个能够描述给定数据集的**概率分布(`probability distribution`)**。我们将专注于**高斯混合模型(`Gaussian mixture models`)**，并讨论一种**迭代方案(` iterative scheme`)**来确定该模型的参数。与降维类似，数据点$x \in \mathbb{R}^D $没有对应的标签。然而，我们并不寻求数据的低维表示。相反，我们关注的是能够描述数据的**密度模型(`density model `)**。
+**密度估计(`density estimation`)**:在第11章，我们将进入第三个支柱：密度估计。密度估计的目标是找到一个能够描述给定数据集的**概率分布(`probability distribution`)**。我们将专注于**高斯混合模型(`Gaussian mixture models`)**，并讨论一种**迭代方案(` iterative scheme`)**来确定该模型的参数。与降维类似，数据点$x in \mathbb{R}^D $没有对应的标签。然而，我们并不寻求数据的低维表示。相反，我们关注的是能够描述数据的**密度模型(`density model `)**。
 
 **分类(`classification`)**:第12章以对第四根支柱——“分类”的深入讨论结束本书。我们将讨论在**支持向量机(`support vector machines`)**的背景下分类问题。类似于回归（第9章），我们有输入x和相应的标签y。然而，不同于回归中标签是实数值的情况，分类中的标签是整数，这需要特别注意。
 
