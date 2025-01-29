@@ -9,6 +9,9 @@ tags:
 - 书籍阅读
 ---
 
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
 
 ## MATHEMATICS FOR MACHINE LEARNING第一章阅读笔记
 
