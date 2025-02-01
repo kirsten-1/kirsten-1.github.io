@@ -16,7 +16,9 @@ tags:
 
 **本篇整理2.1～2.3节**
 
-
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
 
 # chap2 Linear Algebra - 线性代数
 
