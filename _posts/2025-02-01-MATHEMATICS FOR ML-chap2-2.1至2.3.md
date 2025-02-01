@@ -41,9 +41,7 @@ tags:
 3. 音频信号(`Audio signals`)是向量。音频信号表示为一系列数字。我们可以将音频信号相加，它们的和是一个新的音频信号。如果我们缩放一个音频信号，我们也会得到一个音频信号。因此，音频信号也是一种向量。
 
 4. **$$\mathbb{R}^n$$中的元素（n 个实数的元组）是向量**。$$\mathbb{R}^n$$比多项式更为抽象，也是本书重点关注的概念。例如，
-   \$$
-   a =\begin{bmatrix}1\\2\\3  \end{bmatrix} \in \mathbb{R}^3
-   $$
+   \$$ a =\begin{bmatrix}1\\2\\3  \end{bmatrix} \in \mathbb{R}^3 $$
    是一个数字三元组的例子。
 
    将两个向量$$a$$和 $$b \in \mathbb{R}^n$$ 按分量相加，结果是另一个向量：$$a + b = c \in \mathbb{R}^n$$。此外，将$$a \in \mathbb{R}^n$$与$$\lambda \in R$$相乘会得到一个缩放后的向量 $$\lambda a \in \mathbb{R}^n$$。
