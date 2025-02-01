@@ -46,6 +46,22 @@ tags:
    $$
    是一个数字三元组的例子。
 
+   $$
+   \begin{aligned}
+   & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+   = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+   & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+   \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+   \vdots & \ddots & \vdots \\
+   \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+   \end{array} \right)
+   \left( \begin{array}{c}
+   y_1 \\
+   \vdots \\
+   y_n
+   \end{array} \right)
+   \end{aligned}
+   $$
    将两个向量$$a$$和 $$b \in \mathbb{R}^n$$ 按分量相加，结果是另一个向量：$$a + b = c \in \mathbb{R}^n$$。此外，将$$a \in \mathbb{R}^n$$与$$\lambda \in R$$相乘会得到一个缩放后的向量 $$\lambda a \in \mathbb{R}^n$$。
 
    将向量视为$$\mathbb{R}^n$$的元素有一个额外的好处，它大致对应于计算机上的实数数组。许多编程语言支持数组操作，这使得涉及向量操作的算法得以方便地实现。
