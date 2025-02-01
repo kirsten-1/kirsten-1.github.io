@@ -128,13 +128,11 @@ tags:
 其中解空间是点 $$ (x_1, x_2) = (1, \frac{1}{4}) $$。类似地，对于三个变量，每个线性方程确定了三维空间中的一个平面。当我们求这些平面的交集，即同时满足所有线性方程时，我们可以得到一个解集，这个解集可以是一个平面、一条直线、一个点或为空（当这些平面没有共同交点时）。
 
 为了解线性方程组，我们将介绍一种有用的紧凑符号。我们将系数 $$ a_{ij} $$ 收集到向量中，再将这些向量收集到矩阵中。换句话说，我们将 $$ (3) $$ 中的方程组写成以下形式：
-
 \$$
 \begin{bmatrix} a_{11} \\ ... \\ a_{m1}  \end{bmatrix} x_1 + \begin{bmatrix} a_{12} \\ ... \\ a_{m2}  \end{bmatrix} x_2+...+ \begin{bmatrix} a_{1n} \\ ... \\ a_{mn}  \end{bmatrix} x_n = \begin{bmatrix} b_{1} \\ ... \\ b_{m}  \end{bmatrix}
 \Leftrightarrow 
 \begin{bmatrix} a_{11} ... a_{1n} \\ ... \\ a_{m1}...a_{mn}  \end{bmatrix} \begin{bmatrix}x_{1} \\ ... \\ x_{n}  \end{bmatrix}= \begin{bmatrix}b_{1} \\ ... \\ b_{m}  \end{bmatrix}
 \$$
-
 接下来，我们将详细研究这些矩阵并定义计算规则。我们将在2.3节回到求解线性方程的问题。
 
 ## 2.2 矩阵-Matrices
