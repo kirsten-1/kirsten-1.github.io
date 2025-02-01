@@ -50,22 +50,6 @@ tags:
    $$
    是一个数字三元组的例子。
 
-   $$
-   \begin{aligned}
-   & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
-   = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
-   & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
-   \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
-   \vdots & \ddots & \vdots \\
-   \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
-   \end{array} \right)
-   \left( \begin{array}{c}
-   y_1 \\
-   \vdots \\
-   y_n
-   \end{array} \right)
-   \end{aligned}
-   $$
    将两个向量$$a$$和 $$b \in \mathbb{R}^n$$ 按分量相加，结果是另一个向量：$$a + b = c \in \mathbb{R}^n$$。此外，将$$a \in \mathbb{R}^n$$与$$\lambda \in R$$相乘会得到一个缩放后的向量 $$\lambda a \in \mathbb{R}^n$$。
 
    将向量视为$$\mathbb{R}^n$$的元素有一个额外的好处，它大致对应于计算机上的实数数组。许多编程语言支持数组操作，这使得涉及向量操作的算法得以方便地实现。
@@ -89,11 +73,11 @@ tags:
 > 一家公司生产产品$$N_1,...,N_n$$，这些产品需要资源$$R_1,...,R_m$$。为了生产一单位的产品$$N_j$$，需要$$a_{ij}$$单位的资源$$R_i$$，其中$$i = 1, ...,m，j = 1, ...,n$$。
 >
 > 目标是找到一个最优的生产计划，即确定每种产品$$N_j$$应生产多少单位$$x_j$$，使得在总共有$$b_i$$单位的资源$$R_i$$可用的情况下，（理想情况下）不浪费任何资源。如果我们生产 $$x_1，...，x_n$$单位的相应产品，则需要总共需要
-> $$
+> \$$
 > a_{i1}x_1 + · · · + a_{1n}x_n
 > $$
 > 这么多单位的资源 $$R_i$$。一个最优生产计划 $$(x_1, ..., x_n) \in  \mathbb{R}^n$$ 因此必须满足以下方程组：
-> $$
+> \$$
 > a_{11}x_1 + · · · + a_{1n}x_n = b_1\\
 > ...\\
 > a_{m1}x_1 + · · · + a_{mn}x_n = b_m
