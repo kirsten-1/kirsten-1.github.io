@@ -42,7 +42,7 @@ tags:
 
 4. **$$\mathbb{R}^n$$中的元素（n 个实数的元组）是向量**。$$\mathbb{R}^n$$比多项式更为抽象，也是本书重点关注的概念。例如，
    \$$ 
-   a =\begin{bmatrix}1\\2\\3  \end{bmatrix} \in \mathbb{R}^3 
+   a =\begin{bmatrix}1 \\ 2 \\ 3  \end{bmatrix} \in \mathbb{R}^3 
    $$
    是一个数字三元组的例子。
 
