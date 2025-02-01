@@ -136,16 +136,20 @@ tags:
 为了解线性方程组，我们将介绍一种有用的紧凑符号。我们将系数 $$ a_{ij} $$ 收集到向量中，再将这些向量收集到矩阵中。换句话说，我们将 $$ (3) $$ 中的方程组写成以下形式：
 \$$
 \begin{bmatrix} 
-a_{11}  \\\  
+a_{11} \\\
 ... \\\
 a_{m1}  
-\end{bmatrix} x_1 + 
+\end{bmatrix} 
+x_1 + 
 \begin{bmatrix} 
-a_{12} \\\ 
-... \\\ 
+a_{12} \\\
+... \\\
 a_{m2}  
-\end{bmatrix} x_2 + ... + 
-\begin{bmatrix} a_{1n} \\\
+\end{bmatrix} 
+x_2 
++... + 
+\begin{bmatrix} 
+a_{1n} \\\
 ... \\\ 
 a_{mn}  
 \end{bmatrix} x_n = 
@@ -154,6 +158,8 @@ a_{mn}
 b_{m}  
 \end{bmatrix}
 \Leftrightarrow 
+\$$
+\$$
 \begin{bmatrix} 
 a_{11} ... a_{1n} \\\ 
 ... \\\
@@ -210,13 +216,13 @@ c_{ij}=\sum_{l=1}^n a_{il}b_{lj},i=1,...,m,j=1,...,k
 
 > **例子2.3**
 >
-> 对于$$A = \begin{bmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{2 \times 3} $$,$$B = \begin{bmatrix} 0 & 2 \\ 1 & -1 \\ 0 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 2}$$,可以得到：
+> 对于$$A = \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{2 \times 3} $$,$$B = \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 2}$$,可以得到：
 > \$\$
-> AB = \begin{bmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{bmatrix} \begin{bmatrix} 0 & 2 \\ 1 & -1 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 2 & 3 \\ 2 & 5 \end{bmatrix} \in \mathbb{R}^{2 \times 2}
+> AB = \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 2 & 3 \\\ 2 & 5 \end{bmatrix} \in \mathbb{R}^{2 \times 2}
 > \$\$
 >
 > \$$
-> BA = \begin{bmatrix} 0 & 2 \\ 1 & -1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{bmatrix} = \begin{bmatrix} 6 & 4 & 2 \\ -2 & 0 & 2 \\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 3}
+> BA = \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} = \begin{bmatrix} 6 & 4 & 2 \\\ -2 & 0 & 2 \\\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 3}
 > \$$
 
 从这个例子中，我们已经可以看到矩阵乘法是**不可交换**的，即 $$AB \neq BA$$；另见下图以获得图示说明。
@@ -226,11 +232,11 @@ c_{ij}=\sum_{l=1}^n a_{il}b_{lj},i=1,...,m,j=1,...,k
 **定义2.2 单位矩阵`Identity Matrix`**：在 $$\mathbb{R}^{n \times n} $$中，我们定义单位矩阵 \( $$I_n$$ \) 为一个 \( $$n \times n$$ \) 的矩阵，主对角线上的元素为 1，其他位置的元素为 0。
 \$\$
 I_n := \begin{bmatrix}
-1 & 0 & \dots & 0 & \dots & 0 \\
-0 & 1 & \dots & 0 & \dots & 0 \\
-\vdots & \vdots & \ddots & \vdots & \ddots & \vdots \\
-0 & 0 & \dots & 1 & \dots & 0 \\
-0 & 0 & \dots & 0 & \dots & 1 \\
+1 & 0 & \dots & 0 & \dots & 0 \\\
+0 & 1 & \dots & 0 & \dots & 0 \\\
+\vdots & \vdots & \ddots & \vdots & \ddots & \vdots \\\
+0 & 0 & \dots & 1 & \dots & 0 \\\
+0 & 0 & \dots & 0 & \dots & 1 \\\
 \end{bmatrix} \in \mathbb{R}^{n \times n}
 \$\$
 **矩阵的性质**
@@ -258,30 +264,30 @@ A(C + D) = AC + AD
 
 不幸的是，并不是每个矩阵 $$ A $$ 都存在逆矩阵 $$ A^{-1} $$。如果矩阵的逆存在，则称 $$ A $$ 为正则/可逆/非奇异矩阵（`regular/invertible/nonsingular`），否则称为奇异矩阵（`singular/noninvertible`）。当矩阵的逆存在时，它是唯一的。在第 3 节中，我们将讨论一种通过解线性方程组来计算矩阵逆的方法。
 
-**备注（2×2矩阵的逆存在性）**：考虑矩阵  $$ A := \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix} \in \mathbb{R}^{2 \times 2} $$
+**备注（2×2矩阵的逆存在性）**：考虑矩阵  $$ A := \begin{bmatrix} a_{11} & a_{12} \\\ a_{21} & a_{22} \end{bmatrix} \in \mathbb{R}^{2 \times 2} $$
 
-如果我们用矩阵 $$ A $$ 乘以矩阵  $$ A' := \begin{bmatrix} a_{22} & -a_{12} \\ -a_{21} & a_{11} \end{bmatrix} $$
+如果我们用矩阵 $$ A $$ 乘以矩阵  $$ A' := \begin{bmatrix} a_{22} & -a_{12} \\\ -a_{21} & a_{11} \end{bmatrix} $$
 
-我们得到  $$ AA' = \begin{bmatrix} a_{11}a_{22} - a_{12}a_{21} & 0 \\ 0 & a_{11}a_{22} - a_{12}a_{21} \end{bmatrix} = (a_{11}a_{22} - a_{12}a_{21})I $$
+我们得到  $$ AA' = \begin{bmatrix} a_{11}a_{22} - a_{12}a_{21} & 0 \\\ 0 & a_{11}a_{22} - a_{12}a_{21} \end{bmatrix} = (a_{11}a_{22} - a_{12}a_{21})I $$
 
-因此，  $$ A^{-1} = \frac{1}{a_{11}a_{22} - a_{12}a_{21}} \begin{bmatrix} a_{22} & -a_{12} \\ -a_{21} & a_{11} \end{bmatrix} $$
+因此，  $$ A^{-1} = \frac{1}{a_{11}a_{22} - a_{12}a_{21}} \begin{bmatrix} a_{22} & -a_{12} \\\ -a_{21} & a_{11} \end{bmatrix} $$
 
 当且仅当 $$ a_{11}a_{22} - a_{12}a_{21} \neq 0 $$ 时，矩阵 $$ A $$ 可逆。在第 4.1 节中，我们将看到 $$ a_{11}a_{22} - a_{12}a_{21} $$ 是 2×2 矩阵的行列式。此外，我们通常可以使用行列式来检查矩阵是否可逆。
 
 > **例子 2.4 (逆矩阵)**
 >
-> 矩阵  $$ A = \begin{bmatrix} 1 & 2 & 1 \\ 4 & 4 & 5 \\ 6 & 7 & 7 \end{bmatrix} $$  与  $$ B = \begin{bmatrix} -7 & -7 & 6 \\ 2 & 1 & -1 \\ 4 & 5 & -4 \end{bmatrix} $$  是互为逆矩阵，因为  $$ AB = I = BA $$。
+> 矩阵  $$ A = \begin{bmatrix} 1 & 2 & 1 \\\ 4 & 4 & 5 \\\ 6 & 7 & 7 \end{bmatrix} $$  与  $$ B = \begin{bmatrix} -7 & -7 & 6 \\\ 2 & 1 & -1 \\\ 4 & 5 & -4 \end{bmatrix} $$  是互为逆矩阵，因为  $$ AB = I = BA $$。
 
 **定义 2.4 (转置)`Transpose`**对于 $$ A \in \mathbb{R}^{m \times n} $$，矩阵 $$ B \in \mathbb{R}^{n \times m} $$，其中 $$ b_{ij} = a_{ji} $$，称 $$ B $$ 为 $$ A $$ 的转置，记作 $$ B = A^T $$。
 
 通常，$$ A^T $$ 可以通过将矩阵 $$ A $$ 的列作为行来得到 $$ A^T $$。以下是逆矩阵和转置矩阵的一些重要性质：
 
 \$\$
-AA^{-1} = I = A^{-1}A\\
-(AB)^{-1} = B^{-1}A^{-1}\\
-(A + B)^{-1} \neq A^{-1} + B^{-1}\\
-(A^T)^T = A\\
-(AB)^T = B^T A^T\\
+AA^{-1} = I = A^{-1}A\\\
+(AB)^{-1} = B^{-1}A^{-1}\\\
+(A + B)^{-1} \neq A^{-1} + B^{-1}\\\
+(A^T)^T = A\\\
+(AB)^T = B^T A^T\\\
 (A + B)^T = A^T + B^T
 \$\$
 **定义 2.5 (对称矩阵)`Symmetric Matrix`**:矩阵 $$ A \in \mathbb{R}^{n \times n} $$ 是对称矩阵，当且仅当 $$ A = A^T $$。
@@ -291,7 +297,7 @@ $$ (A^{-1})^T = (A^T)^{-1} = A^{-T} $$。
 
 **备注（对称矩阵的和与积）**：对称矩阵 $$ A, B \in \mathbb{R}^{n \times n} $$ 的和总是对称的。然而，尽管它们的乘积总是定义的(可以计算的)，但通常情况下它们的积并不是对称的：
 \$\$
-\begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 0 & 0 \end{bmatrix}
+\begin{bmatrix} 1 & 0 \\\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 1 \\\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\\ 0 & 0 \end{bmatrix}
 \$\$
 
 ### 2.2.3 标量乘法-Multiplication by a Scalar
@@ -306,34 +312,34 @@ $$ (A^{-1})^T = (A^T)^{-1} = A^{-T} $$。
 
 > **例子2.5 (分配性)**
 >
-> 如果我们定义   $$ C := \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \quad  $$   那么对于任意 $$ \lambda, \psi \in \mathbb{R} $$，我们有： $$ (\lambda + \psi)C = \begin{bmatrix} (\lambda + \psi)1 & (\lambda + \psi)2 \\ (\lambda + \psi)3 & (\lambda + \psi)4 \end{bmatrix} = \begin{bmatrix} \lambda + \psi & 2\lambda + 2\psi \\ 3\lambda + 3\psi & 4\lambda + 4\psi \end{bmatrix} = \begin{bmatrix} \lambda & 2\lambda \\ 3\lambda & 4\lambda \end{bmatrix} + \begin{bmatrix} \psi & 2\psi \\ 3\psi & 4\psi \end{bmatrix} = \lambda C + \psi C \quad$$
+> 如果我们定义   $$ C := \begin{bmatrix} 1 & 2 \\\ 3 & 4 \end{bmatrix} \quad  $$   那么对于任意 $$ \lambda, \psi \in \mathbb{R} $$，我们有： $$ (\lambda + \psi)C = \begin{bmatrix} (\lambda + \psi)1 & (\lambda + \psi)2 \\\ (\lambda + \psi)3 & (\lambda + \psi)4 \end{bmatrix} = \begin{bmatrix} \lambda + \psi & 2\lambda + 2\psi \\\ 3\lambda + 3\psi & 4\lambda + 4\psi \end{bmatrix} = \begin{bmatrix} \lambda & 2\lambda \\\ 3\lambda & 4\lambda \end{bmatrix} + \begin{bmatrix} \psi & 2\psi \\\ 3\psi & 4\psi \end{bmatrix} = \lambda C + \psi C \quad$$
 
 ### 2.2.4 线性方程组的紧凑表示-Compact Representations of Systems of Linear Equations
 
 假设我们考虑如下的线性方程组：
 
 \$\$
-2x_1 + 3x_2 + 5x_3 = 1\\
-4x_1 - 2x_2 - 7x_3 = 8 \\
+2x_1 + 3x_2 + 5x_3 = 1\\\
+4x_1 - 2x_2 - 7x_3 = 8 \\\
 9x_1 + 5x_2 - 3x_3 = 2
 \$\$
 通过使用矩阵乘法的规则，我们可以将此方程组写成更紧凑的形式，如下所示：
 
 \$$
 \begin{bmatrix}
-2 & 3 & 5 \\
-4 & -2 & -7 \\
+2 & 3 & 5 \\\
+4 & -2 & -7 \\\
 9 & 5 & -3
 \end{bmatrix}
 \begin{bmatrix}
-x_1 \\
-x_2 \\
+x_1 \\\
+x_2 \\\
 x_3
 \end{bmatrix}
 =
 \begin{bmatrix}
-1 \\
-8 \\
+1 \\\
+8 \\\
 2
 \end{bmatrix}
 \$$
@@ -345,8 +351,8 @@ x_3
 
 在公式 $$(3) $$中，我们介绍了一个方程组的通用形式，即：
 \$\$
-a_{11}x_1 + · · · + a_{1n}x_n = b_1\\
-...\\
+a_{11}x_1 + · · · + a_{1n}x_n = b_1\\\
+...\\\
 a_{m1}x_1 + · · · + a_{mn}x_n = b_m
 \$\$
 其中 $$ a_{ij} \in \mathbb{R} $$ 和 $$ b_i \in \mathbb{R} $$ 是已知常数，$$ x_j $$ 是未知数，$$ i = 1, \dots, m, j = 1, \dots, n $$。到目前为止，我们已经看到矩阵可以用来紧凑地表示线性方程组，从而我们可以写出 $$ A x = b $$，见公式 $$(9)$$。此外，我们还定义了基本的矩阵操作，如矩阵的加法和乘法。在接下来的内容中，我们将专注于求解线性方程组并提供一个算法来计算矩阵的逆。
@@ -355,34 +361,34 @@ a_{m1}x_1 + · · · + a_{mn}x_n = b_m
 
 在讨论如何一般性地求解线性方程组之前，我们先看一个例子。考虑如下方程组：
 \$$
-\begin{bmatrix} 1 & 0 & 8 & -4 \\ 0 & 1 & 2 & 12 \end{bmatrix}
-\begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix}
+\begin{bmatrix} 1 & 0 & 8 & -4 \\\ 0 & 1 & 2 & 12 \end{bmatrix}
+\begin{bmatrix} x_1 \\\ x_2 \\\ x_3 \\\ x_4 \end{bmatrix}
 =
-\begin{bmatrix} 42 \\ 8 \end{bmatrix}
+\begin{bmatrix} 42 \\\ 8 \end{bmatrix}
 \$$
 该方程组有两个方程和四个未知数。因此，一般来说，我们预期会有无穷多解。这个方程组的形式特别简单，前两列是一个 1 和一个 0。记住，我们想要找到标量 $$ x_1, \dots, x_4 $$，使得$$\sum_{i=1}^4 x_i c_i = b,$$其中我们定义 $$ c_i $$ 为矩阵的第 $$ i $$ 列，而 $$ b $$ 是方程组右边的值。我们可以通过以下方式求解 $$(23)$$ 中的问题：取 42 倍的第一列和 8 倍的第二列：
 \$\$
-b = \begin{bmatrix} 42 \\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\ 0 \end{bmatrix} + 8 \begin{bmatrix} 0 \\ 1 \end{bmatrix} \
+b = \begin{bmatrix} 42 \\\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\\ 0 \end{bmatrix} + 8 \begin{bmatrix} 0 \\\ 1 \end{bmatrix} \
 \$\$
 因此，一个解是 $$ [42, 8, 0, 0]^T $$。这个解被称为**特解（particular solution）**。然而，这并不是这个方程组唯一的解。为了捕捉所有解，我们需要通过矩阵的列来创造一个非平凡的 0，使用如下方式：添加 0 到特解中并不会改变解的特性。为此，我们用前两列表示第三列，以生成非常简单的 0：
 \$$
-\begin{bmatrix} 8 \\ 2 \end{bmatrix} = 8 \begin{bmatrix} 1 \\ 0 \end{bmatrix} + 2 \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+\begin{bmatrix} 8 \\\ 2 \end{bmatrix} = 8 \begin{bmatrix} 1 \\\ 0 \end{bmatrix} + 2 \begin{bmatrix} 0 \\\ 1 \end{bmatrix}
 \$$
 所以 $$ 0 = 8 c_1 + 2 c_2 - 1 c_3 + 0 c_4 $$，并且 $$ (x_1, x_2, x_3, x_4) = (8, 2, -1, 0) $$。 实际上，任何 $$ \lambda_1 \in \mathbb{R} $$ 对这个解的缩放都会生成 0 向量，即：
 \$\$
-\begin{bmatrix} 1 & 0 & 8 & -4 \\ 0 & 1 & 2 & 12 \end{bmatrix}
+\begin{bmatrix} 1 & 0 & 8 & -4 \\\ 0 & 1 & 2 & 12 \end{bmatrix}
 \begin{bmatrix} \lambda_1 \end{bmatrix}
 = \lambda_1 \begin{bmatrix} 8 c_1 + 2 c_2 - c_3 \end{bmatrix} = 0
 \$\$
 同样的推理，我们用前两列表示矩阵的第四列，生成另一组非平凡的 0：
 \$$
-\begin{bmatrix} 1 & 0 & 8 & -4 \\ 0 & 1 & 2 & 12 \end{bmatrix}
+\begin{bmatrix} 1 & 0 & 8 & -4 \\\ 0 & 1 & 2 & 12 \end{bmatrix}
 \begin{bmatrix} \lambda_2 \end{bmatrix}
 = \lambda_2 \begin{bmatrix} -4c_1 + 12c_2 - c_4 \end{bmatrix} = 0
 \$$
 将所有内容结合起来，我们得到方程组 $$(23)$$ 的所有解，称为**通解（general solution）**：
 \$\$
-\begin{bmatrix} x \in \mathbb{R}^4 : x = \begin{bmatrix} 42 \\ 8 \\ 0 \\ 0 \end{bmatrix} + \lambda_1 \begin{bmatrix} 8 \\ 2 \\ -1 \\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} -4 \\ 12 \\ 0 \\ -1 \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R} \end{bmatrix}
+\begin{bmatrix} x \in \mathbb{R}^4 : x = \begin{bmatrix} 42 \\\ 8 \\\ 0 \\\ 0 \end{bmatrix} + \lambda_1 \begin{bmatrix} 8 \\\ 2 \\\ -1 \\\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} -4 \\\ 12 \\\ 0 \\\ -1 \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R} \end{bmatrix}
 \$\$
 备注:我们遵循的一般方法包括以下三个步骤：
 
@@ -416,85 +422,85 @@ b = \begin{bmatrix} 42 \\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\ 0 \end{bmatr
 >
 > 对于 $$ a \in \mathbb{R} $$，我们寻求如下方程组的所有解：
 > \$\$
-> -2x_1 + 4x_2 - 2x_3 - x_4 + 4x_5 = -3\\
-> 4x_1 - 8x_2 + 3x_3 - 3x_4 + x_5 = 2\\
-> x_1 - 2x_2 + x_3 - x_4 + x_5 = 0\\
+> -2x_1 + 4x_2 - 2x_3 - x_4 + 4x_5 = -3\\\
+> 4x_1 - 8x_2 + 3x_3 - 3x_4 + x_5 = 2\\\
+> x_1 - 2x_2 + x_3 - x_4 + x_5 = 0\\\
 > x_1 - 2x_2 - 3x_4 + 4x_5 = a
 > \$\$
 > 我们开始将这个方程组转换为紧凑的矩阵表示 $$ Ax = b $$。我们不再显式提及变量 $$ x $$，而是构建增广矩阵`augmented matrix` $$ [A|b] $$，形式如下：
 > \$$
 > \begin{bmatrix}
-> -2 & 4 & -2 & -1 & 4 & -3 \\
-> 4 & -8 & 3 & -3 & 1 & 2 \\
-> 1 & -2 & 1 & -1 & 1 & 0 \\
+> -2 & 4 & -2 & -1 & 4 & -3 \\\
+> 4 & -8 & 3 & -3 & 1 & 2 \\\
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
 > 1 & -2 & 0 & -3 & 4 & a
 > \end{bmatrix}
 > \$$
 > 我们用竖线分隔矩阵的左边和右边，并使用 $$ \Rightarrow $$ 表示增广矩阵的变换。交换行 1 和行 3 后得到：
 > \$\$
 > \begin{bmatrix}
-> 1 & -2 & 1 & -1 & 1 & 0 \\
-> 4 & -8 & 3 & -3 & 1 & 2 \\
-> -2 & 4 & -2 & -1 & 4 & -3 \\
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 4 & -8 & 3 & -3 & 1 & 2 \\\
+> -2 & 4 & -2 & -1 & 4 & -3 \\\
 > 1 & -2 & 0 & -3 & 4 & a
 > \end{bmatrix}
 > \$\$
 > 现在应用所指示的变换（例如，从第二行减去四倍的第一行），3，4行也做类似的变换，得到：
 > \$$
 > \begin{bmatrix}
-> 1 & -2 & 1 & -1 & 1 & 0 \\
-> 0 & 0 & -1 & 1 & -3 & 2 \\
-> 0 & 0 & 0 & -3 & 6 & -3 \\
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 0 & 0 & -1 & 1 & -3 & 2 \\\
+> 0 & 0 & 0 & -3 & 6 & -3 \\\
 > 0 & 0 & -1 & -2 & 3 & a
 > \end{bmatrix}
 > \$$
 > 接下来应用第二次变换，得到：
 > \$\$
 > \begin{bmatrix}
-> 1 & -2 & 1 & -1 & 1 & 0 \\
-> 0 & 0 & -1 & 1 & -3 & 2 \\
-> 0 & 0 & 0 & -3 & 6 & -3 \\
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 0 & 0 & -1 & 1 & -3 & 2 \\\
+> 0 & 0 & 0 & -3 & 6 & -3 \\\
 > 0 & 0 & 0 & -3 & 6 & a-2
 > \end{bmatrix} \Longrightarrow
 > \begin{bmatrix}
-> 1 & -2 & 1 & -1 & 1 & 0 \\
-> 0 & 0 & -1 & 1 & -3 & 2 \\
-> 0 & 0 & 0 & -3 & 6 & -3 \\
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 0 & 0 & -1 & 1 & -3 & 2 \\\
+> 0 & 0 & 0 & -3 & 6 & -3 \\\
 > 0 & 0 & 0 & 0 & 0 & a+1
 > \end{bmatrix}\Longrightarrow
 > \begin{bmatrix}
-> 1 & -2 & 1 & -1 & 1 & 0 \\
-> 0 & 0 & 1 & -1 & 3 & -2 \\
-> 0 & 0 & 0 & 1 & -2 & 1 \\
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 0 & 0 & 1 & -1 & 3 & -2 \\\
+> 0 & 0 & 0 & 1 & -2 & 1 \\\
 > 0 & 0 & 0 & 0 & 0 & a+1
 > \end{bmatrix}
 > \$$
 > 这个增广矩阵现在是一个简洁的行阶梯形式（REF,`row-echelon form`）。将这个简化的矩阵重新表示为我们寻求的变量：
 > \$\$
-> x_1 - 2x_2 + x_3 - x_4 + x_5 = 0\\
-> x_3 - x_4 + 3x_5 = -2\\
-> x_4 - 2x_5 = 1\\
+> x_1 - 2x_2 + x_3 - x_4 + x_5 = 0\\\
+> x_3 - x_4 + 3x_5 = -2\\\
+> x_4 - 2x_5 = 1\\\
 > 0 = a + 1
 > \$\$
 > 只有当 $$ a = -1 $$ 时，系统才能求解。特解是：
 > \$$
 > \begin{bmatrix}
-> x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5
+> x_1 \\\ x_2 \\\ x_3 \\\ x_4 \\\ x_5
 > \end{bmatrix}=\begin{bmatrix}
-> 2 \\ 0 \\ -1 \\ 1 \\ 0
+> 2 \\\ 0 \\\ -1 \\\ 1 \\\ 0
 > \end{bmatrix}
 > \$$
 > 通解，捕捉所有可能解的集合是：
 > \$$
 > x \in \mathbb{R}^5 : x =
 > \begin{bmatrix}
-> 2 \\ 0 \\ -1 \\ 1 \\ 0
+> 2 \\\ 0 \\\ -1 \\\ 1 \\\ 0
 > \end{bmatrix} + \lambda_1
 > \begin{bmatrix}
-> 2 \\ 1 \\ 0 \\ 0 \\ 0
+> 2 \\\ 1 \\\ 0 \\\ 0 \\\ 0
 > \end{bmatrix} + \lambda_2
 > \begin{bmatrix}
-> 2 \\ 0 \\ -1 \\ 2 \\ 1
+> 2 \\\ 0 \\\ -1 \\\ 2 \\\ 1
 > \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R}
 > \$$
 
@@ -519,10 +525,10 @@ b = \begin{bmatrix} 42 \\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\ 0 \end{bmatr
 
 备注（求解特解） 行阶梯形使得我们在需要求解特解时能更轻松地操作。为了求解特解，我们用主元列表示方程组的右边，形如 $$ b = \sum_{i=1}^P \lambda_i p_i $$，其中 $$ p_i $$ 是主元列，$$ \lambda_i $$ 是待求解的标量，按照从右到左的顺序逐步确定它们。 在前一个例子中，我们会尝试找到 $$ \lambda_1, \lambda_2, \lambda_3 $$，使得：
 \$$
-\begin{bmatrix} 1 \\ 0 \\ 0 \\0\end{bmatrix} \lambda_1 +
-\begin{bmatrix} 1 \\1 \\ 0 \\ 0 \end{bmatrix} \lambda_2 +
-\begin{bmatrix} -1 \\ -1 \\ 1 \\ 0 \end{bmatrix} \lambda_3 =
-\begin{bmatrix} 0 \\ -2 \\ 1 \\0 \end{bmatrix}
+\begin{bmatrix} 1 \\\ 0 \\\ 0 \\\0\end{bmatrix} \lambda_1 +
+\begin{bmatrix} 1 \\\1 \\\ 0 \\\ 0 \end{bmatrix} \lambda_2 +
+\begin{bmatrix} -1 \\\ -1 \\\ 1 \\\ 0 \end{bmatrix} \lambda_3 =
+\begin{bmatrix} 0 \\\ -2 \\\ 1 \\\0 \end{bmatrix}
 \$$
 由此，我们可以直接得到 $$ \lambda_3 = 1 $$，$$ \lambda_2 = -1 $$，$$ \lambda_1 = 2 $$。当我们把所有值代入时，不要忘记那些非主元列，它们的系数隐含为零。因此，我们得到特解：$$x = \begin{bmatrix} 2 , 0 , -1 ,1, 0 \end{bmatrix}^T $$
 
@@ -534,13 +540,13 @@ b = \begin{bmatrix} 42 \\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\ 0 \end{bmatr
 >
 > 验证下列矩阵是否为简化行阶梯形（主元为粗体）：
 > \$$
-> A = \begin{bmatrix} 1 & 3 & 0 & 0 & 3 \\ 0 & 0 & 1 & 0 & 9 \\ 0 & 0 & 0 & 1 & -4 \end{bmatrix}
+> A = \begin{bmatrix} 1 & 3 & 0 & 0 & 3 \\\ 0 & 0 & 1 & 0 & 9 \\\ 0 & 0 & 0 & 1 & -4 \end{bmatrix}
 > \$$
 > 求解 $$ Ax = 0 $$ 的关键思想是观察非主元列，并将它们表示为主元列的线性组合。简化行阶梯形使得这一过程非常简单，我们用主元列和它们左侧的非主元列表示其他列。我们需要从第一列中减去第三列三倍，再处理第五列，这就是第二个非主元列。 因此，我们得到：
 > \$$
-> x \in \mathbb{R}^5 : x = \lambda_1 \begin{bmatrix} 3 \\ -1 \\ 0 \\ 0 \\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} 3 \\ 0 \\ 9 \\ -4 \\ -1 \end{bmatrix} \quad \lambda_1, \lambda_2 \in \mathbb{R}
+> x \in \mathbb{R}^5 : x = \lambda_1 \begin{bmatrix} 3 \\\ -1 \\\ 0 \\\ 0 \\\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} 3 \\\ 0 \\\ 9 \\\ -4 \\\ -1 \end{bmatrix} \quad \lambda_1, \lambda_2 \in \mathbb{R}
 > \$$
-> 补充：令$$\begin{bmatrix}x_2\\x_5 \end{bmatrix} = \begin{bmatrix} 1\\0 \end{bmatrix}$$和$$\begin{bmatrix} 0\\1 \end{bmatrix}$$,	由$$\begin{cases} x_1= - 3x_2 - 3x_5  \\ x_3= -9x_5  \\ x_4=4x_5 \end{cases}$$,得到$$\eta_1=\begin{bmatrix}-3\\1\\0\\0\\0 \end{bmatrix},\eta_2=\begin{bmatrix}-3\\0\\-9\\4\\1 \end{bmatrix}$$.
+> 补充：令$$\begin{bmatrix}x_2\\\x_5 \end{bmatrix} = \begin{bmatrix} 1\\\0 \end{bmatrix}$$和$$\begin{bmatrix} 0\\\1 \end{bmatrix}$$,	由$$\begin{cases} x_1= - 3x_2 - 3x_5  \\\ x_3= -9x_5  \\\ x_4=4x_5 \end{cases}$$,得到$$\eta_1=\begin{bmatrix}-3\\\1\\\0\\\0\\\0 \end{bmatrix},\eta_2=\begin{bmatrix}-3\\\0\\\-9\\\4\\\1 \end{bmatrix}$$.
 >
 > 和上面的只差了一个符号。
 
@@ -553,11 +559,11 @@ b = \begin{bmatrix} 42 \\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\ 0 \end{bmatr
 \$$
 A =
 \begin{bmatrix}
-0 & \cdots & 0 & 1 & \cdots & * & 0 & * & \cdots & * \\
-\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
-0 & \cdots & 0 & 0 & \cdots & 1 & * & \cdots & * \\
-\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
-0 & \cdots & 0 & 0 & \cdots & 0 & 1 & * & \cdots & * \\
+0 & \cdots & 0 & 1 & \cdots & * & 0 & * & \cdots & * \\\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\\
+0 & \cdots & 0 & 0 & \cdots & 1 & * & \cdots & * \\\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\\
+0 & \cdots & 0 & 0 & \cdots & 0 & 1 & * & \cdots & * \\\
 \end{bmatrix}
 \$$
 
@@ -576,25 +582,25 @@ A =
 > 我们重新回顾 (38) 中的矩阵，它已经是简化的行最简形式（REF）：
 >
 > \$$
-> A = \begin{bmatrix} 1 & 3 & 0 & 0 & 3 \\ 0 & 0 & 1 & 0 & 9 \\ 0 & 0 & 0 & 1 & -4 \end{bmatrix}
+> A = \begin{bmatrix} 1 & 3 & 0 & 0 & 3 \\\ 0 & 0 & 1 & 0 & 9 \\\ 0 & 0 & 0 & 1 & -4 \end{bmatrix}
 > \$$
 >
 > 我们现在通过在对角线缺失枢纽的位置添加形式为 (41) 的行，将这个矩阵扩展为一个 $5 \times 5$ 的矩阵，得到
 >
 > \$$
 > \tilde{A} = \begin{bmatrix}
-> 1 & 3 & 0 & 0 & 3 \\
-> 0 & -1 & 0 & 0 & 0 \\
-> 0 & 0 & 1 & 0 & 9 \\
-> 0 & 0 & 0 & 1 & -4  \\
-> 0 & 0 & 0 & 0 & -1 \\
+> 1 & 3 & 0 & 0 & 3 \\\
+> 0 & -1 & 0 & 0 & 0 \\\
+> 0 & 0 & 1 & 0 & 9 \\\
+> 0 & 0 & 0 & 1 & -4  \\\
+> 0 & 0 & 0 & 0 & -1 \\\
 > \end{bmatrix}
 > \$$
 >
 > 通过这种方式，我们可以立即从矩阵 $\tilde{A}$ 中读取出齐次方程 $Ax = 0$ 的解，方法是取出矩阵中对角线含有 -1 的列：
 >
 > \$$
-> x \in \mathbb{R}^5 : x = \lambda_1 \begin{bmatrix} 3 \\ -1 \\ 0 \\ 0 \\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} 3 \\ 0 \\ 9 \\ -4 \\ -1 \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R}
+> x \in \mathbb{R}^5 : x = \lambda_1 \begin{bmatrix} 3 \\\ -1 \\\ 0 \\\ 0 \\\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} 3 \\\ 0 \\\ 9 \\\ -4 \\\ -1 \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R}
 > \$$
 >
 > 这与我们通过“直觉”得到的解 (39) 是一致的。
@@ -617,9 +623,9 @@ $$
 >
 > \$$
 > A = \begin{bmatrix}
-> 1 & 0 & 2 & 0 \\
-> 1 & 1 & 0 & 0 \\
-> 1 & 2 & 0 & 1 \\
+> 1 & 0 & 2 & 0 \\\
+> 1 & 1 & 0 & 0 \\\
+> 1 & 2 & 0 & 1 \\\
 > 1 & 1 & 1 & 1
 > \end{bmatrix}
 > \tag{2.57}
@@ -630,9 +636,9 @@ $$
 > \$$
 > \left[
 > \begin{array}{cccc|cccc}
-> 1 & 0 & 2 & 0 & 1 & 0 & 0 & 0 \\
-> 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 \\
-> 1 & 2 & 0 & 1 & 0 & 0 & 1 & 0 \\
+> 1 & 0 & 2 & 0 & 1 & 0 & 0 & 0 \\\
+> 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 \\\
+> 1 & 2 & 0 & 1 & 0 & 0 & 1 & 0 \\\
 > 1 & 1 & 1 & 1 & 0 & 0 & 0 & 1
 > \end{array}
 > \right]
@@ -643,9 +649,9 @@ $$
 > \$\$
 > \left[
 > \begin{array}{cccc|cccc}
-> 1 & 0 & 0 & 0 & -1 & 2 & -2 & 2 \\
-> 0 & 1 & 0 & 0 & 1 & -1 & 2 & -2 \\
-> 0 & 0 & 1 & 0 & -1 & 1 & 1 & -1 \\
+> 1 & 0 & 0 & 0 & -1 & 2 & -2 & 2 \\\
+> 0 & 1 & 0 & 0 & 1 & -1 & 2 & -2 \\\
+> 0 & 0 & 1 & 0 & -1 & 1 & 1 & -1 \\\
 > 0 & 0 & 0 & 1 & -1 & 0 & -1 & 2
 > \end{array}
 > \right]
@@ -655,9 +661,9 @@ $$
 >
 > \$$
 > A^{-1} = \begin{bmatrix}
-> -1 & 2 & -2 & 2 \\
-> 1 & -1 & 2 & -2 \\
-> 1 & -1 & 1 & -1 \\
+> -1 & 2 & -2 & 2 \\\
+> 1 & -1 & 2 & -2 \\\
+> 1 & -1 & 1 & -1 \\\
 > -1 & 0 & -1 & 2
 > \end{bmatrix}
 > \tag{2.58}
