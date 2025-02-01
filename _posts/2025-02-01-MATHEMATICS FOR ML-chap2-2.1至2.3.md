@@ -134,41 +134,41 @@ tags:
 为了解线性方程组，我们将介绍一种有用的紧凑符号。我们将系数 $$ a_{ij} $$ 收集到向量中，再将这些向量收集到矩阵中。换句话说，我们将 $$(3)$$ 中的方程组写成以下形式:
 \$\$
 \begin{bmatrix} 
-a_{11}\\\
-...\\\
+a_{11} \\\
+... \\\
 a_{m1}  
 \end{bmatrix} 
 x_1 + 
 \begin{bmatrix} 
-a_{12}\\\
-...\\\
+a_{12} \\\
+... \\\
 a_{m2}  
 \end{bmatrix} 
 x_2 
 +... + 
 \begin{bmatrix} 
-a_{1n}\\\
-...\\\ 
+a_{1n} \\\
+... \\\ 
 a_{mn}  
 \end{bmatrix} x_n = 
-\begin{bmatrix} b_{1}\\\
-...\\\ 
+\begin{bmatrix} b_{1} \\\
+... \\\ 
 b_{m}  
 \end{bmatrix}
 \Leftrightarrow 
 \$\$
 \$$
 \begin{bmatrix} 
-a_{11} ... a_{1n}\\\ 
-...\\\
+a_{11} ... a_{1n} \\\ 
+... \\\
 a_{m1}...a_{mn}  
 \end{bmatrix} 
-\begin{bmatrix} x_{1}\\\ 
-...\\\ 
+\begin{bmatrix} x_{1} \\\ 
+... \\\ 
 x_{n}  
 \end{bmatrix} = 
-\begin{bmatrix} b_{1}\\\
-...\\\ 
+\begin{bmatrix} b_{1} \\\
+... \\\ 
 b_{m}  
 \end{bmatrix}
 \$$
