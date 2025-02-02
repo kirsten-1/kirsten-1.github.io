@@ -160,13 +160,17 @@ $$\mathbb{R}^{m×n}$$ 是所有实值 $$(m, n)$$ 矩阵的集合。$$A \in \math
 ### 2.2.1 矩阵加法和乘法-Matrix Addition and Multiplication
 
 两个矩阵 $$A \in \mathbb{R}^{m×n}$$，$$B \in \mathbb{R}^{m×n}$$的和定义为**元素级的和**，即
-$$
+
+\$$
 A+B=\begin{bmatrix}a_{11}+b_{11} \ \  \ ...\ \  a_{1n}+b_{1n}\\ . \ . \ . \\\ a_{m1}+b_{m1}\ \  \ ...\ \ a_{mn}+b_{mn} \end{bmatrix}\in \mathbb{R}^{m×n}
 $$
+
 对于矩阵$$A \in \mathbb{R}^{m×n}$$，$$B \in \mathbb{R}^{n×k}$$，两者乘积$$C=AB\in \mathbb{R}^{m×k}$$的元素 \( $$c_{ij}$$ \) 计算为
-$$
+
+\$$
 c_{ij}=\sum_{l=1}^n a_{il}b_{lj},i=1,...,m,j=1,...,k
 $$
+
 这意味着，为了计算元素 $$c_{ij}$$，我们将 A 的第 i 行与 B 的第 j 列的元素相乘并求和。在稍后的 3.2 节中，我们将这种对应行和列的乘积和称为**点积(`dot product`)**。在需要明确表示乘法的情况下，我们使用符号 `A · B` 来表示乘法（明确显示“`·`”）。
 
 > 由于矩阵 A有 n 列，矩阵 B有 n 行，因此我们可以计算 $$a_{il} b_{lj}$$，其中 $$l=1,…,n$$。通常，两个向量 $$a$$ 和 $$b$$ 之间的点积表示为 $$a^T b$$ 或$$\langle a, b \rangle$$。
@@ -184,11 +188,11 @@ $$
 **例子2.3**
 
 对于$$A = \begin{bmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{2 \times 3} $$,$$B = \begin{bmatrix} 0 & 2 \\ 1 & -1 \\ 0 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 2}$$,可以得到：
-$$
+\$$
 AB = \begin{bmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{bmatrix} \begin{bmatrix} 0 & 2 \\ 1 & -1 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 2 & 3 \\ 2 & 5 \end{bmatrix} \in \mathbb{R}^{2 \times 2}
 $$
 
-$$
+\$$
 BA = \begin{bmatrix} 0 & 2 \\ 1 & -1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{bmatrix} = \begin{bmatrix} 6 & 4 & 2 \\ -2 & 0 & 2 \\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 3}
 $$
 
@@ -249,7 +253,7 @@ $$
 
 通常，$$ A^T $$ 可以通过将矩阵 $$ A $$ 的列作为行来得到 $$ A^T $$。以下是逆矩阵和转置矩阵的一些重要性质：
 
-$$
+\$$
 AA^{-1} = I = A^{-1}A\\
 (AB)^{-1} = B^{-1}A^{-1}\\
 (A + B)^{-1} \neq A^{-1} + B^{-1}\\
@@ -257,13 +261,14 @@ AA^{-1} = I = A^{-1}A\\
 (AB)^T = B^T A^T\\
 (A + B)^T = A^T + B^T
 $$
+
 **定义 2.5 (对称矩阵)`Symmetric Matrix`**:矩阵 $$ A \in \mathbb{R}^{n \times n} $$ 是对称矩阵，当且仅当 $$ A = A^T $$。
 
 注意，只有 $$ (n, n) $$ 矩阵才能是对称的。通常我们称 $$ (n, n) $$ 矩阵为方阵，因为它们具有相同的行数和列数。此外，如果矩阵 $$ A $$ 可逆，则 $$ A^T $$ 也可逆，并且有  
 $$ (A^{-1})^T = (A^T)^{-1} = A^{-T} $$。
 
 **备注（对称矩阵的和与积）**：对称矩阵 $$ A, B \in \mathbb{R}^{n \times n} $$ 的和总是对称的。然而，尽管它们的乘积总是定义的(可以计算的)，但通常情况下它们的积并不是对称的：
-$$
+\$$
 \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 0 & 0 \end{bmatrix}
 $$
 
