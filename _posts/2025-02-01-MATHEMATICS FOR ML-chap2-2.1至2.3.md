@@ -17,8 +17,8 @@ tags:
 **本篇整理2.1～2.3节**
 
 <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"
-</script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
 
 # chap2 Linear Algebra - 线性代数
 
@@ -28,13 +28,13 @@ tags:
 
 1. **几何向量(`Geometric vectors`)**。这个向量的例子可能在高中数学和物理中已经很熟悉了。几何向量——见下图——是有方向的线段，可以至少在二维空间中绘制。
 
-   <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250129163037472.png" alt="image-20250129163037472" style="zoom:50%;" /
+   <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250129163037472.png" alt="image-20250129163037472" style="zoom:50%;" />
 
    两个几何向量$$\vec{x}$$ 和$$\vec{y}$$可以相加，使得$$\vec{x}$$ 和$$\vec{x}+\vec{y}=\vec{z}$$仍然是一个几何向量。此外，标量 $$\lambda$$ 与向量$$\vec{x}$$的乘积$$\lambda\vec{x}$$（其中$$\lambda \in R$$）也是一个几何向量。实际上，它是原向量按比例缩放 λ 倍的结果。因此，几何向量是前面介绍的向量概念的具体实例。将向量解释为几何向量使我们能够利用对方向和大小的直观理解来进行数学运算的推理。
 
 2. **多项式(`Polynomials`)也是向量**。见下图。
 
-   <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250129163132694.png" alt="image-20250129163132694" style="zoom:50%;" /
+   <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250129163132694.png" alt="image-20250129163132694" style="zoom:50%;" />
 
    两个多项式可以相加，结果得到另一个多项式；它们还可以被一个标量$$\lambda \in R$$乘，结果仍然是一个多项式。因此，多项式是（相当不寻常的）向量实例。需要注意的是，多项式与几何向量非常不同。**几何向量是具体的“图形”，而多项式是抽象的概念。**然而，从前面描述的意义上来说，它们都是向量。
 
@@ -60,7 +60,7 @@ tags:
 
 数学中的一个重要概念是“**闭包(`closure`)**”概念。问题是：从我提议的操作中可以得出的所有事物的集合是什么？对于向量而言：从一小部分向量开始，通过将它们相加和缩放，可以得到的向量集合是什么？这会导致一个**向量空间`a vector space`**（第2.4节）。向量空间的概念及其性质是机器学习的许多基础。本章介绍的概念总结在下图中。
 
-<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250129165353461.png" alt="image-20250129165353461" style="zoom:50%;" /
+<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250129165353461.png" alt="image-20250129165353461" style="zoom:50%;" />
 
 线性代数在机器学习和一般数学中起着重要作用。本章引入的概念将在第3章进一步扩展，包括几何思想。在第5章，我们将讨论向量微积分，其中矩阵运算的原理性知识是必不可少的。在第10章，我们将使用投影（将在第3.8节介绍）进行主成分分析（PCA）以实现降维。在第9章，我们将讨论线性回归，其中线性代数在解决最小二乘问题中起着核心作用。
 
@@ -69,56 +69,56 @@ tags:
 线性方程组在线性代数中占据核心地位。许多问题可以表示为线性方程组，而线性代数为我们提供了求解它们的工具。
 
  **例子2.1**
-
- 一家公司生产产品$$N_1,...,N_n$$，这些产品需要资源$$R_1,...,R_m$$。为了生产一单位的产品$$N_j$$，需要$$a_{ij}$$单位的资源$$R_i$$，其中$$i = 1, ...,m，j = 1, ...,n$$。
-
- 目标是找到一个最优的生产计划，即确定每种产品$$N_j$$应生产多少单位$$x_j$$，使得在总共有$$b_i$$单位的资源$$R_i$$可用的情况下，（理想情况下）不浪费任何资源。如果我们生产 $$x_1，...，x_n$$单位的相应产品，则需要总共需要
- \$$
- a_{i1}x_1 + · · · + a_{1n}x_n 
- $$
- 这么多单位的资源 $$R_i$$。一个最优生产计划 $$(x_1, ..., x_n) \in  \mathbb{R}^n$$ 因此必须满足以下方程组：
- \$\$
- a_{11}x_1 + · · · + a_{1n}x_n = b_1 \\
- ... \\
- a_{m1}x_1 + · · · + a_{mn}x_n = b_m
- \$\$
- 其中 $$a_{ij} \in\mathbb{R}$$ 和 $$b_i \in \mathbb{R} $$。
+>
+> 一家公司生产产品$$N_1,...,N_n$$，这些产品需要资源$$R_1,...,R_m$$。为了生产一单位的产品$$N_j$$，需要$$a_{ij}$$单位的资源$$R_i$$，其中$$i = 1, ...,m，j = 1, ...,n$$。
+>
+> 目标是找到一个最优的生产计划，即确定每种产品$$N_j$$应生产多少单位$$x_j$$，使得在总共有$$b_i$$单位的资源$$R_i$$可用的情况下，（理想情况下）不浪费任何资源。如果我们生产 $$x_1，...，x_n$$单位的相应产品，则需要总共需要
+> \$$
+> a_{i1}x_1 + · · · + a_{1n}x_n 
+> $$
+> 这么多单位的资源 $$R_i$$。一个最优生产计划 $$(x_1, ..., x_n) \in  \mathbb{R}^n$$ 因此必须满足以下方程组：
+> \$\$
+> a_{11}x_1 + · · · + a_{1n}x_n = b_1 \\
+> ... \\
+> a_{m1}x_1 + · · · + a_{mn}x_n = b_m
+> \$\$
+> 其中 $$a_{ij} \in\mathbb{R}$$ 和 $$b_i \in \mathbb{R} $$。
 
 方程$$(3)$$是线性方程组的一般形式，满足$$(3)$$的未知数 $$ (x_1, \ldots, x_n) $$是该方程组的一个解。每一个$$n$$元组$$ (x_1, \ldots, x_n) $$是线性方程组的解。
 
- **例子2.2**
-
- 线性方程组
- \$\$
- x_1 + x_2 + x_3 = 3 (1)  \\\
- x_1 − x_2 + 2x_3 = 2 (2)  \\\
- 2x_1   + 3x_3 = 1 (3)
- \$\$
- 无解：将前两个方程相加得到 $$ 2x_1 + 3x_3 = 5 $$，这与第三个方程$$ (3) $$ 矛盾。
-
- 让我们来看这个线性方程组。
- \$$
- x_1 + x_2 + x_3 = 3 (1)  \\\ 
- x_1 − x_2 + 2x_3 = 2 (2)  \\\ 
- x_2 + x_3 = 2 (3)
- \$$
- 由第一个和第三个方程可得 $$ x_1 = 1 $$。由$$ (1)+(2) $$可得 $$ 2x_1 + 3x_3 = 5 $$，即 $$ x_3 = 1 $$。由$$(3)$$可得 $$ x_2 = 1 $$。因此，$$ (1,1,1) $$是唯一可能且唯一的解（通过代入验证$$ (1,1,1) $$是解）。
-
- 作为第三个例子，我们考虑
- \$$
-   x_1 + x_2 + x_3 = 3 (1)
- \$$
- \$$
-  x_1 − x_2 + 2x_3 = 2 (2)
- \$$
- \$$
-  2x_1 + 3x_3 = 5 (3)
- \$$
- 由于$$ (1)+(2)=(3) $$，我们可以省略第三个方程（冗余）。从$$ (1) $$和$$ (2) $$，我们得到 $$ 2x_1 = 5−3x_3 $$ 和 $$ 2x_2 = 1+x_3 $$。我们将 $$ x_3 = a \in \mathbb{R} $$ 定义为自由变量，使得任何三元组
- \$$
- (\frac{5}{2}-\frac{3}{2}a,\frac{1}{2}+\frac{1}{2}a,a),a \in \mathbb{R}
- \$$
- 是线性方程组的解，即我们得到一个包含无限多个解的解集。
+> **例子2.2**
+>
+> 线性方程组
+> \$\$
+> x_1 + x_2 + x_3 = 3 (1)  \\\
+> x_1 − x_2 + 2x_3 = 2 (2)  \\\
+> 2x_1   + 3x_3 = 1 (3)
+> \$\$
+> 无解：将前两个方程相加得到 $$ 2x_1 + 3x_3 = 5 $$，这与第三个方程$$ (3) $$ 矛盾。
+>
+> 让我们来看这个线性方程组。
+> \$$
+> x_1 + x_2 + x_3 = 3 (1)  \\\ 
+> x_1 − x_2 + 2x_3 = 2 (2)  \\\ 
+> x_2 + x_3 = 2 (3)
+> \$$
+> 由第一个和第三个方程可得 $$ x_1 = 1 $$。由$$ (1)+(2) $$可得 $$ 2x_1 + 3x_3 = 5 $$，即 $$ x_3 = 1 $$。由$$(3)$$可得 $$ x_2 = 1 $$。因此，$$ (1,1,1) $$是唯一可能且唯一的解（通过代入验证$$ (1,1,1) $$是解）。
+>
+> 作为第三个例子，我们考虑
+> \$$
+>   x_1 + x_2 + x_3 = 3 (1)
+> \$$
+> \$$
+>  x_1 − x_2 + 2x_3 = 2 (2)
+> \$$
+> \$$
+>  2x_1 + 3x_3 = 5 (3)
+> \$$
+> 由于$$ (1)+(2)=(3) $$，我们可以省略第三个方程（冗余）。从$$ (1) $$和$$ (2) $$，我们得到 $$ 2x_1 = 5−3x_3 $$ 和 $$ 2x_2 = 1+x_3 $$。我们将 $$ x_3 = a \in \mathbb{R} $$ 定义为自由变量，使得任何三元组
+> \$$
+> (\frac{5}{2}-\frac{3}{2}a,\frac{1}{2}+\frac{1}{2}a,a),a \in \mathbb{R}
+> \$$
+> 是线性方程组的解，即我们得到一个包含无限多个解的解集。
 
 一般来说，对于实值线性方程组，我们得到的解要么没有，要么有唯一解，要么有无穷多解。线性回归`Linear regression`（第九章）解决了当我们无法求解线性方程组时的例子2.1的版本。
 
@@ -127,7 +127,7 @@ tags:
 4x_1 + 4x_2 = 5  \\\
 2x_1 − 4x_2 = 1
 \$$
-<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250131210518541.png" alt="image-20250131210518541" style="zoom:50%;" /
+<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250131210518541.png" alt="image-20250131210518541" style="zoom:50%;" />
 
 其中解空间是点 $$ (x_1, x_2) = (1, \frac{1}{4}) $$。类似地，对于三个变量，每个线性方程确定了三维空间中的一个平面。当我们求这些平面的交集，即同时满足所有线性方程时，我们可以得到一个解集，这个解集可以是一个平面、一条直线、一个点或为空（当这些平面没有共同交点时）。
 
@@ -186,7 +186,7 @@ A=\begin{bmatrix}a_{11} \ a_{12}\ ...\ a_{1n} \\\ a_{21} \ a_{22} \ ...\ a_{2n}\
 
 $$\mathbb{R}^{m×n}$$ 是所有实值 $$(m, n)$$ 矩阵的集合。$$A \in \mathbb{R}^{m×n}$$ 可以等价地表示为$ a \in  \mathbb{R}^{mn}$，通过将矩阵的所有 n 列堆叠成一个长向量；见下图。
 
-<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250131212354250.png" alt="image-20250131212354250" style="zoom:50%;" /
+<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250131212354250.png" alt="image-20250131212354250" style="zoom:50%;" />
 
 ### 2.2.1 矩阵加法和乘法-Matrix Addition and Multiplication
 
@@ -200,32 +200,32 @@ c_{ij}=\sum_{l=1}^n a_{il}b_{lj},i=1,...,m,j=1,...,k
 \$\$
 这意味着，为了计算元素 $$c_{ij}$$，我们将 A 的第 i 行与 B 的第 j 列的元素相乘并求和。在稍后的 3.2 节中，我们将这种对应行和列的乘积和称为**点积(`dot product`)**。在需要明确表示乘法的情况下，我们使用符号 `A · B` 来表示乘法（明确显示“`·`”）。
 
- 由于矩阵 A有 n 列，矩阵 B有 n 行，因此我们可以计算 $$a_{il} b_{lj}$$，其中 $$l=1,…,n$$。通常，两个向量 $$a$$ 和 $$b$$ 之间的点积表示为 $$a^T b$$ 或$$\langle a, b \rangle$$。
+> 由于矩阵 A有 n 列，矩阵 B有 n 行，因此我们可以计算 $$a_{il} b_{lj}$$，其中 $$l=1,…,n$$。通常，两个向量 $$a$$ 和 $$b$$ 之间的点积表示为 $$a^T b$$ 或$$\langle a, b \rangle$$。
 
 **备注：** 只有当矩阵的“相邻”维度匹配时，矩阵才能相乘。例如，一个 $$n \times k$$的矩阵 $$A$$ 可以与一个 $$k \times m$$ 的矩阵 $$B$$ 进行乘法运算，但只能从左边进行：
 
-<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201125939091.png" alt="image-20250201125939091" style="zoom:50%;" /
+<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201125939091.png" alt="image-20250201125939091" style="zoom:50%;" />
 
 如果 $$m \neq n$$，则 $$BA$$ 的乘积是未定义的，因为相邻的维度不匹配。
 
 **备注：** 矩阵乘法不是矩阵元素逐一运算的操作，也就是说，$$c_{ij} \neq a_{ij} b_{ij}$$（即使矩阵 $$A$$ 和 $$B$$ 的大小选择得当）。这种逐元素的乘法通常出现在编程语言中，当我们将（多维）数组相乘时，称之为 **Hadamard 乘积(`Hadamard product`)**。
 
- 矩阵乘法是一种更复杂的操作，它基于点积原理，而Hadamard乘积是一个元素级的操作，两者不应混淆。
+> 矩阵乘法是一种更复杂的操作，它基于点积原理，而Hadamard乘积是一个元素级的操作，两者不应混淆。
 
- **例子2.3**
-
- 对于$$A = \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{2 \times 3} $$,$$B = \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 2}$$,可以得到：
- \$\$
- AB = \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 2 & 3 \\\ 2 & 5 \end{bmatrix} \in \mathbb{R}^{2 \times 2}
- \$\$
-
- \$$
- BA = \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} = \begin{bmatrix} 6 & 4 & 2 \\\ -2 & 0 & 2 \\\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 3}
- \$$
+> **例子2.3**
+>
+> 对于$$A = \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{2 \times 3} $$,$$B = \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 2}$$,可以得到：
+> \$\$
+> AB = \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 2 & 3 \\\ 2 & 5 \end{bmatrix} \in \mathbb{R}^{2 \times 2}
+> \$\$
+>
+> \$$
+> BA = \begin{bmatrix} 0 & 2 \\\ 1 & -1 \\\ 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 2 & 3 \\\ 3 & 2 & 1 \end{bmatrix} = \begin{bmatrix} 6 & 4 & 2 \\\ -2 & 0 & 2 \\\ 3 & 2 & 1 \end{bmatrix} \in \mathbb{R}^{3 \times 3}
+> \$$
 
 从这个例子中，我们已经可以看到矩阵乘法是**不可交换**的，即 $$AB \neq BA$$；另见下图以获得图示说明。
 
-<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201130835457.png" alt="image-20250201130835457" style="zoom:50%;" /
+<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201130835457.png" alt="image-20250201130835457" style="zoom:50%;" />
 
 **定义2.2 单位矩阵`Identity Matrix`**：在 $$\mathbb{R}^{n \times n} $$中，我们定义单位矩阵 \( $$I_n$$ \) 为一个 \( $$n \times n$$ \) 的矩阵，主对角线上的元素为 1，其他位置的元素为 0。
 \$\$
@@ -272,9 +272,9 @@ A(C + D) = AC + AD
 
 当且仅当 $$ a_{11}a_{22} - a_{12}a_{21} \neq 0 $$ 时，矩阵 $$ A $$ 可逆。在第 4.1 节中，我们将看到 $$ a_{11}a_{22} - a_{12}a_{21} $$ 是 2×2 矩阵的行列式。此外，我们通常可以使用行列式来检查矩阵是否可逆。
 
- **例子 2.4 (逆矩阵)**
-
- 矩阵  $$ A = \begin{bmatrix} 1 & 2 & 1 \\\ 4 & 4 & 5 \\\ 6 & 7 & 7 \end{bmatrix} $$  与  $$ B = \begin{bmatrix} -7 & -7 & 6 \\\ 2 & 1 & -1 \\\ 4 & 5 & -4 \end{bmatrix} $$  是互为逆矩阵，因为  $$ AB = I = BA $$。
+> **例子 2.4 (逆矩阵)**
+>
+> 矩阵  $$ A = \begin{bmatrix} 1 & 2 & 1 \\\ 4 & 4 & 5 \\\ 6 & 7 & 7 \end{bmatrix} $$  与  $$ B = \begin{bmatrix} -7 & -7 & 6 \\\ 2 & 1 & -1 \\\ 4 & 5 & -4 \end{bmatrix} $$  是互为逆矩阵，因为  $$ AB = I = BA $$。
 
 **定义 2.4 (转置)`Transpose`**对于 $$ A \in \mathbb{R}^{m \times n} $$，矩阵 $$ B \in \mathbb{R}^{n \times m} $$，其中 $$ b_{ij} = a_{ji} $$，称 $$ B $$ 为 $$ A $$ 的转置，记作 $$ B = A^T $$。
 
@@ -308,9 +308,9 @@ $$ (A^{-1})^T = (A^T)^{-1} = A^{-T} $$。
 - **转置的性质**：    $$ (\lambda C)^T = C^T \lambda^T = C^T \lambda = \lambda C^T \quad \text{因为}\text{对于所有} \ \lambda \in \mathbb{R} \ ,有 \lambda = \lambda^T \ . $$
 - **分配性`Distributivity`**：    $$ (\lambda + \psi)C = \lambda C + \psi C, \ C \in \mathbb{R}^{m \times n} ；$$    $$ \lambda (B + C) = \lambda B + \lambda C, \ B, C \in \mathbb{R}^{m \times n} $$
 
- **例子2.5 (分配性)**
-
- 如果我们定义   $$ C := \begin{bmatrix} 1 & 2 \\\ 3 & 4 \end{bmatrix} \quad  $$   那么对于任意 $$ \lambda, \psi \in \mathbb{R} $$，我们有： $$ (\lambda + \psi)C = \begin{bmatrix} (\lambda + \psi)1 & (\lambda + \psi)2 \\\ (\lambda + \psi)3 & (\lambda + \psi)4 \end{bmatrix} = \begin{bmatrix} \lambda + \psi & 2\lambda + 2\psi \\\ 3\lambda + 3\psi & 4\lambda + 4\psi \end{bmatrix} = \begin{bmatrix} \lambda & 2\lambda \\\ 3\lambda & 4\lambda \end{bmatrix} + \begin{bmatrix} \psi & 2\psi \\\ 3\psi & 4\psi \end{bmatrix} = \lambda C + \psi C \quad$$
+> **例子2.5 (分配性)**
+>
+> 如果我们定义   $$ C := \begin{bmatrix} 1 & 2 \\\ 3 & 4 \end{bmatrix} \quad  $$   那么对于任意 $$ \lambda, \psi \in \mathbb{R} $$，我们有： $$ (\lambda + \psi)C = \begin{bmatrix} (\lambda + \psi)1 & (\lambda + \psi)2 \\\ (\lambda + \psi)3 & (\lambda + \psi)4 \end{bmatrix} = \begin{bmatrix} \lambda + \psi & 2\lambda + 2\psi \\\ 3\lambda + 3\psi & 4\lambda + 4\psi \end{bmatrix} = \begin{bmatrix} \lambda & 2\lambda \\\ 3\lambda & 4\lambda \end{bmatrix} + \begin{bmatrix} \psi & 2\psi \\\ 3\psi & 4\psi \end{bmatrix} = \lambda C + \psi C \quad$$
 
 ### 2.2.4 线性方程组的紧凑表示-Compact Representations of Systems of Linear Equations
 
@@ -396,17 +396,17 @@ b = \begin{bmatrix} 42 \\\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\\ 0 \end{bma
 
 通解和特解都不是唯一的。 前面的例子中的线性方程组容易求解，因为矩阵 $$(23)$$ 具有特别方便的形式，这使我们能够通过观察找到特解和通解。然而，一般的方程组并不具有这么简单的形式。幸运的是，存在一种构造性的算法，通过高斯消元法将任何线性方程组转化为这种特别简单的形式。高斯消元法的关键是矩阵的基本变换，它们将方程组转化为更简单的形式。然后，我们可以将前三个步骤应用到这种简单形式的方程组中，正如我们在 $$(23)$$ 中所做的那样。
 
- 上面的说实话  我也不是很想理解，但是以前也学习过（本科+考研都学过），参考[视频](https://www.bilibili.com/video/BV1aW411Q7x1?spm_id_from=333.788.videopod.episodes&vd_source=6c6e2754e61f483e81b4bc03c9898c87&p=43)（找的一个通俗易懂的视频）
-
- 截图如下：
-
- <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201141748675.png" alt="image-20250201141748675" style="zoom:50%;" /
-
- <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201142145260.png" alt="image-20250201142145260" style="zoom:50%;" /
-
- 举例：
-
- ![image-20250201143444850](https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201143444850.png)
+> 上面的说实话  我也不是很想理解，但是以前也学习过（本科+考研都学过），参考[视频](https://www.bilibili.com/video/BV1aW411Q7x1?spm_id_from=333.788.videopod.episodes&vd_source=6c6e2754e61f483e81b4bc03c9898c87&p=43)（找的一个通俗易懂的视频）
+>
+> 截图如下：
+>
+> <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201141748675.png" alt="image-20250201141748675" style="zoom:50%;" />
+>
+> <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201142145260.png" alt="image-20250201142145260" style="zoom:50%;" />
+>
+> 举例：
+>
+> ![image-20250201143444850](https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250201143444850.png)
 
 ### 2.3.2 初等变换-Elementary Transformations
 
@@ -416,91 +416,91 @@ b = \begin{bmatrix} 42 \\\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\\ 0 \end{bma
 - 用常数 $$ \lambda \in \mathbb{R} \setminus \{0\} $$ 乘以一个方程（行）
 - 相加两个方程（行）
 
- **例子2.6**
-
- 对于 $$ a \in \mathbb{R} $$，我们寻求如下方程组的所有解：
- \$\$
- -2x_1 + 4x_2 - 2x_3 - x_4 + 4x_5 = -3\\\
- 4x_1 - 8x_2 + 3x_3 - 3x_4 + x_5 = 2\\\
- x_1 - 2x_2 + x_3 - x_4 + x_5 = 0\\\
- x_1 - 2x_2 - 3x_4 + 4x_5 = a
- \$\$
- 我们开始将这个方程组转换为紧凑的矩阵表示 $$ Ax = b $$。我们不再显式提及变量 $$ x $$，而是构建增广矩阵`augmented matrix` $$ [A|b] $$，形式如下：
- \$$
- \begin{bmatrix}
- -2 & 4 & -2 & -1 & 4 & -3 \\\
- 4 & -8 & 3 & -3 & 1 & 2 \\\
- 1 & -2 & 1 & -1 & 1 & 0 \\\
- 1 & -2 & 0 & -3 & 4 & a
- \end{bmatrix}
- \$$
- 我们用竖线分隔矩阵的左边和右边，并使用 $$ \Rightarrow $$ 表示增广矩阵的变换。交换行 1 和行 3 后得到：
- \$\$
- \begin{bmatrix}
- 1 & -2 & 1 & -1 & 1 & 0 \\\
- 4 & -8 & 3 & -3 & 1 & 2 \\\
- -2 & 4 & -2 & -1 & 4 & -3 \\\
- 1 & -2 & 0 & -3 & 4 & a
- \end{bmatrix}
- \$\$
- 现在应用所指示的变换（例如，从第二行减去四倍的第一行），3，4行也做类似的变换，得到：
- \$$
- \begin{bmatrix}
- 1 & -2 & 1 & -1 & 1 & 0 \\\
- 0 & 0 & -1 & 1 & -3 & 2 \\\
- 0 & 0 & 0 & -3 & 6 & -3 \\\
- 0 & 0 & -1 & -2 & 3 & a
- \end{bmatrix}
- \$$
- 接下来应用第二次变换，得到：
- \$\$
- \begin{bmatrix}
- 1 & -2 & 1 & -1 & 1 & 0 \\\
- 0 & 0 & -1 & 1 & -3 & 2 \\\
- 0 & 0 & 0 & -3 & 6 & -3 \\\
- 0 & 0 & 0 & -3 & 6 & a-2
- \end{bmatrix} \Longrightarrow
- \begin{bmatrix}
- 1 & -2 & 1 & -1 & 1 & 0 \\\
- 0 & 0 & -1 & 1 & -3 & 2 \\\
- 0 & 0 & 0 & -3 & 6 & -3 \\\
- 0 & 0 & 0 & 0 & 0 & a+1
- \end{bmatrix}\Longrightarrow
- \begin{bmatrix}
- 1 & -2 & 1 & -1 & 1 & 0 \\\
- 0 & 0 & 1 & -1 & 3 & -2 \\\
- 0 & 0 & 0 & 1 & -2 & 1 \\\
- 0 & 0 & 0 & 0 & 0 & a+1
- \end{bmatrix}
- \$$
- 这个增广矩阵现在是一个简洁的行阶梯形式（REF,`row-echelon form`）。将这个简化的矩阵重新表示为我们寻求的变量：
- \$\$
- x_1 - 2x_2 + x_3 - x_4 + x_5 = 0\\\
- x_3 - x_4 + 3x_5 = -2\\\
- x_4 - 2x_5 = 1\\\
- 0 = a + 1
- \$\$
- 只有当 $$ a = -1 $$ 时，系统才能求解。特解是：
- \$$
- \begin{bmatrix}
- x_1 \\\ x_2 \\\ x_3 \\\ x_4 \\\ x_5
- \end{bmatrix}=\begin{bmatrix}
- 2 \\\ 0 \\\ -1 \\\ 1 \\\ 0
- \end{bmatrix}
- \$$
- 通解，捕捉所有可能解的集合是：
- \$$
- x \in \mathbb{R}^5 : x =
- \begin{bmatrix}
- 2 \\\ 0 \\\ -1 \\\ 1 \\\ 0
- \end{bmatrix} + \lambda_1
- \begin{bmatrix}
- 2 \\\ 1 \\\ 0 \\\ 0 \\\ 0
- \end{bmatrix} + \lambda_2
- \begin{bmatrix}
- 2 \\\ 0 \\\ -1 \\\ 2 \\\ 1
- \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R}
- \$$
+> **例子2.6**
+>
+> 对于 $$ a \in \mathbb{R} $$，我们寻求如下方程组的所有解：
+> \$\$
+> -2x_1 + 4x_2 - 2x_3 - x_4 + 4x_5 = -3\\\
+> 4x_1 - 8x_2 + 3x_3 - 3x_4 + x_5 = 2\\\
+> x_1 - 2x_2 + x_3 - x_4 + x_5 = 0\\\
+> x_1 - 2x_2 - 3x_4 + 4x_5 = a
+> \$\$
+> 我们开始将这个方程组转换为紧凑的矩阵表示 $$ Ax = b $$。我们不再显式提及变量 $$ x $$，而是构建增广矩阵`augmented matrix` $$ [A|b] $$，形式如下：
+> \$$
+> \begin{bmatrix}
+> -2 & 4 & -2 & -1 & 4 & -3 \\\
+> 4 & -8 & 3 & -3 & 1 & 2 \\\
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 1 & -2 & 0 & -3 & 4 & a
+> \end{bmatrix}
+> \$$
+> 我们用竖线分隔矩阵的左边和右边，并使用 $$ \Rightarrow $$ 表示增广矩阵的变换。交换行 1 和行 3 后得到：
+> \$\$
+> \begin{bmatrix}
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 4 & -8 & 3 & -3 & 1 & 2 \\\
+> -2 & 4 & -2 & -1 & 4 & -3 \\\
+> 1 & -2 & 0 & -3 & 4 & a
+> \end{bmatrix}
+> \$\$
+> 现在应用所指示的变换（例如，从第二行减去四倍的第一行），3，4行也做类似的变换，得到：
+> \$$
+> \begin{bmatrix}
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 0 & 0 & -1 & 1 & -3 & 2 \\\
+> 0 & 0 & 0 & -3 & 6 & -3 \\\
+> 0 & 0 & -1 & -2 & 3 & a
+> \end{bmatrix}
+> \$$
+> 接下来应用第二次变换，得到：
+> \$\$
+> \begin{bmatrix}
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 0 & 0 & -1 & 1 & -3 & 2 \\\
+> 0 & 0 & 0 & -3 & 6 & -3 \\\
+> 0 & 0 & 0 & -3 & 6 & a-2
+> \end{bmatrix} \Longrightarrow
+> \begin{bmatrix}
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 0 & 0 & -1 & 1 & -3 & 2 \\\
+> 0 & 0 & 0 & -3 & 6 & -3 \\\
+> 0 & 0 & 0 & 0 & 0 & a+1
+> \end{bmatrix}\Longrightarrow
+> \begin{bmatrix}
+> 1 & -2 & 1 & -1 & 1 & 0 \\\
+> 0 & 0 & 1 & -1 & 3 & -2 \\\
+> 0 & 0 & 0 & 1 & -2 & 1 \\\
+> 0 & 0 & 0 & 0 & 0 & a+1
+> \end{bmatrix}
+> \$$
+> 这个增广矩阵现在是一个简洁的行阶梯形式（REF,`row-echelon form`）。将这个简化的矩阵重新表示为我们寻求的变量：
+> \$\$
+> x_1 - 2x_2 + x_3 - x_4 + x_5 = 0\\\
+> x_3 - x_4 + 3x_5 = -2\\\
+> x_4 - 2x_5 = 1\\\
+> 0 = a + 1
+> \$\$
+> 只有当 $$ a = -1 $$ 时，系统才能求解。特解是：
+> \$$
+> \begin{bmatrix}
+> x_1 \\\ x_2 \\\ x_3 \\\ x_4 \\\ x_5
+> \end{bmatrix}=\begin{bmatrix}
+> 2 \\\ 0 \\\ -1 \\\ 1 \\\ 0
+> \end{bmatrix}
+> \$$
+> 通解，捕捉所有可能解的集合是：
+> \$$
+> x \in \mathbb{R}^5 : x =
+> \begin{bmatrix}
+> 2 \\\ 0 \\\ -1 \\\ 1 \\\ 0
+> \end{bmatrix} + \lambda_1
+> \begin{bmatrix}
+> 2 \\\ 1 \\\ 0 \\\ 0 \\\ 0
+> \end{bmatrix} + \lambda_2
+> \begin{bmatrix}
+> 2 \\\ 0 \\\ -1 \\\ 2 \\\ 1
+> \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R}
+> \$$
 
 备注:我们遵循的通用方法包含以下三步：
 
@@ -517,7 +517,7 @@ b = \begin{bmatrix} 42 \\\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\\ 0 \end{bma
 - 所有仅包含零的行位于矩阵的底部；与之相对，所有包含至少一个非零元素的行都位于仅包含零的行之上。
 - 只考虑非零行时，来自左侧的第一个非零数（也称为主元或首项）始终严格位于其上一行主元的右侧。
 
- 关于行阶梯形和简化行阶梯形，可参考[帖子](https://zhuanlan.zhihu.com/p/86493143)
+> 关于行阶梯形和简化行阶梯形，可参考[帖子](https://zhuanlan.zhihu.com/p/86493143)
 
 备注:（基本变量与自由变量） 在行阶梯形中，与主元对应的变量称为基本变量，而其他变量称为自由变量。例如，在 (34) 中，$$ x_1, x_3, x_4 $$ 是基本变量，而 $$ x_2, x_5 $$ 是自由变量。
 
@@ -534,23 +534,23 @@ b = \begin{bmatrix} 42 \\\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\\ 0 \end{bma
 
 备注（高斯消元法） 高斯消元法是一种将线性方程组转换为简化行阶梯形的算法。
 
- **例子2.7 (简化行阶梯形)**
-
- 验证下列矩阵是否为简化行阶梯形（主元为粗体）：
- \$$
- A = \begin{bmatrix} 1 & 3 & 0 & 0 & 3 \\\ 0 & 0 & 1 & 0 & 9 \\\ 0 & 0 & 0 & 1 & -4 \end{bmatrix}
- \$$
- 求解 $$ Ax = 0 $$ 的关键思想是观察非主元列，并将它们表示为主元列的线性组合。简化行阶梯形使得这一过程非常简单，我们用主元列和它们左侧的非主元列表示其他列。我们需要从第一列中减去第三列三倍，再处理第五列，这就是第二个非主元列。 因此，我们得到：
- \$$
- x \in \mathbb{R}^5 : x = \lambda_1 \begin{bmatrix} 3 \\\ -1 \\\ 0 \\\ 0 \\\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} 3 \\\ 0 \\\ 9 \\\ -4 \\\ -1 \end{bmatrix} \quad \lambda_1, \lambda_2 \in \mathbb{R}
- \$$
- 补充：令$$\begin{bmatrix}x_2\\\x_5 \end{bmatrix} = \begin{bmatrix} 1\\\0 \end{bmatrix}$$和$$\begin{bmatrix} 0\\\1 \end{bmatrix}$$,	由$$\begin{cases} x_1= - 3x_2 - 3x_5  \\\ x_3= -9x_5  \\\ x_4=4x_5 \end{cases}$$,得到$$\eta_1=\begin{bmatrix}-3\\\1\\\0\\\0\\\0 \end{bmatrix},\eta_2=\begin{bmatrix}-3\\\0\\\-9\\\4\\\1 \end{bmatrix}$$.
-
- 和上面的只差了一个符号。
+> **例子2.7 (简化行阶梯形)**
+>
+> 验证下列矩阵是否为简化行阶梯形（主元为粗体）：
+> \$$
+> A = \begin{bmatrix} 1 & 3 & 0 & 0 & 3 \\\ 0 & 0 & 1 & 0 & 9 \\\ 0 & 0 & 0 & 1 & -4 \end{bmatrix}
+> \$$
+> 求解 $$ Ax = 0 $$ 的关键思想是观察非主元列，并将它们表示为主元列的线性组合。简化行阶梯形使得这一过程非常简单，我们用主元列和它们左侧的非主元列表示其他列。我们需要从第一列中减去第三列三倍，再处理第五列，这就是第二个非主元列。 因此，我们得到：
+> \$$
+> x \in \mathbb{R}^5 : x = \lambda_1 \begin{bmatrix} 3 \\\ -1 \\\ 0 \\\ 0 \\\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} 3 \\\ 0 \\\ 9 \\\ -4 \\\ -1 \end{bmatrix} \quad \lambda_1, \lambda_2 \in \mathbb{R}
+> \$$
+> 补充：令$$\begin{bmatrix}x_2\\\x_5 \end{bmatrix} = \begin{bmatrix} 1\\\0 \end{bmatrix}$$和$$\begin{bmatrix} 0\\\1 \end{bmatrix}$$,	由$$\begin{cases} x_1= - 3x_2 - 3x_5  \\\ x_3= -9x_5  \\\ x_4=4x_5 \end{cases}$$,得到$$\eta_1=\begin{bmatrix}-3\\\1\\\0\\\0\\\0 \end{bmatrix},\eta_2=\begin{bmatrix}-3\\\0\\\-9\\\4\\\1 \end{bmatrix}$$.
+>
+> 和上面的只差了一个符号。
 
 ### 2.3.3 负一技巧-The Minus-1 Trick
 
- 这个技巧我也是第一次看见，如果早点学到可以更加快速的解考研题目或者应用在其他地方吧。真的是很奇妙
+> 这个技巧我也是第一次看见，如果早点学到可以更加快速的解考研题目或者应用在其他地方吧。真的是很奇妙
 
 在下面的内容中，我们介绍了一种实用的技巧，用于求解齐次线性方程组 $Ax = 0$ 的解，其中 $A \in \mathbb{R}^{k \times n}$，$x \in \mathbb{R}$。
 首先，我们假设矩阵 $A$ 已经是**简化行最简形式（reduced row-echelon form）**，且没有任何只包含零的行，即：
@@ -575,33 +575,33 @@ A =
 
 这样增广矩阵 $\tilde{A}$ 的对角线元素就包含了 1 或 -1。然后，$\tilde{A}$ 中对角线上包含 -1 的列即为齐次方程 $Ax = 0$ 的解。这些列可以构成齐次方程解空间的基（参见 2.6.1 节），我们将其称为核空间或零空间`kernel or null space`（详见 2.7.3 节）。
 
- **例子 2.8（Minus-1 Trick）**
-
- 我们重新回顾 (38) 中的矩阵，它已经是简化的行最简形式（REF）：
-
- \$$
- A = \begin{bmatrix} 1 & 3 & 0 & 0 & 3 \\\ 0 & 0 & 1 & 0 & 9 \\\ 0 & 0 & 0 & 1 & -4 \end{bmatrix}
- \$$
-
- 我们现在通过在对角线缺失枢纽的位置添加形式为 (41) 的行，将这个矩阵扩展为一个 $5 \times 5$ 的矩阵，得到
-
- \$$
- \tilde{A} = \begin{bmatrix}
- 1 & 3 & 0 & 0 & 3 \\\
- 0 & -1 & 0 & 0 & 0 \\\
- 0 & 0 & 1 & 0 & 9 \\\
- 0 & 0 & 0 & 1 & -4  \\\
- 0 & 0 & 0 & 0 & -1 \\\
- \end{bmatrix}
- \$$
-
- 通过这种方式，我们可以立即从矩阵 $\tilde{A}$ 中读取出齐次方程 $Ax = 0$ 的解，方法是取出矩阵中对角线含有 -1 的列：
-
- \$$
- x \in \mathbb{R}^5 : x = \lambda_1 \begin{bmatrix} 3 \\\ -1 \\\ 0 \\\ 0 \\\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} 3 \\\ 0 \\\ 9 \\\ -4 \\\ -1 \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R}
- \$$
-
- 这与我们通过“直觉”得到的解 (39) 是一致的。
+> **例子 2.8（Minus-1 Trick）**
+>
+> 我们重新回顾 (38) 中的矩阵，它已经是简化的行最简形式（REF）：
+>
+> \$$
+> A = \begin{bmatrix} 1 & 3 & 0 & 0 & 3 \\\ 0 & 0 & 1 & 0 & 9 \\\ 0 & 0 & 0 & 1 & -4 \end{bmatrix}
+> \$$
+>
+> 我们现在通过在对角线缺失枢纽的位置添加形式为 (41) 的行，将这个矩阵扩展为一个 $5 \times 5$ 的矩阵，得到
+>
+> \$$
+> \tilde{A} = \begin{bmatrix}
+> 1 & 3 & 0 & 0 & 3 \\\
+> 0 & -1 & 0 & 0 & 0 \\\
+> 0 & 0 & 1 & 0 & 9 \\\
+> 0 & 0 & 0 & 1 & -4  \\\
+> 0 & 0 & 0 & 0 & -1 \\\
+> \end{bmatrix}
+> \$$
+>
+> 通过这种方式，我们可以立即从矩阵 $\tilde{A}$ 中读取出齐次方程 $Ax = 0$ 的解，方法是取出矩阵中对角线含有 -1 的列：
+>
+> \$$
+> x \in \mathbb{R}^5 : x = \lambda_1 \begin{bmatrix} 3 \\\ -1 \\\ 0 \\\ 0 \\\ 0 \end{bmatrix} + \lambda_2 \begin{bmatrix} 3 \\\ 0 \\\ 9 \\\ -4 \\\ -1 \end{bmatrix}, \lambda_1, \lambda_2 \in \mathbb{R}
+> \$$
+>
+> 这与我们通过“直觉”得到的解 (39) 是一致的。
 
 ----
 
@@ -615,59 +615,59 @@ $$
 
 这意味着，如果我们将增广方程组变换为简化行最简形式，那么可以从方程组的右侧读取出逆矩阵。由此可见，计算矩阵的逆矩阵等价于求解线性方程组。
 
- **例子 2.9（通过高斯消元法计算逆矩阵）**
-
- 为了确定矩阵
-
- \$$
- A = \begin{bmatrix}
- 1 & 0 & 2 & 0 \\\
- 1 & 1 & 0 & 0 \\\
- 1 & 2 & 0 & 1 \\\
- 1 & 1 & 1 & 1
- \end{bmatrix}
- \tag{2.57}
- \$$
-
- 的逆矩阵，我们写出增广矩阵：
-
- \$$
- \left[
- \begin{array}{cccc|cccc}
- 1 & 0 & 2 & 0 & 1 & 0 & 0 & 0 \\\
- 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 \\\
- 1 & 2 & 0 & 1 & 0 & 0 & 1 & 0 \\\
- 1 & 1 & 1 & 1 & 0 & 0 & 0 & 1
- \end{array}
- \right]
- \$$
-
- 并使用高斯消元法将其转换为简化行最简形式：
-
- \$\$
- \left[
- \begin{array}{cccc|cccc}
- 1 & 0 & 0 & 0 & -1 & 2 & -2 & 2 \\\
- 0 & 1 & 0 & 0 & 1 & -1 & 2 & -2 \\\
- 0 & 0 & 1 & 0 & -1 & 1 & 1 & -1 \\\
- 0 & 0 & 0 & 1 & -1 & 0 & -1 & 2
- \end{array}
- \right]
- \$\$
-
- 因此，所需的逆矩阵为右侧的部分：
-
- \$$
- A^{-1} = \begin{bmatrix}
- -1 & 2 & -2 & 2 \\\
- 1 & -1 & 2 & -2 \\\
- 1 & -1 & 1 & -1 \\\
- -1 & 0 & -1 & 2
- \end{bmatrix}
- \tag{2.58}
- \$$
-
- 我们可以通过执行矩阵乘法 $AA^{-1}$ 来验证 (2.58) 确实是逆矩阵，并且观察到我们恢复了单位矩阵 $I_4$。
+> **例子 2.9（通过高斯消元法计算逆矩阵）**
+>
+> 为了确定矩阵
+>
+> \$$
+> A = \begin{bmatrix}
+> 1 & 0 & 2 & 0 \\\
+> 1 & 1 & 0 & 0 \\\
+> 1 & 2 & 0 & 1 \\\
+> 1 & 1 & 1 & 1
+> \end{bmatrix}
+> \tag{2.57}
+> \$$
+>
+> 的逆矩阵，我们写出增广矩阵：
+>
+> \$$
+> \left[
+> \begin{array}{cccc|cccc}
+> 1 & 0 & 2 & 0 & 1 & 0 & 0 & 0 \\\
+> 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 \\\
+> 1 & 2 & 0 & 1 & 0 & 0 & 1 & 0 \\\
+> 1 & 1 & 1 & 1 & 0 & 0 & 0 & 1
+> \end{array}
+> \right]
+> \$$
+>
+> 并使用高斯消元法将其转换为简化行最简形式：
+>
+> \$\$
+> \left[
+> \begin{array}{cccc|cccc}
+> 1 & 0 & 0 & 0 & -1 & 2 & -2 & 2 \\\
+> 0 & 1 & 0 & 0 & 1 & -1 & 2 & -2 \\\
+> 0 & 0 & 1 & 0 & -1 & 1 & 1 & -1 \\\
+> 0 & 0 & 0 & 1 & -1 & 0 & -1 & 2
+> \end{array}
+> \right]
+> \$\$
+>
+> 因此，所需的逆矩阵为右侧的部分：
+>
+> \$$
+> A^{-1} = \begin{bmatrix}
+> -1 & 2 & -2 & 2 \\\
+> 1 & -1 & 2 & -2 \\\
+> 1 & -1 & 1 & -1 \\\
+> -1 & 0 & -1 & 2
+> \end{bmatrix}
+> \tag{2.58}
+> \$$
+>
+> 我们可以通过执行矩阵乘法 $AA^{-1}$ 来验证 (2.58) 确实是逆矩阵，并且观察到我们恢复了单位矩阵 $I_4$。
 
 
 
@@ -689,7 +689,7 @@ Ax = b \iff A^\top A x = A^\top b \iff x = (A^\top A)^{-1} A^\top b \tag{2.59}
 
 在实践中，许多线性方程组是间接求解的，可以通过一些迭代方法来实现，例如Richardson法、Gauss-Seidel法、以及后续的过松弛法，或者Krylov子空间方法，如共轭梯度法、最小残差法或双共轭梯度法。我们参考了Stoer和Burlisch（2002年）、Strang（2003年）以及Liesen和Mehrmann（2015年）等书籍来进一步了解。
 
- Richardson method（理查德森外推法），the Jacobi method（雅可比法），the Gauß-Seidel method（高斯一赛德尔迭代法） the successive over-relaxation method（连续的逐次超松弛法 SOR）, Krylov subspace methods（维子空间方法，比如共轭梯度，广义极小残差），biconjugate gradients（双共轭梯度）
+> Richardson method（理查德森外推法），the Jacobi method（雅可比法），the Gauß-Seidel method（高斯一赛德尔迭代法） the successive over-relaxation method（连续的逐次超松弛法 SOR）, Krylov subspace methods（维子空间方法，比如共轭梯度，广义极小残差），biconjugate gradients（双共轭梯度）
 
 假设 $x_*$ 是方程 $Ax = b$ 的一个解，这些迭代法的关键思想是设置如下**迭代公式**：
 \$$
@@ -698,9 +698,9 @@ x^{(k+1)} = Cx^{(k)} + d \tag{2.60}
 
 其中，$C$ 和 $d$ 适当选择，能够在每次迭代中减少残差 $||x^{(k+1)} - x_*||$，并且收敛于 $x_*$。我们将在第3.1节中引入范数 $|| \cdot ||$，它允许我们计算向量间的相似性。
 
- 简单总结：
-
- - 对于小规模线性方程组，高斯消元法是一种直观且有效的方法。
- - 对于大规模问题，迭代法（如Jacobi法、Gauss-Seidel法、Krylov子空间方法等）更为实用，因为它们通过逐步逼近解来减少计算量。
- - 伪逆法提供了一种求解最小二乘问题的方式，但由于计算复杂度和数值精度问题，通常不推荐直接使用。
- - 迭代法的核心是通过构造迭代公式逐步减小残差，最终收敛到真实解。
+> 简单总结：
+>
+> - 对于小规模线性方程组，高斯消元法是一种直观且有效的方法。
+> - 对于大规模问题，迭代法（如Jacobi法、Gauss-Seidel法、Krylov子空间方法等）更为实用，因为它们通过逐步逼近解来减少计算量。
+> - 伪逆法提供了一种求解最小二乘问题的方式，但由于计算复杂度和数值精度问题，通常不推荐直接使用。
+> - 迭代法的核心是通过构造迭代公式逐步减小残差，最终收敛到真实解。
