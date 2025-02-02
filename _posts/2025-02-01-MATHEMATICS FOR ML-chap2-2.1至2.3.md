@@ -268,7 +268,7 @@ $$
 $$ (A^{-1})^T = (A^T)^{-1} = A^{-T} $$。
 
 **备注（对称矩阵的和与积）**：对称矩阵 $$ A, B \in \mathbb{R}^{n \times n} $$ 的和总是对称的。然而，尽管它们的乘积总是定义的(可以计算的)，但通常情况下它们的积并不是对称的：
-\$$
+$$
 \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 0 & 0 \end{bmatrix}
 $$
 
