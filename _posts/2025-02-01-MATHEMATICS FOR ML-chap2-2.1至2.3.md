@@ -348,6 +348,7 @@ $$
 b = \begin{bmatrix} 42 \\ 8 \end{bmatrix} = 42 \begin{bmatrix} 1 \\ 0 \end{bmatrix} + 8 \begin{bmatrix} 0 \\ 1 \end{bmatrix} \
 $$
 因此，一个解是 $$\begin{bmatrix} 42 \\ 8 \\ 0 \\ 0 \end{bmatrix}$$。
+
 这个解被称为**特解（particular solution）**。然而，这并不是这个方程组唯一的解。为了捕捉所有解，我们需要通过矩阵的列来创造一个非平凡的 0，使用如下方式：添加 0 到特解中并不会改变解的特性。为此，我们用前两列表示第三列，以生成非常简单的 0：
 $$
 \begin{bmatrix} 8 \\ 2 \end{bmatrix} = 8 \begin{bmatrix} 1 \\ 0 \end{bmatrix} + 2 \begin{bmatrix} 0 \\ 1 \end{bmatrix}
