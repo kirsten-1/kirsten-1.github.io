@@ -10,7 +10,7 @@ tags:
 ---
 
 
-[numpy(1)_入门](https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/)：介绍numpy的安装和numpy较纯python语言的简洁和性能优越性。
+[numpy(1)入门](https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/)：介绍numpy的安装和numpy较纯python语言的简洁和性能优越性。
 
 这篇主要介绍numpy基础。涵盖以下内容：
 
@@ -56,7 +56,7 @@ NumPy中的`ndarray`是一个多维数组对象，该对象由两部分组成：
 
 首先需大致了解以下内容：
 
-1.在[numpy(1)_入门](https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/)中，已经知道如何使用arange函数创建数组。实际上，当时创建的数组只是包含一组数字的一维数组，而ndarray支持更高的维度。
+1.在[numpy(1)入门](https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/)中，已经知道如何使用arange函数创建数组。实际上，当时创建的数组只是包含一组数字的一维数组，而ndarray支持更高的维度。
 
 例如：
 
