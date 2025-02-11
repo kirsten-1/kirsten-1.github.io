@@ -13,7 +13,7 @@ tags:
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-已有图片`cat.jpg`
+已有图片`cat.jpg`，如下
 
 <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211143332537.png" alt="image-20250211143332537" style="zoom:50%;" />
 
