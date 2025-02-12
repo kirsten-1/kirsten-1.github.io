@@ -6,7 +6,7 @@ date: 2025-02-12
 author: "Hilda"
 header-img: "img/post-bg-2015.jpg"
 tags:
-- 人工智能AI基础,NumPy,2025
+- 人工智能AI基础
 ---
 
 
