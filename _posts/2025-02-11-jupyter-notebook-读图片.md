@@ -290,4 +290,40 @@ plt.imshow(cat_plt[::,::,::-1])
 <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211152005377.png" alt="image-20250211152005377" style="zoom:50%;" />
 
 
+# 4.skimage读取图片
+
+载入Lena图像，并使用灰度颜色表将其在子图中显示出来。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io
+
+# 从 URL 读取 Lena 图像
+image_url = 'https://www.eecs.qmul.ac.uk/~phao/IP/Images/Lena.bmp'
+image = io.imread(image_url)
+
+# 将图像转换为 np.float32
+image = image.astype(np.float32)
+
+# 创建子图
+plt.subplot(221)
+plt.title("Original Image")
+
+# 显示图像（灰度图）
+img = plt.imshow(image, cmap=plt.cm.gray)
+
+# 显示图像
+plt.show()
+
+```
+
+<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250214133352031.png" alt="image-20250214133352031" style="zoom:50%;" />
+
+
+
+
+
+
+
 
