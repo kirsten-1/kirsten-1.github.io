@@ -2,7 +2,7 @@
 layout: post
 title: "numpy(10)NumPy的扩展：SciPy"
 subtitle: "第 10 章 NumPy 的扩展：SciPy"
-date: 2025-02-12
+date: 2025-02-14
 author: "Hilda"
 header-img: "img/post-bg-2015.jpg"
 tags:
