@@ -130,3 +130,12 @@ display(df)
 ```
 
 <img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250228133048305.png" alt="image-20250228133048305" style="zoom:50%;" />
+
+shift(1) 是 Pandas Series 的一个方法，它将 Series 中的每个值向下移动一位。 换句话说，它将当前行的值替换为前一行的值。 第一个值由于没有前一行，会被替换为 NaN (Not a Number)，表示缺失值。
+
+# 注意
+
+- 传递给 transform() 的函数必须能够处理 Series 或 DataFrame 作为输入，并且返回相同长度的 Series 或 DataFrame。
+- 避免在 transform() 中使用循环，因为它会降低性能。尽量使用 Pandas 内置的函数或矢量化操作。
+
+理解矢量化思维是提高 Pandas 代码性能的关键。目标是将操作表达为可以一次性应用于整个数据结构的操作，而不是逐个元素地处理。
