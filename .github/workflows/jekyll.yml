@@ -32,13 +32,16 @@ jobs:
       - name: List _site directory contents
         run: ls -lR ./_site  # 调试步骤：列出目录内容
 
+      - name: Show current directory
+        run: pwd  # 调试步骤：显示当前目录
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: github-pages  # 关键：artifact 名称
+          name: jekyll-site-artifact  # 更明确的 artifact 名称
           path: ./_site
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
         with:
-          artifact_name: github-pages  # 关键：与 artifact 名称匹配，使用 artifact_name 参数
+          artifact_name: jekyll-site-artifact  # 关键：与 artifact 名称匹配，使用 artifact_name 参数
