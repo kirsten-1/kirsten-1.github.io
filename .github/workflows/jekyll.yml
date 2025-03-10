@@ -3,7 +3,7 @@ name: Build and Deploy Jekyll Site
 on:
   push:
     branches:
-      - main  # 你的默认分支
+      - main
 
 permissions:
   contents: write
@@ -20,7 +20,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'  # 与你的环境匹配
+          ruby-version: '3.3'
           bundler-cache: true
 
       - name: Install Dependencies
@@ -30,18 +30,7 @@ jobs:
         run: bundle exec jekyll build
 
       - name: List _site directory contents
-        run: ls -lR ./_site  # 调试步骤：列出目录内容
-
-      - name: Show current directory
-        run: pwd  # 调试步骤：显示当前目录
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: jekyll-site-artifact  # 更明确的 artifact 名称
-          path: ./_site
+        run: ls -lR ./_site  # 调试用，可选
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
-        with:
-          artifact_name: jekyll-site-artifact  # 关键：与 artifact 名称匹配，使用 artifact_name 参数
