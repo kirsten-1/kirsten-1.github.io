@@ -29,14 +29,13 @@ jobs:
       - name: Build Jekyll Site
         run: bundle exec jekyll build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4  # 或者更高版本
         with:
-          source: ./_site  # Jekyll 构建输出目录
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1  # 保留此 action，但确认版本是最新 (v1 当前最新)
+          name: github-pages
+          path: ./_site  # Jekyll 构建输出目录
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v2
+        with:
+          artifact: github-pages
