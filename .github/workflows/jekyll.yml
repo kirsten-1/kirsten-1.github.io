@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   build-and-deploy:
@@ -32,13 +30,8 @@ jobs:
       - name: List _site directory contents
         run: ls -lR ./_site  # 调试用，可选
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: jekyll-site-artifact
-          path: ./_site
-
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          artifact_name: jekyll-site-artifact  # 与上传的 artifact 名称匹配
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
