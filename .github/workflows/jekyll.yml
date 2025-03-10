@@ -1,0 +1,32 @@
+name: 构建并部署 Jekyll 站点到 GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # 你的默认分支，替换为实际分支（如 master）
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置 Ruby 环境
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'  # 使用 Ruby 3.3，与 GitHub Pages 接近
+          bundler-cache: true  # 缓存依赖以加快构建
+
+      - name: 安装依赖
+        run: bundle install
+
+      - name: 构建 Jekyll 站点
+        run: bundle exec jekyll build
+
+      - name: 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site  # 构建输出的文件夹
+          publish_branch: gh-pages  # 部署到的分支
