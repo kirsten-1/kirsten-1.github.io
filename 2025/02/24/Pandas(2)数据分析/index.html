@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="pandas(2)数据分析 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-02-24T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="人工智能AI基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/02/24/Pandas(2)%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>pandas(2)数据分析 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/02/24/Pandas(2)%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80" title="人工智能AI基础">人工智能AI基础</a>
+                        
+                    </div>
+                    <h1>pandas(2)数据分析</h1>
+                    
+                    <h2 class="subheading">pandas 第二部分：数据分析</h2>
+                    <span class="meta">Posted by Hilda on February 24, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>NumPy 博客总结：</p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/14/NumPy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97(%E7%AC%AC2%E7%89%88)%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93/">《Python数据分析基础教程：NumPy学习指南（第2版）》所有章节阅读笔记+代码</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/21/NumPy70%E9%A2%98/">70道NumPy 面试题(题目+答案)</a></p>
+
+<p>pandas博客总结：</p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/21/Pandas(1)%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/">pandas(1)数据预处理</a></p>
+
+<hr />
+
+<h1 id="数据分析处理库pandas2">数据分析处理库Pandas(2)</h1>
+
+<h2 id="2-数据分析">2 数据分析</h2>
+
+<p>在DataFrame中对数据进行计算跟Numpy差不多，例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span> 
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic_train.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df1</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># 查看前5条
+</span><span class="n">df1</span><span class="p">[</span><span class="sh">'</span><span class="s">Age</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="sh">'</span><span class="s">Age</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df1</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># 查看前5条
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223194600584.png" alt="image-20250223194600584" style="zoom:50%;" /></p>
+
+<h3 id="21-统计分析">2.1 统计分析</h3>
+
+<p>拿到特征之后可以分析的指标比较多，例如均值、最大值、最小值等均可以直接调用其属性获得。先用字典结构创建一个简单的DataFrame，既可以传入数据，也可以指定索引和列名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c1"># 创建一个DataFrame
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">],</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 默认每一列求和，相当于df.sum(axis = 0)
+</span><span class="n">df</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223195053219.png" alt="image-20250223195053219" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223195109896.png" alt="image-20250223195109896" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># 也可以指定维度求和
+</span><span class="n">df</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223195145984.png" alt="image-20250223195145984" style="zoom:50%;" /></p>
+
+<p>同理均值<code class="language-plaintext highlighter-rouge">df.mean()</code>、中位数<code class="language-plaintext highlighter-rouge">df.median()</code>、最大值<code class="language-plaintext highlighter-rouge">df.max()</code>、最小值<code class="language-plaintext highlighter-rouge">df.min()</code>等操作的计算方式都相同。这些基本的统计指标都可以一个个来分析，但是还有一个更方便的函数能观察所有样本的情况：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">describe</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223195231565.png" alt="image-20250223195231565" style="zoom:50%;" /></p>
+
+<p>上述输出展示了泰坦尼克号乘客信息中所有数值特征的统计结果，包括数据<strong>个数、均值、标准差、最大值、最小值</strong>等信息。这也是读取数据之后最常使用的统计方法。</p>
+
+<p>读取完数据之后使用describe()函数，既可以得到各项统计指标，也可以观察数据是否存在问题，例如年龄的最小值是否存在负数，数据是否存在缺失值等。实际处理的数据不一定完全正确，可能会存在各种问题。</p>
+
+<p>除了可以执行这些基本计算，还可以统计二元属性，例如协方差、相关系数等，这些都是数据分析中重要的指标：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 注：要从 DataFrame 中删除非数值列（否则无法计算协方差和相关系数）
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">number</span><span class="sh">'</span><span class="p">])</span>
+<span class="c1"># 协方差
+</span><span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">cov</span><span class="p">())</span>
+<span class="c1"># 相关系数
+</span><span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">corr</span><span class="p">())</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223200213847.png" alt="image-20250223200213847" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>原书此处没有<code class="language-plaintext highlighter-rouge">df = df.select_dtypes(include=['number'])</code>这行代码，会报错，因为 Titanic 数据集中包含无法转换为浮点数的字符串列，导致 <code class="language-plaintext highlighter-rouge">df.cov()</code> 和<code class="language-plaintext highlighter-rouge"> df.corr() </code>函数无法计算协方差和相关系数。 这些函数只能处理数值数据。</p>
+</blockquote>
+
+<p>如果还想统计某一列各个属性的比例情况，例如乘客中有多少男性、多少女性，这时候<code class="language-plaintext highlighter-rouge">value_counts()</code>函数就可以发挥作用了：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Sex</span><span class="sh">'</span><span class="p">].</span><span class="nf">value_counts</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223200424125.png" alt="image-20250223200424125" style="zoom:50%;" /></p>
+
+<p>按升序排列结果：也就是说，出现次数最少的性别将排在第一位，出现次数最多的性别将排在最后一位。 默认情况下，<code class="language-plaintext highlighter-rouge">ascending=False</code>，这意味着结果会按降序排列（出现次数最多的值排在第一位）。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Sex</span><span class="sh">'</span><span class="p">].</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223200449168.png" alt="image-20250223200449168" style="zoom:50%;" /></p>
+
+<p>但是<code class="language-plaintext highlighter-rouge">value_counts</code>不是很适合离散的：(例如年龄)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">].</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223202945576.png" alt="image-20250223202945576" style="zoom:50%;" /></p>
+
+<p>如果全部打印，结果实在太多，因为各种年龄的都有，这个时候也可以指定一些区间，例如<code class="language-plaintext highlighter-rouge">0~10</code>岁属于少儿组，<code class="language-plaintext highlighter-rouge">10~20</code>岁属于青年组，这就相当于将连续值进行了离散化： <code class="language-plaintext highlighter-rouge">bins=5</code>  会将年龄范围分割成 5 个大小相等的区间，并统计每个区间内的年龄数量。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">].</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223203144331.png" alt="image-20250223203144331" style="zoom:50%;" /></p>
+
+<p>把所有数据按年龄平均分成5组，这样看起来就舒服多了。求符合每组情况的数据各有多少，这些都是在实际数据处理过程中常用的技巧。</p>
+
+<p>在分箱操作中还可以使用<code class="language-plaintext highlighter-rouge">cut()</code>函数，功能更丰富一些。首先创建一个年龄数组，然后指定3个判断值，接下来就用这3个值把数据分组，也就是<code class="language-plaintext highlighter-rouge">(10,40],(40,80]</code>这两组，返回的结果分别表示当前年龄属于哪组。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">79</span><span class="p">]</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">80</span><span class="p">]</span>
+<span class="n">pd</span><span class="p">.</span><span class="nf">cut</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223203440926.png" alt="image-20250223203440926" style="zoom:50%;" /></p>
+
+<p>也可以打印其默认标签值：</p>
+
+<blockquote>
+  <p>注：原书此处已经运行报错了。在 Pandas 的早期版本中，<code class="language-plaintext highlighter-rouge">pd.cut() </code>返回的 Categorical 对象确实有一个 labels 属性，用于获取每个元素所属的箱子的标签（整数索引）。 但是，这个属性在较新的 Pandas 版本中已被弃用，并被 codes 属性取代。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">79</span><span class="p">]</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">80</span><span class="p">]</span>
+<span class="n">bins_res</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">cut</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+<span class="n">bins_res</span><span class="p">.</span><span class="n">codes</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223204414053.png" alt="image-20250223204414053" style="zoom:50%;" /></p>
+
+<p>统计各组总共人数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">bins_res</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223204512133.png" alt="image-20250223204512133" style="zoom:50%;" /></p>
+
+<p>也可以分成三组：年轻人，中年人，老年人</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">cut</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">80</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223204624377.png" alt="image-20250223204624377" style="zoom:50%;" /></p>
+
+<p>指定每组的标签：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">group_name</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Youth</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Mille</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Old</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">pd</span><span class="p">.</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nf">cut</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">80</span><span class="p">],</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">group_name</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223204851321.png" alt="image-20250223204851321" style="zoom:50%;" /></p>
+
+<p>机器学习中比拼的就是数据特征够不够好，将特征中连续值离散化可以说是常用的套路。</p>
+
+<h3 id="22-pivot数据透视表">2.2 pivot数据透视表</h3>
+
+<p>下面演示在数据统计分析中非常实用的pivot函数，熟悉的读者可能已经知道它是用来展示数据透视表操作的，说白了就是按照自己的方式来分析数据。</p>
+
+<p>先来创建一份比较有意思的数据，因为一会儿要统计一些指标，数据量要稍微多一点。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">example</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">Month</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">January</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">January</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">January</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">January</span><span class="sh">"</span><span class="p">,</span> 
+                                  <span class="sh">"</span><span class="s">February</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">February</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">February</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">February</span><span class="sh">"</span><span class="p">,</span> 
+                                  <span class="sh">"</span><span class="s">March</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">March</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">March</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">March</span><span class="sh">"</span><span class="p">],</span>
+                   <span class="sh">'</span><span class="s">Category</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">Transportation</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Grocery</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Household</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Entertainment</span><span class="sh">"</span><span class="p">,</span>
+                                <span class="sh">"</span><span class="s">Transportation</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Grocery</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Household</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Entertainment</span><span class="sh">"</span><span class="p">,</span>
+                                <span class="sh">"</span><span class="s">Transportation</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Grocery</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Household</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Entertainment</span><span class="sh">"</span><span class="p">],</span>
+                   <span class="sh">'</span><span class="s">Amount</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">74.</span><span class="p">,</span> <span class="mf">235.</span><span class="p">,</span> <span class="mf">175.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">115.</span><span class="p">,</span> <span class="mf">240.</span><span class="p">,</span> <span class="mf">225.</span><span class="p">,</span> <span class="mf">125.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">,</span> <span class="mf">260.</span><span class="p">,</span> <span class="mf">200.</span><span class="p">,</span> <span class="mf">120.</span><span class="p">]})</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223205116342.png" alt="image-20250223205116342" style="zoom:50%;" /></p>
+
+<p>其中Category表示把钱花在什么用途上（如交通运输、家庭、娱乐等费用），Month表示统计月份，Amount表示实际的花费。</p>
+
+<p>下面要统计的就是每个月花费在各项用途上的金额分别是多少：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">example_pivot</span> <span class="o">=</span> <span class="n">example</span><span class="p">.</span><span class="nf">pivot</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Category</span><span class="sh">"</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Month</span><span class="sh">"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="sh">"</span><span class="s">Amount</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">example_pivot</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223205325202.png" alt="image-20250223205325202" style="zoom:50%;" /></p>
+
+<p>这几个月中每项花费的总额：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">example_pivot</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223205430097.png" alt="image-20250223205430097" style="zoom:50%;" /></p>
+
+<p>每个月所有花费的总额：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">example_pivot</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223205453774.png" alt="image-20250223205453774" style="zoom:50%;" /></p>
+
+<p>上述操作中使用了3个参数，分别是index、columns和values，它们表示什么含义呢？直接解释其含义感觉有点生硬，还是通过例子来观察一下，现在回到泰坦尼克号数据集中，再用pivot函数感受一下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df_pivot</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">pivot_table</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Sex</span><span class="sh">"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="sh">"</span><span class="s">Pclass</span><span class="sh">"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="sh">"</span><span class="s">Fare</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_pivot</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>注：pivot_table() 函数允许指定一个聚合函数（例如 mean, sum, count）来处理重复的组合。用pivot进行上面的处理会报错。</p>
+</blockquote>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250223205911539.png" alt="image-20250223205911539" style="zoom:50%;" /></p>
+
+<p>其中Pclass表示船舱等级，Fare表示船票的价格。这里表示按乘客的性别分别统计各个舱位购票的平均价格。通俗的解释就是，index指定了按照什么属性来统计，columns指定了统计哪个指标，values指定了统计的实际指标值是什么。看起来各项参数都清晰明了，但是平均值从哪里来呢？平均值相当于是默认值，如果想指定最大值或者最小值，还需要额外设置一个计算参数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df_pivot</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">pivot_table</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Sex</span><span class="sh">"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="sh">"</span><span class="s">Pclass</span><span class="sh">"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="sh">"</span><span class="s">Fare</span><span class="sh">"</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="sh">'</span><span class="s">max</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_pivot</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224134003631.png" alt="image-20250224134003631" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>aggfunc 是 “aggregate function”（聚合函数）的缩写。pd.pivot_table 函数的 aggfunc 参数的默认值是 ‘mean’。</p>
+
+  <p>其他常见的 aggfunc 值包括：</p>
+
+  <ul>
+    <li>‘mean’：计算平均值。</li>
+    <li>‘sum’：计算总和。</li>
+    <li>‘min’：计算最小值。</li>
+    <li>‘count’：计算非空值的数量。</li>
+    <li>‘median’：计算中位数。</li>
+    <li>‘std’：计算标准差。</li>
+    <li>‘var’：计算方差。</li>
+  </ul>
+</blockquote>
+
+<p>这里得到的结果就是各个船舱的最大票价，需要额外指定aggfunc来明确结果的含义。如果想统计各个船舱等级的人数呢？</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df_pivot</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">pivot_table</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Sex</span><span class="sh">"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="sh">"</span><span class="s">Pclass</span><span class="sh">"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="sh">"</span><span class="s">Fare</span><span class="sh">"</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="sh">'</span><span class="s">count</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_pivot</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224134734061.png" alt="image-20250224134734061" style="zoom:50%;" /></p>
+
+<p>接下来做一个稍微复杂点的操作，首先按照年龄将乘客分成两组：成年人和未成年人。再对这两组乘客分别统计不同性别的人的平均获救可能性：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">underAged</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">18</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="sh">"</span><span class="s">underAged</span><span class="sh">"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="sh">"</span><span class="s">Sex</span><span class="sh">"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="sh">"</span><span class="s">Survived</span><span class="sh">"</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="sh">"</span><span class="s">mean</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224135008219.png" alt="image-20250224135008219" style="zoom:50%;" /></p>
+
+<p>看起来是比较麻烦的操作，但在Pandas中处理起来还是比较简单的。</p>
+
+<blockquote>
+  <p>学习过程中可能会遇到有点儿看不懂某些参数解释的情况，最好的方法就是实际试一试，从结果来理解也是不错的选择。</p>
+</blockquote>
+
+<h3 id="23-groupby操作">2.3 groupby操作</h3>
+
+<p>下面先通过一个小例子解释一下groupby操作的内容：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">],</span>
+                  <span class="sh">'</span><span class="s">data</span><span class="sh">'</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">]})</span>
+<span class="n">df</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224135222995.png" alt="image-20250224135222995" style="zoom:50%;" /></p>
+
+<p>此时如果想统计各个key中对应的data数值总和是多少，例如key为A时对应3条数据：0、5、10，总和就是15。按照正常的想法，需要把key中所有可能结果都遍历一遍，并且还要求各个key中的数据累加值：</p>
+
+<hr />
+
+<p>补充：我自己用<code class="language-plaintext highlighter-rouge">pivot_table</code>写了个方法：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">],</span>
+                  <span class="sh">'</span><span class="s">data</span><span class="sh">'</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">pivot_table</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="sh">"</span><span class="s">sum</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224135913514.png" alt="image-20250224135913514" style="zoom:50%;" /></p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">]:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">]</span><span class="o">==</span><span class="n">key</span><span class="p">].</span><span class="nf">sum</span><span class="p">())</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224140026550.png" alt="image-20250224140026550" style="zoom:50%;" /></p>
+
+<p>这种统计需求是很常见的，那么，有没有更简单的方法呢？这回就轮到groupby登场了：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">).</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224140104243.png" alt="image-20250224140104243" style="zoom:50%;" /></p>
+
+<p>是不是很轻松地就完成了上述任务？统计的结果是其累加值，当然，也可以换成均值等指标：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">).</span><span class="nf">aggregate</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224140203627.png" alt="image-20250224140203627" style="zoom:50%;" /></p>
+
+<p>上面代码也可以写成：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224140251651.png" alt="image-20250224140251651" style="zoom:50%;" /></p>
+
+<p>用<code class="language-plaintext highlighter-rouge">pivot_table</code>当然也可以：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="sh">"</span><span class="s">mean</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224141827261.png" alt="image-20250224141827261" style="zoom:50%;" /></p>
+
+<p>继续回到泰坦尼克号数据集中，下面要计算的是按照不同性别统计其年龄的平均值，所以要用groupby计算一下性别：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">'</span><span class="s">Sex</span><span class="sh">'</span><span class="p">)[</span><span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">].</span><span class="nf">mean</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224142031077.png" alt="image-20250224142031077" style="zoom:50%;" /></p>
+
+<p>结果显示乘客中所有女性的平均年龄是27.91，男性平均年龄是30.72，只需一行就完成了统计工作。<code class="language-plaintext highlighter-rouge">groupby()</code>函数中还有很多参数可以设置，再深入了解一下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span> <span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bar</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bar</span><span class="sh">'</span><span class="p">,</span>
+                           <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bar</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">],</span>
+                   <span class="sh">'</span><span class="s">B</span><span class="sh">'</span> <span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">one</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">one</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">two</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">three</span><span class="sh">'</span><span class="p">,</span>
+                          <span class="sh">'</span><span class="s">two</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">two</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">one</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">three</span><span class="sh">'</span><span class="p">],</span>
+                   <span class="sh">'</span><span class="s">C</span><span class="sh">'</span> <span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span>
+                   <span class="sh">'</span><span class="s">D</span><span class="sh">'</span> <span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">)})</span>
+<span class="n">df</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224142541748.png" alt="image-20250224142541748" style="zoom:50%;" /></p>
+
+<p>此时想观察groupby某一列后结果的数量，可以直接调用<code class="language-plaintext highlighter-rouge">count()</code>属性：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">grouped</span><span class="p">.</span><span class="nf">count</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224142709311.png" alt="image-20250224142709311" style="zoom:50%;" /></p>
+
+<p>结果中3和5分别对应了原始数据中样本的个数，可以亲自来数一数。这里不仅可以指定一个groupby 对象，指定多个也是没问题的：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">([</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">grouped</span><span class="p">.</span><span class="nf">count</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224142753623.png" alt="image-20250224142753623" style="zoom:50%;" /></p>
+
+<p>指定好操作对象之后，通常还需要设置一下计算或者统计的方法，比如求和操作：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">([</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">grouped</span><span class="p">.</span><span class="nf">aggregate</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224150944698.png" alt="image-20250224150944698" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>注：因为数据有随机生成的，所以统计结果不同也有可能。</p>
+</blockquote>
+
+<p>此处的索引就是按照传入参数的顺序来指定的，如果习惯用数值编号索引也是可以的，只需要加入<code class="language-plaintext highlighter-rouge">as_index</code>参数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">([</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">grouped</span><span class="p">.</span><span class="nf">aggregate</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224151430935.png" alt="image-20250224151430935" style="zoom:50%;" /></p>
+
+<p>groupby操作之后仍然可以使用describe()方法来展示所有统计信息，这里只展示前5条：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span><span class="p">.</span><span class="nf">describe</span><span class="p">().</span><span class="nf">head</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224151953906.png" alt="image-20250224151953906" style="zoom:50%;" /></p>
+
+<p>看起来统计信息有点多，当然也可以自己设置需要的统计指标：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">grouped</span><span class="p">[</span><span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">].</span><span class="nf">agg</span><span class="p">([</span><span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">std</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224153544701.png" alt="image-20250224153544701" style="zoom:50%;" /></p>
+
+<p>在groupby操作中还可以指定操作的索引（也就是level），还是通过小例子来观察一下：</p>
+
+<blockquote>
+  <p>注：在下面例子中，可以使用 MultiIndex 来表示不同类别（’bar’, ‘baz’, ‘foo’, ‘qux’）下的子类别（’one’, ‘two’）。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">arrays</span> <span class="o">=</span> <span class="p">[[</span><span class="sh">'</span><span class="s">bar</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bar</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">baz</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">baz</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">qux</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">qux</span><span class="sh">'</span><span class="p">],</span>
+          <span class="p">[</span><span class="sh">'</span><span class="s">one</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">two</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">one</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">two</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">one</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">two</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">one</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">two</span><span class="sh">'</span><span class="p">]]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">.</span><span class="nf">from_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">first</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">second</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">index</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224153955105.png" alt="image-20250224153955105" style="zoom:50%;" /></p>
+
+<ul>
+  <li>每个元素都是一个元组，包含了两层索引的值，例如 (‘bar’, ‘one’)。</li>
+  <li>names 属性表示每个索引层级的名称。</li>
+</ul>
+
+<p>这段代码创建了一个 Pandas MultiIndex，它是一个具有两层索引的结构。 第一层索引的名称是 “first”，取值为 ‘bar’, ‘baz’, ‘foo’, ‘qux’；第二层索引的名称是 “second”，取值为 ‘one’, ‘two’。 MultiIndex 可以方便地用于 Pandas DataFrame 或 Series 中，以处理具有层级结构的数据。</p>
+
+<p>这里设置了多重索引，并且分别指定了名字，光有索引还不够，还需要具体数值，接下来可以按照索引进行groupby操作：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+<span class="n">s</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224154231526.png" alt="image-20250224154231526" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">grouped</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224154322601.png" alt="image-20250224154322601" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">grouped</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224154348205.png" alt="image-20250224154348205" style="zoom:50%;" /></p>
+
+<p>通过level参数可以指定以哪项为索引进行计算。当level为0时，设置名为first的索引；当level为1时，设置名为second的索引。如果大家觉得指定一个数值不够直观，也可以直接用具体名字，结果相同：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">grouped</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="sh">"</span><span class="s">first</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">grouped</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250224154425288.png" alt="image-20250224154425288" style="zoom:50%;" /></p>
+
+<p><strong>groupby函数是统计分析中经常使用的函数，用法十分便捷，可以指定的参数也比较多，但是也非常容易出错，使用时一定先明确要得到的结果再去选择合适的参数。</strong></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/02/21/Pandas(1)%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" data-toggle="tooltip" data-placement="top" title="pandas(1)数据预处理">
+                        Previous<br>
+                        <span>pandas(1)数据预处理</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/02/24/pandas(3)%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E6%93%8D%E4%BD%9C/" data-toggle="tooltip" data-placement="top" title="pandas(3)常用函数操作">
+                        Next<br>
+                        <span>pandas(3)常用函数操作</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0034" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="3">力扣</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="2">算法</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="pandas(1)数据预处理 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-02-21T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="人工智能AI基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/02/21/Pandas(1)%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>pandas(1)数据预处理 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/02/21/Pandas(1)%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80" title="人工智能AI基础">人工智能AI基础</a>
+                        
+                    </div>
+                    <h1>pandas(1)数据预处理</h1>
+                    
+                    <h2 class="subheading">pandas 第一部分：数据预处理</h2>
+                    <span class="meta">Posted by Hilda on February 21, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>NumPy 博客总结：</p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/14/NumPy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97(%E7%AC%AC2%E7%89%88)%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93/">《Python数据分析基础教程：NumPy学习指南（第2版）》所有章节阅读笔记+代码</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/21/NumPy70%E9%A2%98/">70道NumPy 面试题(题目+答案)</a></p>
+
+<hr />
+
+<h1 id="数据分析处理库pandas">数据分析处理库Pandas</h1>
+
+<p>Pandas工具包是专门用作数据处理和分析的，其底层的计算其实都是由Numpy来完成，再把复杂的操作全部封装起来，使其用起来十分高效、简洁。在数据科学领域，无论哪个方向都是跟数据打交道，所以Pandas工具包是非常实用的。</p>
+
+<h2 id="1-数据预处理">1 数据预处理</h2>
+
+<p>导入pandas并查看版本：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">pd</span><span class="p">.</span><span class="n">__version__</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221160914419.png" alt="image-20250221160914419" style="zoom:50%;" /></p>
+
+<h3 id="11-数据读取">1.1 数据读取</h3>
+
+<p>打开一份真实数据集：泰坦尼克号乘客信息</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221161130447.png" alt="image-20250221161130447" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic_train.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">head</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221161304735.png" alt="image-20250221161304735" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">.csv</code>文件是以逗号为分隔符的。</p>
+
+  <p>还记得用NumPy读取数据的时候：</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">./titanic_train.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">),</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">,</span> <span class="n">skiprows</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span>
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+
+  <p>这个<code class="language-plaintext highlighter-rouge">delimiter</code>参数就是分隔符的指定。</p>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">read_csv()</code>函数可以设置的参数非常多，也可以自己定义分隔符，给每列数据指定名字</p>
+
+<p>如果想展示更多的数据，则可以在<code class="language-plaintext highlighter-rouge">head()</code>函数中指定数值，例如<code class="language-plaintext highlighter-rouge">df.head(10)</code>表示展示其中前10条数据:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221161729134.png" alt="image-20250221161729134" style="zoom:50%;" /></p>
+
+<p>也可以展示最后几条数据：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">tail</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221161752643.png" alt="image-20250221161752643" style="zoom:50%;" /></p>
+
+<h3 id="12-dataframe结构">1.2 DataFrame结构</h3>
+
+<p><strong>DataFrame</strong> 是 Pandas 库的核心数据结构，可以被认为是一个增强版的表格，类似于 Excel 电子表格或 SQL 数据表。</p>
+
+<ol>
+  <li>DataFrame的核心概念
+    <ol>
+      <li>DataFrame 以二维表格的形式存储数据，包含行和列。</li>
+      <li><strong>行索引 (Index):</strong> DataFrame 的每一行都有一个唯一的标签，称为行索引。 默认情况下，Pandas 会自动生成一个从 0 开始的整数索引。 也可以使用其他数据类型作为行索引，例如日期、字符串等。</li>
+      <li><strong>列标签 (Column Names):</strong> DataFrame 的每一列都有一个名称，称为列标签。 列标签通常是字符串，用于标识每一列的含义。</li>
+      <li>DataFrame 的每一列可以包含不同的数据类型，例如整数、浮点数、字符串、布尔值等。 这是与 NumPy 数组的主要区别之一，NumPy 数组要求所有元素具有相同的数据类型。</li>
+      <li>可以轻松地添加或删除 DataFrame 的行和列。</li>
+    </ol>
+  </li>
+  <li>DataFrame主要组成部分
+    <ol>
+      <li><strong>data:</strong> 实际存储的数据，可以是一个 NumPy 数组、Python 字典、列表或其他 DataFrame。</li>
+      <li><strong>index:</strong> 行索引，用于标识每一行。</li>
+      <li><strong>columns:</strong> 列标签，用于标识每一列。</li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<h4 id="补充dataframe的创建">补充：DataFrame的创建</h4>
+
+<p>有多种方法可以创建 DataFrame，以下是一些常用的方法：</p>
+
+<p>1.<strong>从 NumPy 数组创建:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">E</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">F</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221162535740.png" alt="image-20250221162535740" style="zoom:50%;" /></p>
+
+<p>如果不指定index和columns就是：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221162623508.png" alt="image-20250221162623508" style="zoom:50%;" /></p>
+
+<p>2.<strong>从 Python 字典创建:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">dic</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">"</span><span class="s">2</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">dic</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221162822968.png" alt="image-20250221162822968" style="zoom:50%;" /></p>
+
+<p>3.<strong>从列表创建:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="sh">'</span><span class="s">X</span><span class="sh">'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sh">'</span><span class="s">Y</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="sh">'</span><span class="s">X</span><span class="sh">'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="sh">'</span><span class="s">Y</span><span class="sh">'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="sh">'</span><span class="s">X</span><span class="sh">'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="sh">'</span><span class="s">Y</span><span class="sh">'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="sh">'</span><span class="s">Z</span><span class="sh">'</span><span class="p">:</span> <span class="mi">9</span><span class="p">}]</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221162951832.png" alt="image-20250221162951832" style="zoom:50%;" /></p>
+
+<p>4.<strong>从 CSV 文件创建:</strong>例如签名读取<code class="language-plaintext highlighter-rouge">./titanic_train.csv</code>的例子。</p>
+
+<hr />
+
+<h4 id="补充dataframe的常用操作">补充：DataFrame的常用操作</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+</pre></td><td class="rouge-code"><pre><span class="n">选择数据</span><span class="p">:</span>
+
+<span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">column_name</span><span class="sh">'</span><span class="p">]:</span> <span class="n">选择一列</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">[[</span><span class="sh">'</span><span class="s">column1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">column2</span><span class="sh">'</span><span class="p">]]:</span> <span class="n">选择多列</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">'</span><span class="s">row_index</span><span class="sh">'</span><span class="p">]:</span> <span class="n">选择一行</span> <span class="p">(</span><span class="n">基于行索引</span><span class="p">)</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">row_number</span><span class="p">]:</span> <span class="n">选择一行</span> <span class="p">(</span><span class="n">基于行号</span><span class="p">)</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">'</span><span class="s">row_index</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">column_name</span><span class="sh">'</span><span class="p">]:</span> <span class="n">选择单个单元格</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">row_number</span><span class="p">,</span> <span class="n">column_number</span><span class="p">]:</span> <span class="n">选择单个单元格</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">column_name</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">]:</span> <span class="n">使用条件选择行</span><span class="err">。</span><span class="o">----&gt;</span><span class="n">此处注意不是第十行</span><span class="err">，</span><span class="n">是指单元格中数值大于10的</span><span class="err">!!!</span>
+
+<span class="n">添加</span><span class="o">/</span><span class="n">删除列</span><span class="p">:</span>
+
+<span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">new_column</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]:</span> <span class="n">添加新列</span><span class="err">。</span>
+
+<span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">column_to_delete</span><span class="sh">'</span><span class="p">]:</span> <span class="n">删除列</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="sh">'</span><span class="s">column_to_delete</span><span class="sh">'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span> <span class="n">删除列</span><span class="err">（</span><span class="n">返回新</span> <span class="n">DataFrame</span><span class="err">，</span><span class="n">不修改原始</span> <span class="n">DataFrame</span><span class="err">）。</span>
+
+<span class="n">添加</span><span class="o">/</span><span class="n">删除行</span><span class="p">:</span>
+
+<span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">'</span><span class="s">new_row</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]:</span> <span class="n">添加新行</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="sh">'</span><span class="s">row_to_delete</span><span class="sh">'</span><span class="p">):</span> <span class="n">删除行</span><span class="err">。</span>
+
+<span class="n">数据清洗和转换</span><span class="p">:</span>
+
+<span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">value</span><span class="p">):</span> <span class="n">填充缺失值</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">.</span><span class="nf">dropna</span><span class="p">():</span> <span class="n">删除包含缺失值的行</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">column</span><span class="sh">'</span><span class="p">].</span><span class="nf">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">):</span> <span class="n">改变列的数据类型</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">column</span><span class="sh">'</span><span class="p">].</span><span class="nf">apply</span><span class="p">(</span><span class="n">function</span><span class="p">):</span> <span class="n">对列中的每个元素应用一个函数</span><span class="err">。</span>
+
+<span class="n">分组和聚合</span><span class="p">:</span>
+
+<span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">'</span><span class="s">column</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">():</span> <span class="n">按列分组</span><span class="err">，</span><span class="n">并计算每组的平均值</span><span class="err">。</span>
+
+<span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">'</span><span class="s">column</span><span class="sh">'</span><span class="p">).</span><span class="nf">agg</span><span class="p">([</span><span class="sh">'</span><span class="s">sum</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">mean</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">count</span><span class="sh">'</span><span class="p">]):</span> <span class="n">按列分组</span><span class="err">，</span><span class="n">并计算每组的总和</span><span class="err">、</span><span class="n">平均值和计数</span><span class="err">。</span>
+
+<span class="n">排序</span><span class="p">:</span>
+
+<span class="n">df</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="sh">'</span><span class="s">column</span><span class="sh">'</span><span class="p">):</span> <span class="n">按列排序</span><span class="err">。</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221164316101.png" alt="image-20250221164316101" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="sh">"</span><span class="s">Ticket</span><span class="sh">"</span> <span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221164331434.png" alt="image-20250221164331434" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Fare</span><span class="sh">"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221164345983.png" alt="image-20250221164345983" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># 添加/删除行
+</span><span class="n">df1</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">892</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="sh">"</span><span class="s">Harisson test</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">male</span><span class="sh">"</span><span class="p">,</span> <span class="mf">22.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="sh">"</span><span class="s">A/S 21189</span><span class="sh">"</span><span class="p">,</span> <span class="mf">9.80</span><span class="p">,</span> <span class="sh">"</span><span class="s">NaN</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">S</span><span class="sh">"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221164202179.png" alt="image-20250221164202179" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df1</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="mi">892</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221164242545.png" alt="image-20250221164242545" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># del df['column_to_delete']: 删除列。
+</span><span class="k">del</span> <span class="n">df1</span><span class="p">[</span><span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">df1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221164440101.png" alt="image-20250221164440101" style="zoom:50%;" /></p>
+
+<p>数据清洗和转换:</p>
+
+<p><code class="language-plaintext highlighter-rouge">df.fillna(value) </code>函数用于填充 DataFrame 中的缺失值（NaN, Not a Number）。 这是一个非常常用的数据清洗操作。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></td><td class="rouge-code"><pre><span class="c1"># df.fillna(value): 填充缺失值。
+# 创建一个包含缺失值的 DataFrame
+</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">col1</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="sh">'</span><span class="s">col2</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">],</span>
+        <span class="sh">'</span><span class="s">col3</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="bp">False</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 1. 使用标量值填充
+</span><span class="n">df_filled_zero</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">使用 0 填充:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">df_filled_zero</span><span class="p">)</span>
+
+<span class="c1"># 2. 使用不同的值填充不同的列
+</span><span class="n">df_filled_dict</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">({</span><span class="sh">'</span><span class="s">col1</span><span class="sh">'</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="sh">'</span><span class="s">col2</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Unknown</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">col3</span><span class="sh">'</span><span class="p">:</span> <span class="bp">False</span><span class="p">})</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">使用字典填充:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">df_filled_dict</span><span class="p">)</span>
+
+<span class="c1"># 3. 使用前一个值填充 (向前填充)
+</span><span class="n">df_ffill</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="sh">'</span><span class="s">ffill</span><span class="sh">'</span><span class="p">)</span>  <span class="c1"># 前一个没有值，那么还是NaN
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">向前填充 (ffill):</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">df_ffill</span><span class="p">)</span>
+
+<span class="c1"># 4. 使用后一个值填充 (向后填充)
+</span><span class="n">df_bfill</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="sh">'</span><span class="s">bfill</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">向后填充 (bfill):</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">df_bfill</span><span class="p">)</span>
+
+<span class="c1"># 5. 按行填充
+</span><span class="n">df_row_fill</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="sh">'</span><span class="s">ffill</span><span class="sh">'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 使用同一行前一个值填充
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">按行填充:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">df_row_fill</span><span class="p">)</span>
+
+<span class="c1"># 6. 限制填充的数量
+</span><span class="n">df_limited</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># 每列最多填充一个缺失值
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">限制填充数量 (limit=1):</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">df_limited</span><span class="p">)</span>
+
+<span class="c1"># 7. 修改原始 DataFrame
+</span><span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># 直接修改 df
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">修改后的原始 DataFrame (inplace=True):</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221165019191.png" alt="image-20250221165019191" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>回答这个<code class="language-plaintext highlighter-rouge">./titanic_train.csv</code>数据集，查看这个csv的信息：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">info</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221165253769.png" alt="image-20250221165253769" style="zoom:50%;" /></p>
+
+<p>首先打印出来的是<code class="language-plaintext highlighter-rouge">pandas.core.frame.DataFrame</code>，表示当前得到结果的格式是DataFrame，看起来比较难以理解，暂且把它当作是一个二维矩阵结构就好，其中，行表示数据样本，列表示每一个特征指标。</p>
+
+<p><code class="language-plaintext highlighter-rouge">df.info()</code>函数用于打印当前读取数据的部分信息，包括数据样本规模、每列特征类型与个数、整体的内存占用等。</p>
+
+<blockquote>
+  <p>注：通常读取数据之后都习惯用<code class="language-plaintext highlighter-rouge">.info()</code>看一看其基本信息，以对数据有一个整体印象。</p>
+</blockquote>
+
+<p>DataFrame能调用的属性还有很多，下面列举几种</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">index</span>  <span class="c1"># 查看索引
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221165506154.png" alt="image-20250221165506154" style="zoom:50%;" /></p>
+
+<p>拿到每一列的名字：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">columns</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221165542406.png" alt="image-20250221165542406" style="zoom:50%;" /></p>
+
+<p>每一列的类型：object表示的是Python的字符串</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">dtypes</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221165629280.png" alt="image-20250221165629280" style="zoom:50%;" /></p>
+
+<p>直接取得数值矩阵：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">values</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221165709081.png" alt="image-20250221165709081" style="zoom:50%;" /></p>
+
+<h3 id="13-数据索引">1.3 数据索引</h3>
+
+<p>在数据分析过程中，如果想取其中某一列指标，该怎么办呢？以前可能会用到列索引，现在更方便了——指定名字即可：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">age</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">age</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221165908166.png" alt="image-20250221165908166" style="zoom:50%;" /></p>
+
+<p>在DataFrame中可以直接选择数据的列名，但是什么时候指定列名呢？在读取数据时，<code class="language-plaintext highlighter-rouge">read_csv()</code>函数会默认把读取数据中的第一行当作列名，打开csv文件观察一下。</p>
+
+<p>如果想对其中的数值进行操作，则可以把其结果单独拿出来：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">age</span><span class="p">)</span>
+<span class="n">age</span><span class="p">.</span><span class="n">values</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221170014017.png" alt="image-20250221170014017" style="zoom:50%;" /></p>
+
+<p>这个结果跟Numpy很像啊，原因很简单，就是<strong>Pandas中很多计算和处理的底层操作都是由Numpy来完成的</strong>。</p>
+
+<p>读取完数据之后，最左侧会加入一列数字，这些在原始数据中是没有的，相当于给样本加上索引了，如图所示。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221170056055.png" alt="image-20250221170056055" style="zoom:50%;" /></p>
+
+<p>默认情况下都是用数字来作为索引，但是这份数据中已经有乘客的姓名信息，可以将姓名设置为索引，也可以自己设置其他索引。</p>
+
+<p>设置索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">set_index</span><span class="p">(</span><span class="sh">"</span><span class="s">PassengerId</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221170143258.png" alt="image-20250221170143258" style="zoom:50%;" /></p>
+
+<p>特别注意一个坑：<code class="language-plaintext highlighter-rouge">df.set_index("Name") </code>操作并没有直接修改原始 DataFrame df，除非你设置了<code class="language-plaintext highlighter-rouge"> inplace=True</code>。 Pandas 中的许多操作，包括 <code class="language-plaintext highlighter-rouge">set_index</code>，默认返回一个新的 DataFrame，而不是修改原始的 DataFrame。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">set_index</span><span class="p">(</span><span class="sh">"</span><span class="s">Name</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221170819000.png" alt="image-20250221170819000" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221170831229.png" alt="image-20250221170831229" style="zoom:50%;" /></p>
+
+<p>此时索引就变成每一个乘客的姓名（上述输出结果只截取了部分指标）。如果想得到某个乘客的特征信息，可以直接通过姓名来查找，是不是方便很多？</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">age</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">age</span><span class="p">[</span><span class="sh">'</span><span class="s">Allen, Mr. William Henry</span><span class="sh">'</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221170854359.png" alt="image-20250221170854359" style="zoom:50%;" /></p>
+
+<p>如果要通过索引来取某一部分具体数据，最直接的方法就是告诉它取哪列的哪些数据：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[[</span><span class="sh">'</span><span class="s">Age</span><span class="sh">'</span><span class="p">,</span> <span class="sh">"</span><span class="s">Fare</span><span class="sh">"</span><span class="p">]][:</span><span class="mi">5</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221170955318.png" alt="image-20250221170955318" style="zoom:50%;" /></p>
+
+<p>Pandas在索引中还有两个特别的函数用来帮忙找数据，简单概述一下。</p>
+
+<p>（1）<code class="language-plaintext highlighter-rouge">.iloc()</code>：用位置找数据。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># 拿到第一个数据，索引从0开始的
+</span><span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>注意是<code class="language-plaintext highlighter-rouge">[]</code>，而不是<code class="language-plaintext highlighter-rouge">()</code></p>
+</blockquote>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221171133129.png" alt="image-20250221171133129" style="zoom:50%;" /></p>
+
+<p>使用切片拿一部分数据：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221171218230.png" alt="image-20250221171218230" style="zoom:50%;" /></p>
+
+<p>不仅可以指定样本，还可以指定特征：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>   <span class="c1"># 不仅仅指定哪几行，而且指定哪几列，第 0 行到第 4 行（包括第 0 行和第 4 行），第 0 列到第 2 列（包括第 0 列和第 2 列）
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221171359987.png" alt="image-20250221171359987" style="zoom:50%;" /></p>
+
+<p>以上就是<code class="language-plaintext highlighter-rouge">iloc()</code>用具体位置来取数的基本方法。
+（2）<code class="language-plaintext highlighter-rouge">.loc()</code>：用标签找数据。如果使用<code class="language-plaintext highlighter-rouge">loc()</code>操作，还可以玩得更个性一些：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">"</span><span class="s">Allen, Mr. William Henry</span><span class="sh">"</span><span class="p">]</span> <span class="c1"># 直接通过名字标签来取数据
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221171631194.png" alt="image-20250221171631194" style="zoom:50%;" /></p>
+
+<p>取数据的某一列信息：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># 取数据的某一列信息：
+</span><span class="nf">print</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">"</span><span class="s">Allen, Mr. William Henry</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Fare</span><span class="sh">"</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221171738467.png" alt="image-20250221171738467" style="zoom:50%;" /></p>
+
+<p>也可以选择多个样本，多个特征：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">'</span><span class="s">Heikkinen, Miss. Laina</span><span class="sh">'</span><span class="p">:</span><span class="sh">'</span><span class="s">Allen, Mr. William Henry</span><span class="sh">'</span><span class="p">,</span> <span class="p">:]</span> <span class="c1"># 最后这个“：”表示所有特征
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221171911602.png" alt="image-20250221171911602" style="zoom:50%;" /></p>
+
+<p>如果要对数据进行赋值，操作也是一样的，找到它然后赋值即可：</p>
+
+<p>例如，将Heikkinen, Miss. Laina的Fare设置为1000:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">'</span><span class="s">Heikkinen, Miss. Laina</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">Fare</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">'</span><span class="s">Heikkinen, Miss. Laina</span><span class="sh">'</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221172032723.png" alt="image-20250221172032723" style="zoom:50%;" /></p>
+
+<p>在Pandas中bool类型同样可以当作索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Fare</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">50</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221172122263.png" alt="image-20250221172122263" style="zoom:50%;" /></p>
+
+<p>再例如：展示前5条：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Fare</span><span class="sh">"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221172221432.png" alt="image-20250221172221432" style="zoom:50%;" /></p>
+
+<p>选择性别是男性的，但是只展示前5条：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Sex</span><span class="sh">'</span><span class="p">]</span><span class="o">==</span><span class="sh">"</span><span class="s">male</span><span class="sh">"</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221172335707.png" alt="image-20250221172335707" style="zoom:50%;" /></p>
+
+<p>计算所有男乘客的平均年龄：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Sex</span><span class="sh">'</span><span class="p">]</span><span class="o">==</span><span class="sh">'</span><span class="s">male</span><span class="sh">'</span><span class="p">,</span><span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">].</span><span class="nf">mean</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221172520049.png" alt="image-20250221172520049" style="zoom:50%;" /></p>
+
+<p>大于70岁的乘客有多少人：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Age</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">70</span><span class="p">).</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221172644061.png" alt="image-20250221172644061" style="zoom:50%;" /></p>
+
+<p>可以看到在数据分析中使用bool类型索引还是非常方便的，上述列举的几种方法也是Pandas中最常使用的。</p>
+
+<h3 id="14-创建dataframe">1.4 创建DataFrame</h3>
+
+<p>DataFrame是通过读取数据得到的，如果想展示某些信息，也可以自己创建。例如下面这样的：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221172747028.png" alt="image-20250221172747028" style="zoom:50%;" /></p>
+
+<p>通过下面代码创建：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">country</span><span class="sh">'</span><span class="p">:[</span><span class="sh">"</span><span class="s">China</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">America</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">India</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">population</span><span class="sh">"</span><span class="p">:[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221172934498.png" alt="image-20250221172934498" style="zoom:50%;" /></p>
+
+<p>最简单的方法就是创建一个字典结构，其中key表示特征名字，value表示各个样本的实际值，然后通过<code class="language-plaintext highlighter-rouge">pd.DataFrame()</code>函数来创建。
+在使用Notebook执行代码的时候，肯定发现了一件事，如果数据量过多，读取的数据不会全部显示，而是会隐藏部分数据，这时可以通过设置参数来控制显示结果(函数<code class="language-plaintext highlighter-rouge">pd.set_option()</code>)。如果想详细了解各种设置方法，可以查阅其文档，里面有详细的解释。</p>
+
+<blockquote>
+  <p>千万不要硬背这些函数，它们只是工具，用的时候再查完全来得及。</p>
+</blockquote>
+
+<p>下面总结4个常用的：</p>
+
+<p>1.显示所有的行：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">set_option</span><span class="p">(</span><span class="sh">'</span><span class="s">display.max_rows</span><span class="sh">'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注：也可以获得当前的<code class="language-plaintext highlighter-rouge">display.max_rows</code>参数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">get_option</span><span class="p">(</span><span class="sh">'</span><span class="s">display.max_rows</span><span class="sh">'</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>再看一个例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">set_option</span><span class="p">(</span><span class="sh">'</span><span class="s">display.max_rows</span><span class="sh">'</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>  <span class="c1"># 最大显示行数设置为6
+</span><span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221213436183.png" alt="image-20250221213436183" style="zoom:50%;" /></p>
+
+<p>2.显示所有的列：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">set_option</span><span class="p">(</span><span class="sh">'</span><span class="s">display.max_columns</span><span class="sh">'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>3.显示列中单独元素的最大长度</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">set_option</span><span class="p">(</span><span class="sh">'</span><span class="s">max_colwidth</span><span class="sh">'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>4.换行显示、每行最大显示宽度</p>
+
+<p>这个操作，需要几行代码配合操作。其中：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pd.set_option(‘expand_frame_repr’,True)</code>：True表示列可以换行显示。设置成False的时候不允许换行显示；</li>
+  <li><code class="language-plaintext highlighter-rouge">pd.set_option(‘display.max_columns’, None)</code>：显示所有列；</li>
+  <li><code class="language-plaintext highlighter-rouge">pd.set_option(‘display.width’, 80)</code>：横向最多显示多少个字符；</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">set_option</span><span class="p">(</span><span class="sh">'</span><span class="s">expand_frame_repr</span><span class="sh">'</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">pd</span><span class="p">.</span><span class="nf">set_option</span><span class="p">(</span><span class="sh">'</span><span class="s">display.max_columns</span><span class="sh">'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="n">pd</span><span class="p">.</span><span class="nf">set_option</span><span class="p">(</span><span class="sh">'</span><span class="s">display.width</span><span class="sh">'</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="nf">range</span><span class="p">(</span><span class="mi">30</span><span class="p">)))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221213023442.png" alt="image-20250221213023442" style="zoom:50%;" /></p>
+
+<p>注：可能是jupyter notebook显示输出的特殊性，上述代码，如果将这个print()函数去掉，直接使用df显示输出，你会发现，换行显示没用。但是在Pycharm中，就不用担心这个问题了，因为必须<code class="language-plaintext highlighter-rouge">print()</code>输出。</p>
+
+<hr />
+
+<h3 id="15-series操作">1.5 Series操作</h3>
+
+<p><code class="language-plaintext highlighter-rouge">pd.Series </code>是 Pandas 库中的一个核心数据结构，它是一个<strong>带标签的一维数组</strong>。 你可以把它想象成一个只有一列的 Excel 表格，或者是一个 NumPy 数组加上一个索引。 它是 DataFrame 的基本组成部分，DataFrame 可以看作是由多个 Series 组成的。</p>
+
+<blockquote>
+  <p>简单来说，读取的数据都是二维的，也就是DataFrame；如果在数据中单独取某列数据，那就是Series格式了，相当于DataFrame是由Series组合起来得到的，因而更高级一些。</p>
+</blockquote>
+
+<h4 id="补充series-的关键特性">补充：<strong>Series 的关键特性</strong></h4>
+
+<ul>
+  <li><strong>数据 (Data):</strong> Series 存储实际的数据，可以是任何 NumPy 支持的数据类型 (整数、浮点数、字符串、布尔值等)。 <strong>所有的元素必须是相同的数据类型</strong>。</li>
+  <li><strong>索引 (Index):</strong> Series 拥有一个索引，用于标识每个数据元素。 索引可以是：
+    <ul>
+      <li>整数 (默认): Pandas 会自动创建一个从 0 开始的整数索引。</li>
+      <li>字符串: 可以使用字符串作为索引，例如日期、名称等。</li>
+      <li>日期时间: 可以使用日期时间作为索引，用于时间序列分析。</li>
+      <li>其他任何可哈希的对象。</li>
+    </ul>
+  </li>
+  <li><strong>带标签的一维数组:</strong> 数据和索引共同构成了 Series 的结构。 通过索引，可以方便地访问和操作 Series 中的数据。</li>
+</ul>
+
+<h4 id="补充创建-series">补充：<strong>创建 Series</strong></h4>
+
+<p>有多种方法可以创建 Series，以下是一些常用的方法：</p>
+
+<p>1.NumPy数组创建：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221213856618.png" alt="image-20250221213856618" style="zoom:50%;" /></p>
+
+<p>2.从python列表创建：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span>
+<span class="n">s</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214002997.png" alt="image-20250221214002997" style="zoom:50%;" /></p>
+
+<p>3.从字典创建：字典的键变成了 Series 的索引。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> <span class="sh">'</span><span class="s">E</span><span class="sh">'</span><span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">s</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214054828.png" alt="image-20250221214054828" style="zoom:50%;" /></p>
+
+<p>4.指定索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">E</span><span class="sh">'</span><span class="p">]</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">)</span>
+<span class="n">s</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214152976.png" alt="image-20250221214152976" style="zoom:50%;" /></p>
+
+<h4 id="补充series-的常用操作">补充：<strong>Series 的常用操作</strong></h4>
+
+<ul>
+  <li>
+    <p><strong>访问数据：</strong></p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">s[0]</code>: 通过整数位置访问 (与 NumPy 数组类似)。</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li>
+            <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214320948.png" alt="image-20250221214320948" style="zoom:50%;" /></p>
+          </li>
+          <li>上面有个警告：<code class="language-plaintext highlighter-rouge">s[0] </code>访问 Series 元素的方式 在未来的 Pandas 版本中可能会改变行为;建议使用<code class="language-plaintext highlighter-rouge"> s.iloc[pos] </code>来通过整数位置访问 Series 元素。</li>
+        </ul>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">s['A']</code>: 通过索引标签访问。</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214500242.png" alt="image-20250221214500242" style="zoom:50%;" /></li>
+        </ul>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">s[1:3]</code>: 切片 (基于整数位置)。</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214543321.png" alt="image-20250221214543321" style="zoom:50%;" /></li>
+        </ul>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">s['B':'D']</code>: 切片 (基于索引标签，包含结束标签)。</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">:</span><span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214619887.png" alt="image-20250221214619887" style="zoom:50%;" /></li>
+        </ul>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">s[[0, 2, 4]]</code>: 使用整数位置列表选择多个元素。</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214700358.png" alt="image-20250221214700358" style="zoom:50%;" /></li>
+        </ul>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">s[['A', 'C', 'E']]</code>: 使用索引标签列表选择多个元素。</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">E</span><span class="sh">'</span><span class="p">]]</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214731037.png" alt="image-20250221214731037" style="zoom:50%;" /></li>
+        </ul>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">s[s &gt; 30]</code>: 使用布尔 Series 进行条件选择。</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221214804188.png" alt="image-20250221214804188" style="zoom:50%;" /></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>属性：</strong></p>
+
+    <ul>
+      <li>
+        <p>s.index: 获取索引。</p>
+      </li>
+      <li>
+        <p>s.values: 获取数据 (NumPy 数组形式)。</p>
+      </li>
+      <li>
+        <p>s.dtype: 获取数据类型。</p>
+      </li>
+      <li>
+        <p>s.size: 获取 Series 的大小 (元素数量)。</p>
+      </li>
+      <li>
+        <p>s.name: 获取或设置 Series 的名称。</p>
+      </li>
+      <li>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>  <span class="nf">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">index</span><span class="p">)</span>
+  <span class="nf">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
+  <span class="nf">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">dtype</span><span class="p">)</span>
+  <span class="nf">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">)</span>
+  <span class="nf">print</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+  <span class="n">s</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="sh">"</span><span class="s">test</span><span class="sh">"</span>
+  <span class="n">s</span><span class="p">.</span><span class="n">name</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221220917836.png" alt="image-20250221220917836" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>方法：</strong></p>
+
+    <ul>
+      <li>s.head(n): 返回前 n 行。</li>
+      <li>s.tail(n): 返回后 n 行。</li>
+      <li>s.describe(): 生成描述性统计信息 (均值、标准差、最小值、最大值等)。</li>
+      <li>s.value_counts(): 统计每个值的出现次数。</li>
+      <li>s.sort_values(): 按值排序。</li>
+      <li>s.sort_index(): 按索引排序。</li>
+      <li>s.apply(function): 对每个元素应用一个函数。</li>
+      <li>s.map(dict_or_series): 使用字典或 Series 进行元素替换。</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">E</span><span class="sh">'</span><span class="p">]</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="c1"># - s.head(n): 返回前 n 行。
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">s.head(3)</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="c1"># - s.tail(n): 返回后 n 行。
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">s.tail(3)</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="nf">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="c1"># - s.describe(): 生成描述性统计信息 (均值、标准差、最小值、最大值等)。
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">s.describe()</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="nf">describe</span><span class="p">())</span>
+<span class="c1"># - s.value_counts(): 统计每个值的出现次数。
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">统计30出现的次数</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="nf">value_counts</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+<span class="c1"># - s.sort_values(): 按值排序。
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">按值排序:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">())</span>
+<span class="c1"># - s.sort_index(): 按索引排序。
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">按索引排序：</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">())</span>
+<span class="c1"># - s.apply(function): 对每个元素应用一个函数。
+</span><span class="n">s_squared</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">对s平方:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">s_squared</span><span class="p">)</span>
+<span class="c1"># - s.map(dict_or_series): 使用字典或 Series 进行元素替换。
+# 创建一个 Series
+</span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">apple</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">banana</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">cherry</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">apple</span><span class="sh">'</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">原始 Series:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="c1"># 创建一个映射字典
+</span><span class="n">fruit_to_color</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">apple</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">banana</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">yellow</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">cherry</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">}</span>
+<span class="c1"># 使用 map 函数进行映射
+</span><span class="n">s_mapped</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="n">fruit_to_color</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">映射后的 Series:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">s_mapped</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221221904651.png" alt="image-20250221221904651" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221221916131.png" alt="image-20250221221916131" style="zoom:50%;" /></p>
+
+<hr />
+
+<p><strong>Series 的用途：</strong></p>
+
+<ul>
+  <li><strong>DataFrame 的列：</strong> DataFrame 的每一列都是一个 Series。</li>
+  <li><strong>时间序列数据：</strong> 可以使用日期时间作为索引来表示时间序列数据。</li>
+  <li><strong>统计分析：</strong> 用于存储和分析一维数据。</li>
+  <li><strong>数据清洗：</strong> 用于转换和清理数据。</li>
+</ul>
+
+<hr />
+
+<p>回到书上：</p>
+
+<p>创建Series的方法也很简单：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221222036772.png" alt="image-20250221222036772" style="zoom:50%;" /></p>
+
+<p>上面这个Series的创建是：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">c</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221222203829.png" alt="image-20250221222203829" style="zoom:50%;" /></p>
+
+<p>其索引操作（查操作）也是完全相同的：(例如要得到上面s的11)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">s</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221222316584.png" alt="image-20250221222316584" style="zoom:50%;" /></p>
+
+<p>再来看看改操作：(将10改成100)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">s1</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+<span class="n">s1</span><span class="p">[</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221222406863.png" alt="image-20250221222406863" style="zoom:50%;" /></p>
+
+<p>也可以使用<code class="language-plaintext highlighter-rouge">replace()</code>函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">s1</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">188</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221222511420.png" alt="image-20250221222511420" style="zoom:50%;" /></p>
+
+<p>注意，<code class="language-plaintext highlighter-rouge">replace()</code>函数的参数中多了一项inplace，也可以试试将其设置为False，看看结果会怎样。之前也强调过，如果设置<code class="language-plaintext highlighter-rouge">inplace=False</code>，就是不将结果赋值给变量，只相当于打印操作；如果设置<code class="language-plaintext highlighter-rouge">inplace=True</code>，就是直接在数据中执行实际变换，而不仅是打印操作。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">s1</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">199</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221222623032.png" alt="image-20250221222623032" style="zoom:50%;" /></p>
+
+<p>不仅可以改数值，还可以改索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">s1</span><span class="p">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">X</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Y</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Z</span><span class="sh">"</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">index</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221222712274.png" alt="image-20250221222712274" style="zoom:50%;" /></p>
+
+<p>可以看到索引发生了改变，但是这种方法是按顺序来的，在实际数据中总不能一个个写出来吧？还可以用rename()函数，这样变换就清晰多了。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">s1</span><span class="p">.</span><span class="nf">rename</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">{</span><span class="sh">'</span><span class="s">X</span><span class="sh">'</span><span class="p">:</span><span class="sh">"</span><span class="s">uu</span><span class="sh">"</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">s1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221222847188.png" alt="image-20250221222847188" style="zoom:50%;" /></p>
+
+<p>接下来就是增操作了：</p>
+
+<blockquote>
+  <p>注：在 Pandas 的早期版本中，Series 对象确实有 append 方法，但它已被弃用，并在 Pandas 2.0 版本中被移除。</p>
+
+  <p>所以原书的<code class="language-plaintext highlighter-rouge">append</code>方法已经不可行了。</p>
+</blockquote>
+
+<p><strong>解决办法：使用</strong> <strong>pd.concat</strong> <strong>函数</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">80</span><span class="p">]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">P</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Q</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">)</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">concat</span><span class="p">([</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">])</span>
+<span class="n">s3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221223201387.png" alt="image-20250221223201387" style="zoom:50%;" /></p>
+
+<p>增操作既可以把之前的数据增加进来，也可以增加新创建的数据。但是感觉增加完数据之后，索引有点怪怪的，既然数据重新组合到一起了，也应该把索引重新制作一下，可以在concat函数中指定<code class="language-plaintext highlighter-rouge">ignore_index=True</code>参数来重新设置索引，结果如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">s4</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">concat</span><span class="p">([</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">s4</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221223355138.png" alt="image-20250221223355138" style="zoom:50%;" /></p>
+
+<p>最后还剩下删操作，最简单的方法是直接del选中数据的索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">del</span> <span class="n">s3</span><span class="p">[</span><span class="sh">"</span><span class="s">P</span><span class="sh">"</span><span class="p">]</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s3</span><span class="p">)</span>
+<span class="n">s3</span><span class="p">.</span><span class="nf">drop</span><span class="p">([</span><span class="sh">'</span><span class="s">uu</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Y</span><span class="sh">'</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s3</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250221223605512.png" alt="image-20250221223605512" style="zoom:50%;" /></p>
+
+<p>给定索引就可以把这条数据删除，也可以直接删除整列，方法相同。</p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/02/21/NumPy70%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="NumPy 70题">
+                        Previous<br>
+                        <span>NumPy 70题</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/02/24/Pandas(2)%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" data-toggle="tooltip" data-placement="top" title="pandas(2)数据分析">
+                        Next<br>
+                        <span>pandas(2)数据分析</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0034" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="3">力扣</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="2">算法</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

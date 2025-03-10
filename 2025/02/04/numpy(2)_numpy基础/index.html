@@ -1,0 +1,2417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="numpy(2)_numpy基础 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="numpy(1)入门：介绍numpy的安装和numpy较纯python语言的简洁和性能优越性。
+">
+    
+    <meta property="article:published_time" content=" 2025-02-04T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="人工智能AI基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/02/04/numpy(2)_numpy%E5%9F%BA%E7%A1%80/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>numpy(2)_numpy基础 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/02/04/numpy(2)_numpy%E5%9F%BA%E7%A1%80/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80" title="人工智能AI基础">人工智能AI基础</a>
+                        
+                    </div>
+                    <h1>numpy(2)_numpy基础</h1>
+                    
+                    <h2 class="subheading">第 2 章 NumPy基础</h2>
+                    <span class="meta">Posted by Hilda on February 4, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<p><a href="https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/">numpy(1)入门</a>：介绍numpy的安装和numpy较纯python语言的简洁和性能优越性。</p>
+
+<p>这篇主要介绍numpy基础。涵盖以下内容：</p>
+
+<ul>
+  <li>数据类型；</li>
+  <li>数组类型；</li>
+  <li>类型转换；</li>
+  <li>创建数组；</li>
+  <li>数组索引；</li>
+  <li>数组切片；</li>
+  <li>改变维度。</li>
+</ul>
+
+<blockquote>
+  <p>首先学习前，启动环境：</p>
+
+  <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>workon env1
+jupyter notebook
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+</blockquote>
+
+<h1 id="21-numpy-数组对象">2.1 NumPy 数组对象</h1>
+
+<p>NumPy中的<code class="language-plaintext highlighter-rouge">ndarray</code>是一个多维数组对象，该对象由两部分组成：</p>
+
+<ul>
+  <li>实际的数据；</li>
+  <li>描述这些数据的元数据。</li>
+</ul>
+
+<blockquote>
+  <p>其实元数据不是什么难懂的名词，就是用来<strong>描述和解释数据的额外信息</strong>。它不直接包含数据本身，而是描述数据的 <strong>结构</strong>、<strong>类型</strong>、<strong>大小</strong> 等。</p>
+
+  <p>例如：</p>
+
+  <ul>
+    <li><strong>数据类型（dtype）</strong>：描述数据的类型，如整数（int）、浮点数（float）等。</li>
+    <li><strong>形状（shape）</strong>：描述数组的维度和每个维度的大小。比如一个二维数组 <code class="language-plaintext highlighter-rouge">3x2</code>（3行2列）或者三维数组。</li>
+    <li><strong>维度（ndim）</strong>：描述数组的维度数量（1D、2D、3D等）。</li>
+    <li><strong>大小（size）</strong>：数组中总共有多少个元素。</li>
+    <li><strong>步长（strides）</strong>：描述每个维度中相邻元素的字节偏移量。</li>
+  </ul>
+
+  <p>注：<code class="language-plaintext highlighter-rouge">ndarray</code>中，大致来说，n是指n个，d是dimension（维度）的意思。</p>
+
+  <p>可以把 <strong>元数据</strong> 看作是关于数据的 <strong>说明书</strong>，它告诉我们如何理解和操作这些数据，而 <strong>实际的数据</strong> 就是我们真正关心的内容，像数字或字符等。</p>
+</blockquote>
+
+<p><strong>大部分的数组操作仅仅修改元数据部分，而不改变底层的实际数据。</strong></p>
+
+<p>首先需大致了解以下内容：</p>
+
+<p>1.在<a href="https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/">numpy(1)入门</a>中，已经知道如何使用arange函数创建数组。实际上，当时创建的数组只是包含一组数字的一维数组，而ndarray支持更高的维度。</p>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">arr_3d</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">arr_3d</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250127230511933.png" alt="image-20250127230511933" style="zoom:50%;" /></p>
+
+<p>2.NumPy数组一般是同质的（但有一种特殊的数组类型例外，它是异质的），即<strong>数组中的所有元素类型必须是一致的</strong>。这样有一个好处：如果知道数组中的元素均为同一类型，该数组所需的存储空间就很容易确定下来。</p>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">arr_mixed</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mf">3.6</span><span class="p">,</span><span class="sh">"</span><span class="s">9</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">arr_mixed</span><span class="p">.</span><span class="n">dtype</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250127230707338.png" alt="image-20250127230707338" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>类型混用时，也有优先级：str&gt;float&gt;int。所以上面最终的数组对象的每个元素的类型是str。</p>
+</blockquote>
+
+<p>3.与Python中一样，NumPy数组的下标也是从0开始的。数组元素的数据类型用专门的对象表示。</p>
+
+<p>4.数组的shape属性返回一个元组（tuple），元组中的元素即为NumPy数组每一个维度上的大小。</p>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">arr_3d</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">arr_3d</span><span class="p">.</span><span class="n">shape</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250127230946128.png" alt="image-20250127230946128" style="zoom:50%;" /></p>
+
+<h1 id="22-动手实践创建多维数组">2.2 动手实践：创建多维数组</h1>
+
+<blockquote>
+  <p><strong>面试题</strong>：创建<code class="language-plaintext highlighter-rouge">ndarray</code>有哪些基本的方法？</p>
+
+  <p>1)<strong>使用np.array()由python list创建</strong></p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> 
+<span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250203190515734.png" alt="image-20250203190515734" style="zoom:50%;" /></p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># 由ndarray变回list
+</span><span class="n">list2</span> <span class="o">=</span> <span class="n">n</span><span class="p">.</span><span class="nf">tolist</span><span class="p">()</span>
+<span class="n">list2</span>
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250203190622683.png" alt="image-20250203190622683" style="zoom:50%;" /></p>
+
+  <p>注意：</p>
+
+  <p>- numpy默认ndarray的所有元素的类型是相同的(即<strong>同质</strong>)</p>
+
+  <p>- 如果传进来的列表中包含不同的类型，则统一为同一类型，优先级：<code class="language-plaintext highlighter-rouge">str&gt;float&gt;int</code></p>
+
+  <p>例如：</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250203190841141.png" alt="image-20250203190841141" style="zoom:50%;" /></p>
+
+  <p><strong>2)使用np的routines函数创建</strong>—-需要记住11个函数</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">full</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>      <span class="n">对角线为1其他的位置为0</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">retstep</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="p">]</span><span class="n">stop</span><span class="p">,</span> <span class="p">[</span><span class="n">step</span><span class="p">,</span> <span class="p">]</span><span class="n">dtype</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="sh">'</span><span class="s">l</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="p">...,</span> <span class="n">dn</span><span class="p">)</span>  
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>  
+<span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">d3</span><span class="p">...,</span><span class="n">dn</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+
+  <p>面试记忆方法：</p>
+
+  <p><strong>一零满</strong>：<code class="language-plaintext highlighter-rouge">np.ones</code>, <code class="language-plaintext highlighter-rouge">np.zeros</code>, <code class="language-plaintext highlighter-rouge">np.full</code>（都是填充的）</p>
+
+  <p><strong>角线均</strong>：<code class="language-plaintext highlighter-rouge">np.eye</code>, <code class="language-plaintext highlighter-rouge">np.linspace</code>, <code class="language-plaintext highlighter-rouge">np.arange</code>（对角线为1，均匀间隔，区间步长）</p>
+
+  <p><strong>步长整</strong>：<code class="language-plaintext highlighter-rouge">np.random.randint</code>（整数）</p>
+
+  <p><strong>正态浮</strong>：<code class="language-plaintext highlighter-rouge">np.random.randn</code>, <code class="language-plaintext highlighter-rouge">np.random.normal</code>, <code class="language-plaintext highlighter-rouge">np.random.random</code>, <code class="language-plaintext highlighter-rouge">np.random.rand</code>（正态分布和随机浮点数）</p>
+
+  <hr />
+
+  <p>下面来看具体用法：</p>
+
+  <p>下面是对这些NumPy方法的详细介绍，包括它们的用法和需要注意的点：</p>
+
+  <hr />
+
+  <h3 id="1-nponesshape-dtypenone-orderc">1. <strong><code class="language-plaintext highlighter-rouge">np.ones(shape, dtype=None, order='C')</code></strong></h3>
+
+  <ul>
+    <li><strong>功能</strong>：生成一个由1填充的数组。</li>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">shape</code>：数组的形状，可以是整数或元组。比如，<code class="language-plaintext highlighter-rouge">(3, 4)</code>表示一个3行4列的矩阵。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li><code class="language-plaintext highlighter-rouge">dtype</code>：数据类型，默认为<code class="language-plaintext highlighter-rouge">float</code>。可以指定为任何NumPy支持的类型，如<code class="language-plaintext highlighter-rouge">int</code>，<code class="language-plaintext highlighter-rouge">float64</code>等。</li>
+        <li><code class="language-plaintext highlighter-rouge">order</code>：决定数组的内存布局。<strong><code class="language-plaintext highlighter-rouge">'C'</code>表示按行优先（C风格），<code class="language-plaintext highlighter-rouge">'F'</code>表示按列优先（Fortran风格）</strong>。</li>
+      </ul>
+    </li>
+    <li><strong>注意</strong>：<strong>如果不指定<code class="language-plaintext highlighter-rouge">dtype</code>，默认会生成浮点类型的数组</strong>。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250203192040149.png" alt="image-20250203192040149" style="zoom:50%;" /></p>
+
+  <h3 id="2-npzerosshape-dtypefloat-orderc">2. <strong><code class="language-plaintext highlighter-rouge">np.zeros(shape, dtype=float, order='C')</code></strong></h3>
+
+  <ul>
+    <li><strong>功能</strong>：生成一个由0填充的数组。</li>
+    <li><strong>参数</strong>：和<code class="language-plaintext highlighter-rouge">np.ones()</code>类似。</li>
+    <li><strong>注意</strong>：常用于初始化一个空数组或矩阵。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250203192148340.png" alt="image-20250203192148340" style="zoom:50%;" /></p>
+
+  <h3 id="3-npfullshape-fill_value-dtypenone-orderc">3. <strong><code class="language-plaintext highlighter-rouge">np.full(shape, fill_value, dtype=None, order='C')</code></strong></h3>
+
+  <ul>
+    <li><strong>功能</strong>：生成一个指定形状并填充指定值的数组。</li>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">shape</code>：数组的形状。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li><code class="language-plaintext highlighter-rouge">fill_value</code>：数组中每个元素的值。</li>
+        <li><code class="language-plaintext highlighter-rouge">dtype</code>：数据类型，默认为<code class="language-plaintext highlighter-rouge">None</code>，将根据<code class="language-plaintext highlighter-rouge">fill_value</code>自动推导。</li>
+        <li><code class="language-plaintext highlighter-rouge">order</code>：内存布局，默认为<code class="language-plaintext highlighter-rouge">'C'</code>。</li>
+      </ul>
+    </li>
+    <li><strong>注意</strong>：可以用来生成任何值的矩阵，不仅仅是0或1。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250203192316428.png" alt="image-20250203192316428" style="zoom:50%;" /></p>
+
+  <h3 id="4npeyen-mnone-k0-dtypefloat">4.<strong><code class="language-plaintext highlighter-rouge">np.eye(N, M=None, k=0, dtype=float)</code></strong></h3>
+
+  <ul>
+    <li><strong>功能</strong>：生成一个单位矩阵（对角线为1，其他位置为0）。</li>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">N</code>：矩阵的行数。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li><code class="language-plaintext highlighter-rouge">M</code>：矩阵的列数。如果不指定，默认为<code class="language-plaintext highlighter-rouge">N</code>，生成一个方阵。</li>
+        <li><code class="language-plaintext highlighter-rouge">k</code>：对角线的位置，<code class="language-plaintext highlighter-rouge">k=0</code>是主对角线，<code class="language-plaintext highlighter-rouge">k&gt;0</code>是上对角线，<code class="language-plaintext highlighter-rouge">k&lt;0</code>是下对角线。</li>
+        <li><code class="language-plaintext highlighter-rouge">dtype</code>：数据类型。</li>
+      </ul>
+    </li>
+    <li><strong>注意</strong>：如果需要生成其他对角线矩阵（如上对角线或下对角线），可以调整<code class="language-plaintext highlighter-rouge">k</code>的值。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250203192505624.png" alt="image-20250203192505624" style="zoom:50%;" /></p>
+
+  <h3 id="5-nplinspacestart-stop-num50-endpointtrue-retstepfalse-dtypenone">5. <strong><code class="language-plaintext highlighter-rouge">np.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)</code></strong></h3>
+
+  <ul>
+    <li><strong>功能</strong>：生成一个<strong>指定范围内的均匀间隔的数字序列</strong>。</li>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">start</code>：序列的起始值。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li><code class="language-plaintext highlighter-rouge">stop</code>：序列的结束值。</li>
+        <li><code class="language-plaintext highlighter-rouge">num</code>：生成的数字个数，默认是50。</li>
+        <li><code class="language-plaintext highlighter-rouge">endpoint</code>：是否包含<code class="language-plaintext highlighter-rouge">stop</code>值，<strong>默认是<code class="language-plaintext highlighter-rouge">True</code></strong>。</li>
+        <li><code class="language-plaintext highlighter-rouge">retstep</code>：如果为<code class="language-plaintext highlighter-rouge">True</code>，返回间隔的大小，默认为<code class="language-plaintext highlighter-rouge">False</code>。</li>
+        <li><code class="language-plaintext highlighter-rouge">dtype</code>：数据类型。</li>
+      </ul>
+    </li>
+    <li><strong>注意</strong>：如果<code class="language-plaintext highlighter-rouge">endpoint=False</code>，序列会停止在<code class="language-plaintext highlighter-rouge">stop</code>之前，确保不会包含<code class="language-plaintext highlighter-rouge">stop</code>值。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250203193413514.png" alt="image-20250203193413514" style="zoom:50%;" /></p>
+
+  <h3 id="6-nparangestart-stop-step-dtypenone">6. <strong><code class="language-plaintext highlighter-rouge">np.arange([start, ]stop, [step, ]dtype=None)</code></strong></h3>
+
+  <ul>
+    <li><strong>功能</strong>：生成一个指定范围内的数字序列，<strong>类似于Python的<code class="language-plaintext highlighter-rouge">range()</code>函数</strong>。</li>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">start</code>：序列的起始值，默认为0。（可选）</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li><code class="language-plaintext highlighter-rouge">stop</code>：序列的结束值（不包含）。（必须提供）</li>
+        <li><code class="language-plaintext highlighter-rouge">step</code>：步长，默认为1。（可选）</li>
+        <li><code class="language-plaintext highlighter-rouge">dtype</code>：数据类型。</li>
+      </ul>
+    </li>
+    <li><strong>注意</strong>：<code class="language-plaintext highlighter-rouge">stop</code>不包括在内。如果<code class="language-plaintext highlighter-rouge">step</code>为负数，<code class="language-plaintext highlighter-rouge">start</code>必须大于<code class="language-plaintext highlighter-rouge">stop</code>。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204133855678.png" alt="image-20250204133855678" style="zoom:50%;" /></p>
+
+  <h3 id="7-nprandomrandintlow-highnone-sizenone-dtypel">7. <strong><code class="language-plaintext highlighter-rouge">np.random.randint(low, high=None, size=None, dtype='l')</code></strong></h3>
+
+  <p>生成指定范围内的随机整数。</p>
+
+  <ul>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">low</code>：随机整数的下界。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li><code class="language-plaintext highlighter-rouge">high</code>：随机整数的上界。</li>
+        <li><code class="language-plaintext highlighter-rouge">size</code>：输出的数组形状。</li>
+        <li><code class="language-plaintext highlighter-rouge">dtype</code>：数据类型，默认为整数类型。</li>
+      </ul>
+    </li>
+    <li><strong>注意</strong>：返回的数组包含的是指定区间内的整数，且 <strong><code class="language-plaintext highlighter-rouge">high</code> 不包含在内</strong>。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204134100416.png" alt="image-20250204134100416" style="zoom:50%;" /></p>
+
+  <h3 id="8-nprandomrandnd0-d1--dn">8. <strong><code class="language-plaintext highlighter-rouge">np.random.randn(d0, d1, ..., dn)</code></strong></h3>
+
+  <p>生成<strong>标准正态分布</strong>的随机数（均值为 0，标准差为 1）。</p>
+
+  <ul>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">d0, d1, ..., dn</code>：各维度的大小。</li>
+        </ul>
+      </blockquote>
+    </li>
+    <li><strong>注意</strong>：返回的是一个服从标准正态分布的数组，形状由参数指定。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204134242605.png" alt="image-20250204134242605" style="zoom:50%;" /></p>
+
+  <h3 id="9-nprandomnormalloc00-scale10-sizenone">9. <strong><code class="language-plaintext highlighter-rouge">np.random.normal(loc=0.0, scale=1.0, size=None)</code></strong></h3>
+
+  <p>生成符合<strong>正态分布</strong>的随机数，可以自定义均值和标准差。</p>
+
+  <ul>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">loc</code>：均值，默认为 0。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li><code class="language-plaintext highlighter-rouge">scale</code>：标准差，默认为 1。</li>
+        <li><code class="language-plaintext highlighter-rouge">size</code>：输出的数组形状。</li>
+      </ul>
+    </li>
+    <li><strong>注意</strong>：生成的是符合指定均值和标准差的随机数。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204134404745.png" alt="image-20250204134404745" style="zoom:50%;" /></p>
+
+  <h3 id="10-nprandomrandomsizenone">10. <strong><code class="language-plaintext highlighter-rouge">np.random.random(size=None)</code></strong></h3>
+
+  <p>生成 <strong>0 到 1 之间的随机浮点数</strong>。</p>
+
+  <ul>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">size</code>：输出的数组形状。</li>
+        </ul>
+      </blockquote>
+    </li>
+    <li><strong>注意</strong>：返回的是一个包含 0 到 1 之间的随机浮点数的数组。</li>
+  </ul>
+
+  <h3 id="11-nprandomrandd0-d1--dn">11. <strong><code class="language-plaintext highlighter-rouge">np.random.rand(d0, d1, ..., dn)</code></strong></h3>
+
+  <p>生成均匀分布在 [0, 1) 区间的随机数。</p>
+
+  <ul>
+    <li>参数：
+      <blockquote>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">d0, d1, ..., dn</code>：各维度的大小。</li>
+        </ul>
+      </blockquote>
+    </li>
+    <li><strong>注意</strong>：类似于 <code class="language-plaintext highlighter-rouge">np.random.random()</code>，但接受的是维度参数而不是 <code class="language-plaintext highlighter-rouge">size</code>。</li>
+  </ul>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204134654618.png" alt="image-20250204134654618" style="zoom:50%;" /></p>
+</blockquote>
+
+<p>既然我们已经知道如何创建向量，现在可以试着创建多维的NumPy数组，并查看其维度了。</p>
+
+<p>(1) 创建一个多维数组。
+(2) 显示该数组的维度。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
+<span class="n">n</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204135210110.png" alt="image-20250204135210110" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">.</span><span class="n">shape</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204135227792.png" alt="image-20250204135227792" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>解释：<code class="language-plaintext highlighter-rouge">np.arange(2)</code> 会生成一个从 0 开始，到 2 之前的整数数组，即 <code class="language-plaintext highlighter-rouge">[0, 1]</code>。<code class="language-plaintext highlighter-rouge">[np.arange(2), np.arange(2)]</code> 创建了一个包含两个 <code class="language-plaintext highlighter-rouge">np.arange(2)</code> 生成的数组的列表，即<code class="language-plaintext highlighter-rouge">[[0, 1], [0, 1]]</code>。<code class="language-plaintext highlighter-rouge">np.array()</code> 将这个包含两个数组的列表转换为一个 NumPy 数组。最终的 <code class="language-plaintext highlighter-rouge">n</code> 数组是一个 2x2 的二维数组，其中每一行都是 <code class="language-plaintext highlighter-rouge">[0, 1]</code>。</p>
+
+  <p>将arange函数创建的数组作为列表元素，把这个列表作为参数传给array函数，从而创建了一个2×2的数组.</p>
+</blockquote>
+
+<p>🌟<strong>关于<code class="language-plaintext highlighter-rouge">np.array()</code>函数：</strong></p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">array</code>函数可以依据给定的对象生成数组。给定的对象应是类数组，如Python中的列表。在上面的例子中，我们传给array函数的对象是一个NumPy数组的列表。像这样的类数组对象是array函数的唯一必要参数，其余的诸多参数均为有默认值的可选参数。</strong></p>
+
+<hr />
+
+<p><strong>突击测验：ndarray对象维度属性的存储方式</strong>
+问题1 ndarray对象的维度属性是以下列哪种方式存储的？</p>
+
+<p>(1) 逗号隔开的字符串<br />
+(2) Python列表（list）
+(3) Python元组（tuple）</p>
+
+<blockquote>
+  <p>答案：（3），<code class="language-plaintext highlighter-rouge">ndarray</code> 对象的维度属性是通过 <strong>Python元组（tuple）</strong> 来存储的。</p>
+
+  <p>在 NumPy 中，<code class="language-plaintext highlighter-rouge">ndarray</code> 的维度信息存储在 <code class="language-plaintext highlighter-rouge">.shape</code> 属性中，<code class="language-plaintext highlighter-rouge">shape</code> 是一个表示数组各维度大小的 <strong>元组（tuple）</strong>。</p>
+
+  <ul>
+    <li><strong>例如</strong>：对于一个 3x2 的数组，<code class="language-plaintext highlighter-rouge">shape</code> 属性会是 <code class="language-plaintext highlighter-rouge">(3, 2)</code>，这意味着数组有 3 行 2 列。</li>
+    <li>如果是一个 3x2x4 的三维数组，<code class="language-plaintext highlighter-rouge">shape</code> 会是 <code class="language-plaintext highlighter-rouge">(3, 2, 4)</code>。</li>
+  </ul>
+
+  <h3 id="为什么是元组tuple">为什么是元组（tuple）：</h3>
+
+  <ul>
+    <li>元组是一个<strong>不可变</strong>的序列，符合存储数组维度这一信息的需求，因为数组的维度一旦确定，就不需要修改它。</li>
+    <li>与列表（list）不同，元组的不可变性使得它在存储维度信息时更加合适和高效。</li>
+  </ul>
+</blockquote>
+
+<hr />
+
+<p>勇敢出发：创建3×3的多维数组
+现在，创建一个3×3的多维数组应该不是一件难事。试试看，并在创建多维数组后检查其维度是否与你设想的一致。</p>
+
+<p>方法1:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+<span class="n">n1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204140344731.png" alt="image-20250204140344731" style="zoom:50%;" /></p>
+
+<p>方法2:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">n2</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204140409673.png" alt="image-20250204140409673" style="zoom:50%;" /></p>
+
+<p>通过 <code class="language-plaintext highlighter-rouge">.shape</code> 确保数组的维度为 <code class="language-plaintext highlighter-rouge">(3, 3)</code>，即所设想的 3×3 维度。</p>
+
+<p>方法3:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n3</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">n3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204140626114.png" alt="image-20250204140626114" style="zoom:50%;" /></p>
+
+<p>方法4:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n4</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">n4</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204140652838.png" alt="image-20250204140652838" style="zoom:50%;" /></p>
+
+<p>方法5:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n5</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">full</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">n5</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204140805225.png" alt="image-20250204140805225" style="zoom:50%;" /></p>
+
+<p>方法6:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n6</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">n6</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204140931851.png" alt="image-20250204140931851" style="zoom:50%;" /></p>
+
+<p>方法7:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n7</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">n7</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204141035692.png" alt="image-20250204141035692" style="zoom:50%;" /></p>
+
+<p>方法8:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n8</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">normal</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">n8</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204141131670.png" alt="image-20250204141131670" style="zoom:50%;" /></p>
+
+<p>方法9:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n9</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">n9</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204141217451.png" alt="image-20250204141217451" style="zoom:50%;" /></p>
+
+<p>方法10:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n10</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">n10</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204141253734.png" alt="image-20250204141253734" style="zoom:50%;" /></p>
+
+<p>方法11:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n11</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">9</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>  
+<span class="n">n11</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204141450851.png" alt="image-20250204141450851" style="zoom:50%;" /></p>
+
+<p>方法12:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n12</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">n12</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204141555578.png" alt="image-20250204141555578" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>另外拓展一些方法：</p>
+
+<p>方法13:<code class="language-plaintext highlighter-rouge">np.random.choice()</code> 可以从一个给定的一维数组中随机选择元素，生成一个指定形状的数组。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n13</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">n13</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204141822155.png" alt="image-20250204141822155" style="zoom:50%;" /></p>
+
+<p>方法14:<code class="language-plaintext highlighter-rouge">np.empty()</code> 创建一个未初始化的数组，<strong>内存中的值是随机的</strong>。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n14</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">n14</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204141921125.png" alt="image-20250204141921125" style="zoom:50%;" /></p>
+
+<p>还有其他方法，不再列举。</p>
+
+<hr />
+
+<h2 id="221-选取数组元素">2.2.1 选取数组元素</h2>
+
+<p>有时候，我们需要选取数组中的某个特定元素。首先还是创建一个2×2的多维数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">n</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204142203842.png" alt="image-20250204142203842" style="zoom:50%;" /></p>
+
+<p>在创建这个多维数组时，我们给array函数传递的对象是一个嵌套的列表。现在来依次选取
+该数组中的元素。记住，<strong>数组的下标是从0开始的</strong>。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204142336593.png" alt="image-20250204142336593" style="zoom:50%;" /></p>
+
+<p>从数组中选取元素就是这么简单。<strong>对于数组a，只需要用a[m,n]选取各数组元素，其中m和n为元素下标，对应的位置如下表所示</strong>。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204142414321.png" alt="image-20250204142414321" style="zoom:50%;" /></p>
+
+<h2 id="222-numpy-数据类型">2.2.2 NumPy 数据类型</h2>
+
+<blockquote>
+  <p>回顾面试题：python的数据类型有哪些？</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>类型</th>
+        <th>描述</th>
+        <th>示例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">int</code></td>
+        <td>整数类型</td>
+        <td><code class="language-plaintext highlighter-rouge">x = 42</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">float</code></td>
+        <td>浮点数类型</td>
+        <td><code class="language-plaintext highlighter-rouge">y = 3.14</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">complex</code></td>
+        <td>复数类型</td>
+        <td><code class="language-plaintext highlighter-rouge">z = 1 + 2j</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">str</code></td>
+        <td>字符串类型，表示文本</td>
+        <td><code class="language-plaintext highlighter-rouge">name = "Alice"</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">list</code></td>
+        <td>列表类型，表示可变有序集合</td>
+        <td><code class="language-plaintext highlighter-rouge">numbers = [1, 2, 3]</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">tuple</code></td>
+        <td>元组类型，表示不可变有序集合</td>
+        <td><code class="language-plaintext highlighter-rouge">coords = (1, 2, 3)</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">range</code></td>
+        <td>范围类型，表示数字的不可变序列</td>
+        <td><code class="language-plaintext highlighter-rouge">r = range(0, 10)</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">set</code></td>
+        <td>集合类型，表示无序不重复元素集合</td>
+        <td><code class="language-plaintext highlighter-rouge">s = {1, 2, 3}</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">frozenset</code></td>
+        <td>冻结集合类型，表示不可变集合</td>
+        <td><code class="language-plaintext highlighter-rouge">fs = frozenset([1, 2, 3])</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">dict</code></td>
+        <td>字典类型，表示键值对集合</td>
+        <td><code class="language-plaintext highlighter-rouge">d = {"key": "value"}</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+        <td>布尔类型，表示真 (<code class="language-plaintext highlighter-rouge">True</code>) 或假 (<code class="language-plaintext highlighter-rouge">False</code>)</td>
+        <td><code class="language-plaintext highlighter-rouge">flag = True</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">bytes</code></td>
+        <td>不可变字节序列</td>
+        <td><code class="language-plaintext highlighter-rouge">b = b"hello"</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">bytearray</code></td>
+        <td>可变字节序列</td>
+        <td><code class="language-plaintext highlighter-rouge">ba = bytearray([65, 66])</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">memoryview</code></td>
+        <td>内存视图，用于访问对象的缓冲区协议</td>
+        <td><code class="language-plaintext highlighter-rouge">m = memoryview(b"hello")</code></td>
+      </tr>
+      <tr>
+        <td><code class="language-plaintext highlighter-rouge">NoneType</code></td>
+        <td><code class="language-plaintext highlighter-rouge">None</code>，表示“无”或“空值”</td>
+        <td><code class="language-plaintext highlighter-rouge">n = None</code></td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p>Python支持的数据类型有整型、浮点型以及复数型，但这些类型不足以满足科学计算的需求，因此NumPy添加了很多其他的数据类型。在实际应用中，我们需要不同精度的数据类型，它们占用的内存空间也是不同的。在NumPy中，大部分数据类型名是以数字结尾的，这个数字表示其在内存中占用的位数。下面的表格（整理自<a href="https://numpy.com.cn/doc/stable/user/basics.types.html">NumPy用户手册-NumPy基础知识-数据类型</a>）列出了NumPy中支持的数据类型。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>类型</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>用一位存储的布尔类型（值为 TRUE 或 FALSE）</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">inti</code></td>
+      <td>由所在平台决定其精度的整数（一通常为 int32 或 int64）</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int8</code></td>
+      <td>整数，范围从 -128 到 127</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int16</code></td>
+      <td>整数，范围从 -32,768 到 32,767</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int32</code></td>
+      <td>整数，范围从 -2³¹ 到 2³¹-1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int64</code></td>
+      <td>整数，范围从 -2⁶³ 到 2⁶³-1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">uint8</code></td>
+      <td>无符号整数，范围从 0 到 255</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">uint16</code></td>
+      <td>无符号整数，范围从 0 到 65,535</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">uint32</code></td>
+      <td>无符号整数，范围从 0 到 2³²-1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">uint64</code></td>
+      <td>无符号整数，范围从 0 到 2⁶⁴-1</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">float16</code></td>
+      <td>半精度浮点数（16 位）：其中用 1 位表示正负号，5 位表示指数，10 位表示尾数</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">float32</code></td>
+      <td>单精度浮点数（32 位）：其中用 1 位表示正负号，8 位表示指数，23 位表示尾数</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">float64</code></td>
+      <td>双精度浮点数（64 位）：其中用 1 位表示正负号，11 位表示指数，52 位表示尾数</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">complex64</code></td>
+      <td>复数，分别用两个 32 位浮点数表示实部和虚部</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">complex128</code></td>
+      <td>复数，分别用两个 64 位浮点数表示实部和虚部</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>每一种数据类型均有对应的类型转换函数：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204143651160.png" alt="image-20250204143651160" style="zoom:50%;" /></p>
+
+<p>在NumPy中，许多函数的参数中可以指定数据类型，通常这个参数是可选的：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="sh">"</span><span class="s">float64</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">n</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204143750905.png" alt="image-20250204143750905" style="zoom:50%;" /></p>
+
+<p>需要注意的是，复数是不能转换为整数的，这将触发TypeError错误： <code class="language-plaintext highlighter-rouge">TypeError: can't convert complex to int</code></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204143853551.png" alt="image-20250204143853551" style="zoom:50%;" /></p>
+
+<p>同样，复数也不能转换为浮点数。不过，浮点数却可以转换为复数，例如complex(1.0)。注意，有j的部分为复数的虚部。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204143946243.png" alt="image-20250204143946243" style="zoom:50%;" /></p>
+
+<h2 id="223-数据类型对象">2.2.3 数据类型对象</h2>
+
+<p><strong>数据类型对象是numpy.dtype类的实例</strong>。如前所述，NumPy数组是有数据类型的，更确切地说，NumPy数组中的每一个元素均为相同的数据类型(“同质”)。数据类型对象可以给出单个数组元素在内存中占用的字节数，即dtype类的itemsize属性：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204144143606.png" alt="image-20250204144143606" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">dtype</code> 类的 <code class="language-plaintext highlighter-rouge">itemsize</code> 属性用于返回每个元素的字节大小（单位是字节）。<code class="language-plaintext highlighter-rouge">itemsize</code> 是一个非常有用的属性，可以帮助我们了解一个数组中每个元素的内存占用情况。</p>
+
+  <p>例如，如果数据类型是 <code class="language-plaintext highlighter-rouge">int32</code>，每个元素占用 4 个字节；如果是 <code class="language-plaintext highlighter-rouge">float64</code>，每个元素占用 8 个字节。</p>
+
+  <p>如果你需要知道数组中所有元素的总内存占用，可以使用 <code class="language-plaintext highlighter-rouge">.nbytes</code>（它会返回整个数组占用的字节总数），而 <code class="language-plaintext highlighter-rouge">itemsize</code> 是返回单个元素的字节数。</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204144323122.png" alt="image-20250204144323122" style="zoom:50%;" /></p>
+</blockquote>
+
+<h2 id="224-字符编码-也叫字符代码">2.2.4 字符编码 (也叫字符代码)</h2>
+
+<p>NumPy可以使用字符编码来表示数据类型，这是为了兼容NumPy的前身Numeric。我不推荐使用字符编码，但有时会用到，因此下面还是列出了字符编码的对应表。读者应该优先使用dtype 对象来表示数据类型，而不是这些字符编码。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>数据类型</th>
+      <th>字符编码</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>整数</td>
+      <td>i</td>
+    </tr>
+    <tr>
+      <td>无符号整数</td>
+      <td>u</td>
+    </tr>
+    <tr>
+      <td>单精度浮点数</td>
+      <td>f</td>
+    </tr>
+    <tr>
+      <td>双精度浮点数</td>
+      <td>d</td>
+    </tr>
+    <tr>
+      <td>布尔值</td>
+      <td>b</td>
+    </tr>
+    <tr>
+      <td>复数</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>字符串</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>unicode 字符串</td>
+      <td>U</td>
+    </tr>
+    <tr>
+      <td>void（空）</td>
+      <td>V</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>下面的代码创建了一个单精度浮点数数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="sh">"</span><span class="s">f</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">f</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204144647056.png" alt="image-20250204144647056" style="zoom:50%;" /></p>
+
+<p>与此类似，还可以创建一个复数数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">com</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">com</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204144757573.png" alt="image-20250204144757573" style="zoom:50%;" /></p>
+
+<h2 id="225-自定义数据类型">2.2.5 自定义数据类型</h2>
+
+<p>我们有很多种自定义数据类型的方法，以浮点型为例。</p>
+
+<ul>
+  <li>
+    <p><strong>使用 Python 自带的浮点数类型</strong>：</p>
+
+    <ul>
+      <li>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="n">np</span><span class="p">.</span><span class="nf">dtype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">dtype(float)</code>：返回 <code class="language-plaintext highlighter-rouge">dtype('float64')</code>，表示使用 Python 的标准浮点数类型，这通常对应于 64 位浮点数。</p>
+      </li>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204145333108.png" alt="image-20250204145333108" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>使用字符编码指定单精度浮点数类型</strong>：</p>
+
+    <ul>
+      <li>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="n">np</span><span class="p">.</span><span class="nf">dtype</span><span class="p">(</span><span class="sh">"</span><span class="s">f</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li>
+        <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204145403402.png" alt="image-20250204145403402" style="zoom:50%;" /></p>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">dtype('f')</code>：返回 <code class="language-plaintext highlighter-rouge">dtype('float32')</code>，表示创建一个 32 位单精度浮点数类型。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>使用字符编码指定双精度浮点数类型</strong>：</p>
+
+    <ul>
+      <li>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="n">np</span><span class="p">.</span><span class="nf">dtype</span><span class="p">(</span><span class="sh">"</span><span class="s">d</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li>
+        <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204145448332.png" alt="image-20250204145448332" style="zoom:50%;" /></p>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">dtype('d')</code>：返回 <code class="language-plaintext highlighter-rouge">dtype('float64')</code>，表示创建一个 64 位双精度浮点数类型。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>使用两个字符作为参数</strong>：</p>
+
+    <ul>
+      <li>
+        <p>将两个字符作为参数传给数据类型的构造函数。此时，第一个字符表示数据类型，
+第二个字符表示该类型在内存中占用的字节数（2、4、8分别代表精度为16、32、64位的浮点数）：</p>
+      </li>
+      <li>
+        <p>第一个字符表示数据类型（如 <code class="language-plaintext highlighter-rouge">f</code>、<code class="language-plaintext highlighter-rouge">d</code> 等），第二个字符表示该类型的精度，即内存中占用的字节数。</p>
+
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">2</code> 表示 16 位精度的浮点数</li>
+          <li><code class="language-plaintext highlighter-rouge">4</code> 表示 32 位精度的浮点数</li>
+          <li><code class="language-plaintext highlighter-rouge">8</code> 表示 64 位精度的浮点数</li>
+        </ul>
+      </li>
+      <li>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="n">np</span><span class="p">.</span><span class="nf">dtype</span><span class="p">(</span><span class="sh">"</span><span class="s">f8</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204145651525.png" alt="image-20250204145651525" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+</ul>
+
+<p>完整的NumPy数据类型列表可以在<code class="language-plaintext highlighter-rouge">sctypeDict.keys()</code>中找到：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">sctypeDict</span><span class="p">.</span><span class="nf">keys</span><span class="p">()</span>
+<span class="n">输出</span><span class="err">：</span>
+<span class="nf">dict_keys</span><span class="p">([</span><span class="sh">'</span><span class="s">?</span><span class="sh">'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="sh">'</span><span class="s">byte</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="sh">'</span><span class="s">ubyte</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="sh">'</span><span class="s">short</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">h</span><span class="sh">'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="sh">'</span><span class="s">ushort</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">H</span><span class="sh">'</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="sh">'</span><span class="s">i</span><span class="sh">'</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="sh">'</span><span class="s">uint</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">I</span><span class="sh">'</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="sh">'</span><span class="s">intp</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">p</span><span class="sh">'</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="sh">'</span><span class="s">uintp</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">P</span><span class="sh">'</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="sh">'</span><span class="s">long</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">l</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">ulong</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">L</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">longlong</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">q</span><span class="sh">'</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="sh">'</span><span class="s">ulonglong</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Q</span><span class="sh">'</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="sh">'</span><span class="s">half</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">e</span><span class="sh">'</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="sh">'</span><span class="s">f</span><span class="sh">'</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="sh">'</span><span class="s">double</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">d</span><span class="sh">'</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="sh">'</span><span class="s">longdouble</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">g</span><span class="sh">'</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="sh">'</span><span class="s">cfloat</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">F</span><span class="sh">'</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="sh">'</span><span class="s">cdouble</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="sh">'</span><span class="s">clongdouble</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">G</span><span class="sh">'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="sh">'</span><span class="s">O</span><span class="sh">'</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="sh">'</span><span class="s">S</span><span class="sh">'</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="sh">'</span><span class="s">unicode</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">U</span><span class="sh">'</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="sh">'</span><span class="s">void</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">V</span><span class="sh">'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="sh">'</span><span class="s">M</span><span class="sh">'</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="sh">'</span><span class="s">m</span><span class="sh">'</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="sh">'</span><span class="s">b1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bool8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">i8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">int64</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">u8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">uint64</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">f2</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">float16</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">f4</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">float32</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">f8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">float64</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">f16</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">float128</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">c8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">complex64</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">c16</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">complex128</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">c32</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">complex256</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">object0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bytes0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">str0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">void0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">M8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">datetime64</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">m8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">timedelta64</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">int32</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">i4</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">uint32</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">u4</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">int16</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">i2</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">uint16</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">u2</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">int8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">i1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">uint8</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">u1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">complex_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">single</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">csingle</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">singlecomplex</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">float_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">intc</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">uintc</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">int_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">longfloat</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">clongfloat</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">longcomplex</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bool_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bytes_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">string_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">str_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">unicode_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">object_</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">int</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">float</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">complex</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bool</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">object</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">str</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bytes</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">int0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">uint0</span><span class="sh">'</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="226-dtype-类的属性">2.2.6 dtype 类的属性</h2>
+
+<p>dtype类有很多有用的属性。例如，我们可以获取数据类型的字符编码：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>a = np.dtype(float)
+a
+a.char
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204145925888.png" alt="image-20250204145925888" style="zoom:50%;" /></p>
+
+<p>type属性对应于数组元素的数据类型：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204150014622.png" alt="image-20250204150014622" style="zoom:50%;" /></p>
+
+<p>str属性可以给出数据类型的字符串表示，该字符串的首个字符表示<strong>字节序（endianness）</strong>，
+后面如果还有字符的话，将是一个字符编码，接着一个数字表示每个数组元素存储所需的字节数。这里，字节序是指位长为32或64的字（word）存储的顺序，包括大端序（big-endian）和小端序（little-endian）。大端序是将最高位字节存储在最低的内存地址处，用&gt;表示；与之相反，小端序是将最低位字节存储在最低的内存地址处，用&lt;表示：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204150124650.png" alt="image-20250204150124650" style="zoom:50%;" /></p>
+
+<hr />
+
+<h1 id="23-动手实践创建自定义数据类型">2.3 动手实践：创建自定义数据类型</h1>
+
+<p>自定义数据类型是一种<strong>异构</strong>数据类型，可以当做用来记录电子表格或数据库中一行数据的结构。作为示例，我们将创建一个存储商店库存信息的数据类型。其中，我们用一个长度为40个字符的字符串来记录商品名称，用一个32位的整数来记录商品的库存数量，最后用一个32位的单精度浮点数来记录商品价格。下面是具体的步骤。</p>
+
+<p>(1) 创建数据类型：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">dtype</span><span class="p">([(</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">str_</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="p">(</span><span class="sh">'</span><span class="s">numitems</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">int32</span><span class="p">),</span> <span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">float32</span><span class="p">)])</span>
+<span class="n">t</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204153450783.png" alt="image-20250204153450783" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>这段代码定义了一个复合数据类型（structured dtype）<code class="language-plaintext highlighter-rouge">t</code>，它描述了一个包含多个字段的数据结构。具体来说，这个 <code class="language-plaintext highlighter-rouge">dtype</code> 用于定义一个包含三列的结构体，其中每个字段具有不同的数据类型和不同的长度。<code class="language-plaintext highlighter-rouge">np.dtype()</code> 是 NumPy 中的函数，用于创建自定义的数据类型。其中的参数是一个包含字段名称和数据类型的列表，用来定义复合数据类型（也叫结构化数据类型）。</p>
+</blockquote>
+
+<p>(2) 查看数据类型（也可以查看某一字段的数据类型） :</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">t</span><span class="p">[</span><span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204153646947.png" alt="image-20250204153646947" style="zoom:50%;" /></p>
+
+<p>在用array函数创建数组时，如果没有在参数中指定数据类型，将默认为浮点数类型。而现在，我们想要创建自定义数据类型的数组，就必须在参数中指定数据类型，否则将触发TypeError 错误：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">items</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([(</span><span class="sh">'</span><span class="s">Meaning of life DVD</span><span class="sh">'</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="p">.</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="sh">"</span><span class="s">butter</span><span class="sh">"</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">9</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">t</span><span class="p">)</span>
+<span class="n">items</span>
+<span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204153926826.png" alt="image-20250204153926826" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :我们创建了一种自定义的异构数据类型，该数据类型包括一个用字符串记录的名字、一个用整数记录的数字以及一个用浮点数记录的价格。</p>
+
+<hr />
+
+<h1 id="24-一维数组的索引和切片">2.4 一维数组的索引和切片</h1>
+
+<p>一维数组的切片操作与Python列表的切片操作很相似。例如，我们可以用下标<code class="language-plaintext highlighter-rouge">3~7</code>来选取元素<code class="language-plaintext highlighter-rouge">3~6</code>：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">a</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204154117756.png" alt="image-20250204154117756" style="zoom:50%;" /></p>
+
+<p>也可以用下标0~7，以2为步长选取元素：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">a</span><span class="p">[:</span><span class="mi">7</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204154153573.png" alt="image-20250204154153573" style="zoom:50%;" /></p>
+
+<p>和Python中一样，我们也可以利用负数下标翻转数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">a</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204154225047.png" alt="image-20250204154225047" style="zoom:50%;" /></p>
+
+<h1 id="25-动手实践多维数组的切片和索引">2.5 动手实践：多维数组的切片和索引</h1>
+
+<p>ndarray支持在多维数组上的切片操作。为了方便起见，我们可以用一个省略号<code class="language-plaintext highlighter-rouge">（...）</code>来表示遍历剩下的维度。</p>
+
+<p>(1) 举例来说，我们先用arange函数创建一个数组并改变其维度，使之变成一个三维数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">n</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204154416354.png" alt="image-20250204154416354" style="zoom:50%;" /></p>
+
+<p>多维数组n中有0~23的整数，共24个元素，是一个<code class="language-plaintext highlighter-rouge">2×3×4</code>的三维数组。我们可以形象地把它看做一个两层楼建筑，每层楼有12个房间，并排列成3行4列。或者，我们也可以将其看成是电子表格中工作表（sheet）、行和列的关系。你可能已经猜到，<strong>reshape函数的作用是改变数组的“形状”，也就是改变数组的维度，其参数为一个正整数元组，分别指定数组在每个维度上的大小。如果指定的维度和数组的元素数目不相吻合，函数将抛出异常。</strong> (reshape函数要求前后数组的总个数是相同的)</p>
+
+<p>(2) 我们可以用三维坐标来选定任意一个房间，即楼层、行号和列号。例如，选定第1层楼、第1行、第1列的房间（也可以说是第0层楼、第0行、第0列，这只是习惯问题），可以这样表示：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204154620589.png" alt="image-20250204154620589" style="zoom:50%;" /></p>
+
+<p>(3) 如果我们不关心楼层，也就是说要选取所有楼层的第1行、第1列的房间，那么可以将第1个下标用英文标点的冒号<code class="language-plaintext highlighter-rouge">:</code>来代替：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204154803434.png" alt="image-20250204154803434" style="zoom:50%;" /></p>
+
+<p>我们还可以这样写，选取第1层楼的所有房间：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>或者</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204154910336.png" alt="image-20250204154910336" style="zoom:50%;" /></p>
+
+<p>多个冒号可以用一个省略号<code class="language-plaintext highlighter-rouge">（...）</code>来代替，因此上面的代码等价于：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">...]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204154944115.png" alt="image-20250204154944115" style="zoom:50%;" /></p>
+
+<p>进而可以选取第1层楼、第2排的所有房间：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204155031773.png" alt="image-20250204155031773" style="zoom:50%;" /></p>
+
+<p>或者：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204155102412.png" alt="image-20250204155102412" style="zoom:50%;" /></p>
+
+<p>(4) 再进一步，我们可以在上面的数组切片中间隔地选定元素：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204155143156.png" alt="image-20250204155143156" style="zoom:50%;" /></p>
+
+<p>(5) 如果要选取所有楼层的位于第2列的房间，即不指定楼层和行号，用如下代码即可：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">或者</span>
+<span class="n">n</span><span class="p">[...,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204155327020.png" alt="image-20250204155327020" style="zoom:50%;" /></p>
+
+<p>类似地，我们可以选取所有位于第2行的房间，而不指定楼层和列号：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">或者</span>
+<span class="n">n</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204155440611.png" alt="image-20250204155440611" style="zoom:50%;" /></p>
+
+<p>如果要选取第1层楼的所有位于第2列的房间，在对应的两个维度上指定即可：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204155544201.png" alt="image-20250204155544201" style="zoom:50%;" /></p>
+
+<p>(6) 如果要选取第1层楼的最后一列的所有房间，使用如下代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">或者</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204155825259.png" alt="image-20250204155825259" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204160048177.png" alt="image-20250204160048177" style="zoom:50%;" /></p>
+
+<p>如果要反向选取第1层楼的最后一列的所有房间，使用如下代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204155952339.png" alt="image-20250204155952339" style="zoom:50%;" /></p>
+
+<p>在该数组切片中间隔地选定元素：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">::</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204160202755.png" alt="image-20250204160202755" style="zoom:50%;" /></p>
+
+<p>如果在多维数组中执行翻转一维数组的命令，将在最前面的维度上翻转元素的顺序，在我们的例子中将把第1层楼和第2层楼的房间交换：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204160318908.png" alt="image-20250204160318908" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :我们用各种方法对一个NumPy多维数组进行了切片操作。</p>
+
+<h1 id="26-动手实践改变数组的维度">2.6 动手实践：改变数组的维度</h1>
+
+<p>我们已经学习了怎样使用reshape函数，现在来学习一下怎样将数组展平。</p>
+
+<p><strong>(1) ravel 我们可以用ravel函数完成展平的操作：</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">n</span>
+<span class="n">n</span><span class="p">.</span><span class="nf">ravel</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204160449792.png" alt="image-20250204160449792" style="zoom:50%;" /></p>
+
+<p><strong>(2) flatten 这个函数恰如其名，flatten就是展平的意思，与ravel函数的功能相同。</strong>
+<strong>不过，flatten函数会请求分配内存来保存结果，而ravel函数只是返回数组的一个视图（view）</strong>：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204160550982.png" alt="image-20250204160550982" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204160639313.png" alt="image-20250204160639313" style="zoom:50%;" /></p>
+
+<p><strong>(3) 用元组设置维度 除了可以使用reshape函数，我们也可以直接用一个正整数元组来设置数组的维度，如下所示：</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">n</span><span class="p">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204160724262.png" alt="image-20250204160724262" style="zoom:50%;" /></p>
+
+<p>正如你所看到的，这样的做法<strong>将直接改变所操作的数组</strong>，现在数组n成了一个2×6的多维数组。</p>
+
+<p><strong>(4) transpose 在线性代数中，转置矩阵是很常见的操作。对于多维数组，我们也可以这样做：</strong></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204161217070.png" alt="image-20250204161217070" style="zoom:50%;" /></p>
+
+<p><strong>(5) resize resize和reshape函数的功能一样，但resize会直接修改所操作的数组：</strong></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204161332514.png" alt="image-20250204161332514" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :我们用ravel、flatten、reshape和resize函数对NumPy数组的维度进行了修改。</p>
+
+<h1 id="27-数组的组合">2.7 数组的组合</h1>
+
+<p>NumPy数组有水平组合、垂直组合和深度组合等多种组合方式，我们将使用vstack、dstack、hstack、column_stack、row_stack以及concatenate函数来完成数组的组合。</p>
+
+<h1 id="28-动手实践组合数组">2.8 动手实践：组合数组</h1>
+
+<p>首先，我们来创建一些数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">a</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="mi">2</span>
+<span class="n">b</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204161514566.png" alt="image-20250204161514566" style="zoom:50%;" /></p>
+
+<p><strong>(1) 水平组合</strong> 我们先从水平组合开始练习。将ndarray对象构成的元组作为参数，传给hstack函数。如下所示：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">hstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204161632412.png" alt="image-20250204161632412" style="zoom:50%;" /></p>
+
+<p>我们也可以用concatenate函数来实现同样的效果，如下所示：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204161758588.png" alt="image-20250204161758588" /></p>
+
+<p>总结如下图：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204161822596.png" alt="image-20250204161822596" /></p>
+
+<p><strong>(2) 垂直组合</strong> 垂直组合同样需要构造一个元组作为参数，只不过这次的函数变成了vstack。如下所示：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">vstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204161858860.png" alt="image-20250204161858860" style="zoom:50%;" /></p>
+
+<p>同样，我们将concatenate函数的axis参数设置为0即可实现同样的效果。这也是axis参数的默认值：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="n">或者</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">concatenate</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204162007821.png" alt="image-20250204162007821" style="zoom:50%;" /></p>
+
+<p>总结如下：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204162023399.png" alt="image-20250204162023399" style="zoom:50%;" /></p>
+
+<p><strong>(3) 深度组合</strong> 将相同的元组作为参数传给dstack函数，即可完成数组的深度组合。所谓</p>
+
+<p>深度组合，就是将一系列数组沿着纵轴（深度）方向进行层叠组合。举个例子，有若干张二维平面内的图像点阵数据，我们可以将这些图像数据沿纵轴方向层叠在一起，这就形象地解释了什么是深度组合。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">dstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204162158012.png" alt="image-20250204162158012" style="zoom:50%;" /></p>
+
+<p><strong>(4) 列组合</strong> <code class="language-plaintext highlighter-rouge">column_stack</code>函数对于一维数组将按列方向进行组合，如下所示：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204162334219.png" alt="image-20250204162334219" style="zoom:50%;" /></p>
+
+<p>而对于二维数组，column_stack与hstack的效果是相同的：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204162454275.png" alt="image-20250204162454275" style="zoom:50%;" /></p>
+
+<p>是的，你猜对了！我们可以用==运算符来比较两个NumPy数组，是不是很简洁？</p>
+
+<p><strong>(5) 行组合</strong> 当然，NumPy中也有按行方向进行组合的函数，它就是row_stack。对于两 个一维数组，将直接层叠起来组合成一个二维数组。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204162626890.png" alt="image-20250204162626890" style="zoom:50%;" /></p>
+
+<p>对于二维数组，row_stack与vstack的效果是相同的：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204162827029.png" alt="image-20250204162827029" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :我们按照水平、垂直和深度等方式进行了组合数组的操作。我们使用了vstack、dstack、hstack、column_stack、row_stack以及concatenate函数。</p>
+
+<hr />
+
+<h1 id="29-数组的分割">2.9 数组的分割</h1>
+
+<p>NumPy数组可以进行水平、垂直或深度分割，相关的函数有hsplit、vsplit、dsplit和split。我们可以将数组分割成相同大小的子数组，也可以指定原数组中需要分割的位置。</p>
+
+<h1 id="210-动手实践分割数组">2.10 动手实践：分割数组</h1>
+
+<p><strong>(1) 水平分割</strong> 下面的代码将把数组沿着水平方向分割为3个相同大小的子数组：</p>
+
+<p><code class="language-plaintext highlighter-rouge">np.hsplit(ary, indices_or_sections)</code>:</p>
+
+<ul>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">ary</code></strong>：待分割的输入数组，通常是一个二维数组（矩阵）。</p>
+  </li>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">indices_or_sections</code></strong>：</p>
+
+    <ul>
+      <li>
+        <p>如果是整数，则表示将数组平均分成 <code class="language-plaintext highlighter-rouge">indices_or_sections</code> 个子数组。</p>
+      </li>
+      <li>
+        <p>如果是一个一维数组，则它应该包含沿着水平方向分割的索引位置（即要在哪些列处分割）。</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204174139618.png" alt="image-20250204174139618" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204174354750.png" alt="image-20250204174354750" style="zoom:50%;" /></p>
+
+<p>对同样的数组，调用split函数并在参数中指定参数axis=1，对比一下结果：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204174451178.png" alt="image-20250204174451178" style="zoom:50%;" /></p>
+
+<p><strong>(2) 垂直分割</strong> vsplit函数将把数组沿着垂直方向分割：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">vsplit</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204180530102.png" alt="image-20250204180530102" style="zoom:50%;" /></p>
+
+<p>同样，调用split函数并在参数中指定参数<code class="language-plaintext highlighter-rouge">axis=0</code>，也可以得到同样的结果：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204180707325.png" alt="image-20250204180707325" style="zoom:50%;" /></p>
+
+<p>(3) 深度分割 不出所料，dsplit函数将按深度方向分割数组。我们先创建一个三维数组：</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">np.dsplit</code> 是 NumPy 中用于将一个三维数组沿着深度（即沿着第三个轴，通常是数组的“层”或“深度”）进行分割的函数。它的使用方式与 <code class="language-plaintext highlighter-rouge">np.hsplit</code>（水平分割）和 <code class="language-plaintext highlighter-rouge">np.vsplit</code>（垂直分割）类似，但是 <code class="language-plaintext highlighter-rouge">np.dsplit</code> 适用于三维数组，按深度（第三个轴）进行分割。</p>
+
+  <p><code class="language-plaintext highlighter-rouge">np.dsplit(ary, indices_or_sections)</code></p>
+
+  <ul>
+    <li>
+      <p><strong><code class="language-plaintext highlighter-rouge">ary</code></strong>：待分割的三维数组。</p>
+    </li>
+    <li>
+      <p><strong><code class="language-plaintext highlighter-rouge">indices_or_sections</code></strong>：</p>
+      <blockquote>
+
+        <ul>
+          <li>如果是整数，则表示将数组沿深度方向分割成 <code class="language-plaintext highlighter-rouge">indices_or_sections</code> 个子数组。</li>
+        </ul>
+      </blockquote>
+
+      <ul>
+        <li>如果是一个一维数组，它应该包含沿深度方向的索引位置，表示在哪些“深度”进行分割。</li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181148193.png" alt="image-20250204181148193" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181210420.png" alt="image-20250204181210420" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :我们用hsplit、vsplit、dsplit和split函数进行了分割数组的操作。</p>
+
+<h1 id="211-数组的属性">2.11 数组的属性</h1>
+
+<p>除了shape和dtype属性以外，ndarray对象还有很多其他的属性，在下面一一列出。</p>
+
+<ul>
+  <li>
+    <p>ndim属性，给出数组的维数，或数组轴的个数：</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181329553.png" alt="image-20250204181329553" style="zoom:50%;" /></li>
+      <li>简单理解，有几个<code class="language-plaintext highlighter-rouge">[</code>，<code class="language-plaintext highlighter-rouge">ndim</code>就是几。</li>
+    </ul>
+  </li>
+  <li>
+    <p>size属性，给出数组元素的总个数</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181421419.png" alt="image-20250204181421419" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>itemsize属性，给出数组中的<strong>元素</strong>在内存中所占的字节数： (注意：问的是单个元素)</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181523133.png" alt="image-20250204181523133" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>如果你想知道整个数组所占的存储空间，可以用nbytes属性来查看。这个属性的值其实就是itemsize和size属性值的乘积：</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181621611.png" alt="image-20250204181621611" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>T属性的效果和transpose函数一样:</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181710040.png" alt="image-20250204181710040" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>对于一维数组，其T属性就是原数组：</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181749313.png" alt="image-20250204181749313" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>在NumPy中，复数的虚部是用j表示的。例如，我们可以创建一个由复数构成的数组：</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181848219.png" alt="image-20250204181848219" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>real属性，给出复数数组的实部。如果数组中只包含实数元素，则其real属性将输出原数组：</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181921453.png" alt="image-20250204181921453" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>imag属性，给出复数数组的虚部：</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204181954556.png" alt="image-20250204181954556" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>如果数组中包含复数元素，则其数据类型自动变为复数型：</p>
+
+    <ul>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182027932.png" alt="image-20250204182027932" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>flat属性将返回一个numpy.flatiter对象，这是获得flatiter对象的唯一方式——我们无法访问flatiter的构造函数。这个所谓的“扁平迭代器”可以让我们像遍历一维数组一样去遍历任意的多维数组，如下所示：</p>
+
+    <ul>
+      <li>
+        <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182133924.png" alt="image-20250204182133924" style="zoom:50%;" /></p>
+      </li>
+      <li>
+        <p>补充：<code class="language-plaintext highlighter-rouge">numpy.flatiter</code> 是 NumPy 中的一个迭代器类，用于以扁平化（flattened）方式遍历数组的所有元素。它允许我们在数组中按顺序访问每个元素，无论原数组的维度如何。<code class="language-plaintext highlighter-rouge">flatiter</code> 是一个数组迭代器，它返回一个一维的迭代器，即使数组是多维的，它也会将数组展平并按元素顺序遍历。</p>
+
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">flatiter</code> 允许你通过单一的迭代接口遍历多维数组，而无需关心数组的实际维度。</li>
+        </ul>
+      </li>
+      <li>
+        <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182336727.png" style="zoom:50%;" /></p>
+      </li>
+      <li>
+        <p>我们还可以用flatiter对象直接获取一个数组元素：</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li>
+            <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182443215.png" alt="image-20250204182443215" style="zoom:50%;" /></p>
+          </li>
+          <li>或者<code class="language-plaintext highlighter-rouge">n.flat[1]</code></li>
+        </ul>
+      </li>
+      <li>
+        <p>或者获取多个元素：</p>
+
+        <ul>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182619739.png" alt="image-20250204182619739" style="zoom:50%;" /></li>
+        </ul>
+      </li>
+      <li>
+        <p>flat属性是一个可赋值的属性。对flat属性赋值将导致整个数组的元素都被覆盖：</p>
+
+        <ul>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182653632.png" alt="image-20250204182653632" style="zoom:50%;" /></li>
+          <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182722751.png" alt="image-20250204182722751" style="zoom:50%;" /></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>所有学习过的<code class="language-plaintext highlighter-rouge">ndarray</code>属性，总结如下：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182754108.png" alt="image-20250204182754108" /></p>
+
+<h1 id="212-动手实践数组的转换">2.12 动手实践：数组的转换</h1>
+
+<p>我们可以使用tolist函数将NumPy数组转换成Python列表。</p>
+
+<p>(1) 转换成列表：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182907399.png" alt="image-20250204182907399" style="zoom:50%;" /></p>
+
+<p>(2) astype函数可以在转换数组时指定数据类型：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204182953688.png" alt="image-20250204182953688" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204183119477.png" alt="image-20250204183119477" style="zoom:50%;" /></p>
+
+<p>在上面将复数转换为整数的过程中，我们丢失了复数的虚部。astype函数也可以接受数据类型为字符串的参数。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250204183202389.png" alt="image-20250204183202389" style="zoom:50%;" /></p>
+
+<p>这一次我们使用了正确的数据类型，因此不会再显示任何警告信息。</p>
+
+<p>刚才做了些什么 :我们将NumPy数组转换成了不同数据类型的Python列表。</p>
+
+<h1 id="213-本章小结">2.13 本章小结</h1>
+
+<p>在本章中，我们学习了很多NumPy的基础知识：数据类型和NumPy数组。对于数组而言，有很多属性可以用来描述数组，数据类型就是其中之一。在NumPy中，数组的数据类型是用对象来完善表示的。</p>
+
+<p>类似于Python列表，NumPy数组也可以方便地进行切片和索引操作。在多维数组上，NumPy有明显的优势。</p>
+
+<p>涉及改变数组维度的操作有很多种——组合、调整、设置维度和分割等。在这一章中，对很多改变数组维度的实用函数进行了说明。</p>
+
+<p>在学习完基础知识后，我们将进入到第3章来学习NumPy中的常用函数，包括基本数学函数和统计函数等。</p>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/02/04/Numpy%E7%9A%84%E5%B9%BF%E6%92%AD%E5%92%8C%E5%B9%BF%E6%92%AD%E6%9C%BA%E5%88%B6/" data-toggle="tooltip" data-placement="top" title="numpy的广播和广播机制">
+                        Previous<br>
+                        <span>numpy的广播和广播机制</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/02/06/Numpy(3)%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" data-toggle="tooltip" data-placement="top" title="numpy(3)常用函数">
+                        Next<br>
+                        <span>numpy(3)常用函数</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0034" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="3">力扣</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="2">算法</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

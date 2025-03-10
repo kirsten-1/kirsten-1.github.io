@@ -1,0 +1,2651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="numpy(8)质量控制 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-02-12T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="人工智能AI基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/02/12/NumPy(8)%E8%B4%A8%E9%87%8F%E6%8E%A7%E5%88%B6/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>numpy(8)质量控制 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/02/12/NumPy(8)%E8%B4%A8%E9%87%8F%E6%8E%A7%E5%88%B6/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80" title="人工智能AI基础">人工智能AI基础</a>
+                        
+                    </div>
+                    <h1>numpy(8)质量控制</h1>
+                    
+                    <h2 class="subheading">第 8 章 质量控制</h2>
+                    <span class="meta">Posted by Hilda on February 12, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>前7章以及其他补充已经整理如下：</p>
+
+<p><a href="https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/">第1章NumPy入门</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/04/numpy(2)_numpy%E5%9F%BA%E7%A1%80/">第2章NumPy基础</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/06/Numpy(3)%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/">第3章常用函数</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/04/Numpy%E7%9A%84%E5%B9%BF%E6%92%AD%E5%92%8C%E5%B9%BF%E6%92%AD%E6%9C%BA%E5%88%B6/">广播与广播机制</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/07/NumPy(4)%E4%BE%BF%E6%8D%B7%E5%87%BD%E6%95%B0/">第4章便捷函数</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/09/NumPy(5)%E7%9F%A9%E9%98%B5%E5%92%8C%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0/">第5章矩阵和通用函数</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/09/NumPy(6)%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0NumPy%E6%A8%A1%E5%9D%97/">第6章深入学习NumPy模块</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/10/NumPy(7)%E4%B8%93%E7%94%A8%E5%87%BD%E6%95%B0/">第7章专用函数</a></p>
+
+<hr />
+
+<p>有些程序员只在产品中做测试。如果你不是他们中的一员，你可能会对单元测试的概念耳熟能详。单元测试是由程序员编写的自动测试模块，用来测试他或者她的代码。这些单元测试可以测试某个函数或函数中的某个独立的部分。每一个单元测试仅仅对一小部分代码进行测试。单元测试可以带来诸多好处，如提高代码质量、可重复性测试等，使软件副作用更为清晰。 Python 本身对单元测试就有良好的支持。此外， NumPy 中也有numpy.testing包可以支持NumPy代码的单元测试。</p>
+
+<p><strong>TDD（Test Driven Development，测试驱动的开发）</strong>是软件开发史上最重要的里程碑之一。TDD主要专注于自动单元测试，它的目标是尽最大限度自动化测试代码。如果代码被改动，我们仍可以运行测试并捕捉可能存在的问题。换言之，测试对于已经存在的功能模块依然有效。</p>
+
+<blockquote>
+  <p>注：<strong>TDD（Test-Driven Development，测试驱动开发）</strong> 是一种软件开发方法论，它强调在编写生产代码之前，先编写测试代码。换句话说，开发者在开始实现功能前，先编写测试用例，然后通过编写足够的代码来使这些测试通过，最后进行重构。</p>
+
+  <p>TDD 通常遵循以下的 <strong>红绿重构</strong>（Red-Green-Refactor）循环：</p>
+
+  <ol>
+    <li><strong>红色（Red）</strong>：
+      <blockquote>
+        <ul>
+          <li>编写一个失败的测试用例。测试用例应该描述你希望实现的功能或行为。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li>由于功能还没有实现，测试会失败。</li>
+      </ul>
+    </li>
+    <li><strong>绿色（Green）</strong>：
+      <blockquote>
+        <ul>
+          <li>编写足够的代码，使得测试用例能够通过。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li>代码的实现目标是使得测试通过，因此此时代码通常是最简单的解决方案。</li>
+      </ul>
+    </li>
+    <li><strong>重构（Refactor）</strong>：
+      <blockquote>
+        <ul>
+          <li>在测试通过后，对代码进行重构，以提高代码质量，保持代码的简洁和可维护性。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li>在重构过程中，确保已有的测试依然通过，验证没有破坏已有的功能。</li>
+      </ul>
+    </li>
+  </ol>
+
+  <p>尽管初期开发可能会稍慢，但长期来看，TDD 有助于提高代码的可维护性和减少bug。</p>
+</blockquote>
+
+<p>本章涵盖以下内容：</p>
+
+<ul>
+  <li>单元测试；</li>
+  <li>断言机制；</li>
+  <li>浮点数精度。</li>
+</ul>
+
+<hr />
+
+<h1 id="81-断言函数">8.1 断言函数</h1>
+
+<p>单元测试通常使用<strong>断言函数</strong>作为测试的组成部分。在进行数值计算时，我们经常遇到比较两个近似相等的浮点数这样的基本问题。整数之间的比较很简单，但浮点数却非如此，这是由于<strong>计算机对浮点数的表示本身就是不精确的</strong>。<code class="language-plaintext highlighter-rouge">numpy.testing</code>包中有很多实用的工具函数考虑了浮点数比较的问题，可以测试前提是否成立。</p>
+
+<blockquote>
+  <p>为什么计算机对浮点数的表示本身就是不精确？</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">a</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span>  <span class="c1"># 输出: False
+</span>
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+
+  <p>计算机中的数字是通过有限数量的二进制位来表示的，而<strong>浮点数</strong>是计算机用来表示实数的一种近似方式。在计算机内存中，每个数字（包括浮点数）都有固定的存储空间（比如 32 位或 64 位）。这意味着即使我们需要表示一个无限小数，计算机也只能将它截断为有限位数，因此无法完美精确地表示所有实数。另外，由于浮点数的尾数部分（即有效数字的精度）是有限的，因此对于不能被精确表示的数字，计算机会将它们四舍五入，产生误差。</p>
+
+  <p>因此，浮点数的精度问题是计算机科学中的一个固有问题，尤其是在涉及高精度计算时</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>函数</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_almost_equal</code></td>
+      <td>如果两个数字的近似程度没有达到指定精度，就抛出异常</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_approx_equal</code></td>
+      <td>如果两个数字的近似程度没有达到指定有效数字，就抛出异常</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_array_almost_equal</code></td>
+      <td>如果两个数组中元素的近似程度没有达到指定精度，就抛出异常</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_array_equal</code></td>
+      <td>如果两个数组对象不相同，就抛出异常</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_array_less</code></td>
+      <td>两个数组组必须形状一致，并且第一个数组的元素严格小于第二个数组的元素，否则抛出异常</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_equal</code></td>
+      <td>如果两个对象不相同，就抛出异常</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_raises</code></td>
+      <td>若用填写的参数调用函数没有抛出指定的异常，则测试不通过</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_warns</code></td>
+      <td>若没有抛出指定的警告，则测试不通过</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_string_equal</code></td>
+      <td>判断两个字符串变量完全相同</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">assert_allclose</code></td>
+      <td>如果两个对象的近似程度超过了指定的容差限，就抛出异常</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p>注：<code class="language-plaintext highlighter-rouge">assert_*</code> 开头的函数通常用于验证测试中的各种条件，如比较两个数字、数组或对象是否相等，是否触发预期的异常或警告，等等。</p>
+
+  <p>注：特别注意<code class="language-plaintext highlighter-rouge">np.nan</code>的情况。</p>
+</blockquote>
+
+<h2 id="补充1assert_almost_equal">补充1:<code class="language-plaintext highlighter-rouge">assert_almost_equal</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_almost_equal</code> 是一个用于 <strong>单元测试</strong> 的函数，它通常用于 <strong>比较两个数字</strong> 或 <strong>数组</strong>，并验证它们是否相等到一定的精度。这个函数常用于确保在计算时，结果与预期值非常接近，通常是浮点数计算的比较。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_almost_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">actual</code></strong>:
+需要检查的实际值，通常是你计算得到的值。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">desired</code></strong>:
+期望的值，即你希望实际值接近的值。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">decimal</code></strong>（可选，默认值为 6）:
+期望的精度，表示<strong>小数点后要比较的位数</strong>。例如，<code class="language-plaintext highlighter-rouge">decimal=6</code> 表示实际值和期望值的小数点后最多允许有 6 位差异。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">err_msg</code></strong>（可选）:
+如果断言失败时显示的错误信息。你可以自定义错误消息。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">verbose</code></strong>（可选，默认值为 True）:
+是否显示详细的输出。如果为 True，会显示更多的调试信息。</p>
+
+<p>返回值：如果 <code class="language-plaintext highlighter-rouge">actual</code> 和 <code class="language-plaintext highlighter-rouge">desired</code> 在指定的精度范围内相等，则函数什么都不返回，测试通过。如果它们的差异超过了指定的精度，函数会引发 <code class="language-plaintext highlighter-rouge">AssertionError</code>，并显示相应的错误信息。</p>
+
+<p>例1:假设你有一个浮点数计算结果，并希望确保它与预期值非常接近，可以使用 <code class="language-plaintext highlighter-rouge">assert_almost_equal</code> 来验证。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际值
+</span><span class="n">actual_value</span> <span class="o">=</span> <span class="mf">0.3333333</span>
+
+<span class="c1"># 期望值
+</span><span class="n">desired_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span>
+
+<span class="c1"># 比较两个数字，最多允许小数点后 6 位差异
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_almost_equal</span><span class="p">(</span><span class="n">actual_value</span><span class="p">,</span> <span class="n">desired_value</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 输出：测试通过!
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>例2:比较数组</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际数组
+</span><span class="n">actual_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">0.3333333</span><span class="p">,</span> <span class="mf">0.6666667</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+<span class="c1"># 期望数组
+</span><span class="n">desired_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># 比较数组中的每个元素，最多允许小数点后 6 位差异
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_almost_equal</span><span class="p">(</span><span class="n">actual_array</span><span class="p">,</span> <span class="n">desired_array</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">数组测试通过!</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 输出：数组测试通过!
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>例3：浮点数之间的差异超过精度限制</p>
+
+<blockquote>
+  <p>注意：<strong>需要注意的是，如果在指定位数上数值相差1则仍然不会报错</strong></p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际值
+</span><span class="n">actual_value</span> <span class="o">=</span> <span class="mf">0.3333344</span>
+
+<span class="c1"># 期望值
+</span><span class="n">desired_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span>
+
+<span class="c1"># 比较两个数字，最多允许小数点后 6 位差异
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_almost_equal</span><span class="p">(</span><span class="n">actual_value</span><span class="p">,</span> <span class="n">desired_value</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span><span class="c1"># 输出：测试通过！
+</span><span class="k">except</span> <span class="nb">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">测试失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>下面就会报错：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际值
+</span><span class="n">actual_value</span> <span class="o">=</span> <span class="mf">0.3333444</span>
+
+<span class="c1"># 期望值
+</span><span class="n">desired_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span>
+
+<span class="c1"># 比较两个数字，最多允许小数点后 6 位差异
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_almost_equal</span><span class="p">(</span><span class="n">actual_value</span><span class="p">,</span> <span class="n">desired_value</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span><span class="c1"># 输出：测试通过！
+</span><span class="k">except</span> <span class="nb">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">测试失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210225915596.png" alt="image-20250210225915596" style="zoom:50%;" /></p>
+
+<p>若有NAN：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_almost_equal</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+
+<span class="c1"># 对于NaN，assert_almost_equal默认认为它们相等
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="nf">assert_almost_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Test passed: NaN values are considered equal</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 输出：Test passed: NaN values are considered equal
+</span><span class="k">except</span> <span class="nb">AssertionError</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">AssertionError: NaN values cannot be compared using assert_almost_equal</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h2 id="补充2assert_approx_equal">补充2:<code class="language-plaintext highlighter-rouge">assert_approx_equal</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_approx_equal</code> 是一个用于单元测试的函数，通常用于比较两个数字或数组，检查它们是否在 <strong>近似相等</strong> 的情况下通过测试。与 <code class="language-plaintext highlighter-rouge">assert_almost_equal</code> 不同，<code class="language-plaintext highlighter-rouge">assert_approx_equal</code> 用于判断两个数字是否在给定的 <strong>容差</strong> 内接近，而不要求它们完全相等到某个固定的小数位数。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_approx_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">significant</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">actual</code></strong>：
+实际值，通常是你计算得到的值。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">desired</code></strong>：
+期望的值，即你希望实际值接近的值。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">significant</code></strong>（可选，默认值为 7）：
+允许的 <strong>有效数字位数</strong>。<code class="language-plaintext highlighter-rouge">significant=7</code> 表示允许两个数字的差异在 <strong>有效数字的第 7 位</strong> 内。有效数字决定了两个数字的接近程度。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">err_msg</code></strong>（可选）：
+如果断言失败时显示的错误信息。你可以自定义错误消息。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">verbose</code></strong>（可选，默认值为 True）：
+是否显示详细的输出。如果为 True，会显示更多的调试信息。</p>
+
+<p>返回值：如果 <code class="language-plaintext highlighter-rouge">actual</code> 和 <code class="language-plaintext highlighter-rouge">desired</code> 的差异在指定的有效数字范围内，则函数什么都不返回，测试通过。如果它们的差异超过了指定的有效数字，函数会引发 <code class="language-plaintext highlighter-rouge">AssertionError</code>，并显示相应的错误信息。</p>
+
+<p>例1:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际值
+</span><span class="n">actual_value</span> <span class="o">=</span> <span class="mf">0.3333344</span>
+
+<span class="c1"># 期望值
+</span><span class="n">desired_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span>  <span class="c1"># 即 0.3333333...
+</span>
+<span class="c1"># 比较两个数字，最多允许 7 位有效数字的差异
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_approx_equal</span><span class="p">(</span><span class="n">actual_value</span><span class="p">,</span> <span class="n">desired_value</span><span class="p">,</span> <span class="n">significant</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210230214140.png" alt="image-20250210230214140" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>注：将上面的<code class="language-plaintext highlighter-rouge">actual_value</code>改为 ` 0.3333334`，则测试通过，即如果在有效数字的指定位数上数值相差1则仍然不会报错</p>
+</blockquote>
+
+<hr />
+
+<h2 id="补充3assert_array_almost_equal">补充3:<code class="language-plaintext highlighter-rouge">assert_array_almost_equal</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_array_almost_equal</code> 是一个用于 <strong>单元测试</strong> 的函数，通常用于比较两个 <strong>数组</strong> 中的元素，并检查它们是否在给定的精度范围内相等。该函数适用于浮点数数组的比较，特别是在需要考虑微小的舍入误差时。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_almost_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">actual</code></strong>：
+实际值，通常是你计算得到的数组。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">desired</code></strong>：
+期望的值，即你希望实际值接近的数组。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">decimal</code></strong>（可选，默认值为 6）：
+允许的精度，表示小数点后要比较的位数。例如，<code class="language-plaintext highlighter-rouge">decimal=6</code> 表示实际值和期望值的小数点后最多允许有 6 位差异。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">err_msg</code></strong>（可选）：
+如果断言失败时显示的错误信息。你可以自定义错误消息。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">verbose</code></strong>（可选，默认值为 True）：
+是否显示详细的输出。如果为 True，会显示更多的调试信息。</p>
+
+<p>返回中：如果 <code class="language-plaintext highlighter-rouge">actual</code> 和 <code class="language-plaintext highlighter-rouge">desired</code> 数组中的元素在指定的精度范围内相等，则函数什么都不返回，测试通过。如果它们的差异超过了指定的精度，函数会引发 <code class="language-plaintext highlighter-rouge">AssertionError</code>，并显示相应的错误信息。</p>
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际数组
+</span><span class="n">actual_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">0.3333333</span><span class="p">,</span> <span class="mf">0.6666677</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+<span class="c1"># 期望数组
+</span><span class="n">desired_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># 比较数组中的每个元素，最多允许小数点后 6 位差异
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_almost_equal</span><span class="p">(</span><span class="n">actual_array</span><span class="p">,</span> <span class="n">desired_array</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># 输出：测试通过！
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>注：如果在指定位数上数值相差1则仍然不会报错（例如上面指定6位，但是第六位不一样，还是不报错，测试通过）</p>
+</blockquote>
+
+<h2 id="补充4assert_array_equal">补充4:<code class="language-plaintext highlighter-rouge">assert_array_equal</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_array_equal</code> 是 NumPy 中的一个测试函数，用于比较两个数组是否 <strong>完全相等</strong>。它在单元测试中非常有用，通常用于检查两个数组是否具有相同的形状和元素。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">actual</code></strong>：
+实际值，通常是你计算得到的数组。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">desired</code></strong>：
+期望的值，即你希望实际值和期望值相等的数组。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">err_msg</code></strong>（可选）：
+如果断言失败时显示的错误信息。你可以自定义错误消息。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">verbose</code></strong>（可选，默认值为 True）：
+是否显示详细的输出。如果为 True，会显示更多的调试信息。</p>
+
+<p>返回值：</p>
+
+<p>如果 <code class="language-plaintext highlighter-rouge">actual</code> 和 <code class="language-plaintext highlighter-rouge">desired</code> 数组完全相等（形状和元素相同），则函数什么都不返回，测试通过。如果它们不相等，函数会引发 <code class="language-plaintext highlighter-rouge">AssertionError</code>，并显示相应的错误信息。</p>
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际数组
+</span><span class="n">actual_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># 期望数组
+</span><span class="n">desired_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+
+<span class="c1"># 比较两个数组是否完全相等
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_equal</span><span class="p">(</span><span class="n">actual_array</span><span class="p">,</span> <span class="n">desired_array</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>报错：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210230831050.png" alt="image-20250210230831050" style="zoom:50%;" /></p>
+
+<p>再看一个例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际数组
+</span><span class="n">actual_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># 期望数组
+</span><span class="n">desired_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">]])</span>  <span class="c1"># 形状不同
+</span>
+<span class="c1"># 比较两个数组是否完全相等
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_equal</span><span class="p">(</span><span class="n">actual_array</span><span class="p">,</span> <span class="n">desired_array</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">测试失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>报错是形状不匹配：报错不是Assertion Error</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210230915906.png" alt="image-20250210230915906" style="zoom:50%;" /></p>
+
+<hr />
+
+<h2 id="补充5assert_array_less">补充5:<code class="language-plaintext highlighter-rouge">assert_array_less</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_array_less</code> 是 NumPy 中的一个测试函数，用于检查 <strong>一个数组中的元素是否严格小于另一个数组中的对应元素</strong>，或者 <strong>数组中所有元素是否都小于给定的标量</strong>。它通常用于单元测试中，以确保数组中的元素满足某个比较条件。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_less</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">a</code></strong>：
+实际值，可以是一个数组，或与 <code class="language-plaintext highlighter-rouge">b</code> 相同形状的数组。需要检查的数组中的元素。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">b</code></strong>：
+期望的值。可以是一个数组，或一个标量。如果是数组，则其形状必须与 <code class="language-plaintext highlighter-rouge">a</code> 相同。如果是标量，则检查数组中所有元素是否小于该标量。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">err_msg</code></strong>（可选）：
+如果断言失败时显示的错误信息。你可以自定义错误消息。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">verbose</code></strong>（可选，默认值为 True）：
+是否显示详细的输出。如果为 True，会显示更多的调试信息。</p>
+
+<p>返回值：</p>
+
+<p>如果 <code class="language-plaintext highlighter-rouge">a</code> 中的所有元素都严格小于 <code class="language-plaintext highlighter-rouge">b</code> 中对应的元素（或者 <code class="language-plaintext highlighter-rouge">a</code> 中所有元素都小于标量 <code class="language-plaintext highlighter-rouge">b</code>），则函数什么都不返回，测试通过。如果任意一个元素不满足该条件，函数会引发 <code class="language-plaintext highlighter-rouge">AssertionError</code>，并显示相应的错误信息。</p>
+
+<p>例如：测试通过的例子</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际数组
+</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># 期望数组
+</span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+
+<span class="c1"># 检查 a 中的每个元素是否都严格小于 b 中对应的元素
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_less</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 输出：测试通过!
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>下面是2个测试不通过的例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际数组
+</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="c1"># 期望数组
+</span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># 检查 a 中的每个元素是否都严格小于 b 中对应的元素
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_less</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">测试失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210231528685.png" alt="image-20250210231528685" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际数组
+</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># 期望标量
+</span><span class="n">b</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># 检查是否所有元素都小于 4
+</span>
+<span class="c1"># 检查 a 中的每个元素是否都严格小于 4
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_less</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">测试失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210231606635.png" alt="image-20250210231606635" style="zoom:50%;" /></p>
+
+<hr />
+
+<h2 id="补充6assert_equal">补充6:<code class="language-plaintext highlighter-rouge">assert_equal</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_equal</code> 是一个用于 <strong>单元测试</strong> 的函数，它用于比较 <strong>两个对象是否完全相等</strong>。它常用于测试中，确保预期的结果与实际的计算结果完全一致。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">actual</code></strong>：
+需要检查的实际值，通常是你计算得到的值。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">desired</code></strong>：
+期望的值，即你希望实际值和期望值相等的值。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">err_msg</code></strong>（可选）：
+如果断言失败时显示的错误信息。你可以自定义错误消息。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">verbose</code></strong>（可选，默认值为 True）：
+是否显示详细的输出。如果为 True，会显示更多的调试信息。</p>
+
+<p>返回值：如果 <code class="language-plaintext highlighter-rouge">actual</code> 和 <code class="language-plaintext highlighter-rouge">desired</code> 完全相等（包括类型、形状和元素），则函数什么都不返回，测试通过。如果它们不相等，函数会引发 <code class="language-plaintext highlighter-rouge">AssertionError</code>，并显示相应的错误信息。</p>
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际数组
+</span><span class="n">actual_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># 期望数组
+</span><span class="n">desired_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+
+<span class="c1"># 比较两个数组是否完全相等
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_equal</span><span class="p">(</span><span class="n">actual_array</span><span class="p">,</span> <span class="n">desired_array</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">数组测试通过!</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210231937098.png" alt="image-20250210231937098" style="zoom:50%;" /></p>
+
+<hr />
+
+<h2 id="补充7assert_raises">补充7:<code class="language-plaintext highlighter-rouge">assert_raises</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_raises</code> 是一个用于单元测试的函数，用于检查在执行某个代码块时是否会引发指定的异常。它通常用于验证当输入不合法或者发生某些错误时，程序是否正确地抛出了预期的异常。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_raises</span><span class="p">(</span><span class="n">expected_exception</span><span class="p">,</span> <span class="n">callable_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">expected_exception</code></strong>：
+期望的异常类型，可以是一个异常类（例如 <code class="language-plaintext highlighter-rouge">ValueError</code>、<code class="language-plaintext highlighter-rouge">TypeError</code> 等），或者自定义的异常类。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">callable_obj</code></strong>：
+可调用对象（如函数、方法），它应该是一个函数或可以调用的对象，这个函数会在测试过程中执行。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">*args</code></strong>：
+可选参数，传递给 <code class="language-plaintext highlighter-rouge">callable_obj</code> 的位置参数。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">**kwargs</code></strong>：
+可选参数，传递给 <code class="language-plaintext highlighter-rouge">callable_obj</code> 的关键字参数。</li>
+</ul>
+
+<p>返回值：</p>
+
+<ul>
+  <li>如果执行 <code class="language-plaintext highlighter-rouge">callable_obj</code> 时抛出了指定的异常 <code class="language-plaintext highlighter-rouge">expected_exception</code>，则测试通过。</li>
+  <li>如果没有抛出该异常，或者抛出了不同的异常，测试失败并抛出 <code class="language-plaintext highlighter-rouge">AssertionError</code>。</li>
+</ul>
+
+<hr />
+
+<p>例子1:假设你编写了一个函数，当输入负数时会抛出 <code class="language-plaintext highlighter-rouge">ValueError</code> 异常。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 测试函数
+</span><span class="k">def</span> <span class="nf">test_negative_input</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sh">"</span><span class="s">输入不能是负数</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># 检查当输入负数时是否抛出 ValueError 异常
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_raises</span><span class="p">(</span><span class="nb">ValueError</span><span class="p">,</span> <span class="n">test_negative_input</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 输出：测试通过!
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>例子2:报异常：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 测试函数
+</span><span class="k">def</span> <span class="nf">test_negative_input</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sh">"</span><span class="s">输入不能是负数</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># 检查当输入 5 时是否抛出 ValueError 异常
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_raises</span><span class="p">(</span><span class="nb">ValueError</span><span class="p">,</span> <span class="n">test_negative_input</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">测试失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210232543807.png" alt="image-20250210232543807" style="zoom:50%;" /></p>
+
+<p>由于没有抛出期望的 <code class="language-plaintext highlighter-rouge">ValueError</code> 异常，测试失败并引发 <code class="language-plaintext highlighter-rouge">AssertionError</code>。</p>
+
+<p>例子3:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 测试函数
+</span><span class="k">def</span> <span class="nf">test_zero_division</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">x</span>
+
+<span class="c1"># 检查当传入 0 时是否抛出 ZeroDivisionError 异常
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_raises</span><span class="p">(</span><span class="nb">ValueError</span><span class="p">,</span> <span class="n">test_zero_division</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试通过!</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">测试失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210232725826.png" alt="image-20250210232725826" style="zoom:50%;" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">test_zero_division(0)</code> 会抛出 <code class="language-plaintext highlighter-rouge">ZeroDivisionError</code>，而不是 <code class="language-plaintext highlighter-rouge">ValueError</code>。</p>
+
+<p>因为我们期望 <code class="language-plaintext highlighter-rouge">ValueError</code>，但是实际上抛出了 <code class="language-plaintext highlighter-rouge">ZeroDivisionError</code>，测试失败。</p>
+
+<h2 id="补充8assert_warns">补充8:<code class="language-plaintext highlighter-rouge">assert_warns</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_warns</code> 是一个用于 <strong>单元测试</strong> 的函数，它用于检查在执行某个代码块时是否会触发指定的警告。通常情况下，警告并不直接导致程序崩溃，但我们可能需要确保在某些特定条件下，程序会给出相应的警告。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_warns</span><span class="p">(</span><span class="n">expected_warning</span><span class="p">,</span> <span class="n">callable_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">expected_warning</code></strong>：
+期望的警告类型，可以是一个警告类（例如 <code class="language-plaintext highlighter-rouge">DeprecationWarning</code>、<code class="language-plaintext highlighter-rouge">UserWarning</code> 等），或者自定义的警告类。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">callable_obj</code></strong>：
+可调用对象（如函数、方法），它应该是一个函数或可以调用的对象，这个函数会在测试过程中执行。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">*args</code></strong>：
+可选参数，传递给 <code class="language-plaintext highlighter-rouge">callable_obj</code> 的位置参数。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">**kwargs</code></strong>：
+可选参数，传递给 <code class="language-plaintext highlighter-rouge">callable_obj</code> 的关键字参数。</li>
+</ul>
+
+<p>返回值：</p>
+
+<ul>
+  <li>如果执行 <code class="language-plaintext highlighter-rouge">callable_obj</code> 时触发了指定的警告 <code class="language-plaintext highlighter-rouge">expected_warning</code>，则测试通过。</li>
+  <li>如果没有触发该警告，或者触发了不同类型的警告，测试失败并抛出 <code class="language-plaintext highlighter-rouge">AssertionError</code>。</li>
+</ul>
+
+<p>这个函数特别适合用于当你希望测试一些过时的或将来可能发生变化的功能时。</p>
+
+<hr />
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">warnings</span>
+
+<span class="k">def</span> <span class="nf">my_function</span><span class="p">():</span>
+    <span class="n">warnings</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="sh">"</span><span class="s">This is a deprecated function</span><span class="sh">"</span><span class="p">,</span> <span class="nb">DeprecationWarning</span><span class="p">)</span>
+
+<span class="c1"># 使用 assert_warns 测试是否会触发 DeprecationWarning
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_warns</span><span class="p">(</span><span class="nb">DeprecationWarning</span><span class="p">,</span> <span class="n">my_function</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">测试成功！</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211113853262.png" alt="image-20250211113853262" style="zoom:50%;" /></p>
+
+<p>在这个例子中，<code class="language-plaintext highlighter-rouge">my_function</code> 会触发一个 <code class="language-plaintext highlighter-rouge">DeprecationWarning</code>，<code class="language-plaintext highlighter-rouge">assert_warns</code> 会确保这个警告被引发。如果没有引发该警告，测试将失败。</p>
+
+<h2 id="补充9assert_string_equal">补充9:<code class="language-plaintext highlighter-rouge">assert_string_equal</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_string_equal</code> 是 NumPy 中 <code class="language-plaintext highlighter-rouge">numpy.testing</code> 模块下的一个函数，用于比较两个字符串是否相等。它通常用于单元测试中，以确保两个字符串的值完全相同。如果字符串不相等，则测试会失败。<code class="language-plaintext highlighter-rouge">assert_string_equal</code> 用来断言两个字符串是否完全一致。它会比较两个字符串的内容，若不相等则抛出 <code class="language-plaintext highlighter-rouge">AssertionError</code>。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_string_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><code class="language-plaintext highlighter-rouge">actual</code>：实际值，通常是你测试中的结果字符串。</p>
+
+<p><code class="language-plaintext highlighter-rouge">desired</code>：期望的字符串值。</p>
+
+<hr />
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Hello, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">!</span><span class="sh">"</span>
+
+<span class="c1"># 测试 greet 函数
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_string_equal</span><span class="p">(</span><span class="nf">greet</span><span class="p">(</span><span class="sh">"</span><span class="s">Alice</span><span class="sh">"</span><span class="p">),</span> <span class="sh">"</span><span class="s">Hello, Alice!</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_string_equal</span><span class="p">(</span><span class="nf">greet</span><span class="p">(</span><span class="sh">"</span><span class="s">Bob</span><span class="sh">"</span><span class="p">),</span> <span class="sh">"</span><span class="s">Hello, Bob!</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>运行结果：代码没有报错。</p>
+
+<p>在这个例子中，我们有一个 <code class="language-plaintext highlighter-rouge">greet</code> 函数，它根据传入的名字返回一个问候字符串。<code class="language-plaintext highlighter-rouge">assert_string_equal</code> 被用来验证函数返回的字符串是否与我们期望的字符串相同。</p>
+
+<blockquote>
+  <p>注：<code class="language-plaintext highlighter-rouge">assert_string_equal</code> 是严格的比较，即两个字符串必须完全相同（包括大小写、空格等）。如果有任何不同，测试就会失败。</p>
+
+  <p>如果你只关心字符串的一部分内容或不在乎空格、大小写差异，可能需要使用其他方法（如正则表达式或将字符串转换为小写后比较）。</p>
+</blockquote>
+
+<h2 id="补充10assert_allclose">补充10:<code class="language-plaintext highlighter-rouge">assert_allclose</code></h2>
+
+<p><code class="language-plaintext highlighter-rouge">assert_allclose</code> 是 NumPy 中 <code class="language-plaintext highlighter-rouge">numpy.testing</code> 模块下的一个函数，用于比较两个数组（或数值）是否在指定的容差范围内相等。它是用于浮动数值比较的常用方法，特别适用于那些可能因为精度问题而导致微小差异的情况。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">equal_nan</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">actual</code></strong>：实际值，可以是一个数组或单个数值。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">desired</code></strong>：期望值，可以是一个数组或单个数值。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">rtol</code></strong>：相对容差（relative tolerance），默认为 <code class="language-plaintext highlighter-rouge">1e-5</code>，表示允许的相对误差。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">atol</code></strong>：绝对容差（absolute tolerance），默认为 <code class="language-plaintext highlighter-rouge">1e-8</code>，表示允许的绝对误差。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">equal_nan</code></strong>：是否将 <code class="language-plaintext highlighter-rouge">NaN</code> 视为相等。默认为 <code class="language-plaintext highlighter-rouge">False</code>，即 <code class="language-plaintext highlighter-rouge">NaN</code> 不会被认为是相等的。如果设置为 <code class="language-plaintext highlighter-rouge">True</code>，则会将所有 <code class="language-plaintext highlighter-rouge">NaN</code> 值视为相等。</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">assert_allclose</code> 将通过以下公式来判断两个值是否相近：\(abs(actual−desired)≤atol+rtol×abs(desired)\)</p>
+
+<p>如果满足该条件，则认为两个值在容忍范围内相等。</p>
+
+<hr />
+
+<p>例子：不报错：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 实际结果和期望结果有微小差异
+</span><span class="n">actual</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0001</span><span class="p">])</span>
+<span class="n">desired</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
+
+<span class="c1"># 使用 assert_allclose 来判断是否在允许的容差范围内
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>再看一个例子：不报错：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">actual</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">])</span>
+<span class="n">desired</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">])</span>
+
+<span class="c1"># 设置 equal_nan=True，表示 NaN 值是相等的
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">equal_nan</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>下面是报错的例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">actual</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
+<span class="n">desired</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">])</span>
+
+<span class="c1"># 这个测试会失败，因为差异超过了容差
+</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211132058455.png" alt="image-20250211132058455" style="zoom:50%;" /></p>
+
+<h1 id="82-动手实践使用-assert_almost_equal-断言近似相等">8.2 动手实践：使用 assert_almost_equal 断言近似相等</h1>
+
+<p>假设你有两个很接近的数字。我们用<code class="language-plaintext highlighter-rouge">assert_almost_equal</code>函数来检查它们是否近似相等。</p>
+
+<p>(1) 调用函数，指定较低的精度（小数点后7位）：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_almost_equal</span><span class="p">(</span><span class="mf">0.123456789</span><span class="p">,</span> <span class="mf">0.123456780</span><span class="p">,</span> <span class="n">decimal</span> <span class="o">=</span> <span class="mi">7</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211134421554.png" alt="image-20250211134421554" style="zoom:50%;" /></p>
+
+<p>注意，这里没有抛出异常</p>
+
+<p>(2) 调用函数，指定较高的精度（小数点后8位）：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_almost_equal</span><span class="p">(</span><span class="mf">0.123456789</span><span class="p">,</span> <span class="mf">0.123456780</span><span class="p">,</span> <span class="n">decimal</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211134520658.png" alt="image-20250211134520658" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>注：指定的这一位不同也不会报错。改为<code class="language-plaintext highlighter-rouge">decimal=9</code>，会报错：</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211134610883.png" alt="image-20250211134610883" style="zoom:50%;" /></p>
+</blockquote>
+
+<p>刚才做了些什么 ： 我们使用NumPy testing包中的assert_almost_equal函数在不同的精度要求下检查了两个浮点数0.123456789和0.123456780是否近似相等。</p>
+
+<hr />
+
+<h2 id="突击测验指定精度">突击测验：指定精度</h2>
+
+<p>问题1 以下哪一个是assert_almost_equal函数的参数，用来指定小数点后的精度？</p>
+
+<p>(1) decimal
+(2) precision
+(3) tolerance
+(4) significant</p>
+
+<blockquote>
+  <p>答案：（1）<strong><code class="language-plaintext highlighter-rouge">decimal</code></strong>（可选，默认值为 6）:
+期望的精度，表示<strong>小数点后要比较的位数</strong>。例如，<code class="language-plaintext highlighter-rouge">decimal=6</code> 表示实际值和期望值的小数点后最多允许有 6 位差异。</p>
+</blockquote>
+
+<h1 id="83-近似相等">8.3 近似相等</h1>
+
+<p>如果两个数字的近似程度没有达到指定的有效数字要求，<code class="language-plaintext highlighter-rouge">assert_approx_equal</code>函数将抛出异常。该函数触发异常的条件如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_approx_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">significant</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+\[\vert actual - expected \vert &gt;= 10^{-(significant - 1)}\]
+
+<h1 id="84-动手实践使用-assert_approx_equal-断言近似相等">8.4 动手实践：使用 assert_approx_equal 断言近似相等</h1>
+
+<p>我们仍使用前面“动手实践”教程中的数字，并使用<code class="language-plaintext highlighter-rouge">assert_approx_equal</code>函数对它们进行比较。</p>
+
+<p>(1) 调用函数，指定较低的有效数字位：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Significance 8</span><span class="sh">"</span><span class="p">,</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_approx_equal</span><span class="p">(</span><span class="mf">0.123456789</span><span class="p">,</span> <span class="mf">0.123456780</span><span class="p">,</span> <span class="n">significant</span><span class="o">=</span><span class="mi">8</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212143728233.png" alt="image-20250212143728233" style="zoom:50%;" /></p>
+
+<p>没有异常。</p>
+
+<p>(2) 调用函数，指定较高的有效数字位：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Significance 9</span><span class="sh">"</span><span class="p">,</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_approx_equal</span><span class="p">(</span><span class="mf">0.123456789</span><span class="p">,</span> <span class="mf">0.123456780</span><span class="p">,</span> <span class="n">significant</span><span class="o">=</span><span class="mi">9</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212143948588.png" alt="image-20250212143948588" style="zoom:50%;" /></p>
+
+<p>如上抛出了一个异常。</p>
+
+<p>刚才做了些什么 我们使用<code class="language-plaintext highlighter-rouge">numpy.testing</code>包中的<code class="language-plaintext highlighter-rouge">assert_approx_equal</code>函数在不同的精度要求下检查了两个浮点数0.123456789和0.123456780是否近似相等。</p>
+
+<hr />
+
+<h1 id="85-数组近似相等">8.5 数组近似相等</h1>
+
+<p>如果两个数组中元素的近似程度没有达到指定的精度要求， <code class="language-plaintext highlighter-rouge">assert_array_ almost_equal</code>函数将抛出异常。该函数首先检查两个数组的形状是否一致，然后逐一比较两个数组中的元素：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_almost_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+\[\vert expected - actual \vert  &lt; 0.5 * 10^{-decimal }\]
+
+<h1 id="86-动手实践断言数组近似相等">8.6 动手实践：断言数组近似相等</h1>
+
+<p>我们使用前面“动手实践”教程中的数字，并各加上一个0来构造两个数组。</p>
+
+<p>(1) 调用函数，指定较低的精度：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Decimal 8 :</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_almost_equal</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456789</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> 
+<span class="mf">0.123456780</span><span class="p">],</span> <span class="n">decimal</span> <span class="o">=</span> <span class="mi">8</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212144447748.png" alt="image-20250212144447748" style="zoom:50%;" /></p>
+
+<p>(2) 调用函数，指定较高的精度：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Decimal 9 :</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_almost_equal</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456789</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> 
+<span class="mf">0.123456780</span><span class="p">],</span> <span class="n">decimal</span> <span class="o">=</span> <span class="mi">9</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>报出异常：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212144525083.png" alt="image-20250212144525083" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用NumPy中的<code class="language-plaintext highlighter-rouge">assert_array_almost_equal</code>函数比较了两个数组。</p>
+
+<h2 id="勇敢出发比较形状不一致的数组">勇敢出发：比较形状不一致的数组</h2>
+
+<p>使用NumPy的<code class="language-plaintext highlighter-rouge">assert_array_almost_equal</code>函数比较两个形状不一致的数组。</p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">n1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">n2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_almost_equal</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212144816761.png" alt="image-20250212144816761" style="zoom:50%;" /></p>
+
+<p>因为默认精度是<code class="language-plaintext highlighter-rouge">decimal = 6</code>，所以报错是</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">AssertionError</span><span class="p">:</span> <span class="n">Arrays</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">almost</span> <span class="n">equal</span> <span class="n">to</span> <span class="mi">6</span> <span class="n">decimals</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>并且说明了形状不匹配：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="p">(</span><span class="nf">shapes </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="n">mismatch</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h1 id="87-数组相等">8.7 数组相等</h1>
+
+<p>如果两个数组对象不相同，<code class="language-plaintext highlighter-rouge">assert_array_equal</code>函数将抛出异常。两个数组相等必须形状一致且元素也严格相等，允许数组中存在NaN元素。</p>
+
+<p>此外，比较数组也可以使用<code class="language-plaintext highlighter-rouge">assert_allclose</code>函数。该函数有参数atol（absolute tolerance，绝对容差限）和rtol（relative tolerance，相对容差限）。对于两个数组a和b，将测试是否满足以下等式：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212170255163.png" alt="image-20250212170255163" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">equal_nan</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h1 id="88-动手实践比较数组">8.8 动手实践：比较数组</h1>
+
+<p>我们使用刚刚提到的函数来比较两个数组。我们仍使用前面“动手实践”教程中的数组，并增加一个NaN元素。</p>
+
+<p>(1) 调用<code class="language-plaintext highlighter-rouge">assert_allclose</code>函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">pass,</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456789</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456780</span><span class="p">,</span> 
+<span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">],</span> <span class="n">rtol</span> <span class="o">=</span> <span class="mf">1e-7</span><span class="p">,</span> <span class="n">atol</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>输出<code class="language-plaintext highlighter-rouge">pass, None</code>，即通过。</p>
+
+<p>(2) 调用<code class="language-plaintext highlighter-rouge">assert_array_equal</code>函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">fail,</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_equal</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456789</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456780</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">]))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212151912620.png" alt="image-20250212151912620" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :  我们分别使用<code class="language-plaintext highlighter-rouge">assert_allclose</code>和<code class="language-plaintext highlighter-rouge">assert_array_equal</code>函数比较了两个数组。</p>
+
+<hr />
+
+<h1 id="89-数组排序">8.9 数组排序</h1>
+
+<p>两个数组必须形状一致并且第一个数组的元素严格小于第二个数组的元素，否则<code class="language-plaintext highlighter-rouge">assert_ array_less</code>函数将抛出异常。</p>
+
+<h1 id="810-动手实践核对数组排序">8.10 动手实践：核对数组排序</h1>
+
+<p>我们来检查一个数组是否严格大于另一个数组。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_less</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>比较a是不是严格小于b。</p>
+
+<p>(1) 调用<code class="language-plaintext highlighter-rouge">assert_array_less</code>函数比较两个有严格顺序的数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">pass:</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_less</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456789</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.23456780</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">]))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212152221473.png" alt="image-20250212152221473" style="zoom:50%;" /></p>
+
+<p>(2) 调用<code class="language-plaintext highlighter-rouge">assert_array_less</code>函数，使测试不通过：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">fail:</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_less</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456789</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.123456780</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">]))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212152326222.png" alt="image-20250212152326222" style="zoom:50%;" /></p>
+
+<p>错误信息是:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">AssertionError</span><span class="p">:</span> 
+<span class="n">Arrays</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">less</span><span class="o">-</span><span class="n">ordered</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>刚才做了些什么 :  我们使用<code class="language-plaintext highlighter-rouge">assert_array_less</code>函数比较了两个数组的大小顺序。</p>
+
+<h1 id="811-对象比较">8.11 对象比较</h1>
+
+<p>如果两个对象不相同，<code class="language-plaintext highlighter-rouge">assert_equal</code>函数将抛出异常。这里的对象不一定为NumPy数组，也可以是Python中的列表、元组或字典。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h1 id="812-动手实践比较对象">8.12 动手实践：比较对象</h1>
+
+<p>假设你需要比较两个元组。我们可以用<code class="language-plaintext highlighter-rouge">assert_equal</code>函数来完成。</p>
+
+<p>(1) 调用<code class="language-plaintext highlighter-rouge">assert_equal</code>函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">equal?</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_equal</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212152616873.png" alt="image-20250212152616873" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>注：<code class="language-plaintext highlighter-rouge">item=1</code> 指的是在比较两个序列（或者数组）时，出现不相等的元素的位置或索引。即2与3不同。</p>
+</blockquote>
+
+<p>刚才做了些什么 ：  我们使用<code class="language-plaintext highlighter-rouge">assert_equal</code>函数比较了两个元组——两个元组并不相同，因此抛出了异常。</p>
+
+<h1 id="813-字符串比较">8.13 字符串比较</h1>
+
+<p><code class="language-plaintext highlighter-rouge">assert_string_equal</code>函数断言两个字符串变量完全相同。如果测试不通过，将会抛出异常并显示两个字符串之间的差异。该函数区分字符大小写。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_string_equal</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">desired</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h1 id="814-动手实践比较字符串">8.14 动手实践：比较字符串</h1>
+
+<p>比较两个均为NumPy的字符串。</p>
+
+<p>(1) 调用<code class="language-plaintext highlighter-rouge">assert_string_equal</code>函数，比较一个字符串和其自身。显然，该测试应通过：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">pass,</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_string_equal</span><span class="p">(</span><span class="sh">"</span><span class="s">NumPy</span><span class="sh">"</span><span class="p">,</span><span class="sh">"</span><span class="s">NumPy</span><span class="sh">"</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212152852371.png" alt="image-20250212152852371" style="zoom:50%;" /></p>
+
+<p>(2) 调用<code class="language-plaintext highlighter-rouge">assert_string_equal</code>函数，比较一个字符串和另一个字母完全相同但大小写有区别的字符串。该测试应抛出异常：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">fail,</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_string_equal</span><span class="p">(</span><span class="sh">"</span><span class="s">NumPy XXXX</span><span class="sh">"</span><span class="p">,</span><span class="sh">"</span><span class="s">Numpy XXXX</span><span class="sh">"</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212153006350.png" alt="image-20250212153006350" style="zoom:50%;" /></p>
+
+<p>报错：<code class="language-plaintext highlighter-rouge">AssertionError: Differences in strings:</code></p>
+
+<hr />
+
+<p>刚才做了些什么
+我们使用<code class="language-plaintext highlighter-rouge">assert_string_equal</code>函数比较了两个字符串。当字符大小写不匹配时抛出 异常。</p>
+
+<hr />
+
+<h1 id="815-浮点数比较">8.15 浮点数比较</h1>
+
+<p>浮点数在计算机中是以不精确的方式表示的，这给比较浮点数带来了问题。</p>
+
+<p><strong>NumPy中的<code class="language-plaintext highlighter-rouge">assert_array_almost_equal_nulp</code>和<code class="language-plaintext highlighter-rouge">assert_array_max_ulp</code>函数可以提供可靠的浮点数比较功能。</strong></p>
+
+<p>ULP是Unit of Least Precision的缩写，即浮点数的最小精度单位。根据IEEE 754标准，<strong>四则运算的误差必须保持在半个ULP之内。</strong>你可以用刻度尺来做对比。公制刻度尺的刻度通常精确到毫米，而更高精度的部分只能估读，误差上界通常认为是最小刻度值的一半，即半毫米。</p>
+
+<p>机器精度（machine epsilon）是指浮点运算中的相对舍入误差上界。机器精度等于ULP相对于1的值。NumPy中的<strong>finfo函数</strong>可以获取机器精度。Python标准库也可以给出机器精度值，并应该与NumPy给出的结果一致。</p>
+
+<hr />
+
+<h1 id="816-动手实践使用-assert_array_almost_equal_nulp-比较浮点数">8.16 动手实践：使用 <code class="language-plaintext highlighter-rouge">assert_array_almost_equal_nulp</code> 比较浮点数</h1>
+
+<p>我们在实践中学习<code class="language-plaintext highlighter-rouge">assert_array_almost_equal_nulp</code>函数。</p>
+
+<p>(1) 使用finfo函数确定机器精度：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">).</span><span class="n">eps</span>
+<span class="n">eps</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212153330280.png" alt="image-20250212153330280" style="zoom:50%;" /></p>
+
+<p>(2) 使用<code class="language-plaintext highlighter-rouge">assert_array_almost_equal_nulp</code>函数比较两个近似相等的浮点数<code class="language-plaintext highlighter-rouge">1.0</code>和<code class="language-plaintext highlighter-rouge">1.0 * eps</code>（epsilon），然后对<code class="language-plaintext highlighter-rouge">1.0 + 2 * eps</code>做同样的比较：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_almost_equal_nulp</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span> <span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">2</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_almost_equal_nulp</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">)</span> <span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212153459760.png" alt="image-20250212153459760" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用finfo函数获取了机器精度。随后，我们使用<code class="language-plaintext highlighter-rouge">assert_array_almost_equal_nulp</code>函数比较了<code class="language-plaintext highlighter-rouge">1.0</code>和<code class="language-plaintext highlighter-rouge">1.0 + eps</code>，测试通过，再加上一个机器精度则抛出了异常。</p>
+
+<h1 id="817-多-ulp-的浮点数比较">8.17 多 ULP 的浮点数比较</h1>
+
+<p><code class="language-plaintext highlighter-rouge">assert_array_max_ulp</code>函数可以指定ULP的数量作为允许的误差上界。参数maxulp接受整数作为ULP数量的上限，默认值为1。</p>
+
+<h1 id="818-动手实践设置-maxulp-并比较浮点数">8.18 动手实践：设置 maxulp 并比较浮点数</h1>
+
+<p>我们仍使用前面“动手实践”教程中比较的浮点数，但在需要的时候设置maxulp为2。</p>
+
+<p>(1) 使用finfo函数确定机器精度：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">).</span><span class="n">eps</span>
+<span class="n">eps</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212153632928.png" alt="image-20250212153632928" style="zoom:50%;" /></p>
+
+<p>(2) 与前面的“动手实践”教程做相同的比较，但这里我们使用<code class="language-plaintext highlighter-rouge">assert_array_max_ulp</code>函数和适当的maxulp参数值：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_max_ulp</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span> <span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">2</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_array_max_ulp</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">,</span> <span class="n">maxulp</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212153728473.png" alt="image-20250212153728473" style="zoom:50%;" /></p>
+
+<p>上面测试都是通过的。</p>
+
+<p>刚才做了些什么 :我们仍比较了前面“动手实践”教程中的浮点数，但在第二次比较时将maxulp设置为2。我们使用<code class="language-plaintext highlighter-rouge">assert_array_max_ulp</code>函数和适当的maxulp参数值通过了比较测试，并返回了指定的ULP数量。</p>
+
+<h1 id="819-单元测试">8.19 单元测试</h1>
+
+<p>单元测试是对代码的一小部分进行自动化测试的单元，通常是一个函数或方法。Python中有用于单元测试的<strong>PyUnit API</strong>（Application Programming Interface，应用程序编程接口）。作为NumPy 用户，我们还可以使用前面学习过的断言函数。</p>
+
+<h1 id="820-动手实践编写单元测试">8.20 动手实践：编写单元测试</h1>
+
+<p>我们将为一个简单的阶乘函数编写测试代码，检查所谓的程序主逻辑以及非法输入的情况。</p>
+
+<p>(1) 首先，我们编写一个阶乘函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>  
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  
+        <span class="k">return</span> <span class="mi">1</span> 
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="nf">raise</span><span class="p">(</span><span class="nb">ValueError</span><span class="p">,</span> <span class="sh">"</span><span class="s">Unexpected negative value</span><span class="sh">"</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nf">cumprod</span><span class="p">()</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>代码中使用了我们已经掌握的创建数组和累乘计算函数arange和cumprod，并增加了一些边界条件的判断。</p>
+
+<p>(2) 现在我们来编写单元测试。编写一个包含单元测试的类，继承Python标准库unittest模块中的TestCase类。我们对阶乘函数进行如下调用测试：</p>
+
+<blockquote>
+  <p>注：我修改了原书的部分代码。但是功能还是差不多的</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">unittest</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>  
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  
+        <span class="k">return</span> <span class="mi">1</span>  
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  
+        <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sh">"</span><span class="s">Unexpected negative value</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 负数抛出 ValueError
+</span>    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nf">cumprod</span><span class="p">()</span>  
+
+<span class="k">class</span> <span class="nc">FactorialTest</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_factorial</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> 
+        <span class="c1"># 计算3的阶乘，测试通过
+</span>        <span class="n">self</span><span class="p">.</span><span class="nf">assertEqual</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="nf">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> 
+        <span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_equal</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]),</span> <span class="nf">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>  
+
+    <span class="k">def</span> <span class="nf">test_zero</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> 
+        <span class="c1"># 计算0的阶乘，测试通过
+</span>        <span class="n">self</span><span class="p">.</span><span class="nf">assertEqual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nf">factorial</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  
+
+    <span class="k">def</span> <span class="nf">test_negative</span><span class="p">(</span><span class="n">self</span><span class="p">):</span> 
+        <span class="c1"># 计算负数的阶乘，这里故意写错：应该抛出 ValueError，但我们错误地期望它抛出 IndexError
+</span>        <span class="k">with</span> <span class="n">self</span><span class="p">.</span><span class="nf">assertRaises</span><span class="p">(</span><span class="nb">IndexError</span><span class="p">):</span>  <span class="c1"># 故意写错，让测试失败
+</span>            <span class="nf">factorial</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span>  
+
+<span class="c1"># 运行测试
+</span><span class="n">unittest</span><span class="p">.</span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="sh">''</span><span class="p">],</span> <span class="nb">exit</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>我们有意使得其中一项测试不通过，输出结果如下所示：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212161458628.png" alt="image-20250212161458628" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 ：  我们对阶乘函数的程序主逻辑代码进行了测试，并有意使得边界条件的测试不通过。</p>
+
+<h1 id="821-nose-和测试装饰器">8.21 nose 和测试装饰器</h1>
+
+<p>鼻子（nose）是长在嘴上方的器官，人和动物的呼吸和闻都依赖于它。nose同时也是一种Python框架，使得（单元）测试更加容易。</p>
+
+<p>nose可以帮助你组织测试代码。根据nose的文档，“任何能够匹配testMatch正则表达式（默认为<code class="language-plaintext highlighter-rouge">(?:^|[b_.-])[Tt]est）</code>的Python源代码文件、文件夹或库都将被收集用于测试”。nose充分利用了装饰器（decorator）。Python装饰器是有一定含义的对函数或方法的注解。<code class="language-plaintext highlighter-rouge">numpy.testing</code>模块中有很多装饰器。</p>
+
+<hr />
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212161631044.png" alt="image-20250212161631044" style="zoom:50%;" /></p>
+
+<p>此外，我们还可以调用<code class="language-plaintext highlighter-rouge">decorate_methods</code>函数，将装饰器应用到能够匹配正则表达式或字符串的类方法上。</p>
+
+<hr />
+
+<h1 id="822-动手实践使用测试装饰器">8.22 动手实践：使用测试装饰器</h1>
+
+<p>我们将直接在测试函数上使用<code class="language-plaintext highlighter-rouge">setastest</code>装饰器。我们在另一个方法上也使用该装饰器，但将其禁用。此外，我们还将跳过一个测试，并使得另一个测试不通过。如果你仍未安装nose，请先完成安装步骤。</p>
+
+<p>(1) 使用setuptools安装nose：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">easy_install</span> <span class="n">nose</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>或者使用pip安装：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">nose</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212161807051.png" alt="image-20250212161807051" style="zoom:50%;" /></p>
+
+<p>此处，说明一点。<strong>nose</strong> 作为测试框架，依赖于 <strong><code class="language-plaintext highlighter-rouge">setastest</code>、<code class="language-plaintext highlighter-rouge">skipif</code> 和 <code class="language-plaintext highlighter-rouge">knownfailureif</code></strong> 等 Nose 相关的装饰器。然而，<strong>Nose（<code class="language-plaintext highlighter-rouge">nosetests</code>）已经被废弃</strong>，因此需要 <strong>迁移到 <code class="language-plaintext highlighter-rouge">pytest</code> 或 <code class="language-plaintext highlighter-rouge">unittest</code></strong> 来在 <strong>Jupyter Notebook</strong> 里进行测试。</p>
+
+<p>由于 <code class="language-plaintext highlighter-rouge">nosetests</code> 不能直接在 Jupyter Notebook 中运行，我选择 <strong><code class="language-plaintext highlighter-rouge">pytest</code></strong> 作为替代方案，或者使用 <code class="language-plaintext highlighter-rouge">unittest</code> 进行测试。</p>
+
+<hr />
+
+<h2 id="方法-1转换为-pytest">方法 1：转换为 <code class="language-plaintext highlighter-rouge">pytest</code></h2>
+
+<p>安装<code class="language-plaintext highlighter-rouge">pytest</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+<span class="err">!</span><span class="p">{</span><span class="n">sys</span><span class="p">.</span><span class="n">executable</span><span class="p">}</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pytest</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212162616693.png" alt="image-20250212162616693" style="zoom:50%;" /></p>
+
+<p>可以在 Jupyter Notebook 里 <strong>先把测试代码保存为 <code class="language-plaintext highlighter-rouge">.py</code> 文件</strong>，然后使用 <strong>IPython 的魔法命令</strong> <code class="language-plaintext highlighter-rouge">!pytest</code> 或 <code class="language-plaintext highlighter-rouge">%run</code> 运行测试。</p>
+
+<p>首先保存 <code class="language-plaintext highlighter-rouge">.py</code> 文件后用 <code class="language-plaintext highlighter-rouge">!pytest</code> 运行</p>
+
+<p>在 Jupyter Notebook 里执行以下代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></td><td class="rouge-code"><pre><span class="c1"># 1. 把测试代码写入 test_script.py
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">test_script.py</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"""</span><span class="s">
+import pytest
+
+@pytest.mark.skip(reason=</span><span class="sh">"</span><span class="s">This test is set to False</span><span class="sh">"</span><span class="s">)
+def test_false():
+    pass  # 这个测试会被跳过
+
+def test_true():
+    pass  # 这个测试会被执行
+
+@pytest.mark.skipif(True, reason=</span><span class="sh">"</span><span class="s">This test is skipped due to condition being True</span><span class="sh">"</span><span class="s">)
+def test_skip():
+    pass  # 这个测试会被跳过
+
+@pytest.mark.xfail(reason=</span><span class="sh">"</span><span class="s">This test is expected to fail</span><span class="sh">"</span><span class="s">)
+def test_alwaysfail():
+    assert False  # 这个测试会失败，但 pytest 认为是 </span><span class="sh">"</span><span class="s">expected failure</span><span class="sh">"</span><span class="s">
+
+class TestClass:
+    def test_true2(self):
+        pass  # 这个测试会被执行
+
+class TestClass2:
+    def test_false2(self):
+        pass  # 这个测试也会被执行
+</span><span class="sh">"""</span><span class="p">)</span>
+
+<span class="c1"># 2. 运行 pytest 进行测试
+</span><span class="err">!</span><span class="n">pytest</span> <span class="n">test_script</span><span class="p">.</span><span class="n">py</span> <span class="o">--</span><span class="n">maxfail</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">warnings</span> <span class="o">-</span><span class="n">q</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212163022863.png" alt="image-20250212163022863" style="zoom:50%;" /></p>
+
+<h2 id="方法-2转换为-unittest">方法 2：转换为 <code class="language-plaintext highlighter-rouge">unittest</code></h2>
+
+<p>用 <code class="language-plaintext highlighter-rouge">unittest.skip</code> 及 <code class="language-plaintext highlighter-rouge">unittest.expectedFailure</code> 来代替 <code class="language-plaintext highlighter-rouge">skipif</code> 和 <code class="language-plaintext highlighter-rouge">knownfailureif</code>。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">unittest</span>
+
+<span class="k">class</span> <span class="nc">TestCases</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="nd">@unittest.skip</span><span class="p">(</span><span class="sh">"</span><span class="s">This test is set to False</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_false</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># 这个测试会被跳过
+</span>
+    <span class="k">def</span> <span class="nf">test_true</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># 这个测试会被执行
+</span>
+    <span class="nd">@unittest.skipIf</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="sh">"</span><span class="s">This test is skipped due to condition being True</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_skip</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># 这个测试会被跳过
+</span>
+    <span class="nd">@unittest.expectedFailure</span>
+    <span class="k">def</span> <span class="nf">test_alwaysfail</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">assertFalse</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># 这个测试会失败，但 unittest 认为是 "预期失败"
+</span>
+<span class="k">class</span> <span class="nc">TestClass</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_true2</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># 这个测试会被执行
+</span>
+<span class="k">class</span> <span class="nc">TestClass2</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_false2</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># 这个测试也会被执行
+</span>
+<span class="c1"># 在 Jupyter Notebook 中运行 unittest
+</span><span class="n">unittest</span><span class="p">.</span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[</span><span class="sh">''</span><span class="p">],</span> <span class="nb">exit</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212163247570.png" alt="image-20250212163247570" style="zoom:50%;" /></p>
+
+<h1 id="823-文档字符串">8.23 文档字符串</h1>
+
+<p>文档字符串（docstring）是内嵌在Python代码中的类似交互式会话的字符串。这些字符串可以用于某些测试，也可以仅用于提供使用示例。<code class="language-plaintext highlighter-rouge">numpy.testing</code>模块中有一个函数可以运行这些测试。</p>
+
+<h1 id="824-动手实践执行文档字符串测试">8.24 动手实践：执行文档字符串测试</h1>
+
+<p>我们来编写一个简单的计算阶乘的例子，但不考虑所有的边界条件。换言之，编写一些测试不能通过的例子。</p>
+
+<p>(1) 文档字符串看起来就像你在Python shell中看到的文本一样（包括命令提示符）。我们将有意使得其中一项测试不通过，看看会发生什么。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="sh">"""</span><span class="s">
+Test for the factorial of 3 that should pass.
+</span><span class="gp">&gt;&gt;&gt;</span> <span class="nf">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">6</span>
+
+<span class="s">Test for the factorial of 0 that should fail.
+</span><span class="gp">&gt;&gt;&gt;</span> <span class="nf">factorial</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="sh">"""</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(2) 我们将用下面这一行NumPy代码来计算阶乘：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nf">cumprod</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>为了演示目的，这行代码有时会出错。</p>
+
+<p>(3) 我们可以在Python shell中通过调用<code class="language-plaintext highlighter-rouge">numpy.testing</code>模块的rundocs函数，从而执行文档字符串测试。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">doctest</span>
+
+<span class="n">doctest</span><span class="p">.</span><span class="nf">testmod</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>完整代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">doctest</span>
+
+<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Test for the factorial of 3 that should pass.
+</span><span class="gp">    &gt;&gt;&gt;</span> <span class="nf">factorial</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="mi">6</span>
+
+<span class="s">    Test for the factorial of 0 that should fail.
+</span><span class="gp">    &gt;&gt;&gt;</span> <span class="nf">factorial</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="mi">1</span>
+    <span class="sh">"""</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nf">cumprod</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">doctest</span><span class="p">.</span><span class="nf">testmod</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>测试结果：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250212165338431.png" alt="image-20250212165338431" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :   我们编写了一个文档字符串测试，在对应的阶乘函数中没有考虑0和负数的情况。我们使用<code class="language-plaintext highlighter-rouge">numpy.testing</code>模块中的rundocs函数执行了测试，并得到了“索引错误”的结果。</p>
+
+<h1 id="825-本章小结">8.25 本章小结</h1>
+
+<p>在本章中，我们学习了代码测试和NumPy中的测试工具。 涵盖的内容包括单元测试、文档字符串测试、断言函数和浮点数精度。大部分NumPy断言函数都与浮点数精度有关。我们演示了可以被nose使用的Numpy装饰器的用法。装饰器使得测试更加容易使用，并体现开发者的意图。</p>
+
+<p>下一章将要讨论的是Matplotlib——开源的Python科学可视化和绘图工具库。</p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/02/11/jupyter-notebook-%E8%AF%BB%E5%9B%BE%E7%89%87/" data-toggle="tooltip" data-placement="top" title="读图片-jupyter notebook">
+                        Previous<br>
+                        <span>读图片-jupyter notebook</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/02/12/NumPy(9)%E4%BD%BF%E7%94%A8Matplotlib%E7%BB%98%E5%9B%BE/" data-toggle="tooltip" data-placement="top" title="numpy(9)使用Matplotlib绘图">
+                        Next<br>
+                        <span>numpy(9)使用Matplotlib绘图</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0034" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="3">力扣</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="2">算法</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

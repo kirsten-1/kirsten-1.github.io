@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="numpy(7)专用函数 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-02-10T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="人工智能AI基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/02/10/NumPy(7)%E4%B8%93%E7%94%A8%E5%87%BD%E6%95%B0/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>numpy(7)专用函数 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/02/10/NumPy(7)%E4%B8%93%E7%94%A8%E5%87%BD%E6%95%B0/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80" title="人工智能AI基础">人工智能AI基础</a>
+                        
+                    </div>
+                    <h1>numpy(7)专用函数</h1>
+                    
+                    <h2 class="subheading">第 7 章 专用函数</h2>
+                    <span class="meta">Posted by Hilda on February 10, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>前6章以及其他补充已经整理如下：</p>
+
+<p><a href="https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/">第1章NumPy入门</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/04/numpy(2)_numpy%E5%9F%BA%E7%A1%80/">第2章NumPy基础</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/06/Numpy(3)%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/">第3章常用函数</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/04/Numpy%E7%9A%84%E5%B9%BF%E6%92%AD%E5%92%8C%E5%B9%BF%E6%92%AD%E6%9C%BA%E5%88%B6/">广播与广播机制</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/07/NumPy(4)%E4%BE%BF%E6%8D%B7%E5%87%BD%E6%95%B0/">第4章便捷函数</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/09/NumPy(5)%E7%9F%A9%E9%98%B5%E5%92%8C%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0/">第5章矩阵和通用函数</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/09/NumPy(6)%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0NumPy%E6%A8%A1%E5%9D%97/">第6章深入学习NumPy模块</a></p>
+
+<hr />
+
+<p>作为NumPy用户，我们有时会发现自己在<strong>金融计算</strong>或<strong>信号处理</strong>方面有一些特殊的需求。幸运的是，NumPy能满足我们的大部分需求。本章将讲述NumPy中的部分专用函数。</p>
+
+<p>本章涵盖以下内容：</p>
+
+<ul>
+  <li>排序和搜索；</li>
+  <li>特殊函数；</li>
+  <li>金融函数；</li>
+  <li>窗口函数。</li>
+</ul>
+
+<hr />
+
+<h1 id="71-排序">7.1 排序</h1>
+
+<p>NumPy提供了多种排序函数，如下所示：</p>
+
+<ul>
+  <li>sort函数返回排序后的数组；</li>
+  <li>lexsort函数根据键值的字典序进行排序；</li>
+  <li>argsort函数返回输入数组排序后的下标；</li>
+  <li>ndarray类的sort方法可对数组进行原地排序；</li>
+  <li>msort函数沿着第一个轴排序；</li>
+  <li>sort_complex函数对复数按照先实部后虚部的顺序进行排序。</li>
+</ul>
+
+<p>在上面的列表中，argsort和sort函数可用来对NumPy数组类型进行排序。</p>
+
+<h1 id="72-动手实践按字典序排序">7.2 动手实践：按字典序排序</h1>
+
+<p>NumPy中的lexsort函数返回输入数组按字典序排序后的下标。我们需要给lexsort函数提供排序所依据的键值数组或元组。步骤如下。</p>
+
+<p>(1) 回顾一下第3章中我们使用的AAPL股价数据，现在我们要将这些很久以前的数据用在完全不同的地方。我们将载入收盘价和日期数据。是的，处理日期总是很复杂，我们为其准备了专门的转换函数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">def</span> <span class="nf">datestr2num</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="nf">strptime </span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="sh">"</span><span class="s">%d-%m-%Y</span><span class="sh">"</span><span class="p">).</span><span class="nf">toordinal</span><span class="p">()</span> 
+
+<span class="c1"># 载入数据,AAPL.csv数据可以从https://github.com/sundaygeek/numpy-beginner-guide/blob/master/ch7code/AAPL.csv下载
+</span><span class="n">dates</span><span class="p">,</span><span class="n">closes</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">AAPL.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">datestr2num</span><span class="p">},</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注：和之前一样，如果按照书上的代码，出现报错<code class="language-plaintext highlighter-rouge">ValueError: could not convert string '28-01-2011' to float64 at row 0, column 2.</code>，需要在loadtxt函数中加上<code class="language-plaintext highlighter-rouge">encoding="utf-8"</code>。</p>
+
+<p>(2) 使用lexsort函数排序。数据本身已经按照日期排序，不过我们现在优先按照收盘价 排序：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">lexsort</span><span class="p">((</span><span class="n">dates</span><span class="p">,</span><span class="n">closes</span><span class="p">))</span>
+<span class="n">indices</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209213702535.png" alt="image-20250209213702535" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">([</span><span class="sh">"</span><span class="s">%s %s</span><span class="sh">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="nf">fromordinal</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">closes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span> <span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>此时按照书上的代码，出现了报错：<code class="language-plaintext highlighter-rouge">TypeError: integer argument expected, got float</code></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209224946782.png" alt="image-20250209224946782" style="zoom:50%;" /></p>
+
+<p>因为dates数组每一项是float64的类型，但是需要整数类型。那么多进行一步转换就可以。</p>
+
+<p>修改如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">([</span><span class="sh">"</span><span class="s">%s %s</span><span class="sh">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="nf">fromordinal</span><span class="p">(</span><span class="nf">int</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">])),</span> <span class="n">closes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209225208359.png" alt="image-20250209225208359" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用NumPy中的lexsort函数对AAPL的收盘价数据进行了排序。该函数返回了排序后的数组下标。</p>
+
+<p>完整代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 这个函数的目的是将一个日期字符串 s 转换为 整数，表示从公元 1 年 1 月 1 日（即公元元年第一天）到指定日期的天数。
+# 比如:date(2020,4,14).toordinal(),返回:737529
+</span><span class="k">def</span> <span class="nf">datestr2num</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="nf">strptime </span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="sh">"</span><span class="s">%d-%m-%Y</span><span class="sh">"</span><span class="p">).</span><span class="nf">toordinal</span><span class="p">()</span> 
+
+<span class="c1"># 载入数据,AAPL.csv数据可以从https://github.com/sundaygeek/numpy-beginner-guide/blob/master/ch7code/AAPL.csv下载
+</span><span class="n">dates</span><span class="p">,</span><span class="n">closes</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">AAPL.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="n">datestr2num</span><span class="p">},</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">lexsort</span><span class="p">((</span><span class="n">dates</span><span class="p">,</span><span class="n">closes</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">([</span><span class="sh">"</span><span class="s">%s %s</span><span class="sh">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="nf">fromordinal</span><span class="p">(</span><span class="nf">int</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">])),</span> <span class="n">closes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h2 id="补充lexsort函数的使用方法">补充：lexsort函数的使用方法</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy.lexsort()</code> 是 NumPy 中的一个函数，用于对多个数组进行排序，且可以根据多个键的优先级进行排序。这个函数可以实现基于多个列（或多个数组）进行排序的功能，类似于 SQL 中的多重排序。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">lexsort</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">keys</code></strong>：一个包含多个数组的序列。每个数组都作为排序的依据，排序将按照提供的数组顺序依次进行。<code class="language-plaintext highlighter-rouge">keys</code> 中的每个数组都代表一个排序键。</li>
+</ul>
+
+<p>返回值：</p>
+
+<ul>
+  <li>返回一个索引数组，该数组表示在多个数组上按顺序排序后的索引。</li>
+</ul>
+
+<p><strong><code class="language-plaintext highlighter-rouge">numpy.lexsort()</code> 的工作原理：</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">lexsort()</code> 将首先根据数组 <code class="language-plaintext highlighter-rouge">keys[0]</code> 进行排序，然后在相同的 <code class="language-plaintext highlighter-rouge">keys[0]</code> 值上，按照数组 <code class="language-plaintext highlighter-rouge">keys[1]</code> 排序，以此类推。</li>
+  <li>这个函数的名字来自于字典的排序（lexicographical sort），即首先按照第一个键排序，若相等则按照第二个键排序，以此类推。</li>
+</ul>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 定义两个数组
+</span><span class="n">array1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">array2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+
+<span class="c1"># 使用 lexsort 进行排序
+</span><span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">lexsort</span><span class="p">((</span><span class="n">array2</span><span class="p">,</span> <span class="n">array1</span><span class="p">))</span>
+
+<span class="c1"># 使用返回的索引对原数组排序
+</span><span class="n">sorted_array1</span> <span class="o">=</span> <span class="n">array1</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+<span class="n">sorted_array2</span> <span class="o">=</span> <span class="n">array2</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Sorted indices:</span><span class="sh">"</span><span class="p">,</span> <span class="n">sorted_indices</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Sorted array1:</span><span class="sh">"</span><span class="p">,</span> <span class="n">sorted_array1</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Sorted array2:</span><span class="sh">"</span><span class="p">,</span> <span class="n">sorted_array2</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209225549558.png" alt="image-20250209225549558" style="zoom:50%;" /></p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">np.lexsort((array2, array1))</code></strong>：这是根据 <code class="language-plaintext highlighter-rouge">array1</code> 和 <code class="language-plaintext highlighter-rouge">array2</code> 进行排序的。排序优先级是先按照 <code class="language-plaintext highlighter-rouge">array1</code> 排序，如果有相等的元素，则根据 <code class="language-plaintext highlighter-rouge">array2</code> 排序。</p>
+
+<hr />
+
+<h2 id="勇敢出发尝试不同的排序次序">勇敢出发：尝试不同的排序次序</h2>
+
+<p>我们按照收盘价和日期的顺序进行了排序。请尝试不同的排序次序。使用我们在上一章中学习的random模块生成随机数并用lexsort对它们进行排序。</p>
+
+<p>参考：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 生成两个随机数组，每个数组包含10个随机数
+</span><span class="n">array1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">array2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># 打印生成的随机数
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Array1:</span><span class="sh">"</span><span class="p">,</span> <span class="n">array1</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Array2:</span><span class="sh">"</span><span class="p">,</span> <span class="n">array2</span><span class="p">)</span>
+
+<span class="c1"># 使用 np.lexsort 根据 array1 和 array2 进行排序
+# 先按 array1 排序，如果 array1 中的元素相等，则按 array2 排序
+</span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">lexsort</span><span class="p">((</span><span class="n">array2</span><span class="p">,</span> <span class="n">array1</span><span class="p">))</span>
+
+<span class="c1"># 按照排序后的索引重新排列 array1 和 array2
+</span><span class="n">sorted_array1</span> <span class="o">=</span> <span class="n">array1</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+<span class="n">sorted_array2</span> <span class="o">=</span> <span class="n">array2</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">Sorted Array1:</span><span class="sh">"</span><span class="p">,</span> <span class="n">sorted_array1</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Sorted Array2:</span><span class="sh">"</span><span class="p">,</span> <span class="n">sorted_array2</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209225957495.png" alt="image-20250209225957495" style="zoom:50%;" /></p>
+
+<h1 id="73-复数">7.3 复数</h1>
+
+<p>复数包含实数部分和虚数部分。如同在前面的章节中提到的，NumPy中有专门的复数类型，使用两个浮点数来表示复数。</p>
+
+<p>这些复数可以使用NumPy的<code class="language-plaintext highlighter-rouge">sort_complex</code>函数进行排序。该函数按照先实部后虚部的顺序排序。</p>
+
+<hr />
+
+<h2 id="补充1nprandomseed函数的使用方法">补充1：<code class="language-plaintext highlighter-rouge">np.random.seed</code>函数的使用方法</h2>
+
+<blockquote>
+  <p>注：在计算机中，虽然我们称之为“随机数”，但其实这些数是伪随机的，即它们是通过某种算法生成的。<code class="language-plaintext highlighter-rouge">np.random.seed()</code> 就是设置这个伪随机数生成器的起始状态（种子）。<strong>如果每次用相同的种子，生成的伪随机数序列就会相同</strong>。</p>
+
+  <p>随机数生成算法（如线性同余法等）通常依赖于一个初始值（种子）来启动。<strong>不同的种子会导致随机数序列的不同</strong>。种子相同，就会产生相同的序列。因此，设置种子是控制随机数生成的关键。</p>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">np.random.seed()</code> 是 NumPy 中用于设置随机数生成器的种子值的函数。它的主要作用是<strong>确保每次生成的随机数序列都是一样的</strong>。通过设置相同的种子值，可以在不同的程序运行或者不同的环境中生成相同的随机数序列，这对于调试、实验复现等非常重要。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：<code class="language-plaintext highlighter-rouge">seed</code>：整数或 <code class="language-plaintext highlighter-rouge">None</code>，默认为 <code class="language-plaintext highlighter-rouge">None</code>。</p>
+
+<ul>
+  <li>如果 <code class="language-plaintext highlighter-rouge">seed</code> 是 <strong>整数</strong>（例如 42），它指定了随机数生成器的种子值。</li>
+  <li>如果 <code class="language-plaintext highlighter-rouge">seed</code> 是 <strong><code class="language-plaintext highlighter-rouge">None</code></strong>，那么 NumPy 会使用<strong>系统时间或其他熵源来生成一个种子值</strong>，确保每次运行时生成不同的随机数序列。
+    <ul>
+      <li>熵源：提供随机性（即熵）的来源</li>
+    </ul>
+  </li>
+  <li><strong>注意</strong>：如果传入相同的种子，每次生成的随机数序列都会相同。传入不同的种子，则生成不同的随机数序列。</li>
+</ul>
+
+<p>返回值：<code class="language-plaintext highlighter-rouge">np.random.seed()</code> 是一个 <strong>无返回值</strong> 的函数。它只会设置随机数生成器的种子，不返回任何内容。</p>
+
+<p>看一个例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 设置种子为42
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># 生成5个随机数
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>  <span class="c1"># 每次运行结果都相同
+</span>
+<span class="c1"># 重复设置相同的种子，生成相同的随机数
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>  <span class="c1"># 结果与上次相同
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210155402889.png" alt="image-20250210155402889" style="zoom:50%;" /></p>
+
+<hr />
+
+<h2 id="补充2numpysort_complex的使用方法">补充2:<code class="language-plaintext highlighter-rouge">numpy.sort_complex()</code>的使用方法：</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy.sort_complex()</code> 不是 NumPy 中的标准函数，实际上，应该是指 <code class="language-plaintext highlighter-rouge">numpy.sort()</code> 在处理 <strong>复数数组</strong> 时的行为。在 NumPy 中，复数数组会按照 <strong>复数的模</strong>（绝对值）进行排序。复数的模是通过以下公式计算的：\(\vert z \vert = \sqrt{a^2 +b^2}\)</p>
+
+<p>其中，复数\(z = a+ b i\)，\(a\)是实部，\(b\)是虚部。</p>
+
+<p>如果两个复数的模相同，则排序会根据它们的实部和虚部来区分。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">sort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="sh">'</span><span class="s">quicksort</span><span class="sh">'</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>a</strong>：输入的数组。</p>
+
+<p><strong>axis</strong>：指定排序的轴，默认值为 <code class="language-plaintext highlighter-rouge">-1</code>，即对最后一个轴进行排序。</p>
+
+<p><strong>kind</strong>：排序算法，可以是 <code class="language-plaintext highlighter-rouge">'quicksort'</code>、<code class="language-plaintext highlighter-rouge">'mergesort'</code>、<code class="language-plaintext highlighter-rouge">'heapsort'</code> 或 <code class="language-plaintext highlighter-rouge">'stable'</code>，默认为 <code class="language-plaintext highlighter-rouge">'quicksort'</code>。</p>
+
+<p><strong>order</strong>：当数组是结构化数组时，指定排序的字段。对于普通数组忽略。</p>
+
+<hr />
+
+<h1 id="74-动手实践对复数进行排序">7.4 动手实践：对复数进行排序</h1>
+
+<p>我们将创建一个复数数组并进行排序，步骤如下。</p>
+
+<p>(1) 生成5个随机数作为实部，5个随机数作为虚部。设置随机数种子为42：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c1"># 设置种子，保证随机数序列一致
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">complex_numbers</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1j</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Complex numbers</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">complex_numbers</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210155602394.png" alt="image-20250210155602394" style="zoom:50%;" /></p>
+
+<p>(2) 调用<code class="language-plaintext highlighter-rouge">sort_complex</code>函数对上面生成的复数进行排序：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># 排序
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Sorted</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">sort_complex</span><span class="p">(</span><span class="n">complex_numbers</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210155733457.png" alt="image-20250210155733457" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :  我们生成了随机的复数并使用<code class="language-plaintext highlighter-rouge">sort_complex</code>函数对它们进行了排序。</p>
+
+<p>完整代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 设置种子，生成随机数5个复数
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">complexNums</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1j</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">复数：</span><span class="sh">"</span><span class="p">,</span> <span class="n">complexNums</span><span class="p">)</span>
+
+<span class="c1"># 排序
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">排序后（按照模）：</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">sort_complex</span><span class="p">(</span><span class="n">complexNums</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210160354423.png" alt="image-20250210160354423" style="zoom:50%;" /></p>
+
+<hr />
+
+<h2 id="突击测验生成随机数">突击测验：生成随机数</h2>
+
+<p>问题1 以下哪一个NumPy模块可以生成随机数？</p>
+
+<p>(1) randnum
+(2) random
+(3) randomutil
+(4) rand</p>
+
+<blockquote>
+  <p>答案给的是（2），但是，其实（2）和（4）几乎差不多。</p>
+</blockquote>
+
+<h1 id="75-搜索">7.5 搜索</h1>
+
+<p>NumPy中有多个函数可以在数组中进行搜索，如下所示。</p>
+
+<p>argmax函数返回数组中最大值对应的下标。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">argmax</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210160636513.png" alt="image-20250210160636513" style="zoom:50%;" /></p>
+
+<p>nanargmax函数提供相同的功能，但忽略NaN值。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">nanargmax</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210160727571.png" alt="image-20250210160727571" style="zoom:50%;" /></p>
+
+<p>argmin和nanargmin函数的功能类似，只不过换成了最小值。</p>
+
+<p>argwhere函数根据条件搜索非零的元素，并分组返回对应的下标。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">argwhere</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210160836095.png" alt="image-20250210160836095" style="zoom:50%;" /></p>
+
+<p>searchsorted函数可以为指定的插入值寻找维持数组排序的索引位置。该函数使用二分搜索算法，计算复杂度为O(log(n))。我们随后将具体学习这个函数。</p>
+
+<hr />
+
+<h2 id="补充searchsorted函数的使用">补充：searchsorted函数的使用</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy.searchsorted()</code> 是一个用于查找数组中元素位置的函数。它的作用是返回一个索引数组，该数组表示每个元素应该插入到给定的排序数组中的位置，保持数组的顺序。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">searchsorted</span><span class="p">(</span><span class="n">sorted_array</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="sh">'</span><span class="s">left</span><span class="sh">'</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">sorted_array</code></strong>：
+<strong>必须是一个已经排序的数组。</strong>这个数组是你要在其中查找插入位置的参考数组。</p>
+  </li>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">values</code></strong>：
+可以是一个标量（单个元素）或者数组。如果是数组，<code class="language-plaintext highlighter-rouge">searchsorted()</code> 会对每个元素查找插入位置。</p>
+  </li>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">side</code></strong>：
+可选，字符串，默认值是 <code class="language-plaintext highlighter-rouge">'left'</code>。它控制插入位置的选择方式：</p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">'left'</code>：返回一个位置，所有相等的元素都插入到该位置的左边（即插入到相等元素的前面）。</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">'right'</code>：返回一个位置，所有相等的元素都插入到该位置的右边（即插入到相等元素的后面）。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">sorter</code></strong>：
+可选，整数数组。如果提供了 <code class="language-plaintext highlighter-rouge">sorter</code>，它是一个索引数组，指示如何对 <code class="language-plaintext highlighter-rouge">sorted_array</code> 进行排序。这个参数可以提高效率，尤其当你已经对 <code class="language-plaintext highlighter-rouge">sorted_array</code> 做过排序并且保存了排序的索引时。</p>
+  </li>
+</ul>
+
+<p>返回值：返回一个整数数组，表示每个 <code class="language-plaintext highlighter-rouge">values</code> 中的元素应该插入到 <code class="language-plaintext highlighter-rouge">sorted_array</code> 中的索引位置。</p>
+
+<p>例子1：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c1"># 已排序的数组
+</span><span class="n">sorted_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="c1"># 查找插入位置
+</span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">searchsorted</span><span class="p">(</span><span class="n">sorted_array</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>   <span class="c1"># 输出：[2 3 4]
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>例子2：<code class="language-plaintext highlighter-rouge">side='right'</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">sorted_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+
+<span class="c1"># 查找插入位置，使用 side='right'
+</span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="n">indices_right</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">searchsorted</span><span class="p">(</span><span class="n">sorted_array</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="sh">'</span><span class="s">right</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">indices_right</span><span class="p">)</span>   <span class="c1"># 输出[3 4]
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>例子3:使用 <code class="language-plaintext highlighter-rouge">sorter</code> 参数</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 原始数组和排序索引
+</span><span class="n">sorted_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<span class="n">sorter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  <span class="c1"># 索引已经按升序排列
+</span>
+<span class="c1"># 查找插入位置，指定 sorter 参数
+</span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">])</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">searchsorted</span><span class="p">(</span><span class="n">sorted_array</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="n">sorter</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>   <span class="c1"># 输出[2 3]
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">sorter</code> 参数可以优化排序过的数组的查找过程，避免重新排序。</p>
+
+<p>调研：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">time</span>
+
+<span class="c1"># 创建一个大的已排序数组
+</span><span class="n">sorted_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">100000000</span><span class="p">)</span>
+
+<span class="c1"># 生成一些值用于查找插入位置
+</span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># 测试不使用 sorter
+</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+<span class="n">indices_no_sorter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">searchsorted</span><span class="p">(</span><span class="n">sorted_array</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">没有使用 sorter 的时间：</span><span class="si">{</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s">秒</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 生成 sorter 索引（假设 sorted_array 已排序）
+</span><span class="n">sorter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">argsort</span><span class="p">(</span><span class="n">sorted_array</span><span class="p">)</span>
+
+<span class="c1"># 测试使用 sorter
+</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+<span class="n">indices_with_sorter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">searchsorted</span><span class="p">(</span><span class="n">sorted_array</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="n">sorter</span><span class="p">)</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">使用 sorter 的时间：</span><span class="si">{</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s">秒</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210162210437.png" alt="image-20250210162210437" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>extract函数返回满足指定条件的数组元素。</p>
+
+<hr />
+
+<h2 id="补充extract函数的使用方法">补充：extract函数的使用方法</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy.extract()</code> 是一个用于从数组中提取满足指定条件的元素的函数。它返回一个新的一维数组，包含原始数组中所有满足给定条件的元素。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">extract</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数说明：</p>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">condition</code></strong>:
+一个布尔型数组或布尔表达式。该数组必须与 <code class="language-plaintext highlighter-rouge">arr</code> 的形状相同，或者能够广播到与 <code class="language-plaintext highlighter-rouge">arr</code> 相同的形状。它表示选择哪些元素为 <code class="language-plaintext highlighter-rouge">True</code>，从而被提取到结果数组中。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">arr</code></strong>:
+输入数组，可以是任何形状的 NumPy 数组，包含了你要从中提取元素的数组。</li>
+</ol>
+
+<p>返回值：返回一个一维数组，包含 <code class="language-plaintext highlighter-rouge">arr</code> 中所有对应 <code class="language-plaintext highlighter-rouge">condition</code> 中为 <code class="language-plaintext highlighter-rouge">True</code> 的元素。返回的数组不会保留原数组的形状。</p>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 创建一个数组
+</span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+
+<span class="c1"># 条件：提取数组中所有大于 5 的元素
+</span><span class="n">condition</span> <span class="o">=</span> <span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">5</span>
+
+<span class="c1"># 使用 extract 函数提取
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">extract</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="c1"># 输出 [6 7 8 9]
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="76-动手实践使用-searchsorted-函数">7.6 动手实践：使用 searchsorted 函数</h1>
+
+<p>searchsorted函数为指定的插入值返回一个在有序数组中的索引位置，从这个位置插入可以保持数组的有序性。下面的例子可以解释得更清楚。请完成如下步骤。</p>
+
+<p>(1) 我们需要一个排序后的数组。使用arange函数创建一个升序排列的数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">a</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210162459130.png" alt="image-20250210162459130" style="zoom:50%;" /></p>
+
+<p>(2) 现在，我们来调用searchsorted函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="n">indices</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210162558533.png" alt="image-20250210162558533" style="zoom:50%;" /></p>
+
+<p>(3) 使用insert函数构建完整的数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210162653710.png" alt="image-20250210162653710" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : searchsorted函数为7和-2返回了索引5和0。用这些索引作为插入位置，我们生成了数组<code class="language-plaintext highlighter-rouge">[-2, 0, 1, 2, 3, 4, 7]</code>，这样就维持了数组的排序。</p>
+
+<p>完整代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">数组a:</span><span class="sh">"</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="n">a_inserted</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">排序之后的a：</span><span class="sh">"</span><span class="p">,</span> <span class="n">a_inserted</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210162919159.png" alt="image-20250210162919159" style="zoom:50%;" /></p>
+
+<h1 id="77-数组元素抽取">7.7 数组元素抽取</h1>
+
+<p>NumPy的extract函数可以根据某个条件从数组中抽取元素。该函数和我们在第3章中遇到过的where函数相似。nonzero函数专门用来抽取非零的数组元素。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">extract</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+<span class="n">numpy</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>   <span class="c1"># x表示条件为 True ,y 表示条件为 False 时选择的值   x和y都是可选的
+</span><span class="n">numpy</span><span class="p">.</span><span class="nf">nonzero</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h1 id="78-动手实践从数组中抽取元素">7.8 动手实践：从数组中抽取元素</h1>
+
+<p>我们要从一个数组中抽取偶数元素，步骤如下。</p>
+
+<p>(1) 使用arange函数创建数组：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">a</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210163224757.png" alt="image-20250210163224757" style="zoom:50%;" /></p>
+
+<p>(2) 生成选择偶数元素的条件变量：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">condition</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(3) 使用extract函数基于生成的条件从数组中抽取元素：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">extract</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210163405738.png" alt="image-20250210163405738" style="zoom:50%;" /></p>
+
+<p>如果用where的话：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210163605979.png" alt="image-20250210163605979" style="zoom:50%;" /></p>
+
+<p>(4) 使用nonzero函数抽取数组中的非零元素：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">nonzero</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210163656051.png" alt="image-20250210163656051" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用extract函数根据一个指定的布尔条件从数组中抽取了偶数元素。</p>
+
+<hr />
+
+<h2 id="补充where函数的使用方法">补充：where函数的使用方法</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy.where()</code> 是一个非常强大的函数，用于根据条件选择数组元素。它可以根据条件数组的真假值，返回符合条件的元素的索引，或者直接基于条件选择数组中的值。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">condition</code></strong>：
+布尔数组或布尔表达式。其形状需要与 <code class="language-plaintext highlighter-rouge">x</code> 和 <code class="language-plaintext highlighter-rouge">y</code> 的形状相同，或者能够广播到相同的形状。这个条件数组的值决定了从 <code class="language-plaintext highlighter-rouge">x</code> 和 <code class="language-plaintext highlighter-rouge">y</code> 中选择哪些元素：
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">True</code>：从 <code class="language-plaintext highlighter-rouge">x</code> 中选择元素。</li>
+      <li><code class="language-plaintext highlighter-rouge">False</code>：从 <code class="language-plaintext highlighter-rouge">y</code> 中选择元素。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">x</code></strong>（可选）：
+如果指定了 <code class="language-plaintext highlighter-rouge">x</code>，它表示条件为 <code class="language-plaintext highlighter-rouge">True</code> 时选择的值。如果没有提供 <code class="language-plaintext highlighter-rouge">x</code>，<code class="language-plaintext highlighter-rouge">where</code> 将返回满足条件的元素的索引。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">y</code></strong>（可选）：
+如果指定了 <code class="language-plaintext highlighter-rouge">y</code>，它表示条件为 <code class="language-plaintext highlighter-rouge">False</code> 时选择的值。如果没有提供 <code class="language-plaintext highlighter-rouge">y</code>，<code class="language-plaintext highlighter-rouge">where</code> 只会返回满足条件的元素的索引。</li>
+</ol>
+
+<p>返回值：</p>
+
+<ul>
+  <li>如果提供了 <code class="language-plaintext highlighter-rouge">x</code> 和 <code class="language-plaintext highlighter-rouge">y</code>，返回一个数组，满足条件 <code class="language-plaintext highlighter-rouge">True</code> 的位置取 <code class="language-plaintext highlighter-rouge">x</code> 的值，<code class="language-plaintext highlighter-rouge">False</code> 的位置取 <code class="language-plaintext highlighter-rouge">y</code> 的值。</li>
+  <li>如果只提供了 <code class="language-plaintext highlighter-rouge">condition</code>，<code class="language-plaintext highlighter-rouge">where()</code> 返回的是符合条件的元素的索引。</li>
+</ul>
+
+<p>看例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># 创建一个数组
+</span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="c1"># 使用 where 函数选择：如果元素大于 3，则选择 'High'，否则选择 'Low'
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="sh">'</span><span class="s">High</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Low</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>   <span class="c1">#  输出['Low' 'Low' 'Low' 'High' 'High' 'High']
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>再如：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210165105921.png" alt="image-20250210165105921" style="zoom:50%;" /></p>
+
+<h1 id="79-金融函数">7.9 金融函数</h1>
+
+<p>NumPy中有很多金融函数，如下所示。</p>
+
+<ul>
+  <li>fv函数计算所谓的终值（future value），即基于一些假设给出的某个金融资产在未来某一时间点的价值。</li>
+  <li>pv函数计算现值（present value），即金融资产当前的价值。</li>
+  <li>npv函数返回的是净现值（net present value），即按折现率计算的净现金流之和。  pmt函数根据本金和利率计算每期需支付的金额。</li>
+  <li>irr函数计算内部收益率（internal rate of return）。内部收益率是是净现值为0时的有效利率，不考虑通胀因素。</li>
+  <li>mirr函数计算修正后内部收益率（modified internal rate of return），是内部收益率的改进版本。</li>
+  <li>nper函数计算定期付款的期数。</li>
+  <li>rate函数计算利率（rate of interest）。</li>
+</ul>
+
+<hr />
+
+<h2 id="补充1fv函数">补充1:fv函数</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy.fv()</code> 是一个在 NumPy 中用于计算未来价值（Future Value, FV）的金融函数。它根据给定的利率、期数、付款金额等参数计算未来的财务值。这是金融数学中常用的一个工具，特别是在投资、贷款等场景下。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">fv</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">nper</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">pv</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="sh">'</span><span class="s">end</span><span class="sh">'</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">rate</code></strong>：
+每期的利率（例如，年利率或者月利率）。如果利率为年利率，需要根据周期的不同调整。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">nper</code></strong>：
+总期数。即投资或贷款的总期数，通常表示为期数（例如，年数或月数）。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pmt</code></strong>：
+每期的付款金额。通常是负值，因为它表示付款（支出），而不是收入。对于定期付款的投资或贷款，<code class="language-plaintext highlighter-rouge">pmt</code> 表示每期的付款金额。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pv</code></strong>：
+当前价值（Present Value）。即投资或贷款的当前金额，通常为负值表示你当前投资的金额，或者贷款的金额。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">when</code></strong>（可选）：
+表示付款时机。它有两个选项：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">'end'</code>：付款在期末进行（默认值）。</li>
+  <li><code class="language-plaintext highlighter-rouge">'begin'</code>：付款在期初进行。</li>
+</ul>
+
+<p>返回值：返回未来价值（Future Value）。根据给定的输入条件计算出未来的金额。</p>
+
+<p><code class="language-plaintext highlighter-rouge">fv()</code> 的计算基于以下公式：\(FV = PV*(1+r)^n+PMT*\frac{(1+r)^n-1}{r}\)</p>
+
+<p>其中：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">FV</code>：未来价值。</li>
+  <li><code class="language-plaintext highlighter-rouge">PV</code>：现值（现在的金额）。</li>
+  <li><code class="language-plaintext highlighter-rouge">PMT</code>：每期付款金额。</li>
+  <li><code class="language-plaintext highlighter-rouge">r</code>：每期利率。</li>
+  <li><code class="language-plaintext highlighter-rouge">n</code>：期数。</li>
+</ul>
+
+<p>例如：假设你每月存入 1000 元，年利率为 5%，储蓄 10 年，计算 10 年后的未来价值。</p>
+
+<blockquote>
+  <p>注： <code class="language-plaintext highlighter-rouge">numpy.fv()</code> 在 NumPy 版本 1.20 之后已经被移除。这个函数曾经是 NumPy 库的一部分，但它现在已被移到 <strong><code class="language-plaintext highlighter-rouge">numpy-financial</code></strong> 库中。如果你希望继续使用金融计算函数，包括 <code class="language-plaintext highlighter-rouge">fv()</code>，你需要安装并使用 <code class="language-plaintext highlighter-rouge">numpy-financial</code> 库。</p>
+
+  <p>安装命令：(在Jupyter notebook中)</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span><span class="o">-</span><span class="n">financial</span>
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210165652661.png" alt="image-20250210165652661" style="zoom:50%;" /></p>
+
+  <p>注意，下面的代码如果还是报错<code class="language-plaintext highlighter-rouge">ModuleNotFoundError: No module named 'numpy_financial'</code>，可以执行：</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+<span class="err">!</span><span class="p">{</span><span class="n">sys</span><span class="p">.</span><span class="n">executable</span><span class="p">}</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span><span class="o">-</span><span class="n">financial</span>
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy_financial</span> <span class="k">as</span> <span class="n">npf</span>
+
+<span class="c1"># 参数
+</span><span class="n">rate</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">/</span> <span class="mi">12</span>  <span class="c1"># 月利率
+</span><span class="n">nper</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">*</span> <span class="mi">10</span>  <span class="c1"># 总期数（10年）
+</span><span class="n">pmt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span>  <span class="c1"># 每月存款1000元，负号表示支出
+</span><span class="n">pv</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 初始现值为0
+</span>
+<span class="c1"># 计算未来价值
+</span><span class="n">fv</span> <span class="o">=</span> <span class="n">npf</span><span class="p">.</span><span class="nf">fv</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">nper</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">pv</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">10年后的未来价值: </span><span class="si">{</span><span class="n">fv</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> 元</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出10年后的未来价值: 155282.28 元
+</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="补充2pv函数">补充2:pv函数</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy_financial.pv()</code> 是 <code class="language-plaintext highlighter-rouge">numpy-financial</code> 库中的一个金融函数，用于计算现值（Present Value, PV）。现值是指一项未来支付流（如定期支付或收入）根据给定利率折现后，等价于当前时刻的价值。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy_financial</span><span class="p">.</span><span class="nf">pv</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">nper</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">fv</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="sh">'</span><span class="s">end</span><span class="sh">'</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">rate</code></strong>：
+每期的利率（例如年利率、月利率等）。如果按月计算，则为月利率。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">nper</code></strong>：
+总期数，即总的支付期数，通常是贷款的期限或者投资的期限。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">pmt</code></strong>：
+每期的支付金额。一般来说，这是负值，因为它表示支出（例如贷款的支付或投资的缴款）。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">fv</code></strong>（可选，默认为 0）：
+未来值，即在最后期末所需的金额。如果是贷款问题，它通常是 0；如果是投资问题，可能是某个特定的目标值。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">when</code></strong>（可选，默认为 ‘end’）：
+指定付款时机：
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">'end'</code>：付款发生在期末（默认）。</li>
+      <li><code class="language-plaintext highlighter-rouge">'begin'</code>：付款发生在期初。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>返回值：返回现值，即投资或贷款当前时刻的等价金额。该值是根据未来的支付、利率和期数等计算出来的。</p>
+
+<p>计算公式：\(PV = \frac{PMT*(1-(1+r)^{-n})}{r}+\frac{FV}{(1+r)^n}\)</p>
+
+<p>其中：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">PV</code> 是现值（即现在的金额）。</li>
+  <li><code class="language-plaintext highlighter-rouge">PMT</code> 是每期的支付金额。</li>
+  <li><code class="language-plaintext highlighter-rouge">r</code> 是每期的利率。</li>
+  <li><code class="language-plaintext highlighter-rouge">n</code> 是期数。</li>
+  <li><code class="language-plaintext highlighter-rouge">FV</code> 是未来值。</li>
+</ul>
+
+<p>例如，假设你有一个贷款，每月支付 1000 元，利率为 5% 年利率，贷款期为 10 年，计算贷款的现值（即你需要贷款的金额）。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy_financial</span> <span class="k">as</span> <span class="n">npf</span>
+
+<span class="c1"># 参数
+</span><span class="n">rate</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">/</span> <span class="mi">12</span>  <span class="c1"># 月利率
+</span><span class="n">nper</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">*</span> <span class="mi">10</span>  <span class="c1"># 总期数（10年）
+</span><span class="n">pmt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span>  <span class="c1"># 每月支付1000元，负号表示支出
+</span><span class="n">fv</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 未来值为0（贷款没有到期时的余额）
+</span>
+<span class="c1"># 计算现值（贷款金额）
+</span><span class="n">pv</span> <span class="o">=</span> <span class="n">npf</span><span class="p">.</span><span class="nf">pv</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">nper</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">fv</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">贷款的现值（需要借款的金额）：</span><span class="si">{</span><span class="n">pv</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> 元</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出：贷款的现值（需要借款的金额）：94281.35 元
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>也就是说，贷款的现值是 <strong>94,281.35 元</strong>，而你最终实际还款的总额是 <strong>120,000 元</strong></p>
+
+<hr />
+
+<h2 id="补充3npv函数">补充3:npv函数</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy_financial.npv()</code> 是 <code class="language-plaintext highlighter-rouge">numpy-financial</code> 库中的一个函数，用于计算净现值（Net Present Value，NPV）。净现值是评估投资项目的一个重要指标，表示未来一系列现金流按指定的贴现率折算回当前时点后的总和。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy_financial</span><span class="p">.</span><span class="nf">npv</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">rate</code></strong>：
+贴现率或利率。它是将未来现金流折算到现值所使用的利率，通常是一个百分比（例如 5% 表示 0.05）。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">values</code></strong>：
+一组现金流（values），通常是一个数组或列表。每个值代表在该时间点的现金流，可以是正数（收入或收益）或负数（支出或投资）。通常，第一个值是初期投资，通常为负值，后续的值为未来的收益或支出。</p>
+
+<p>返回值：返回一个浮动值，表示净现值（NPV）。净现值是通过将每期的现金流按照给定的贴现率折现到现值后，进行累加的结果。</p>
+
+<p>计算公式：\(NPV = \sum_{t=0}^{n} \frac{C_t}{(1+r)^t}\)</p>
+
+<p>其中：</p>
+
+<ul>
+  <li>\(C_t\) 是第 \(t\) 期的现金流。</li>
+  <li>\(r\) 是每期的贴现率（利率）。</li>
+  <li>\(t\)是期数（通常从 0 开始，表示当前时刻）。</li>
+</ul>
+
+<blockquote>
+  <p>如果 NPV <strong>大于 0</strong>，说明项目有赚钱的潜力，通常可以认为是一个<strong>有利可图</strong>的项目。</p>
+
+  <p>如果 NPV <strong>小于 0</strong>，说明项目可能会带来亏损，通常建议不要进行这个投资。</p>
+
+  <p>如果 NPV <strong>等于 0</strong>，说明这个投资刚好是<strong>收支平衡</strong>，没有盈利也没有亏损。</p>
+</blockquote>
+
+<p>例如：假设你有一个投资项目，初期投资为 100,000 元，预计未来 5 年的现金流分别为 20,000、30,000、40,000、50,000 和 60,000 元，贴现率为 8%，计算这个投资项目的净现值（NPV）。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy_financial</span> <span class="k">as</span> <span class="n">npf</span>
+
+<span class="c1"># 参数
+</span><span class="n">rate</span> <span class="o">=</span> <span class="mf">0.08</span>  <span class="c1"># 贴现率 8%
+</span><span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">20000</span><span class="p">,</span> <span class="mi">30000</span><span class="p">,</span> <span class="mi">40000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">,</span> <span class="mi">60000</span><span class="p">]</span>  <span class="c1"># 现金流，初期投资为负值，后续为收益
+</span>
+<span class="c1"># 计算净现值
+</span><span class="n">npv</span> <span class="o">=</span> <span class="n">npf</span><span class="p">.</span><span class="nf">npv</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">投资项目的净现值（NPV）为: </span><span class="si">{</span><span class="n">npv</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> 元</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 输出：投资项目的净现值（NPV）为: 53578.46 元
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>NPV = 53,578.46 元</strong>，也就是说，如果你现在进行这个投资，未来的收入和支出折算到现在的价值，总共会比你初期投资的 100,000 元多出 <strong>53,578.46 元</strong>。</p>
+
+<p>因此，这个项目是盈利的，因为 NPV 是正数。通俗来讲：<strong>你现在投资 100,000 元，按 8% 年利率的折现后，最终你会赚到 53,578.46 元</strong>，这表示投资是有回报的，值得考虑。</p>
+
+<hr />
+
+<h2 id="补充4irr函数">补充4:irr函数</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy_financial.irr()</code> 是 <code class="language-plaintext highlighter-rouge">numpy-financial</code> 库中的一个函数，用于计算投资项目的 <strong>内部收益率（IRR）</strong>。</p>
+
+<blockquote>
+  <p><strong>内部收益率（IRR）</strong> 是一个衡量投资项目回报率的指标。它告诉你，如果你进行这个投资，未来每年的回报率是多少。</p>
+</blockquote>
+
+<p><strong>内部收益率（IRR，Internal Rate of Return）</strong> 是使得投资项目的净现值（NPV）为零的贴现率。换句话说，IRR 是一个项目能够带来零净现值的利率，它反映了投资的回报率。</p>
+
+<ul>
+  <li>如果 <strong>IRR &gt; 投资的资本成本</strong>，项目通常被认为是有利可图的。</li>
+  <li>如果 <strong>IRR &lt; 投资的资本成本</strong>，项目通常不值得投资。</li>
+  <li>如果 <strong>IRR = 投资的资本成本</strong>，项目的回报刚好等于成本，通常认为是“无效的”。</li>
+</ul>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy_financial</span><span class="p">.</span><span class="nf">irr</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：<strong><code class="language-plaintext highlighter-rouge">values</code></strong>：
+一个现金流的序列（列表或数组）。现金流的顺序应与时间顺序一致，第一个数值通常是初期投资（负值），后续的数值是未来的现金流（通常是正值，表示收入或收益）。
+例如，<code class="language-plaintext highlighter-rouge">[-100000, 20000, 30000, 40000]</code> 表示你初期投资了 100,000 元，然后每年收入 20,000 元、30,000 元和 40,000 元。</p>
+
+<p>返回值：返回一个浮动值，表示内部收益率（IRR），通常为一个小数值。例如，0.12 表示 12% 的年回报率。</p>
+
+<p>例如，假设你有一个投资项目，初期投资为 100,000 元，预计未来 4 年的现金流分别为 20,000、30,000、40,000 和 50,000 元，计算该项目的内部收益率（IRR）。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy_financial</span> <span class="k">as</span> <span class="n">npf</span>
+
+<span class="c1"># 参数
+</span><span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">20000</span><span class="p">,</span> <span class="mi">30000</span><span class="p">,</span> <span class="mi">40000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">]</span>  <span class="c1"># 初期投资为负值，后续为收益
+</span>
+<span class="c1"># 计算内部收益率（IRR）
+</span><span class="n">irr</span> <span class="o">=</span> <span class="n">npf</span><span class="p">.</span><span class="nf">irr</span><span class="p">(</span><span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">投资项目的内部收益率（IRR）为: </span><span class="si">{</span><span class="n">irr</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="o">%</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出：投资项目的内部收益率（IRR）为: 12.83%
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>12.83%</strong> 是内部收益率，表示这个投资项目每年的回报率是 <strong>12.83%</strong>。也就是说，假设你现在投资了 <strong>100,000 元</strong>，每年你会得到大约 <strong>12.83%</strong> 的收益。</p>
+
+<hr />
+
+<h2 id="补充5mirr函数">补充5:mirr函数</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy_financial.mirr()</code> 是 <code class="language-plaintext highlighter-rouge">numpy-financial</code> 库中的一个函数，用于计算投资项目的 <strong>修正内部收益率（MIRR）</strong>。</p>
+
+<p><strong>修正内部收益率（MIRR，Modified Internal Rate of Return）</strong> 是一种对 IRR 的改进方法。它考虑了两个方面：</p>
+
+<ol>
+  <li><strong>现金流的再投资率</strong>：IRR 假设所有的现金流（特别是中期的现金流）都按照 IRR 自身的收益率进行再投资，但这可能不现实。MIRR 允许你指定一个 <strong>再投资率</strong>，表示你将这些现金流再投资所能得到的回报率。</li>
+  <li><strong>融资成本</strong>：IRR 假设所有负现金流（例如初期投资）按照 IRR 自身的利率进行融资，但实际中可能会有不同的融资利率。MIRR 允许你指定一个 <strong>融资成本</strong>，表示你从外部融资所需支付的利率。</li>
+</ol>
+
+<p>MIRR 在计算过程中分别使用 <strong>再投资率</strong> 和 <strong>融资成本</strong>，使得它比传统的 IRR 更加贴近实际情况。MIRR 通常能避免 IRR 所存在的多个解问题，并且更加稳定。</p>
+
+<blockquote>
+  <p>如果 MIRR 大于资本成本，说明项目是盈利的；如果小于资本成本，说明项目可能不值得投资。</p>
+</blockquote>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy_financial</span><span class="p">.</span><span class="nf">mirr</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">finance_rate</span><span class="p">,</span> <span class="n">reinvest_rate</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">values</code></strong>：
+一个包含现金流的数组或列表，现金流的顺序应当与时间顺序一致。负数表示支出（投资），正数表示收入（收益）。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">finance_rate</code></strong>：
+融资成本的贴现率，通常是一个小数。例如，5% 可以表示为 <code class="language-plaintext highlighter-rouge">0.05</code>。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">reinvest_rate</code></strong>：
+再投资的贴现率，同样是一个小数。例如，8% 可以表示为 <code class="language-plaintext highlighter-rouge">0.08</code>。</p>
+
+<p>返回值：返回一个浮动值，表示修正内部收益率（MIRR），通常为一个小数。例如，0.12 表示 12% 的年回报率。</p>
+
+<p>例如：假设你有一个投资项目，初期投资为 100,000 元，预计未来 4 年的现金流分别为 20,000、30,000、40,000 和 50,000 元。你假设融资成本是 5%，再投资的回报率是 8%，你可以通过 <code class="language-plaintext highlighter-rouge">mirr()</code> 函数来计算修正后的内部收益率。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy_financial</span> <span class="k">as</span> <span class="n">npf</span>
+
+<span class="c1"># 参数
+</span><span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">20000</span><span class="p">,</span> <span class="mi">30000</span><span class="p">,</span> <span class="mi">40000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">]</span>  <span class="c1"># 初期投资为负值，后续为收益
+</span><span class="n">finance_rate</span> <span class="o">=</span> <span class="mf">0.05</span>  <span class="c1"># 融资成本 5%
+</span><span class="n">reinvest_rate</span> <span class="o">=</span> <span class="mf">0.08</span>  <span class="c1"># 再投资回报率 8%
+</span>
+<span class="c1"># 计算修正内部收益率（MIRR）
+</span><span class="n">mirr</span> <span class="o">=</span> <span class="n">npf</span><span class="p">.</span><span class="nf">mirr</span><span class="p">(</span><span class="n">cash_flows</span><span class="p">,</span> <span class="n">finance_rate</span><span class="p">,</span> <span class="n">reinvest_rate</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">投资项目的修正内部收益率（MIRR）为: </span><span class="si">{</span><span class="n">mirr</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="o">%</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 投资项目的修正内部收益率（MIRR）为: 11.29%
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>融资成本（5%）：</strong> 假设你需要向银行借款时，银行的利率是 <strong>5%</strong>。</p>
+
+<p><strong>再投资回报率（8%）：</strong> 假设你收到的现金流（20,000、30,000 等）可以按照 <strong>8%</strong> 的回报率再投资。</p>
+
+<p>计算结果 <strong>11.29%</strong> 代表，如果你进行这个投资项目，考虑到融资成本和再投资回报率，你的年回报率是 <strong>11.29%</strong>。</p>
+
+<p><strong>MIRR = 11.29%</strong> 表示你进行这个投资后，考虑到融资成本和再投资回报率，你的年回报率是 <strong>11.29%</strong>。</p>
+
+<p>这个回报率可以用来衡量这个项目是否值得投资：如果你期望的最低回报率大于 11.29%（比如你希望每年能赚 10% 以上），那么这个项目是值得投资的。</p>
+
+<hr />
+
+<h2 id="补充6nper函数">补充6:nper函数</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy_financial.nper()</code> 函数用于计算 <strong>贷款或投资的期数（nper）</strong>，即在给定利率、每期支付金额和现值的情况下，完成全部支付或达到目标金额所需的期数。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy_financial</span><span class="p">.</span><span class="nf">nper</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">pv</span><span class="p">,</span> <span class="n">fv</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="sh">'</span><span class="s">end</span><span class="sh">'</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">rate</code></strong>：
+每期的利率。可以是年利率、月利率等，具体取决于现金流的频率（例如，月利率为年利率除以 12）。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pmt</code></strong>：
+每期的支付金额。通常是负数，表示每期支出的金额。如果是投资，也可以是正数，表示收入。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pv</code></strong>：
+当前的现值，也就是你现在的本金或投资额。通常是负数，表示你需要支付的初始金额。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">fv</code></strong>（可选）：
+未来价值，默认值为 0。表示在最后一笔支付时你期望得到的金额，通常是正数表示收入。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">when</code></strong>（可选）：
+指定支付的时间。可以是：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">'end'</code>（默认值）：表示支付发生在每期的末尾。</li>
+  <li><code class="language-plaintext highlighter-rouge">'begin'</code>：表示支付发生在每期的开始。</li>
+</ul>
+
+<p>返回值：返回一个数字，表示在给定条件下完成所有支付所需的期数（nper）。返回值可以是正数（表示贷款期数）或负数（表示投资期数）。</p>
+
+<p>假设你想要借款 <strong>10,000 元</strong>，年利率是 <strong>5%</strong>，每月还款 <strong>1,000 元</strong>，目标是计算需要多少个月才能还清贷款。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy_financial</span> <span class="k">as</span> <span class="n">npf</span>
+
+<span class="c1"># 参数
+</span><span class="n">rate</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">/</span> <span class="mi">12</span>  <span class="c1"># 月利率
+</span><span class="n">pmt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span>  <span class="c1"># 每月还款 1000 元，负号表示支出
+</span><span class="n">pv</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># 贷款金额
+</span><span class="n">fv</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 最终贷款余额为 0
+</span>
+<span class="c1"># 计算期数（贷款需要多少期才能还清）
+</span><span class="n">nper</span> <span class="o">=</span> <span class="n">npf</span><span class="p">.</span><span class="nf">nper</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">pv</span><span class="p">,</span> <span class="n">fv</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">需要 </span><span class="si">{</span><span class="n">nper</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> 期（月）还清贷款。</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 需要 10.24 期（月）还清贷款。
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>假设你借了 <strong>10,000 元</strong>，每个月都按 <strong>1,000 元</strong> 的金额进行偿还。</p>
+
+<p>在利率的影响下，贷款的每月还款会稍微增多，因此你每月需要还更多的钱。</p>
+
+<p>经过 <strong>10.24 个月</strong> 的还款，你就能把这笔贷款还清</p>
+
+<hr />
+
+<h2 id="补充7rate函数">补充7:rate函数</h2>
+
+<p><code class="language-plaintext highlighter-rouge">numpy_financial.rate()</code> 函数用于计算投资或贷款中每期的利率（也称为 <strong>利息率</strong> 或 <strong>贴现率</strong>），在给定其他参数（如期数、每期付款金额、现值和未来值）的情况下。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy_financial</span><span class="p">.</span><span class="nf">rate</span><span class="p">(</span><span class="n">nper</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">pv</span><span class="p">,</span> <span class="n">fv</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="sh">'</span><span class="s">end</span><span class="sh">'</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">nper</code></strong>：
+总期数（即投资或贷款的期数）。例如，如果你每个月还款 12 次，那么总期数就是 12。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pmt</code></strong>：
+每期的付款金额，通常是负数表示支出，正数表示收入。例如每月偿还的贷款金额。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pv</code></strong>：
+当前的现值，也就是你现在的本金或投资额。通常是负数，表示你现在借入的金额或需要投入的金额。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">fv</code></strong>（可选）：
+未来值，默认值为 0。表示在最后一笔支付时你期望得到的金额。通常是正数表示收入，负数表示支出。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">when</code></strong>（可选）：
+支付时间，默认为 <code class="language-plaintext highlighter-rouge">'end'</code>。可以是：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">'end'</code>：表示支付发生在每期的末尾（默认）。</li>
+  <li><code class="language-plaintext highlighter-rouge">'begin'</code>：表示支付发生在每期的开始。</li>
+</ul>
+
+<p>返回值：返回每期的利率（即利息率）。返回值是一个浮动的值，表示每期的利率，通常为一个小数。</p>
+
+<p>例如，假设你借了 <strong>10,000 元</strong>，每月还款 <strong>1,000 元</strong>，并且你计划 <strong>12 个月</strong> 完成还款，目标是计算每月的利率。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy_financial</span> <span class="k">as</span> <span class="n">npf</span>
+
+<span class="c1"># 参数
+</span><span class="n">nper</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1"># 总期数为 12 个月
+</span><span class="n">pmt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span>  <span class="c1"># 每月还款 1000 元，负号表示支出
+</span><span class="n">pv</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># 贷款金额 10000 元
+</span>
+<span class="c1"># 计算每期利率，给定未来值 fv=0
+</span><span class="n">rate</span> <span class="o">=</span> <span class="n">npf</span><span class="p">.</span><span class="nf">rate</span><span class="p">(</span><span class="n">nper</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">pv</span><span class="p">,</span> <span class="n">fv</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">每期的利率是: </span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># 每期的利率是: 0.0292
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h1 id="710-动手实践计算终值">7.10 动手实践：计算终值</h1>
+
+<p>终值是基于一些假设给出的某个金融资产在未来某一时间点的价值。终值决定于4个参 数——利率、期数、每期支付金额以及现值。在本节的教程中，我们以利率3%、每季度支付金额10、存款周期5年以及现值1 000为参数计算终值。</p>
+
+<p>使用正确的参数调用fv函数，计算终值：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">npf</span><span class="p">.</span><span class="nf">fv</span><span class="p">(</span><span class="mf">0.03</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1000</span><span class="p">)</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210183729231.png" alt="image-20250210183729231" style="zoom:50%;" /></p>
+
+<p>这相当于利率3%的5年期存款并且每季度额外存入10个单位的资金。如果我们改变存款的年数并保持其他参数不变，将得到如下的散点图。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210183829674.png" alt="image-20250210183829674" style="zoom:50%;" /></p>
+
+<p>绘制图的代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="n">fvals</span> <span class="o">=</span> <span class="p">[]</span> 
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span> 
+    <span class="n">fvals</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">npf</span><span class="p">.</span><span class="nf">fv</span><span class="p">(.</span><span class="mi">03</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1000</span><span class="p">))</span> 
+<span class="nf">plot</span><span class="p">(</span><span class="n">fvals</span><span class="p">,</span> <span class="sh">'</span><span class="s">bo</span><span class="sh">'</span><span class="p">)</span>  
+<span class="nf">show</span><span class="p">()</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>刚才做了些什么 :我们以利率3%、每季度支付金额10、存款周期5年以及现值1 000为参数，使用NumPy中的fv函数计算了终值。我们针对不同的存款周期绘制了终值的散点图。</p>
+
+<p>完整代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy_financial</span> <span class="k">as</span> <span class="n">npf</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">show</span>
+
+<span class="c1"># 参数
+</span><span class="n">nper</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1"># 总期数为 12 个月
+</span><span class="n">pmt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span>  <span class="c1"># 每月还款 1000 元，负号表示支出
+</span><span class="n">pv</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># 贷款金额 10000 元
+</span>
+<span class="c1"># 计算每期利率，给定未来值 fv=0
+</span><span class="n">rate</span> <span class="o">=</span> <span class="n">npf</span><span class="p">.</span><span class="nf">rate</span><span class="p">(</span><span class="n">nper</span><span class="p">,</span> <span class="n">pmt</span><span class="p">,</span> <span class="n">pv</span><span class="p">,</span> <span class="n">fv</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">每期的利率是: </span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># 每期的利率是: 0.0292
+</span>
+<span class="n">fvals</span> <span class="o">=</span> <span class="p">[]</span> 
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span> 
+    <span class="n">fvals</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">npf</span><span class="p">.</span><span class="nf">fv</span><span class="p">(.</span><span class="mi">03</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1000</span><span class="p">))</span> 
+<span class="nf">plot</span><span class="p">(</span><span class="n">fvals</span><span class="p">,</span> <span class="sh">'</span><span class="s">bo</span><span class="sh">'</span><span class="p">)</span>  
+<span class="nf">show</span><span class="p">()</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="711-现值">7.11 现值</h1>
+
+<p>现值（present value）是指资产在当前时刻的价值。NumPy中的pv函数可以计算现值。该函数和fv函数是镜像对称的，同样需要利率、期数、每期支付金额这些参数，不过这里输入为终值，输出为现值。</p>
+
+<h1 id="712-动手实践计算现值">7.12 动手实践：计算现值</h1>
+
+<p>我们来进行逆向计算——使用前一节教程中的数值计算现值。 使用7.10节使用的数值来计算现值。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">npf</span><span class="p">.</span><span class="nf">pv</span><span class="p">(</span><span class="mf">0.03</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1376.0963320407982</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210191835522.png" alt="image-20250210191835522" style="zoom:50%;" /></p>
+
+<p>由于我们计算的是支出的现金流，因此结果前面有一个负号。</p>
+
+<p>刚才做了些什么 :  我们对上一节教程中的终值进行了逆向计算，得到了现值。这是用NumPy中的pv函数完成的。</p>
+
+<h1 id="713-净现值">7.13 净现值</h1>
+
+<p>净现值（net present value）定义为按折现率计算的净现金流之和。NumPy中的npv函数返回净现值。该函数需要两个参数，即利率和一个表示现金流的数组。</p>
+
+<h1 id="714-动手实践计算净现值">7.14 动手实践：计算净现值</h1>
+
+<p>我们将为一组随机生成的现金流计算净现值。步骤如下。</p>
+
+<blockquote>
+
+</blockquote>
+
+<p>(1) 生成5个随机数作为现金流的取值。插入<code class="language-plaintext highlighter-rouge">-100</code>作为初始值。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">cashflows</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">cashflows</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="n">cashflows</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cashflows</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210192203345.png" alt="image-20250210192203345" style="zoom:50%;" /></p>
+
+<p>(2) 根据上一步生成的现金流数据，调用npv函数计算净现值。利率按3%计算。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">npf</span><span class="p">.</span><span class="nf">npv</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">cashflows</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210192235576.png" alt="image-20250210192235576" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用npv函数为一组随机生成的现金流数据计算了净现值。</p>
+
+<hr />
+
+<h1 id="715-内部收益率">7.15 内部收益率</h1>
+
+<p>内部收益率（internal rate of return）是净现值为0时的有效利率，不考虑通胀因素。NumPy中的irr函数根据给定的现金流数据返回对应的内部收益率。</p>
+
+<h1 id="716-动手实践计算内部收益率">7.16 动手实践：计算内部收益率</h1>
+
+<p>这里我们复用7.14节中的现金流数据。</p>
+
+<p>使用之前教程中生成的现金流数组，调用irr函数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">npf</span><span class="p">.</span><span class="nf">irr</span><span class="p">([</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span>   <span class="mi">73</span><span class="p">,</span>   <span class="mi">82</span><span class="p">,</span>   <span class="mi">16</span><span class="p">,</span>   <span class="mi">84</span><span class="p">,</span>   <span class="mi">77</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210192527604.png" alt="image-20250210192527604" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用之前的“动手实践”教程中生成的现金流数据，计算了对应的内部收益率。这是用NumPy中的irr函数完成的。</p>
+
+<h1 id="717-分期付款">7.17 分期付款</h1>
+
+<p>NumPy中的pmt函数可以根据利率和期数计算贷款每期所需支付的资金。</p>
+
+<h1 id="718-动手实践计算分期付款">7.18 动手实践：计算分期付款</h1>
+
+<p>假设你贷款100万，年利率为10%，要用30年时间还完贷款，那么每月你必须支付多少资金呢？我们来计算一下。</p>
+
+<p>使用刚才提到的参数值，调用pmt函数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">npf</span><span class="p">.</span><span class="nf">pmt</span><span class="p">(</span><span class="mf">0.10</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span> <span class="o">*</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210192640899.png" alt="image-20250210192640899" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们计算了贷款100万、年利率10%的情况下的月供金额。设定还款时间为30年，pmt函数告诉我们每月需要偿还的资金为8 775.715 700 89。</p>
+
+<h1 id="719-付款期数">7.19 付款期数</h1>
+
+<p>NumPy中的nper函数可以计算分期付款所需的期数。所需的参数为贷款利率、固定的月供以及贷款额。</p>
+
+<h1 id="720-动手实践计算付款期数">7.20 动手实践：计算付款期数</h1>
+
+<p>考虑贷款9 000，年利率10%，每月固定还款为100的情形。 通过nper函数计算出付款期数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">npf</span><span class="p">.</span><span class="nf">nper</span><span class="p">(</span><span class="mf">0.10</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">9000</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210192758638.png" alt="image-20250210192758638" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :我们计算了贷款9000、年利率10%、每月固定还款100的情形下所需的付款期数。结果为167个月。</p>
+
+<h1 id="721-利率">7.21 利率</h1>
+
+<p>NumPy中的rate函数根据给定的付款期数、每期付款资金、现值和终值计算利率。</p>
+
+<h1 id="722-动手实践计算利率">7.22 动手实践：计算利率</h1>
+
+<p>我们使用7.20节中的数值进行逆向计算，由其他参数得出利率。 填入之前教程中的数值作为参数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="mi">12</span><span class="o">*</span><span class="n">npf</span><span class="p">.</span><span class="nf">rate</span><span class="p">(</span><span class="mi">167</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">9000</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210192931420.png" alt="image-20250210192931420" style="zoom:50%;" /></p>
+
+<p>如我们所料，计算出的利率约为10%。</p>
+
+<p>刚才做了些什么 :  我们使用了NumPy的rate函数和之前的“动手实践”教程中的数值，计算了贷款利率。忽略舍入误差，我们得到了原先的利率10%。</p>
+
+<h1 id="723-窗函数">7.23 窗函数</h1>
+
+<p>窗函数（window function）是信号处理领域常用的数学函数，相关应用包括<strong>谱分析</strong>和<strong>滤波器设计</strong>等。这些窗函数除在给定区间之外取值均为0。NumPy中有很多窗函数，如bartlett、blackman、hamming、hanning和kaiser。关于hanning函数的例子可以在第4章和第3章中找到。</p>
+
+<h1 id="724-动手实践绘制巴特利特窗">7.24 动手实践：绘制巴特利特窗</h1>
+
+<p>巴特利特窗（Bartlett window）是一种三角形平滑窗。按如下步骤绘制巴特利特窗。</p>
+
+<p>(1) 调用NumPy中的bartlett函数，以计算巴特利特窗。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">bartlett</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(2) 使用Matplotlib绘制巴特利特窗，非常简单。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210193510941.png" alt="image-20250210193510941" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :   我们使用NumPy中的bartlett函数绘制了巴特利特窗。</p>
+
+<h1 id="725-布莱克曼窗">7.25 布莱克曼窗</h1>
+
+<p>布莱克曼窗（Blackman window）形式上为三项余弦值的加和:\(w(n) = 0.42- 0.5cos(2 \pi n/M)+0.08cos(4 \pi n/M)\)</p>
+
+<p>NumPy中的blackman函数返回布莱克曼窗。该函数唯一的参数为输出点的数量。如果数量为0或小于0，则返回一个空数组。</p>
+
+<h1 id="726-动手实践使用布莱克曼窗平滑股价数据">7.26 动手实践：使用布莱克曼窗平滑股价数据</h1>
+
+<p>我们对AAPL股价的小数据文件中的收盘价数据进行平滑处理。完成如下步骤。</p>
+
+<p>(1) 将数据载入NumPy数组。调用blackman函数生成一个平滑窗并用它来平滑股价数据。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+
+<span class="n">closes</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">AAPL.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="p">),</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># N = int(sys.argv[1]) 
+</span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">blackman</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> 
+<span class="n">smoothed</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">convolve</span><span class="p">(</span><span class="n">window</span><span class="o">/</span><span class="n">window</span><span class="p">.</span><span class="nf">sum</span><span class="p">(),</span> <span class="n">closes</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="sh">'</span><span class="s">same</span><span class="sh">'</span><span class="p">)</span> 
+<span class="n">smoothed</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210193924362.png" alt="image-20250210193924362" style="zoom:50%;" /></p>
+
+<p>(2) 使用Matplotlib绘制平滑后的股价图。在这个例子中，我们将省略最前面5个和最后面5个数据点。这是由于存在很强的边界效应。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">smoothed</span><span class="p">[</span><span class="n">N</span><span class="p">:</span><span class="o">-</span><span class="n">N</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">smoothed</span><span class="sh">"</span><span class="p">)</span>  
+<span class="nf">plot</span><span class="p">(</span><span class="n">closes</span><span class="p">[</span><span class="n">N</span><span class="p">:</span><span class="o">-</span><span class="n">N</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">closes</span><span class="sh">"</span><span class="p">)</span>  
+<span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">best</span><span class="sh">'</span><span class="p">)</span>  
+<span class="nf">show</span><span class="p">()</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210194058426.png" alt="image-20250210194058426" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么  :  我们使用NumPy中的blackman函数生成的布莱克曼窗对AAPL收盘价数据进行了平滑处理，并用Matplotlib绘制了平滑前后的股价图。</p>
+
+<p>完整代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">legend</span>
+
+<span class="n">closes</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">AAPL.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="p">),</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># N = int(sys.argv[1]) 
+</span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">blackman</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> 
+<span class="n">smoothed</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">convolve</span><span class="p">(</span><span class="n">window</span><span class="o">/</span><span class="n">window</span><span class="p">.</span><span class="nf">sum</span><span class="p">(),</span> <span class="n">closes</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="sh">'</span><span class="s">same</span><span class="sh">'</span><span class="p">)</span> 
+<span class="nf">plot</span><span class="p">(</span><span class="n">smoothed</span><span class="p">[</span><span class="n">N</span><span class="p">:</span><span class="o">-</span><span class="n">N</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">smoothed</span><span class="sh">"</span><span class="p">)</span>  
+<span class="nf">plot</span><span class="p">(</span><span class="n">closes</span><span class="p">[</span><span class="n">N</span><span class="p">:</span><span class="o">-</span><span class="n">N</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">closes</span><span class="sh">"</span><span class="p">)</span>  
+<span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">best</span><span class="sh">'</span><span class="p">)</span>  
+<span class="nf">show</span><span class="p">()</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="727-汉明窗">7.27 汉明窗</h1>
+
+<p>汉明窗（Hamming window）形式上是一个加权的余弦函数。公式:\(w(n) = 0.54+0.64cos(\frac{2 \pi n}{M-1}),0 \le n \le M-1\)</p>
+
+<p>NumPy中的hamming函数返回汉明窗。该函数唯一的参数为输出点的数量。如果数量为0或小于0，则返回一个空数组。</p>
+
+<h1 id="728-动手实践绘制汉明窗">7.28 动手实践：绘制汉明窗</h1>
+
+<p>我们来绘制汉明窗。完成如下步骤。</p>
+
+<p>(1) 调用hamming函数，以计算汉明窗：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">hamming</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">window</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210194406218.png" alt="image-20250210194406218" style="zoom:50%;" /></p>
+
+<p>(2) 使用Matplotlib绘制汉明窗：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210194437397.png" alt="image-20250210194437397" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :  我们使用NumPy中的hamming函数绘制了汉明窗。</p>
+
+<h1 id="729-凯泽窗">7.29 凯泽窗</h1>
+
+<p>凯泽窗（Kaiser window）是以贝塞尔函数（Bessel function）定义的，公式如下所示。</p>
+
+\[w(n) = I_0 \left( \beta \sqrt{ 1 - \frac{4n^2}{(M - 1)^2}} \right) / I_0(\beta)\]
+
+<p>这里的\(I_0\)即为零阶的贝塞尔函数。NumPy中的kaiser函数返回凯泽窗。该函数的第一个参数为输出点的数量。如果数量为0或小于0，则返回一个空数组。第二个参数为\(\beta\)值。</p>
+
+<h1 id="730-动手实践绘制凯泽窗">7.30 动手实践：绘制凯泽窗</h1>
+
+<p>我们来绘制凯泽窗。完成如下步骤。</p>
+
+<p>(1) 调用kaiser函数，以计算凯泽窗：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">kaiser</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">window</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210194716707.png" alt="image-20250210194716707" style="zoom:50%;" /></p>
+
+<p>(2) 使用Matplotlib绘制凯泽窗：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210194748479.png" alt="image-20250210194748479" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :  我们使用NumPy中的kaiser函数绘制了凯泽窗。</p>
+
+<h1 id="731-专用数学函数">7.31 专用数学函数</h1>
+
+<p>我们将以一些专用数学函数结束本章的内容。</p>
+
+<p>贝塞尔函数（Bessel function）是贝塞尔微分方程的标准解函数（详见http://en.wikipedia.org/wiki/Bessel_function）。</p>
+
+<p>在NumPy中，以i0 表示第一类修正的零阶贝塞尔函数。</p>
+
+<p>sinc函数在NumPy中有同名函数sinc，并且该函数也有一个二维版本。</p>
+
+<p>sinc是一个三角函数，更多详细内容请访问http://en.wikipedia.org/wiki/Sinc_function。</p>
+
+<h1 id="732-动手实践绘制修正的贝塞尔函数">7.32 动手实践：绘制修正的贝塞尔函数</h1>
+
+<p>我们来看看第一类修正的零阶贝塞尔函数绘制出来是什么形状。</p>
+
+<p>(1) 使用NumPy的linspace函数生成一组均匀分布的数值。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">x</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210194950795.png" alt="image-20250210194950795" style="zoom:50%;" /></p>
+
+<p>(2) 调用i0函数进行计算：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">i0</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">vals</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210195022981.png" alt="image-20250210195022981" style="zoom:50%;" /></p>
+
+<p>(3) 使用Matplotlib绘制修正的贝塞尔函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">vals</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210195347370.png" alt="image-20250210195347370" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :   我们使用NumPy中的i0函数绘制了第一类修正的零阶贝塞尔函数。</p>
+
+<h1 id="733-sinc-函数">7.33 sinc 函数</h1>
+
+<p>sinc函数在数学和信号处理领域被广泛应用。NumPy中有同名函数sinc，并且也存在一个二维版本。</p>
+
+<h1 id="734-动手实践绘制-sinc-函数">7.34 动手实践：绘制 sinc 函数</h1>
+
+<p>我们将绘制sinc函数。完成如下步骤。</p>
+
+<p>(1) 使用NumPy的linspace函数生成一组均匀分布的数值。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210195511035.png" alt="image-20250210195511035" style="zoom:50%;" /></p>
+
+<p>(2) 调用sinc函数进行计算：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210195556698.png" alt="image-20250210195556698" style="zoom:50%;" /></p>
+
+<p>(3) 使用Matplotlib绘制sinc函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">vals</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210195629754.png" alt="image-20250210195629754" style="zoom:50%;" /></p>
+
+<p>sinc2d函数需要输入一个二维数组。我们可以用outer函数生成二维数组，便得到下图。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span> 
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">imshow</span><span class="p">,</span> <span class="n">show</span> 
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  
+<span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">outer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>  
+<span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sinc</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> 
+<span class="nf">imshow</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>  
+<span class="nf">show</span><span class="p">()</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250210195725055.png" alt="image-20250210195725055" style="zoom:50%;" /></p>
+
+<h1 id="735-本章小结">7.35 本章小结</h1>
+
+<p>本章介绍了一些专用性较强的NumPy功能，包括排序和搜索、专用函数、金融函数以及窗函数等。
+在下一章中，我们将学习非常重要的程序测试方面的知识。</p>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/02/09/NumPy(6)%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0NumPy%E6%A8%A1%E5%9D%97/" data-toggle="tooltip" data-placement="top" title="numpy(6)深入学习NumPy模块">
+                        Previous<br>
+                        <span>numpy(6)深入学习NumPy模块</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/02/11/jupyter-notebook-%E8%AF%BB%E5%9B%BE%E7%89%87/" data-toggle="tooltip" data-placement="top" title="读图片-jupyter notebook">
+                        Next<br>
+                        <span>读图片-jupyter notebook</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0034" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="3">力扣</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="2">算法</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

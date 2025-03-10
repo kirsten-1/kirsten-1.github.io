@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="numpy(5)矩阵和通用函数 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-02-09T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="人工智能AI基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/02/09/NumPy(5)%E7%9F%A9%E9%98%B5%E5%92%8C%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>numpy(5)矩阵和通用函数 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/02/09/NumPy(5)%E7%9F%A9%E9%98%B5%E5%92%8C%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80" title="人工智能AI基础">人工智能AI基础</a>
+                        
+                    </div>
+                    <h1>numpy(5)矩阵和通用函数</h1>
+                    
+                    <h2 class="subheading">第 5 章 NumPy矩阵和通用函数</h2>
+                    <span class="meta">Posted by Hilda on February 9, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>前4章以及其他补充已经整理如下：</p>
+
+<p><a href="https://kirsten-1.github.io/2025/01/27/numpy(1)_%E5%85%A5%E9%97%A8/">第1章NumPy入门</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/04/numpy(2)_numpy%E5%9F%BA%E7%A1%80/">第2章NumPy基础</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/06/Numpy(3)%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/">第3章常用函数</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/04/Numpy%E7%9A%84%E5%B9%BF%E6%92%AD%E5%92%8C%E5%B9%BF%E6%92%AD%E6%9C%BA%E5%88%B6/">广播与广播机制</a></p>
+
+<p><a href="https://kirsten-1.github.io/2025/02/07/NumPy(4)%E4%BE%BF%E6%8D%B7%E5%87%BD%E6%95%B0/">第4章便捷函数</a></p>
+
+<hr />
+
+<p>本章我们将学习矩阵和通用函数（universal functions，即ufuncs）的相关内容。矩阵作为一种重要的数学概念，在NumPy中也有专门的表示方法。通用函数可以逐个处理数组中的元素，也可以直接处理标量。通用函数的输入是一组标量，输出也是一组标量，它们通常可以对应于基本数学运算，如加、减、乘、除等。我们还将介绍三角函数、位运算函数和比较函数。</p>
+
+<p>本章涵盖以下内容：</p>
+
+<ul>
+  <li>矩阵创建；</li>
+  <li>矩阵运算；</li>
+  <li>基本通用函数；</li>
+  <li>三角函数；</li>
+  <li>位运算函数；</li>
+  <li>比较函数。</li>
+</ul>
+
+<blockquote>
+  <p>这一系列，我都是用Jupyter notebook进行学习。环境启动如下：</p>
+
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>workon env1
+jupyter notebook
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+</blockquote>
+
+<hr />
+
+<h1 id="51-矩阵">5.1 矩阵</h1>
+
+<p>在NumPy中，矩阵是ndarray的子类，可以由专用的字符串格式来创建。与数学概念中的矩阵一样，NumPy中的矩阵也是二维的。如你所料，矩阵的乘法运算和NumPy中的普通乘法运算不同。幂运算当然也不一样。我们可以使用mat、matrix以及bmat函数来创建矩阵。</p>
+
+<h1 id="52-动手实践创建矩阵">5.2 动手实践：创建矩阵</h1>
+
+<p>mat函数创建矩阵时，若输入已为matrix或ndarray对象，则不会为它们创建副本。 因此，调用mat函数和调用<code class="language-plaintext highlighter-rouge">matrix(data, copy=False)</code>等价。 我们还将展示矩阵转置和矩阵求逆的方法。</p>
+
+<hr />
+
+<p>补充：在 NumPy 中，<code class="language-plaintext highlighter-rouge">mat</code>、<code class="language-plaintext highlighter-rouge">matrix</code> 和 <code class="language-plaintext highlighter-rouge">bmat</code> 是用于创建矩阵对象的函数。它们都属于 <code class="language-plaintext highlighter-rouge">numpy.matlib</code> 模块（或者是 <code class="language-plaintext highlighter-rouge">numpy</code> 本身的一部分，依赖于 NumPy 版本），但有些细节和功能差异。以下是它们的详细说明，包括函数签名、参数、返回值以及使用示例。</p>
+
+<hr />
+
+<p><code class="language-plaintext highlighter-rouge">mat</code> 函数：</p>
+
+<p><code class="language-plaintext highlighter-rouge">mat</code> 函数用于创建矩阵对象。矩阵是二维数组（<code class="language-plaintext highlighter-rouge">ndarray</code>）的一个特定类型，提供了一些额外的矩阵操作。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">mat</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">data</code>: 用于创建矩阵的输入数据。可以是嵌套<strong>列表（列表的列表），二维数组，或其他类似对象</strong>。数据会被转化为一个矩阵。</li>
+  <li><code class="language-plaintext highlighter-rouge">dtype</code>: 可选，指定输出矩阵的数据类型。如果没有指定，<code class="language-plaintext highlighter-rouge">dtype</code> 将从输入数据中推断。</li>
+</ul>
+
+<p>输出：</p>
+
+<p>返回一个矩阵对象（<code class="language-plaintext highlighter-rouge">numpy.matrix</code>）。</p>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># mat创建矩阵
+</span><span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">mat</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">m1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207164840273.png" alt="image-20250207164840273" style="zoom:50%;" /></p>
+
+<hr />
+
+<p><code class="language-plaintext highlighter-rouge">matrix</code> 函数</p>
+
+<p><code class="language-plaintext highlighter-rouge">matrix</code> 函数与 <code class="language-plaintext highlighter-rouge">mat</code> 函数非常相似，实际上它们是等效的，都是创建矩阵对象的方式。在较早的版本中，<code class="language-plaintext highlighter-rouge">matrix</code> 是用于创建矩阵的函数，但随着 NumPy 的更新，<code class="language-plaintext highlighter-rouge">mat</code> 和 <code class="language-plaintext highlighter-rouge">matrix</code> 变得几乎没有差别。大多数情况下建议使用 <code class="language-plaintext highlighter-rouge">np.array()</code> 而不是 <code class="language-plaintext highlighter-rouge">matrix</code>，因为后者对矩阵进行的一些特定操作已不再推荐。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">matrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">data</code>: 输入数据，可以是嵌套列表、二维数组等。</li>
+  <li><code class="language-plaintext highlighter-rouge">dtype</code>: 可选，指定输出矩阵的数据类型。</li>
+</ul>
+
+<p>输出：</p>
+
+<p>返回一个矩阵对象（<code class="language-plaintext highlighter-rouge">numpy.matrix</code>）。</p>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">m2</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207165139053.png" alt="image-20250207165139053" style="zoom:50%;" /></p>
+
+<p>进行矩阵运算：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">m1*m1</span><span class="sh">"</span><span class="p">,</span> <span class="n">m1</span><span class="o">*</span><span class="n">m1</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">m2*m2</span><span class="sh">"</span><span class="p">,</span> <span class="n">m2</span><span class="o">*</span><span class="n">m2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207165238714.png" alt="image-20250207165238714" style="zoom:50%;" /></p>
+
+<hr />
+
+<p><code class="language-plaintext highlighter-rouge">bmat</code> 函数</p>
+
+<p><code class="language-plaintext highlighter-rouge">bmat</code> 函数用于创建一个由多个矩阵块（block）组成的大矩阵。它是用来将多个矩阵按指定的位置（行和列）拼接成一个大的矩阵。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">bmat</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li>b: 输入可以是一个列表、元组或字符串，表示多个矩阵块的排列。每个矩阵块也可以是矩阵、数组或其他支持矩阵操作的对象。矩阵将按照给定的顺序拼接在一起。
+    <ul>
+      <li>如果是字符串，它表示一个矩阵块的简单描述（如“AB; CD”表示两个矩阵块的组合）。</li>
+      <li>如果是列表或元组，它应包含可以拼接在一起的矩阵。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>输出：返回一个拼接好的矩阵对象。</p>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c1"># 创建单独的矩阵块
+</span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">matrix</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">matrix</span><span class="p">([[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]])</span>
+
+<span class="c1"># 使用 bmat 拼接矩阵
+</span><span class="n">block_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">bmat</span><span class="p">([[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">],</span> <span class="p">[</span><span class="n">C</span><span class="p">,</span> <span class="n">A</span><span class="p">]])</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Block Matrix:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">block_matrix</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207165441889.png" alt="image-20250207165441889" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>总结对比</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>函数</th>
+      <th>功能</th>
+      <th>参数</th>
+      <th>返回值</th>
+      <th>示例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">mat</code></td>
+      <td>创建一个矩阵对象（与 <code class="language-plaintext highlighter-rouge">matrix</code> 类似）</td>
+      <td><code class="language-plaintext highlighter-rouge">data</code>（数据） <code class="language-plaintext highlighter-rouge">dtype</code>（数据类型）</td>
+      <td><code class="language-plaintext highlighter-rouge">numpy.matrix</code></td>
+      <td><code class="language-plaintext highlighter-rouge">np.mat([[1, 2], [3, 4]])</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">matrix</code></td>
+      <td>创建一个矩阵对象（与 <code class="language-plaintext highlighter-rouge">mat</code> 类似）</td>
+      <td><code class="language-plaintext highlighter-rouge">data</code>（数据） <code class="language-plaintext highlighter-rouge">dtype</code>（数据类型）</td>
+      <td><code class="language-plaintext highlighter-rouge">numpy.matrix</code></td>
+      <td><code class="language-plaintext highlighter-rouge">np.matrix([[1, 2], [3, 4]])</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">bmat</code></td>
+      <td>拼接多个矩阵块构成一个大矩阵</td>
+      <td><code class="language-plaintext highlighter-rouge">b</code>（矩阵块的列表、元组或字符串）</td>
+      <td>拼接后的 <code class="language-plaintext highlighter-rouge">numpy.matrix</code></td>
+      <td><code class="language-plaintext highlighter-rouge">np.bmat([[A, B], [C, A]])</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong><code class="language-plaintext highlighter-rouge">mat</code> 和 <code class="language-plaintext highlighter-rouge">matrix</code></strong>：功能相同，用于创建矩阵对象，推荐使用 <code class="language-plaintext highlighter-rouge">mat</code>，因为 <code class="language-plaintext highlighter-rouge">matrix</code> 在新版的 NumPy 中已经不再推荐使用。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">bmat</code></strong>：用于按指定的块结构拼接多个矩阵块，特别适合处理更复杂的矩阵拼接问题。</p>
+
+<hr />
+
+<p>(1) 在创建矩阵的专用字符串中，矩阵的行与行之间用分号隔开，行内的元素之间用空格隔开。使用如下的字符串调用mat函数创建阵：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">mat</span><span class="p">(</span><span class="sh">'</span><span class="s">1 2 3;4 5 6;7 8 9</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">A</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207165635124.png" alt="image-20250207165635124" style="zoom:50%;" /></p>
+
+<p>(2) 用T属性获取转置矩阵：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">A</span><span class="p">.</span><span class="n">T</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207165703290.png" alt="image-20250207165703290" style="zoom:50%;" /></p>
+
+<p>(3) 用I属性获取逆矩阵：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">A</span><span class="p">.</span><span class="n">I</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>但是出现报错：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="o">---------------------------------------------------------------------------</span>
+<span class="n">LinAlgError</span>                               <span class="nc">Traceback </span><span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">A</span><span class="p">.</span><span class="n">I</span>
+
+<span class="n">File</span> <span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">matrixlib</span><span class="o">/</span><span class="n">defmatrix</span><span class="p">.</span><span class="n">py</span><span class="p">:</span><span class="mi">836</span><span class="p">,</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">.</span><span class="nc">I</span><span class="p">(</span><span class="n">self</span><span class="p">)</span>
+    <span class="mi">834</span> <span class="k">else</span><span class="p">:</span>
+    <span class="mi">835</span>     <span class="kn">from</span> <span class="n">numpy.linalg</span> <span class="kn">import</span> <span class="n">pinv</span> <span class="k">as</span> <span class="n">func</span>
+<span class="o">--&gt;</span> <span class="mi">836</span> <span class="k">return</span> <span class="nf">asmatrix</span><span class="p">(</span><span class="nf">func</span><span class="p">(</span><span class="n">self</span><span class="p">))</span>
+
+<span class="n">File</span> <span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">linalg</span><span class="o">/</span><span class="n">linalg</span><span class="p">.</span><span class="n">py</span><span class="p">:</span><span class="mi">561</span><span class="p">,</span> <span class="ow">in</span> <span class="nf">inv</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="mi">559</span> <span class="n">signature</span> <span class="o">=</span> <span class="sh">'</span><span class="s">D-&gt;D</span><span class="sh">'</span> <span class="k">if</span> <span class="nf">isComplexType</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">else</span> <span class="sh">'</span><span class="s">d-&gt;d</span><span class="sh">'</span>
+    <span class="mi">560</span> <span class="n">extobj</span> <span class="o">=</span> <span class="nf">get_linalg_error_extobj</span><span class="p">(</span><span class="n">_raise_linalgerror_singular</span><span class="p">)</span>
+<span class="o">--&gt;</span> <span class="mi">561</span> <span class="n">ainv</span> <span class="o">=</span> <span class="n">_umath_linalg</span><span class="p">.</span><span class="nf">inv</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="n">signature</span><span class="p">,</span> <span class="n">extobj</span><span class="o">=</span><span class="n">extobj</span><span class="p">)</span>
+    <span class="mi">562</span> <span class="k">return</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">ainv</span><span class="p">.</span><span class="nf">astype</span><span class="p">(</span><span class="n">result_t</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+
+<span class="n">File</span> <span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">linalg</span><span class="o">/</span><span class="n">linalg</span><span class="p">.</span><span class="n">py</span><span class="p">:</span><span class="mi">112</span><span class="p">,</span> <span class="ow">in</span> <span class="nf">_raise_linalgerror_singular</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+    <span class="mi">111</span> <span class="k">def</span> <span class="nf">_raise_linalgerror_singular</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+<span class="o">--&gt;</span> <span class="mi">112</span>     <span class="k">raise</span> <span class="nc">LinAlgError</span><span class="p">(</span><span class="sh">"</span><span class="s">Singular matrix</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">LinAlgError</span><span class="p">:</span> <span class="n">Singular</span> <span class="n">matrix</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这个错误提示表明你尝试对一个“奇异矩阵”（singular matrix）进行求逆。<strong>奇异矩阵</strong>指的是行列式为零的矩阵，它没有逆矩阵，无法进行求逆运算。简单来说，当一个矩阵的行或列是线性相关的时，它是奇异的，无法进行求逆。</p>
+
+<p>换一个非奇异矩阵求逆：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207165919561.png" alt="image-20250207165919561" style="zoom:50%;" /></p>
+
+<p>(4) 除了使用字符串创建矩阵以外，我们还可以使用NumPy数组进行创建：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">mat</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">m</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207170001913.png" alt="image-20250207170001913" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用mat函数创建了矩阵，用<code class="language-plaintext highlighter-rouge">T</code>属性获取了转置矩阵，用<code class="language-plaintext highlighter-rouge">I</code>属性获取了逆矩阵。</p>
+
+<h1 id="53-从已有矩阵创建新矩阵">5.3 从已有矩阵创建新矩阵</h1>
+
+<p>有些时候，我们希望利用一些已有的较小的矩阵来创建一个新的大矩阵。这可以用bmat函数来实现。这里的b表示“分块”，<strong>bmat即分块矩阵（block matrix</strong>）。</p>
+
+<h1 id="54-动手实践从已有矩阵创建新矩阵">5.4 动手实践：从已有矩阵创建新矩阵</h1>
+
+<p>我们将利用两个较小的矩阵创建一个新的矩阵，步骤如下。</p>
+
+<p>(1) 首先，创建一个2×2的单位矩阵：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">n</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207170125583.png" alt="image-20250207170125583" style="zoom:50%;" /></p>
+
+<p>创建另一个与A同型的矩阵，并乘以2：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">n1</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">n</span>
+<span class="n">n1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207170202706.png" alt="image-20250207170202706" style="zoom:50%;" /></p>
+
+<p>(2) 使用字符串创建复合矩阵，该字符串的格式与mat函数中一致，只是在这里你可以用矩阵变量名代替数字：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">bmat</span><span class="p">(</span><span class="sh">'</span><span class="s">n n1;n n1</span><span class="sh">'</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207170253640.png" alt="image-20250207170253640" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :   我们使用bmat函数，从两个小矩阵创建了一个分块复合矩阵。我们用矩阵变量名替代了数字，并将字符串传给bmat函数。</p>
+
+<h2 id="突击测验--使用字符串定义矩阵">突击测验 ： 使用字符串定义矩阵</h2>
+
+<p>问题1 在使用mat和bmat函数创建矩阵时，需要输入字符串来定义矩阵。在字符串中，以下哪一个英文标点符号是矩阵的行分隔符？
+(1) 分号 “;”
+(2) 冒号 “:”
+(3) 逗号 “,”
+(4) 空格 “ ”</p>
+
+<blockquote>
+  <p>答案：（1），解释：在使用 <code class="language-plaintext highlighter-rouge">mat</code> 和 <code class="language-plaintext highlighter-rouge">bmat</code> 函数创建矩阵时，如果使用字符串来定义矩阵，矩阵的行分隔符是 <strong>分号 (<code class="language-plaintext highlighter-rouge">;</code>)</strong>。</p>
+</blockquote>
+
+<h1 id="55-通用函数">5.5 通用函数</h1>
+
+<p>通用函数的输入是一组标量，输出也是一组标量，它们通常可以对应于基本数学运算，如加、减、乘、除等。</p>
+
+<h1 id="56-动手实践创建通用函数">5.6 动手实践：创建通用函数</h1>
+
+<p>我们可以使用NumPy中的frompyfunc函数，通过一个Python函数来创建通用函数，步骤如下。</p>
+
+<p>(1) 定义一个回答宇宙、生命及万物的终极问题的Python函数（问题和答案来源于《银河系漫游指南》，如果你没看过，可以忽略）：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">ultimate_answer</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>到这里为止还没有什么特别的。我们将这个函数命名为ultimate_answer，并为之定义了一个参数a。</p>
+
+<p>(2) 使用<code class="language-plaintext highlighter-rouge">zeros_like</code>函数创建一个和a形状相同，并且元素全部为0的数组result：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(3) 现在，我们将刚刚生成的数组中的所有元素设置为“终极答案”其值为42，并返回这个结果。完整的函数代码如下所示。flat属性为我们提供了一个扁平迭代器，可以逐个设置数组元素的值：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">ultimate_answer</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">.</span><span class="n">flat</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="k">return</span> <span class="n">results</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(4) 使用frompyfunc创建通用函数。指定输入参数的个数为1，随后的1为输出参数的个数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">ufunc</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">frompyfunc</span><span class="p">(</span><span class="n">ultimate_answer</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">ufunc</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207170900489.png" alt="image-20250207170900489" style="zoom:50%;" /></p>
+
+<p>我们可以对二维数组进行完全一样的操作，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">The answer</span><span class="sh">"</span><span class="p">,</span> <span class="nf">ufunc</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207171034856.png" alt="image-20250207171034856" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :   我们定义了一个Python函数。其中，我们使用<code class="language-plaintext highlighter-rouge">zeros_like</code>函数根据输入参数的形状初始化一个全为0的数组，然后利用ndarray对象的flat属性将所有的数组元素设置为“终极答案”其值为42。</p>
+
+<p>完整代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">ultimate_answer</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">.</span><span class="n">flat</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="k">return</span> <span class="n">results</span>
+<span class="n">ufunc</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">frompyfunc</span><span class="p">(</span><span class="n">ultimate_answer</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># print("The answer", ufunc(np.arange(4)) )
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">The answer</span><span class="sh">"</span><span class="p">,</span> <span class="nf">ufunc</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<p>补充：frompyfunc函数的使用方法</p>
+
+<p><code class="language-plaintext highlighter-rouge">frompyfunc</code> 是 NumPy 中的一个函数，它允许你将普通的 Python 函数转换为可以在 NumPy 数组上逐元素操作的“ufunc”（即用户自定义函数）。<code class="language-plaintext highlighter-rouge">ufunc</code> 是一种高效的函数，支持在整个数组上进行元素级运算。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">frompyfunc</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">nin</span><span class="p">,</span> <span class="n">nout</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>参数：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">func</code>：一个普通的 Python 函数，它将被转换为 ufunc。此函数可以接受多个输入，并返回一个输出或多个输出。</li>
+  <li><code class="language-plaintext highlighter-rouge">nin</code>：输入参数的数量（即该函数需要接受的输入数量）。<code class="language-plaintext highlighter-rouge">nin</code> 是一个整数，表示函数的输入参数个数。</li>
+  <li><code class="language-plaintext highlighter-rouge">nout</code>：输出参数的数量（即该函数返回的输出数量）。<code class="language-plaintext highlighter-rouge">nout</code> 也是一个整数，表示该函数应该返回的输出数量。</li>
+</ul>
+
+<p>返回值：</p>
+
+<p>返回一个 <code class="language-plaintext highlighter-rouge">ufunc</code> 对象，这个对象可以像 NumPy 中的其他 ufunc 一样，被用来逐元素地应用到数组。</p>
+
+<p>例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">func_add</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">frompyfunc</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">n1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">n2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+<span class="nf">func_add</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207171522516.png" alt="image-20250207171522516" style="zoom:50%;" /></p>
+
+<hr />
+
+<h1 id="57-通用函数的方法">5.7 通用函数的方法</h1>
+
+<p>函数竟然也可以拥有方法？如前所述，其实通用函数并非真正的函数，而是能够表示函数的对象。通用函数有四个方法，不过这些方法只对输入两个参数、输出一个参数的ufunc对象有效，例如add函数。其他不符合条件的ufunc对象调用这些方法时将抛出ValueError异常。因此只能在二元通用函数上调用这些方法。以下将逐一介绍这4个方法：</p>
+
+<ul>
+  <li>reduce</li>
+  <li>accumulate</li>
+  <li>reduceat</li>
+  <li>outer</li>
+</ul>
+
+<hr />
+
+<h1 id="58-动手实践在-add-上调用通用函数的方法">5.8 动手实践：在 add 上调用通用函数的方法</h1>
+
+<p>我们将在add函数上分别调用4个方法。</p>
+
+<p>(1) 沿着指定的轴，在连续的数组元素之间递归调用通用函数，即可得到输入数组的规约（reduce）计算结果。对于add函数，其对数组的reduce计算结果等价于对数组元素求和。调用reduce方法：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">add</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207172859758.png" alt="image-20250207172859758" style="zoom:50%;" /></p>
+
+<p>(2) accumulate方法同样可以递归作用于输入数组。但是与reduce方法不同的是，它将存储运算的中间结果并返回。因此在add函数上调用accumulate方法，<strong>等价于直接调用cumsum函数</strong>。在add函数上调用accumulate方法：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">add</span><span class="p">.</span><span class="nf">accumulate</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207172954606.png" alt="image-20250207172954606" style="zoom:50%;" /></p>
+
+<p>(3) reduceat方法解释起来有点复杂，我们先运行一次，再一步一步来看它的算法。reduceat方法需要输入一个数组以及一个索引值列表作为参数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">add</span><span class="p">.</span><span class="nf">reduceat</span><span class="p">(</span><span class="n">A</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207173434201.png" alt="image-20250207173434201" style="zoom:50%;" /></p>
+
+<p>第一步用到索引值列表中的0和5，实际上就是对数组中索引值在0到5之间的元素进行reduce操作。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">add</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207173519998.png" alt="image-20250207173519998" style="zoom:50%;" /></p>
+
+<p>第二步用到索引值5和2。由于2比5小，所以直接返回索引值为5的元素：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207173553638.png" alt="image-20250207173553638" style="zoom:50%;" /></p>
+
+<p>第三步用到索引值2和7。这一步是对索引值在2到7之间的数组元素进行reduce操作：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">add</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207173634616.png" alt="image-20250207173634616" style="zoom:50%;" /></p>
+
+<p>第四步用到索引值7。这一步是对索引值从7开始直到数组末端的元素进行reduce操作：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">add</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207173706346.png" alt="image-20250207173706346" style="zoom:50%;" /></p>
+
+<p>(4) outer方法返回一个数组，它的秩（rank）等于两个输入数组的秩的和。它会作用于两个输入数组之间存在的所有元素对。在add函数上调用outer方法：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="n">add</span><span class="p">.</span><span class="nf">outer</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="n">A</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207173807820.png" alt="image-20250207173807820" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :   我们在通用函数add上调用了四个方法：reduce、accumulate、reduceat以及outer。</p>
+
+<hr />
+
+<p>总结补充：在 NumPy 中，<code class="language-plaintext highlighter-rouge">np.add</code> 是一个常用的 <strong>ufunc（通用函数）</strong>，它用于执行逐元素的加法运算。除了基本的逐元素加法，<code class="language-plaintext highlighter-rouge">np.add</code> 还提供了四种额外的操作方法：<code class="language-plaintext highlighter-rouge">reduce</code>、<code class="language-plaintext highlighter-rouge">accumulate</code>、<code class="language-plaintext highlighter-rouge">reduceat</code> 和 <code class="language-plaintext highlighter-rouge">outer</code>，它们可以用来进行更复杂的操作。</p>
+
+<p><code class="language-plaintext highlighter-rouge">reduce</code> 方法将给定的函数（这里是加法）逐步应用到数组的元素上，最终返回一个单一的结果。它可以看作是 <strong>归约操作</strong>，即通过重复应用操作（如加法）来将一个多元素数组“压缩”成一个标量。</p>
+
+<p><code class="language-plaintext highlighter-rouge">accumulate</code> 方法对数组执行逐步的累加操作，返回一个新的数组，其中每个元素是从原始数组开始的累加结果。它可以看作是 <strong>前缀和</strong>（prefix sum），即每个位置的元素是从数组开始到该位置的所有元素的加和。</p>
+
+<p><code class="language-plaintext highlighter-rouge">reduceat</code> 方法允许你在指定的“切片”位置上应用 <code class="language-plaintext highlighter-rouge">reduce</code> 操作。它能在给定的索引位置对数组进行局部归约操作，返回的结果是一个数组，它包含了每个“切片”的归约结果。</p>
+
+<p><code class="language-plaintext highlighter-rouge">outer</code> 方法用于计算两个数组的外积。具体来说，它会对两个数组中的每对元素应用 <code class="language-plaintext highlighter-rouge">np.add</code> 函数，生成一个矩阵，其中第 <code class="language-plaintext highlighter-rouge">i</code> 行第 <code class="language-plaintext highlighter-rouge">j</code> 列的元素是 <code class="language-plaintext highlighter-rouge">arr1[i] + arr2[j]</code>。</p>
+
+<hr />
+
+<h1 id="59-算术运算">5.9 算术运算</h1>
+
+<p>在NumPy中，基本算术运算符<code class="language-plaintext highlighter-rouge">+</code>、<code class="language-plaintext highlighter-rouge">-</code>和<code class="language-plaintext highlighter-rouge">*</code>隐式关联着通用函数<code class="language-plaintext highlighter-rouge">add</code>、<code class="language-plaintext highlighter-rouge">subtract</code>和<code class="language-plaintext highlighter-rouge">multiply</code>。</p>
+
+<p>也就是说，当你对NumPy数组使用这些算术运算符时，对应的通用函数将自动被调用。除法包含的过程则较为复杂，在数组的除法运算中涉及三个通用函数<code class="language-plaintext highlighter-rouge">divide</code>、<code class="language-plaintext highlighter-rouge">true_divide</code>和<code class="language-plaintext highlighter-rouge">floor_division</code>，以及两个对应的运算符<code class="language-plaintext highlighter-rouge">/</code>和<code class="language-plaintext highlighter-rouge">//</code>。</p>
+
+<hr />
+
+<p>补充：</p>
+
+<p><code class="language-plaintext highlighter-rouge">np.divide</code> 是执行标准除法的函数，它对两个数组的每一对元素进行除法运算，返回的结果通常是浮动类型的结果，即使是整数类型的输入数组也会得到浮动结果。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">divide</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">x1</code> 和 <code class="language-plaintext highlighter-rouge">x2</code>：输入数组或标量，表示要进行除法的操作数。</li>
+</ul>
+
+<p><strong>返回值</strong>：返回一个与 <code class="language-plaintext highlighter-rouge">x1</code> 和 <code class="language-plaintext highlighter-rouge">x2</code> 形状相同的数组，其中每个元素是 <code class="language-plaintext highlighter-rouge">x1[i] / x2[i]</code> 的结果。</p>
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">divide</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207191601310.png" alt="image-20250207191601310" style="zoom:50%;" /></p>
+
+<hr />
+
+<p><code class="language-plaintext highlighter-rouge">np.true_divide</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">np.true_divide</code> 也是执行除法操作，但是它始终返回 <strong>浮动类型</strong> 结果。无论输入的数组元素类型是整数还是浮动类型，<code class="language-plaintext highlighter-rouge">np.true_divide</code> 都会强制转换输出为浮动类型。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">true_divide</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>返回值</strong>：返回的结果总是浮动类型，甚至当两个整数相除时。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">true_divide</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207193515187.png" alt="image-20250207193515187" style="zoom:50%;" /></p>
+
+<hr />
+
+<p><code class="language-plaintext highlighter-rouge">np.floor_divide</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">np.floor_divide</code> 执行的是 <strong>向下取整的除法</strong>。与普通除法不同，它会返回 <strong>整数类型的结果</strong>，并且结果是通过对标准除法的结果向下取整得到的。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">np</span><span class="p">.</span><span class="nf">floor_divide</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>返回值</strong>：返回的结果是整数类型，且是向下取整的商。</p>
+
+<p>举例：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">floor_divide</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207193722145.png" alt="image-20250207193722145" style="zoom:50%;" /></p>
+
+<hr />
+
+<p><code class="language-plaintext highlighter-rouge">/</code> 是除法运算符，功能与 <code class="language-plaintext highlighter-rouge">np.divide</code> 函数相同。它执行标准的除法运算，返回浮动类型的结果。</p>
+
+<p><code class="language-plaintext highlighter-rouge">//</code> 是整数除法运算符，功能与 <code class="language-plaintext highlighter-rouge">np.floor_divide</code> 函数相同。它执行 <strong>向下取整的除法</strong>，结果是整数类型，且结果是通过将标准除法结果向下取整得到的。</p>
+
+<hr />
+
+<h1 id="510-动手实践数组的除法运算">5.10 动手实践：数组的除法运算</h1>
+
+<p>让我们在实践中了解数组的除法运算。</p>
+
+<p>(1) divide函数在整数和浮点数除法中均只保留整数部分：</p>
+
+<blockquote>
+  <p>注：原书写错了，<code class="language-plaintext highlighter-rouge">np.divide</code> 是执行标准除法的函数，它对两个数组的每一对元素进行除法运算，返回的结果通常是浮动类型的结果，即使是整数类型的输入数组也会得到浮动结果。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">divide</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="nf">divide</span><span class="p">(</span><span class="n">arr2</span><span class="p">,</span> <span class="n">arr1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207194343750.png" alt="image-20250207194343750" style="zoom:50%;" /></p>
+
+<p>(2) <code class="language-plaintext highlighter-rouge">true_divide</code>函数与数学中的除法定义更为接近，即返回除法的浮点数结果而不作截断：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">true_divide</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">true_divide</span><span class="p">(</span><span class="n">arr2</span><span class="p">,</span> <span class="n">arr1</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250207194737676.png" alt="image-20250207194737676" style="zoom:50%;" /></p>
+
+<p>(3) <code class="language-plaintext highlighter-rouge">floor_divide</code>函数总是返回整数结果，相当于先调用divide函数再调用floor函数。floor函数将对浮点数进行向下取整并返回整数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">floor_divide</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">floor_divide</span><span class="p">(</span><span class="n">arr2</span><span class="p">,</span> <span class="n">arr1</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250208223731659.png" alt="image-20250208223731659" style="zoom:50%;" /></p>
+
+<p>(4) 默认情况下，使用/运算符相当于调用divide函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">arr1</span><span class="o">/</span><span class="n">arr2</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">arr2</span><span class="o">/</span><span class="n">arr1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250208223910841.png" alt="image-20250208223910841" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>注，原书可能应该基于Python2，但是在Python3中，无论是否引用 <code class="language-plaintext highlighter-rouge">__future__</code> 模块，除法行为都是一致的.</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">arr1</span><span class="o">/</span><span class="n">arr2</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">arr2</span><span class="o">/</span><span class="n">arr1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250208224316190.png" alt="image-20250208224316190" style="zoom:50%;" /></p>
+</blockquote>
+
+<p>(5) 运算符//对应于floor_divide函数。例如下面的代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">arr1</span><span class="o">//</span><span class="n">arr2</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">arr2</span><span class="o">//</span><span class="n">arr1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250208224359183.png" alt="image-20250208224359183" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :   我们学习了NumPy中三种不同的除法函数。其中，divide函数在整数和浮点数除法中均只保留整数部分(其实Python3不是这样的，是保留小数的)，<code class="language-plaintext highlighter-rouge">true_divide</code>函数不作截断返回浮点数结果，而<code class="language-plaintext highlighter-rouge">floor_divide</code>函数同样返回整数结果并等价于先调用divide函数再调用floor函数。</p>
+
+<h2 id="勇敢出发--尝试__future__division-">勇敢出发 ： 尝试<code class="language-plaintext highlighter-rouge">__future__.division </code></h2>
+
+<p>动手实验，验证引入<code class="language-plaintext highlighter-rouge">__future__.division</code>的效果。</p>
+
+<blockquote>
+  <p>上面已有说明。不再重复</p>
+</blockquote>
+
+<h1 id="511-模运算">5.11 模运算</h1>
+
+<p>计算模数或者余数，可以使用NumPy中的mod、remainder和fmod函数。当然，也可以使用<code class="language-plaintext highlighter-rouge">%</code>运算符。这些函数的主要差异在于处理负数的方式。fmod函数在这方面异于其他函数。</p>
+
+<p>补充：</p>
+
+<p><code class="language-plaintext highlighter-rouge">numpy.mod()</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">mod</code> 函数用于计算元素除法的余数，结果与 Python 的 <code class="language-plaintext highlighter-rouge">%</code> 操作符类似。<code class="language-plaintext highlighter-rouge">numpy.mod()</code> 和 Python 的 <code class="language-plaintext highlighter-rouge">%</code> 操作符一样，遵循如下规则：</p>
+
+<ul>
+  <li><strong>余数的符号与除数相同。</strong></li>
+</ul>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">mod</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">x1</code> 和 <code class="language-plaintext highlighter-rouge">x2</code> 是要进行操作的数组或数值。</li>
+  <li>返回值是 <code class="language-plaintext highlighter-rouge">x1</code> 除以 <code class="language-plaintext highlighter-rouge">x2</code> 的余数，符号与除数 (<code class="language-plaintext highlighter-rouge">x2</code>) 相同。</li>
+</ul>
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c1"># 基本使用
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">mod</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出 1
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">mod</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出 2
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">mod</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出 -2
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">mod</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出 -1
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>注：如何理解上面的结果：</p>
+
+  <p>参考公式：<code class="language-plaintext highlighter-rouge">remainder(x1,x2)=x1−x2×floor(x1/x2)</code></p>
+
+  <p>例如：<code class="language-plaintext highlighter-rouge">-10 / 3 = -3.333...</code>，向下取整为 <code class="language-plaintext highlighter-rouge">-4</code>，然后 <code class="language-plaintext highlighter-rouge">-10 - 3 * (-4) = -10 + 12 = 2</code>。</p>
+</blockquote>
+
+<hr />
+
+<p><code class="language-plaintext highlighter-rouge">numpy.remainder()</code></p>
+
+<p>numpy的取余运算和取模运算是一样的</p>
+
+<p>【题目】：下列代码中<code class="language-plaintext highlighter-rouge">np.remainder(m,2)</code>输出的结果是？</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">【显示】m =</span><span class="sh">"</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">【显示】np.remainder(m,2)：</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">remainder</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">【显示】np.mod(m,2)：</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">mod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">【显示】m%2：</span><span class="sh">"</span><span class="p">,</span> <span class="n">m</span><span class="o">%</span><span class="mi">2</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">【显示】np.mod.__name__：</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">mod</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>A选项：[0 1 0]
+B选项：[1 1 0]
+C选项：[0 1 1]
+D选项：[0 0 0]
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>正确答案是：A</p>
+</blockquote>
+
+<p>例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">remainder</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出1
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">remainder</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="c1"># 输出2
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">remainder</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">))</span> <span class="c1"># 输出-2 
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">remainder</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">))</span> <span class="c1"># 输出-1
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<p><code class="language-plaintext highlighter-rouge">numpy.fmod()</code>:和上面两个不一样。所得余数的正负由被除数决定，与除数的正负无关：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c1"># 基本使用
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">fmod</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出 1.0
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">fmod</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出 -1.0
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">fmod</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出 1.0
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">fmod</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># 输出 -1.0
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209140656761.png" alt="image-20250209140656761" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>Python 中的 <code class="language-plaintext highlighter-rouge">%</code> 运算符也是计算余数的运算符，它和 <code class="language-plaintext highlighter-rouge">numpy.mod()</code> 基本一致。两者在大多数情况下是可以互换的，区别在于 <code class="language-plaintext highlighter-rouge">numpy.mod()</code> 支持广播（broadcasting），而 <code class="language-plaintext highlighter-rouge">%</code> 只能用于两个标量值或者对应形状的数组。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">arr1</span> <span class="o">%</span> <span class="n">arr2</span><span class="p">)</span>  <span class="c1"># 使用 % 运算符
+</span><span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">mod</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">))</span>  <span class="c1"># 使用 np.mod()
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209140800050.png" alt="image-20250209140800050" style="zoom:50%;" /></p>
+
+<h1 id="512-动手实践模运算">5.12 动手实践：模运算</h1>
+
+<p>我们将逐一调用前面提到的函数。</p>
+
+<p>(1) remainder函数逐个返回两个数组中元素相除后的余数。如果第二个数字为0，则直接返回0：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">remainder</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209140957104.png" alt="image-20250209140957104" style="zoom:50%;" /></p>
+
+<p>(2) mod函数与remainder函数的功能完全一致：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209141032929.png" alt="image-20250209141032929" style="zoom:50%;" /></p>
+
+<p>(3) <code class="language-plaintext highlighter-rouge">%</code>操作符仅仅是remainder函数的简写：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209141121638.png" alt="image-20250209141121638" style="zoom:50%;" /></p>
+
+<p>(4) fmod函数处理负数的方式与remainder、mod和<code class="language-plaintext highlighter-rouge">%</code>不同。所得余数的正负由被除数决定，与除数的正负无关：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">fmod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209141332965.png" alt="image-20250209141332965" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :  我们学习了NumPy中的mod、remainder和fmod等模运算函数。</p>
+
+<h1 id="513-斐波那契数列">5.13 斐波那契数列</h1>
+
+<p>斐波那契（Fibonacci）数列是基于递推关系生成的。直接用NumPy代码来解释递推关系是比较麻烦的，不过我们可以用矩阵的形式或者黄金分割公式来解释它。因此，我们将介绍matrix 和rint函数。使用matrix函数创建矩阵，rint函数对浮点数取整，但结果仍为浮点数类型。</p>
+
+<h1 id="514-动手实践计算斐波那契数列">5.14 动手实践：计算斐波那契数列</h1>
+
+<p>斐波那契数列的递推关系可以用矩阵来表示。斐波那契数列的计算等价于矩阵的连乘。</p>
+
+<p>(1) 创建斐波那契矩阵：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="n">m</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209141535825.png" alt="image-20250209141535825" style="zoom:50%;" /></p>
+
+<p>(2) 计算斐波那契数列中的第8个数，即矩阵的幂为8减去1。计算出的斐波那契数位于矩阵的对角线上：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">m_8</span> <span class="o">=</span> <span class="n">m</span><span class="o">**</span><span class="mi">7</span>
+<span class="n">m_8</span>
+<span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="mi">7</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209141712936.png" alt="image-20250209141712936" style="zoom:50%;" /></p>
+
+<p>(3) 利用黄金分割公式或通常所说的比奈公式（Binet’ s Formula），加上取整函数，就可以直接计算斐波那契数。计算前8个斐波那契数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">sqrt5</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sqrt5</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">fibonacci</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">rint</span><span class="p">((</span><span class="n">phi</span><span class="o">**</span><span class="n">n</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">phi</span><span class="p">)</span><span class="o">**</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="n">sqrt5</span><span class="p">)</span>
+<span class="n">fibonacci</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209141938133.png" alt="image-20250209141938133" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们分别用两种方法计算了斐波那契数列。在这个过程中，我们学习使用matrix函数创建矩阵，以及使用rint函数对浮点数取整但不改变浮点数类型。</p>
+
+<hr />
+
+<p>补充：rint函数的使用</p>
+
+<p><code class="language-plaintext highlighter-rouge">numpy.rint()</code> 是 NumPy 中用于对数组或数字中的每个元素进行四舍五入操作的函数。它的作用是将每个元素四舍五入到最接近的整数，返回的是一个与输入形状相同的数组。</p>
+
+<p>函数签名：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">numpy</span><span class="p">.</span><span class="nf">rint</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li><strong>x</strong>: 输入数组或数值。可以是一个标量值、列表、NumPy 数组等。</li>
+</ul>
+
+<p>返回值：</p>
+
+<ul>
+  <li>返回一个与输入数组或标量形状相同的数组，其中每个元素被四舍五入到最近的整数。</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">3.6</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.3</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">rint</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>  <span class="c1"># 输出 [ 4.  2.  6. -4. -2.]
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209142214346.png" alt="image-20250209142214346" style="zoom:50%;" /></p>
+
+<h2 id="勇敢出发分析计算耗时">勇敢出发：分析计算耗时</h2>
+
+<p>你可能很想知道究竟哪种方法计算更快，那就分析一下它们的耗时吧。使用<code class="language-plaintext highlighter-rouge">frompyfunc</code> 创建一个计算斐波那契数列的通用函数，并进行计时。</p>
+
+<hr />
+
+<p>回顾：<strong>使用 <code class="language-plaintext highlighter-rouge">frompyfunc</code> 创建通用函数</strong>： <code class="language-plaintext highlighter-rouge">np.frompyfunc</code> 是一个用于将普通 Python 函数转换为通用函数的方法，这样就能在数组的每个元素上应用该函数，并且支持 NumPy 数组广播。我们将用它来定义一个计算斐波那契数列的函数。</p>
+
+<p>GPT写的答案：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">time</span>
+
+<span class="c1"># 方法1：矩阵法
+</span><span class="k">def</span> <span class="nf">fib_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+    <span class="nf">return </span><span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># 方法2：Binet公式
+</span><span class="k">def</span> <span class="nf">fib_binet</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">sqrt5</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sqrt5</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">rint</span><span class="p">((</span><span class="n">phi</span><span class="o">**</span><span class="n">n</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">phi</span><span class="p">)</span><span class="o">**</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">sqrt5</span><span class="p">)</span>
+
+<span class="c1"># 使用 np.frompyfunc 创建通用函数来计算斐波那契数列
+</span><span class="k">def</span> <span class="nf">fib_generic</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">sqrt5</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sqrt5</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">rint</span><span class="p">((</span><span class="n">phi</span><span class="o">**</span><span class="n">n</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">phi</span><span class="p">)</span><span class="o">**</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">sqrt5</span><span class="p">)</span>
+
+<span class="c1"># 将普通函数转换为通用函数
+</span><span class="n">fib_frompyfunc</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">frompyfunc</span><span class="p">(</span><span class="n">fib_generic</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 计时对比
+</span><span class="n">n_vals</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000001</span><span class="p">)</span>  <span class="c1"># 测试的斐波那契数列项（1 到 10000）
+</span>
+<span class="c1"># 测量方法1（矩阵法）耗时
+</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+<span class="n">matrix_results</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="nf">fib_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_vals</span><span class="p">])</span>
+<span class="n">method1_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">方法1（矩阵法）耗时: </span><span class="si">{</span><span class="n">method1_time</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s">秒</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 测量方法2（Binet公式法）耗时
+</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+<span class="n">binet_results</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="nf">fib_binet</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">n_vals</span><span class="p">])</span>
+<span class="n">method2_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">方法2（Binet公式法）耗时: </span><span class="si">{</span><span class="n">method2_time</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s">秒</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 测量方法3（通用函数法）耗时
+</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+<span class="n">generic_results</span> <span class="o">=</span> <span class="nf">fib_frompyfunc</span><span class="p">(</span><span class="n">n_vals</span><span class="p">)</span>
+<span class="n">method3_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">方法3（通用函数法）耗时: </span><span class="si">{</span><span class="n">method3_time</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s">秒</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209143156039.png" alt="image-20250209143156039" style="zoom:50%;" /></p>
+
+<h1 id="515-利萨茹曲线">5.15 利萨茹曲线</h1>
+
+<p>在NumPy中，所有的标准三角函数如sin、cos、tan等均有对应的通用函数。利萨茹曲线（Lissajous curve）是一种很有趣的使用三角函数的方式。我至今仍记得在物理实验室的示波器上显示出利萨茹曲线时的情景。利萨茹曲线由以下参数方程定义：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">A</span> <span class="nf">sin</span><span class="p">(</span><span class="n">at</span> <span class="o">+</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>  
+<span class="n">y</span> <span class="o">=</span> <span class="n">B</span> <span class="nf">sin</span><span class="p">(</span><span class="n">bt</span><span class="p">)</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="516-动手实践绘制利萨茹曲线">5.16 动手实践：绘制利萨茹曲线</h1>
+
+<p>利萨茹曲线的参数包括A、B、a和b。为简单起见，我们令A和B均为1。</p>
+
+<p>(1) 使用linspace函数初始化变量t，即从<code class="language-plaintext highlighter-rouge">-pi</code>到<code class="language-plaintext highlighter-rouge">pi</code>上均匀分布的201个点：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+
+<span class="c1"># a = float(sys.argv[1])
+# b = float(sys.argv[2])
+</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(2) 使用sin函数和NumPy常量pi计算变量x：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(3) 使用sin函数计算变量y：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(4) 我们将在第9章中详细讲解Matplotlib的用法。绘制的曲线如下所示。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">x</span> <span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209144419917.png" alt="image-20250209144419917" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 :  我们根据参数方程的定义，以参数<code class="language-plaintext highlighter-rouge">A=B=1</code>、<code class="language-plaintext highlighter-rouge">a=9</code>和<code class="language-plaintext highlighter-rouge">b=8</code>绘制了利萨茹曲线。我们还使用了sin和linspace函数，以及NumPy常量pi。</p>
+
+<p>完整代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">show</span>
+
+<span class="c1"># a = float(sys.argv[1])
+# b = float(sys.argv[2])
+</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">x</span> <span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h1 id="517-方波">5.17 方波</h1>
+
+<p>方波也是一种可以在示波器上显示的波形。方波可以近似表示为多个正弦波的叠加。事实上，任意一个方波信号都可以用无穷傅里叶级数来表示。</p>
+
+<blockquote>
+  <p>傅里叶级数（Fourier series）是以正弦函数和余弦函数为基函数的无穷级数，以著名的法国数学家<code class="language-plaintext highlighter-rouge">Jean-Baptiste Fourier</code>命名。</p>
+</blockquote>
+
+<p>方波可以表示为如下的傅里叶级数。</p>
+
+\[\sum_{k = 1}^{\infty} \frac{4 sin(2k-1)t}{(2k-1) \pi}\]
+
+<h1 id="518-动手实践绘制方波">5.18 动手实践：绘制方波</h1>
+
+<p>与前面的教程中一样，我们仍将以相同的方式初始化t和k。我们需要累加很多项级数，且级数越多结果越精确，这里取<code class="language-plaintext highlighter-rouge">k=99</code>以保证足够的精度。绘制方波的步骤如下。</p>
+
+<p>(1) 我们从初始化t和k开始，并将函数值初始化为0：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="c1"># k = np.arange(1, float(sys.argv[1]))
+</span><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(2) 接下来，直接使用sin和sum函数进行计算：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span> 
+    <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">k</span><span class="p">)</span>  
+<span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(3) 绘制波形的代码和前面的教程中几乎一模一样：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">show</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209145336577.png" alt="image-20250209145336577" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用sin函数生成了一个方波，或者起码是非常接近于方波的波形。函数的输入值是用linspace产生的，而一组k值是用arange函数生成的。</p>
+
+<p>完整代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">show</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="c1"># k = np.arange(1, float(sys.argv[1]))
+</span><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span> 
+    <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">k</span><span class="p">)</span>  
+<span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span> 
+
+<span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">show</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="勇敢出发摆脱循环语句">勇敢出发：摆脱循环语句</h2>
+
+<p>你可能已经注意到，在代码中有一个循环语句。使用NumPy函数摆脱循环，并确保你的代码性能因此而得到提升。</p>
+
+<hr />
+
+<p>方法1:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span><span class="p">,</span> <span class="n">show</span>
+
+<span class="c1"># 生成 t 值
+</span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+
+<span class="c1"># 定义 k
+</span><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># 只保留奇数
+</span>
+<span class="c1"># 使用 NumPy 向量化操作代替循环
+# 对于每个 t[i]，我们不需要逐个处理，而是直接通过广播机制计算整个数组
+</span><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">k</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="n">k</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># k[:, None] 用于扩展 k 维度
+</span>
+<span class="c1"># 归一化
+</span><span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span>
+
+<span class="c1"># 绘制图形
+</span><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>方法2:vectorize函数</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span><span class="p">,</span> <span class="n">show</span>
+
+<span class="c1"># 生成 t 值
+</span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+
+<span class="c1"># 定义 k
+</span><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># 只保留奇数
+</span>
+<span class="c1"># 使用 np.vectorize 创建一个函数来替代循环
+</span><span class="k">def</span> <span class="nf">compute_f</span><span class="p">(</span><span class="n">t_value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">t_value</span><span class="p">)</span> <span class="o">/</span> <span class="n">k</span><span class="p">)</span>
+
+<span class="c1"># 使用 np.vectorize 将上面的函数向量化
+</span><span class="n">vectorized_compute_f</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">vectorize</span><span class="p">(</span><span class="n">compute_f</span><span class="p">)</span>
+
+<span class="c1"># 计算 f 数组
+</span><span class="n">f</span> <span class="o">=</span> <span class="nf">vectorized_compute_f</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+<span class="c1"># 归一化
+</span><span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span>
+
+<span class="c1"># 绘制图形
+</span><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="519-锯齿波和三角波">5.19 锯齿波和三角波</h1>
+
+<p>在示波器上，锯齿波和三角波也是常见的波形。和方波类似，我们也可以将它们表示成无穷傅里叶级数。对锯齿波取绝对值即可得到三角波。锯齿波的无穷级数表达式如下：</p>
+
+\[\sum_{k = 1}^{\infty} \frac{-2 sin (2 \pi kt)}{k \pi}\]
+
+<h1 id="520-动手实践绘制锯齿波和三角波">5.20 动手实践：绘制锯齿波和三角波</h1>
+
+<p>与前面的教程中一样，我们仍将以相同的方式初始化t和k。同样，取<code class="language-plaintext highlighter-rouge">k=99</code>以保证足够的精度。绘制锯齿波和三角波的步骤如下。</p>
+
+<p>(1) 将函数值初始化为0：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">show</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="c1"># k = np.arange(1, float(sys.argv[1]))
+</span><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(2) 同样，直接使用sin和sum函数进行计算：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span> 
+    <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">k</span><span class="p">)</span>  
+<span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(3) 同时绘制锯齿波和三角波并不难，因为三角波函数的取值恰好是锯齿波函数值的绝对值。使用如下代码绘制波形：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  
+<span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>  
+<span class="nf">show</span><span class="p">()</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>在下图中，较粗的曲线为三角波。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209150932042.png" alt="image-20250209150932042" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们使用sin函数绘制了锯齿波。函数的输入值是用linspace产生的，而一组k值是用arange函数生成的。三角波则是对锯齿波取绝对值得到的。</p>
+
+<p>完整代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="n">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">show</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">201</span><span class="p">)</span>
+<span class="c1"># k = np.arange(1, float(sys.argv[1]))
+</span><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span> 
+    <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">k</span><span class="p">)</span>  
+<span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span> 
+
+<span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  
+<span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>  
+<span class="nf">show</span><span class="p">()</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="勇敢出发摆脱循环语句-1">勇敢出发：摆脱循环语句</h2>
+
+<p>你是否愿意接受挑战，摆脱代码中的循环语句？使用NumPy函数应该可以完成这个任务，并且代码性能可以翻倍。</p>
+
+<hr />
+
+<p>与<code class="language-plaintext highlighter-rouge">5.18</code>节的勇敢出发类似，不再赘述。</p>
+
+<h1 id="521-位操作函数和比较函数">5.21 位操作函数和比较函数</h1>
+
+<p>位操作函数可以在整数或整数数组的位上进行操作，它们都是通用函数。<code class="language-plaintext highlighter-rouge">^、&amp;、|、&lt;&lt;、&gt;&gt;</code>等位操作符在NumPy中也有对应的部分，<code class="language-plaintext highlighter-rouge">&lt;、&gt;、==</code>等比较运算符也是如此。有了这些操作符，你可以在代码中玩一些高级技巧以提升代码的性能。不过，它们会使代码变得难以理解，因此需谨慎使用。</p>
+
+<hr />
+
+<h1 id="522-动手实践玩转二进制位">5.22 动手实践：玩转二进制位</h1>
+
+<p>我们将学习三个小技巧——检查两个整数的符号是否一致，检查一个数是否为2的幂数，以及计算一个数被2的幂数整除后的余数。我们会分别展示两种方法，即使用位操作符和使用相应的NumPy函数。</p>
+
+<p>(1) 第一个小技巧需要用<code class="language-plaintext highlighter-rouge">XOR</code>或者<code class="language-plaintext highlighter-rouge">^</code>操作符。XOR操作符又被称为不等运算符，因此当两个操作数的符号不一致时，XOR操作的结果为负数。在NumPy中，<code class="language-plaintext highlighter-rouge">^</code>操作符对应于<code class="language-plaintext highlighter-rouge">bitwise_xor</code>函数，<code class="language-plaintext highlighter-rouge">&lt;</code>操作符对应于<code class="language-plaintext highlighter-rouge">less</code>函数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>  
+<span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span> 
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Sign different?</span><span class="sh">"</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">^</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Sign different?</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">less</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">bitwise_xor</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>不出所料，除了都等于0的情况，所有整数对的符号均相异。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209151354151.png" alt="image-20250209151354151" style="zoom:50%;" /></p>
+
+<p>(2) 在二进制数中，2的幂数表示为一个1后面跟一串0的形式，例如10、100、1000等。而比2的幂数小1的数表示为一串二进制的1，例如11、111、1111（即十进制里的3、7、15）等。如果我们在2的幂数以及比它小1的数之间执行位与操作AND，那么应该得到0。NumPy中，<code class="language-plaintext highlighter-rouge">&amp;</code>操作符对应于<code class="language-plaintext highlighter-rouge">bitwise_and</code>函数，<code class="language-plaintext highlighter-rouge">==</code>操作符对应于<code class="language-plaintext highlighter-rouge">equal</code>函数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span> <span class="sh">"</span><span class="s">Power of 2?</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span> <span class="sh">"</span><span class="s">Power of 2?</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">bitwise_and</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)),</span> <span class="mi">0</span><span class="p">)</span> <span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209151543473.png" alt="image-20250209151543473" style="zoom:50%;" /></p>
+
+<p>(3) 计算余数的技巧实际上只在模为2的幂数（如4、8、16等）时有效。二进制的位左移一位，则数值翻倍。在前一个小技巧中我们看到，将2的幂数减去1可以得到一串1组成的二进制数，如11、111、1111等。这为我们提供了掩码（mask），与这样的掩码做位与操作AND即可得到以2 的幂数作为模的余数。在NumPy中，<code class="language-plaintext highlighter-rouge">&lt;&lt;</code>操作符对应于<code class="language-plaintext highlighter-rouge">left_shift</code>函数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Modulus 4</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">x</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Modulus 4</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">bitwise_and</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">left_shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250209151650255.png" alt="image-20250209151650255" style="zoom:50%;" /></p>
+
+<p>刚才做了些什么 : 我们学习了三个运用位操作的小技巧——检查两个整数的符号是否一致，检查一个数是否为2的幂数，以及计算一个数被2的幂数整除后的余数。我们看到了NumPy中对应于<code class="language-plaintext highlighter-rouge">^、&amp;、&lt;&lt;、&lt;</code>等操作符的通用函数。</p>
+
+<hr />
+
+<h1 id="523-本章小结">5.23 本章小结</h1>
+
+<p>在本章中，我们学习了NumPy中的矩阵和通用函数，包括如何创建矩阵以及通用函数的工作方式。我们还简单介绍了算术运算函数、三角函数、位操作函数和比较函数等通用函数。</p>
+
+<p>下一章中，我们将开始学习NumPy模块的相关内容。</p>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/02/07/NumPy(4)%E4%BE%BF%E6%8D%B7%E5%87%BD%E6%95%B0/" data-toggle="tooltip" data-placement="top" title="numpy(4)便捷函数">
+                        Previous<br>
+                        <span>numpy(4)便捷函数</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/02/09/NumPy(6)%E6%B7%B1%E5%85%A5%E5%AD%A6%E4%B9%A0NumPy%E6%A8%A1%E5%9D%97/" data-toggle="tooltip" data-placement="top" title="numpy(6)深入学习NumPy模块">
+                        Next<br>
+                        <span>numpy(6)深入学习NumPy模块</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0028" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0034" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0043" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="3">力扣</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="2">算法</a>
+        
+                <a data-sort="0044" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
