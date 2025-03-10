@@ -32,5 +32,13 @@ jobs:
       - name: List _site directory contents
         run: ls -lR ./_site  # 调试用，可选
 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jekyll-site-artifact
+          path: ./_site
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
+        with:
+          artifact_name: jekyll-site-artifact  # 与上传的 artifact 名称匹配
