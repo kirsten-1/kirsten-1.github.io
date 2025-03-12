@@ -5,8 +5,8 @@
     <description>这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员</description>
     <link>https://kirsten-1.github.io/</link>
     <atom:link href="https://kirsten-1.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 12 Mar 2025 08:18:19 +0000</pubDate>
-    <lastBuildDate>Wed, 12 Mar 2025 08:18:19 +0000</lastBuildDate>
+    <pubDate>Wed, 12 Mar 2025 12:17:18 +0000</pubDate>
+    <lastBuildDate>Wed, 12 Mar 2025 12:17:18 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -307,6 +307,206 @@ for (int i = 0; i &amp;lt; len; i++) {
         <pubDate>Wed, 12 Mar 2025 00:00:00 +0000</pubDate>
         <link>https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A327/</link>
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A327/</guid>
+        
+        <category>力扣</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>力扣 169. 多数元素(摩尔投票算法)</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
+&lt;/script&gt;
+
+&lt;h1 id=&quot;169-多数元素&quot;&gt;169. 多数元素&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/majority-element/&quot;&gt;169. 多数元素&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;给定一个大小为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;n&lt;/code&gt; 的数组 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nums&lt;/code&gt; ，返回其中的多数元素。多数元素是指在数组中出现次数 &lt;strong&gt;大于&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;⌊ n/2 ⌋&lt;/code&gt; 的元素。&lt;/p&gt;
+
+&lt;p&gt;你可以假设数组是非空的，并且给定的数组总是存在多数元素。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;示例 1：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;输入：nums = [3,2,3]
+输出：3
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;示例 2：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;输入：nums = [2,2,1,1,1,2,2]
+输出：2
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;提示：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;n == nums.length&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1 &amp;lt;= n &amp;lt;= 5 * 104&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-109 &amp;lt;= nums[i] &amp;lt;= 109&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;进阶：&lt;/strong&gt;尝试设计时间复杂度为 O(n)、空间复杂度为 O(1) 的算法解决此问题。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;写了一个方法，通过了，但是不是很快：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312195558259.png&quot; alt=&quot;image-20250312195558259&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这个方法的时间复杂度是O(n)，空间复杂度也是O(n)&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;majorityElement&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;range&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;containsKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]);&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;        
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;使用 HashMap 记录每个元素的出现次数：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;遍历数组，对于每个元素：
+    &lt;ul&gt;
+      &lt;li&gt;如果 HashMap 中没有该元素，加入并设置次数为 1。&lt;/li&gt;
+      &lt;li&gt;如果已有该元素，取出当前次数，递增后更新，并检查是否超过 range。&lt;/li&gt;
+      &lt;li&gt;如果找到次数超过 range 的元素，立即返回该元素。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;当前算法使用 HashMap 统计频率，虽然时间复杂度已经是线性的 O(N)，但仍有优化空间&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Boyer-Moore 投票算法：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注：这个算法除了力扣169，还有LeetCode 229。可以一起尝试下&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;基本思想：多数元素出现次数超过一半，因此可以用“抵消”策略。即维护一个候选元素和计数器：
+    &lt;ul&gt;
+      &lt;li&gt;遇到相同元素，计数器加 1。&lt;/li&gt;
+      &lt;li&gt;遇到不同元素，计数器减 1。&lt;/li&gt;
+      &lt;li&gt;当计数器为 0 时，替换候选元素。&lt;/li&gt;
+      &lt;li&gt;因为多数元素超过一半，最终留下的候选必然是多数元素。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;majorityElement&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vote&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//备选元素&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//计数器&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;vote&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vote&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vote&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312201204584.png&quot; alt=&quot;image-20250312201204584&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;更加简洁的写法（参考他人）：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;majorityElement&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;votes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;votes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;votes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 12 Mar 2025 00:00:00 +0000</pubDate>
+        <link>https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A3169%E6%91%A9%E5%B0%94%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/</link>
+        <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A3169%E6%91%A9%E5%B0%94%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/</guid>
         
         <category>力扣</category>
         
@@ -6045,366 +6245,6 @@ D. B = X ^ 2;&lt;/p&gt;
         <pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate>
         <link>https://kirsten-1.github.io/2025/03/04/%E5%90%B4%E6%81%A9%E8%BE%BEexer1/</link>
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/04/%E5%90%B4%E6%81%A9%E8%BE%BEexer1/</guid>
-        
-        <category>机器学习-吴恩达</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>4 多变量线性回归Linear Regression with Multiple Variables</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
-&lt;/script&gt;
-
-&lt;p&gt;吴恩达课程系列&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/02/28/%E5%90%B4%E6%81%A9%E8%BE%BEML1-1/&quot;&gt;1-1 欢迎参加《机器学习》课程【机器学习简介/例子】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BEML1-2/&quot;&gt;1-2 什么是机器学习【机器学习的2个定义和分类】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BE1-3/&quot;&gt;1-3监督学习【监督学习的定义，监督学习的分类（回归与分类）】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML1-4%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/&quot;&gt;1-4无监督学习【无监督学习的定义，无监督学习问题的分类（聚类/信号分离/降维）】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-1/&quot;&gt;2-1模型描述【如何描述一个模型（用一些符号），单变量线性回归是什么？】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-2to2-4/&quot;&gt;2-2~2-4代价函数【代价函数的数学定义、代价函数的直观理解】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-5/&quot;&gt;2-5 梯度下降【梯度下降的数学原理】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/03/%E5%90%B4%E6%81%A9%E8%BE%BEML2-6/&quot;&gt;2-6梯度下降知识点总结【导数项、学习率的直观理解】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/03/%E5%90%B4%E6%81%A9%E8%BE%BEML2-7/&quot;&gt;2-7线性回归的梯度下降【线性回归问题运用梯度下降法（求偏导）】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/03/%E5%90%B4%E6%81%A9%E8%BE%BEML3/&quot;&gt;3-线性代数回顾【矩阵，向量，矩阵乘法，矩阵求逆转置（我补充了利用Numpy和Pandas进行运算的方法】)&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;4-多变量线性回归linear-regression-with-multiple-variables&quot;&gt;4 多变量线性回归Linear Regression with Multiple Variables&lt;/h1&gt;
-
-&lt;h2 id=&quot;4-1-多维特征&quot;&gt;4-1 多维特征&lt;/h2&gt;
-
-&lt;p&gt;如下图所示，之前讨论过的预测房价的问题，是单变量（只有一个\(x\)）的线性回归：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304190709608.png&quot; alt=&quot;image-20250304190709608&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;从此刻开始讨论多变量的问题：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304190753857.png&quot; alt=&quot;image-20250304190753857&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;其中：&lt;/p&gt;
-
-&lt;p&gt;\(n\)表示特征的个数（例如上图中，特征有4个， \(n=4\)）&lt;/p&gt;
-
-&lt;p&gt;\(x^{(i)}\)表示第\(i\)个训练样本的输入特征向量，比如\(x^{(2)}\)就是第二个训练样本的特征向量，即\(x^{(2)}=\left[ \begin{matrix}1416\\3\\2\\40 \end{matrix}\right]\)(\(x\)是一个列向量)&lt;/p&gt;
-
-&lt;p&gt;通常喜欢写成\(x^{(2)}=\left[ \begin{matrix}1416 &amp;amp; 3 &amp;amp; 2 &amp;amp; 40 \end{matrix}\right]^T\)&lt;/p&gt;
-
-&lt;p&gt;\(x_j^{(i)}\)表示第\(i\)个训练样本中第\(j\)个特征的值，例如\(x_1^{(2)}=1416\)，即第二个训练样本的第一个特征（房屋面积）。&lt;/p&gt;
-
-&lt;p&gt;上图中给出了数据矩阵的表示方法：\(X\)是一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m*(n+1)&lt;/code&gt;的矩阵（包括一列常数 1），它包含了所有训练样本的特征数据。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这个1就是增加的常数1&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;\(y\)是一个包含所有房屋价格的列向量，即\(y=\left[ \begin{matrix}460\\232\\315\\178 \end{matrix}\right]\)&lt;/p&gt;
-
-&lt;p&gt;每个训练样本的特征向量\(x^{(i)}\)是一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;n*1&lt;/code&gt;的列向量(或者说\(n+1\)维向量)，表示该样本的所有特征。&lt;/p&gt;
-
-&lt;p&gt;因此\(h_\theta(x)=\theta_0+\theta_1x_1+\theta_2x_2+\theta_3x_3+\theta_4x_4\)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;当有\(n\)个特征时，\(h_\theta(x)=\theta_0+\theta_1x_1+\theta_2x_2+...+\theta_nx_n\)&lt;/p&gt;
-
-&lt;p&gt;为了记法简单，记\(x_0=1\)，或者说\(x_0^{(i)}=1\)&lt;/p&gt;
-
-&lt;p&gt;因此使得模型的表示更加简洁，可以写作：\(h_\theta(x)=\theta_0x_0+\theta_1x_1+\theta_2x_2+...+\theta_nx_n\)&lt;/p&gt;
-
-&lt;p&gt;然后使用向量化表示法来简化模型的表达：首先，\(x=\left[ \begin{matrix}x_0\\x_1\\x_2\\...\\x_n \end{matrix}\right]=\left[ \begin{matrix}1\\x_1\\x_2\\...\\x_n \end{matrix}\right]\)，同时\(\theta=\left[ \begin{matrix} \theta_0\\ \theta_1\\ \theta_2\\...\\ \theta_n \end{matrix}\right]\)&lt;/p&gt;
-
-&lt;p&gt;然后可以将线性回归模型的计算表示为向量的点积：\(h_\theta(x)=\theta^Tx\)&lt;/p&gt;
-
-&lt;p&gt;这是一个更简洁和高效的表达形式。也是多元线性回归（Multivariate  linear regression）模型&lt;/p&gt;
-
-&lt;h2 id=&quot;4-2-梯度下降用于多个变量gradient-descent-for-nultiple-variables&quot;&gt;4-2 梯度下降用于多个变量(Gradient descent for nultiple variables)&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;多元线性回归的假设函数&lt;/strong&gt;：\(h_\theta(x)=\theta_0x_0+\theta_1x_1+\theta_2x_2+...+\theta_nx_n=\theta^Tx\)&lt;/p&gt;
-
-&lt;p&gt;回顾代价函数：\(J(\theta_0, \theta_1,...,\theta_n)=\frac{1}{2m}\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2\)&lt;/p&gt;
-
-&lt;p&gt;梯度下降通过最小化代价函数来训练线性回归模型。更新参数\(\theta_j\)的公式如下：\(\theta_j:=\theta_j-\alpha \frac{\partial}{\partial \theta_j}J(\theta_0, \theta_1,...,\theta_n)\)，其中参数\(\theta_0, \theta_1,...,\theta_n\)需要同时更新。&lt;/p&gt;
-
-&lt;p&gt;下面说明将梯度下降应用于多变量的线性回归模型，为了对比，也将单变量的梯度下降公式给出：&lt;/p&gt;
-
-&lt;p&gt;对于 &lt;strong&gt;单变量&lt;/strong&gt;（\(n = 1\)）的梯度下降：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-\[\theta_0 := \theta_0 - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right)\]
-  &lt;/li&gt;
-  &lt;li&gt;
-\[\theta_1 := \theta_1 - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right) x^{(i)}\]
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;对于 &lt;strong&gt;多变量&lt;/strong&gt;（\(n \geq 1\)）的梯度下降：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-\[\theta_j := \theta_j - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right) x_j^{(i)} \quad \text{(同时更新 } \theta_j \text{ for } j = 0, \dots, n)\]
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如果依次令\(j=0,1,2\)，可以得到：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-\[\theta_0 := \theta_0 - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right) x_0^{(i)}\]
-  &lt;/li&gt;
-  &lt;li&gt;
-\[\theta_1 := \theta_1 - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right) x_1^{(i)}\]
-  &lt;/li&gt;
-  &lt;li&gt;
-\[\theta_2 := \theta_2 - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right) x_2^{(i)}\]
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;根据一开始添加的记法\(x_0=1\)，或者说\(x_0^{(i)}=1\)&lt;/p&gt;
-
-&lt;p&gt;那么很显然，单变量的\(\theta_0 := \theta_0 - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right)\)就是\(\theta_j := \theta_j - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right) x_j^{(i)}\)这个式子取\(j=0\)的情况，所以说，单变量就是多变量的一个特殊情况，多变量是单变量的普遍情况(一般情况)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;4-3-梯度下降实用技巧1特征缩放feature-scaling&quot;&gt;4-3 梯度下降实用技巧1：特征缩放(Feature Scaling)&lt;/h2&gt;
-
-&lt;blockquote&gt;
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th style=&quot;text-align: center&quot;&gt;中文&lt;/th&gt;
-        &lt;th style=&quot;text-align: center&quot;&gt;英文&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td style=&quot;text-align: center&quot;&gt;特征缩放&lt;/td&gt;
-        &lt;td style=&quot;text-align: center&quot;&gt;Feature Scaling&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td style=&quot;text-align: center&quot;&gt;标准化&lt;/td&gt;
-        &lt;td style=&quot;text-align: center&quot;&gt;Standardization(Z-Score Normalization)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td style=&quot;text-align: center&quot;&gt;归一化&lt;/td&gt;
-        &lt;td style=&quot;text-align: center&quot;&gt;Normalization&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;p&gt;可以认为Feature Scaling包括Standardization和Normalization，其中Standardization可以叫做Z-Score Normalization。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;特征缩放&lt;/strong&gt; 的目的是确保所有输入特征（例如房屋的面积和卧室数量）都处于相似的量纲或尺度上。不同量纲的特征（如面积以平方英尺为单位，卧室数量以1-5为范围）会影响梯度下降的优化效果。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304202217770.png&quot; alt=&quot;image-20250304202217770&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;左侧图&lt;/strong&gt;：显示了未进行特征缩放时，代价函数\(J(\theta)\)的等高线图。在这种情况下，由于两个特征 \(x_1\)和 \(x_2\) 的量纲不同，梯度下降的优化路径可能呈现出扭曲或非常不均衡的形状，导致&lt;strong&gt;收敛速度较慢&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;右侧图&lt;/strong&gt;：显示了进行特征缩放后的等高线图。在进行特征缩放后，两个特征的值都被归一化到相似的范围（如 \(0 \leq x_1 \leq 1\)和 \(0 \leq x_2 \leq 1\)）。这种缩放使得代价函数的等高线变得更加圆形，梯度下降的优化过程更加均匀且收敛速度更快。&lt;/p&gt;
-
-&lt;p&gt;特征缩放可以消除不同特征之间的量纲差异，改善机器学习模型的训练效果，特别是对于使用梯度下降的优化算法。&lt;/p&gt;
-
-&lt;h3 id=&quot;特征缩放的几种方法&quot;&gt;特征缩放的几种方法&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;(1)最大最小值归一化（min-max normalization）：&lt;/strong&gt;将数值范围缩放到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt; [0, 1] &lt;/code&gt;区间里&lt;/p&gt;
-
-\[x&apos;=\frac{x-min(x)}{max(x)-min(x)}\]
-
-&lt;p&gt;&lt;strong&gt;（2）均值归一化（mean normalization）：&lt;/strong&gt;将数值范围缩放到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[-1, 1] &lt;/code&gt;区间里，且数据的均值变为0(说白了就是使数据尽量关于原点对称)&lt;/p&gt;
-
-\[x&apos;=\frac{x-average(x)}{max(x)-min(x)}\]
-
-&lt;p&gt;&lt;strong&gt;(3)标准化 / z值归一化（standardization /z-score normalization）&lt;/strong&gt;：将数值缩放到0附近，且数据的分布变为均值为0，标准差为1的标准正态分布（先减去均值来对特征进行 &lt;strong&gt;中心化 mean centering&lt;/strong&gt; 处理，再除以标准差进行缩放）&lt;/p&gt;
-
-\[x&apos;=\frac{x-\bar x}{\sigma}\]
-
-&lt;p&gt;&lt;strong&gt;（4）最大绝对值归一化（max abs normalization ）：&lt;/strong&gt;也就是将数值&lt;strong&gt;变为单位长度（scaling to unit length）&lt;/strong&gt;，将数值范围缩放到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[-1, 1]&lt;/code&gt; 区间里&lt;/p&gt;
-
-\[x&apos;=\frac{x}{\vert \vert max(x) \vert \vert}\]
-
-&lt;p&gt;&lt;strong&gt;（5）稳键标准化（robust standardization）：&lt;/strong&gt;先减去中位数，再除以四分位间距（interquartile range），因为不涉及极值，因此在数据里有异常值的情况下表现比较稳健&lt;/p&gt;
-
-\[x&apos;=\frac{x-median(x)}{IQR(x)}\]
-
-&lt;blockquote&gt;
-  &lt;p&gt;注：特征缩放不需要严格遵循边界范围，下面的例子可以看看：&lt;/p&gt;
-
-  &lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304203356764.png&quot; alt=&quot;image-20250304203356764&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;4-4-梯度下降实用技巧1学习率learning-rate&quot;&gt;4-4 梯度下降实用技巧1：学习率(learning rate)&lt;/h2&gt;
-
-&lt;p&gt;梯度下降算法收敛所需要的迭代次数根据模型的不同而不同，我们不能提前预知，我们可以绘制迭代次数和代价函数的图表来观测算法在何时趋于收敛。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304203602781.png&quot; alt=&quot;image-20250304203602781&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;横轴&lt;/strong&gt; 代表 &lt;strong&gt;迭代次数&lt;/strong&gt;（Number of iterations），即梯度下降的循环次数。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;纵轴&lt;/strong&gt; 代表 &lt;strong&gt;代价函数 \(J(\theta)\)&lt;/strong&gt; 的值，即每次迭代后模型预测与真实值之间的误差度量。&lt;/p&gt;
-
-&lt;p&gt;随着迭代次数的增加，代价函数 \(J(\theta)\)应该逐渐 &lt;strong&gt;减小&lt;/strong&gt;，表示梯度下降正在不断优化模型参数，减少误差。&lt;/p&gt;
-
-&lt;p&gt;在达到最低点(或者说接近达到)后，代价函数变化变得很小，接近于零，表示梯度下降 &lt;strong&gt;收敛&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;也有一些自动测试是否收敛的方法，例如将代价函数的变化值与某个阀值（例如 0.001）进行比较，但通常看上面左图表更好。 确保梯度下降正常工作不仅依赖于正确的更新规则，还需要通过代价函数的变化来监控收敛过程。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;梯度下降算法的每次迭代受到学习率的影响，如果学习率\(\alpha\)过小，则达到收敛所需的迭代次数会非常高；如果学习率\(\alpha\)过大，每次迭代可能不会减小代价函数，可能会越过局部最小值导致无法收敛。&lt;/p&gt;
-
-&lt;p&gt;通常可以考虑尝试些学习率：
-\(\alpha=0.01，0.03，0.1，0.3，1，3，10\)&lt;/p&gt;
-
-&lt;h2 id=&quot;4-5-特征和多项式回归polynomial-regression&quot;&gt;4-5 特征和多项式回归(polynomial regression)&lt;/h2&gt;
-
-&lt;p&gt;如房价预测问题，&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304203943609.png&quot; alt=&quot;image-20250304203943609&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;\(x_1=frontage（临街宽度）\)，\(x_2=depth（纵向深度）\)，\(x=frontage*depth=area（面积）\)&lt;/p&gt;
-
-&lt;p&gt;则\(h_\theta(x)=\theta_0+\theta_1x\)&lt;/p&gt;
-
-&lt;p&gt;线性回归并不适用于所有数据，有时我们需要曲线来适应我们的数据，比如一个二次方模型：\(h_\theta(x)=\theta_0+\theta_1x_1+\theta_2x_2^2\)&lt;/p&gt;
-
-&lt;p&gt;或者三次方模型：\(h_\theta(x)=\theta_0+\theta_1x_1+\theta_2x_2^2+\theta_3x_3^3\)&lt;/p&gt;
-
-&lt;p&gt;通常我们需要先观察数据然后再决定准备尝试怎样的模型。 另外，我们可以令： \(x_2=x_2^2,x_3=x_3^3\)从而将模型转化为线性回归模型。&lt;/p&gt;
-
-&lt;p&gt;根据函数图形特性，我们还可以使：\(h_\theta(x)=\theta_0+\theta_1(size)+\theta_2(size)^2\)&lt;/p&gt;
-
-&lt;p&gt;或者： \(h_\theta(x)=\theta_0+\theta_1(size)+\theta_2 \sqrt{(size)}\)&lt;/p&gt;
-
-&lt;p&gt;注：如果我们采用多项式回归模型，在运行梯度下降算法前，特征缩放非常有必要。&lt;/p&gt;
-
-&lt;h2 id=&quot;4-6-正规方程normal-equation&quot;&gt;4-6 正规方程(Normal Equation)&lt;/h2&gt;
-
-&lt;p&gt;到目前为止，我们都在使用梯度下降算法，但是对于某些线性回归问题，正规方程方法是更好的解决方案。如：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304204453167.png&quot; alt=&quot;image-20250304204453167&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;利用多元微分学知识，我们知道对于代价函数：\(J(\theta)=J(\theta_0,\theta_1,\theta_2,...,\theta_n)\)&lt;/p&gt;
-
-&lt;p&gt;如果它是&lt;strong&gt;连续&lt;/strong&gt;的，则要求出它的最小值，只需要令各偏导为零：\(\frac{\partial J}{\partial \theta_j}=0,j=0,1, 2,...,n\),或写作向量形式：\(\frac{\partial J}{\partial \theta}=\vec{0}\)&lt;/p&gt;
-
-&lt;p&gt;就能解出令\(J(\theta)\)最小化的 \(\theta\) 值。&lt;/p&gt;
-
-&lt;p&gt;由此，我们将代价函数转化为&lt;strong&gt;有确定解的代数方程组&lt;/strong&gt;（其方程式数目正好等于未知数的个数），这个方程组就是正规方程（Normal Equation）。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304204946382.png&quot; alt=&quot;image-20250304204946382&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;下面来推导为什么\(\theta=(X^TX)^{−1}X^Ty\)&lt;/p&gt;
-
-&lt;p&gt;对多元线性回归的代价函数进行求解：\(J(\theta_0, \theta_1,...,\theta_n)=\frac{1}{2m}\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2=\frac{1}{2m}\sum_{i=1}^m(\theta^Tx^{(i)}-y^{(i)})^2\)&lt;/p&gt;
-
-&lt;p&gt;于是其偏导函数为：\(\frac{\partial J}{\partial \theta}=\frac{1}{m}\sum_{i=1}^m(\theta^Tx^{(i)}-y^{(i)})·x^{(i)}\)&lt;/p&gt;
-
-&lt;p&gt;要使之为&lt;strong&gt;零向量&lt;/strong&gt;，只能是：\(\theta^Tx^{(i)}=y^{(i)},i=1,2,...,m\)  (注：一共是m个样本，n维度的特征)&lt;/p&gt;
-
-&lt;p&gt;上面的等式写作矩阵为：\(\theta^TX^T=y^T\)，由转置的性质，即\(X\theta=y\)&lt;/p&gt;
-
-&lt;p&gt;其中：&lt;/p&gt;
-
-\[X_{m \times (n+1)}=\left[ \begin{matrix}x_0^{(1)} &amp;amp; x_1^{(1)} &amp;amp; \dots&amp;amp; x_n^{(1)}\\x_0^{(2)} &amp;amp; x_1^{(2)} &amp;amp; \dots&amp;amp; x_n^{(2)}\\ . &amp;amp; . &amp;amp; . &amp;amp; .\\ . &amp;amp; . &amp;amp; . &amp;amp; . \\x_0^{(m)} &amp;amp; x_1^{(m)} &amp;amp; \dots&amp;amp; x_n^{(m)} \end{matrix}\right]=\left[ \begin{matrix} x^{(1)T}\\ x^{(2)T} \\ . \\ . \\ x^{(m)T} \end{matrix}\right],y=\left[ \begin{matrix} y^{(1)} \\ y^{(2)}\\ . \\ . \\ y^{(m)}     \end{matrix} \right]\]
-
-&lt;p&gt;在\(X\theta=y\)两边同时乘以\(X^T\)，假设\(X^TX\)可逆，解得\(\theta=(X^TX)^{-1}X^Ty\)&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;注：\(X^TX\)是一个\((n+1) \times (n+1)\)的矩阵&lt;/p&gt;
-
-  &lt;p&gt;因此直接取逆计算\(\theta\)的复杂度是\(O(n^3)\)。如果\(n\)不是很大，这是有效的，但是如果\(n\)达到了\(10^4,10^5\)级别，或更高，就需要使用梯度下降了。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;下面从其他方面对两种算法进行比较：&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;区别&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;梯度下降&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;正规方程&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;学习率 \(\alpha\)&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;需要选择&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;不需要&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;迭代&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;需要多次迭代&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;一次运算得出&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;n 的取值&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;当 n 大时也能较好适用&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;当 n 小于\(10^4\)还是可以接受的&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;特征缩放&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;特征取值范围相差大时需要&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;不需要缩放&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;适用情形&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;适用于各种类型的模型&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;只适用于线性模型&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;总结一下，只要特征变量的数目并不大，正规方程是一个很好的计算参数\(\theta\)的方法。&lt;/p&gt;
-
-&lt;p&gt;随着我们要学习的学习算法越来越复杂，例如，当我们讲到分类算法，像逻辑回归算法，我们会看到， 实际上对于那些算法，并不能使用正规方程法。对于那些更复杂的学习算法，我们将不得不仍然使用梯度下降法。因此，梯度下降法是一个非常有用的算法，可以用在有大量特征变量的线性回归问题。或者以后，会讲到的一些其他的算法，因为正规方程法不适合或者不能用在它们上。但对于这个特定的线性回归模型，正规方程法是一个比梯度下降法更快的替代算法。所以，根据具体的问题，以及特征变量的数量，这两种算法都是值得学习的。&lt;/p&gt;
-
-&lt;h2 id=&quot;4-7-正规方程及不可逆性noninvertibility&quot;&gt;4-7 正规方程及不可逆性(Noninvertibility)&lt;/h2&gt;
-
-&lt;p&gt;对于\(\theta=(X^TX)^{-1}X^Ty\)，若\(X^TX\)不可逆？&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250304214543386.png&quot; alt=&quot;image-20250304214543386&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;首先\(X^TX\)不可逆很少发生，并且，在Octave里（当然我不用这个），可逆矩阵求解逆使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;inv()&lt;/code&gt;，不可逆矩阵求解伪逆使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pinv()&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;其次，使用大量的特征值的情况下，可能会导致矩阵\(X^TX\)的结果是不可逆的。&lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;具体地说，在 m 小于或等于 n 的时候，例如，有 m 等于 10 个的训练样本也有 n 等于100 的特征数量。要找到适合的 ( n +1 ) 维参数矢量\(\theta\)，这将会变成一个 101 维的矢量，尝试从 10 个训练样本中找到满足 101 个参数的值，这工作可能会让你花上一阵子时间，但这并不总是一个好主意。因为，正如我们所看到你只有 10 个样本，以适应这 100 或 101 个参数，数据还是有些少。 稍后我们将看到，如何使用小数据样本以得到这 100 或 101 个参数，通常，我们会使用一种叫做正则化的线性代数方法，通过删除某些特征或者是使用某些技术，来解决当 m 比n 小的时候的问题。即使你有一个相对较小的训练集，也可使用很多的特征来找到很多合适的参数。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;所以上面的图片中提供了解决办法：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;看特征值里是否有一些多余的特征，像\(x_1\)和\(x_2\)是线性相关的，互为线性函数。删除重复的特征将解决不可逆性的问题。如果特征数量实在太多，可以删除些用较少的特征来反映尽可能多内容，或者考虑使用正则化方法。&lt;/li&gt;
-  &lt;li&gt;如果在 Octave 里，可以用伪逆函数 pinv ( ) 来实现。即使\(X^TX\)不可逆，但算法执行的流程是正确的。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;总之，出现不可逆矩阵的情况极少发生，所以在大多数实现线性回归中，不应该过多的关注\(X^TX\)不可逆。&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 04 Mar 2025 00:00:00 +0000</pubDate>
-        <link>https://kirsten-1.github.io/2025/03/04/%E5%90%B4%E6%81%A9%E8%BE%BEML4/</link>
-        <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/04/%E5%90%B4%E6%81%A9%E8%BE%BEML4/</guid>
         
         <category>机器学习-吴恩达</category>
         
