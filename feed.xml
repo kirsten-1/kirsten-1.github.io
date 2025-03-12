@@ -5,9 +5,75 @@
     <description>这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员</description>
     <link>https://kirsten-1.github.io/</link>
     <atom:link href="https://kirsten-1.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 10 Mar 2025 07:51:18 +0000</pubDate>
-    <lastBuildDate>Mon, 10 Mar 2025 07:51:18 +0000</lastBuildDate>
+    <pubDate>Wed, 12 Mar 2025 02:37:04 +0000</pubDate>
+    <lastBuildDate>Wed, 12 Mar 2025 02:37:04 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>力扣 88. 合并两个有序数组</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
+&lt;/script&gt;
+
+&lt;h1 id=&quot;88-合并两个有序数组&quot;&gt;88. 合并两个有序数组&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/merge-sorted-array/&quot;&gt;88. 合并两个有序数组&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;nums3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++];&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;nums3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++];&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;nums3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++];&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312103221387.png&quot; alt=&quot;image-20250312103221387&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这道题要注意几点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;不能直接在原nums1上操作，因为这样会覆盖nums1还没有排序的数组。所以我准备了nums3&lt;/li&gt;
+  &lt;li&gt;准备两个“指针”扫描完两个数组之后，还要处理nums1和nums2中没有处理完的数。&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Wed, 12 Mar 2025 00:00:00 +0000</pubDate>
+        <link>https://kirsten-1.github.io/2025/03/08/leetcode-week1/</link>
+        <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/08/leetcode-week1/</guid>
+        
+        <category>力扣</category>
+        
+        
+      </item>
     
       <item>
         <title>100  KMP算法原理和代码详解</title>
@@ -6836,76 +6902,6 @@ docker pull oracleinanutshell/oracle-xe-11g
         <pubDate>Mon, 03 Mar 2025 00:00:00 +0000</pubDate>
         <link>https://kirsten-1.github.io/2025/03/03/%E5%90%B4%E6%81%A9%E8%BE%BEML2-7/</link>
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/03/%E5%90%B4%E6%81%A9%E8%BE%BEML2-7/</guid>
-        
-        <category>机器学习-吴恩达</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>2-6 梯度下降知识点总结</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
-&lt;/script&gt;
-
-&lt;p&gt;吴恩达课程系列&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/02/28/%E5%90%B4%E6%81%A9%E8%BE%BEML1-1/&quot;&gt;1-1 欢迎参加《机器学习》课程【机器学习简介/例子】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BEML1-2/&quot;&gt;1-2 什么是机器学习【机器学习的2个定义和分类】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BE1-3/&quot;&gt;1-3监督学习【监督学习的定义，监督学习的分类（回归与分类）】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML1-4%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/&quot;&gt;1-4无监督学习【无监督学习的定义，无监督学习问题的分类（聚类/信号分离/降维）】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-1/&quot;&gt;2-1模型描述【如何描述一个模型（用一些符号），单变量线性回归是什么？】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-2to2-4/&quot;&gt;2-2~2-4代价函数【代价函数的数学定义、代价函数的直观理解】&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-5/&quot;&gt;2-5 梯度下降【梯度下降的数学原理】&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;2-6-梯度下降知识点总结&quot;&gt;2-6 梯度下降知识点总结&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.bilibili.com/video/BV1b44y1r7WJ?spm_id_from=333.788.player.switch&amp;amp;vd_source=6c6e2754e61f483e81b4bc03c9898c87&amp;amp;p=10&quot;&gt;视频链接&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;回顾2-5&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302155226836.png&quot; alt=&quot;image-20250302155226836&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;其中\(\alpha\)是学习速率（learning rate，也可以叫学习率），它控制了“下山的步长”，即以多大的幅度去更新参数\(\theta_0,\theta_1\)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;为了更加直观并且易于理解的解释，现在简化成：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250303115224764.png&quot; alt=&quot;image-20250303115224764&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;关于【导数项】的解释：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250303115708636.png&quot; alt=&quot;image-20250303115708636&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;关于\(\alpha\)（学习率）的解释：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250303120027639.png&quot; alt=&quot;image-20250303120027639&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;学习率太小会导致每次参数更新的幅度非常小，这意味着算法需要进行非常多次迭代才能达到最小值点。这会显著增加训练时间，使得算法效率低下。虽然学习率小有助于避免跳过全局最小值，但如果在目标函数表面存在平坦区域或狭窄的峡谷，算法可能会因为步长太小而难以逃脱这些区域，从而陷入局部最小值，无法找到更好的解。在接近最小值点时，由于每次更新都很小，算法可能会在最小值点附近来回振荡，难以精确收敛。&lt;/p&gt;
-
-&lt;p&gt;学习率太大可能导致每次更新的步长过大，直接越过最小值点，使得算法在最小值点附近来回跳跃，无法稳定收敛。更严重的情况下，目标函数的值可能会在每次迭代中不断增大，导致算法发散，根本找不到最小值。&lt;/p&gt;
-
-&lt;p&gt;如果刚开始选择的值比较接近局部最优解呢？（已经几乎达到收敛的状态，比如导数项接近等于0）？&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250303120341404.png&quot; alt=&quot;image-20250303120341404&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;另外还要注意一点：&lt;strong&gt;当梯度下降接近局部最小值时，步长会自动变小，因此不需要随着时间的推移减少学习率。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250303121043588.png&quot; alt=&quot;image-20250303121043588&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;梯度下降的核心是利用导数（或者更准确地说是梯度，多维导数）来指引参数更新的方向。 越接近局部最优解（无论是全局的还是局部的），导数（梯度）的值会越来越接近于零。 这是因为局部最优解通常是目标函数的一个“平坦”区域，在这些区域，切线的斜率（即导数）趋近于零。&lt;/p&gt;
-
-&lt;p&gt;所以，梯度下降利用梯度指引参数更新，梯度的大小和方向反映了当前点与最优解的距离。越接近最优解，函数越平坦，梯度越接近零。这是一个优美的数学机制，也是机器学习中许多算法（如神经网络训练）的基石。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 03 Mar 2025 00:00:00 +0000</pubDate>
-        <link>https://kirsten-1.github.io/2025/03/03/%E5%90%B4%E6%81%A9%E8%BE%BEML2-6/</link>
-        <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/03/%E5%90%B4%E6%81%A9%E8%BE%BEML2-6/</guid>
         
         <category>机器学习-吴恩达</category>
         
