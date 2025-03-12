@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="2-1 模型描述 - Hilda的博客 | Your genius girlfriend's blog">
+        content="力扣 229. 多数元素 II(摩尔投票算法) - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-03-02T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-03-12T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="机器学习-吴恩达">
+    <meta property="article:tag" content="力扣">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-1/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A3229/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>2-1 模型描述 - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>力扣 229. 多数元素 II(摩尔投票算法) - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-1/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A3229/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -246,13 +246,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE" title="机器学习-吴恩达">机器学习-吴恩达</a>
+                        <a class="tag" href="/archive/?tag=%E5%8A%9B%E6%89%A3" title="力扣">力扣</a>
                         
                     </div>
-                    <h1>2-1 模型描述</h1>
+                    <h1>力扣 229. 多数元素 II(摩尔投票算法)</h1>
                     
-                    <h2 class="subheading">如何描述一个模型，单变量线性回归是什么</h2>
-                    <span class="meta">Posted by Hilda on March 2, 2025</span>
+                    <h2 class="subheading">229. 多数元素 II</h2>
+                    <span class="meta">Posted by Hilda on March 12, 2025</span>
                 </div>
             </div>
         </div>
@@ -282,59 +282,183 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<p>吴恩达课程系列</p>
+<h1 id="229-多数元素-ii">229. 多数元素 II</h1>
 
-<p><a href="https://kirsten-1.github.io/2025/02/28/%E5%90%B4%E6%81%A9%E8%BE%BEML1-1/">1-1 欢迎参加《机器学习》课程【机器学习简介/例子】</a></p>
+<p><a href="https://leetcode.cn/problems/majority-element-ii/">229. 多数元素 II</a></p>
 
-<p><a href="https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BEML1-2/">1-2 什么是机器学习【机器学习的2个定义和分类】</a></p>
+<p>给定一个大小为 <em>n</em> 的整数数组，找出其中所有出现超过 <code class="language-plaintext highlighter-rouge">⌊ n/3 ⌋</code> 次的元素。</p>
 
-<p><a href="https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BE1-3/">1-3监督学习【监督学习的定义，监督学习的分类（回归与分类）】</a></p>
+<p><strong>示例 1：</strong></p>
 
-<p><a href="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML1-4%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">1-4无监督学习【无监督学习的定义，无监督学习问题的分类（聚类/信号分离/降维）】</a></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>输入：nums = [3,2,3]
+输出：[3]
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<h1 id="2-1-模型描述model-representation">2-1 模型描述Model Representation</h1>
+<p><strong>示例 2：</strong></p>
 
-<p>以之前的房屋交易问题为例，假使我们回归问题的训练集（Training Set）如下表所示：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>输入：nums = [1]
+输出：[1]
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302132852401.png" alt="image-20250302132852401" style="zoom:50%;" /></p>
+<p><strong>示例 3：</strong></p>
 
-<p>我们将要用来描述这个回归问题的标记如下:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>输入：nums = [1,2]
+输出：[1,2]
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>\(m\) 代表训练集中实例的数量 ,  比如上面这个表格有47行，那么m=47</p>
+<p><strong>提示：</strong></p>
 
-<p>\(x\) 代表特征/输入变量</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= nums.length &lt;= 5 * 104</code></li>
+  <li><code class="language-plaintext highlighter-rouge">-109 &lt;= nums[i] &lt;= 109</code></li>
+</ul>
 
-<p>\(y\) 代表目标变量/输出变量</p>
+<p><strong>进阶：</strong>尝试设计时间复杂度为 O(n)、空间复杂度为 O(1)的算法解决此问题。</p>
 
-<p>\((x,y)\) 代表训练集中的实例</p>
+<hr />
 
-<p>\((x^{(i)},y^{(i)} )\) 代表第 i 个观察实例,i是一个索引。比如上面这个数据集， \(x^{(1)}=2104, x^{(2)}=1416, y^{(1)}=460....\)</p>
+<p>推荐阅读帖子：https://writings.sh/post/boyer%E2%80%93moore-majority-vote</p>
 
-<p>\(h\) 代表学习算法的解决方案或函数也称为<strong>假设（hypothesis）</strong></p>
+<p>本题的规则就是，准备2个候选人，只要出现其中一个，那么就相应加1；如果都不是这2个那么就这俩的票数都减1</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302133145029.png" alt="image-20250302133145029" style="zoom:50%;" /></p>
+<p>只要有一个票数是0，就替换</p>
 
-<p>因而，要解决房价预测问题，我们实际上是要将训练集“喂”给我们的学习算法，进而学习得到一个假设 \(h\)，然后将我们要预测的房屋的尺寸作为输入变量输入给 \(h\)，预测出该房屋的交易价格作为输出变量输出为结果。那么，对于我们的房价预测问题，我们该如何表达 \(h\)？</p>
+<p>另外最终的候选者并不一定是要找的众数</p>
 
-<p>一种可能的表达方式为：\(h_{\theta}=\theta_0+\theta_1x\)，因为只含有一个特征/输入变量，因此这样的问题叫作<strong>单变量线性回归（Univariate Linear Regression）</strong>问题。</p>
+<p>但是消掉的数字一定不是要找的众数</p>
 
+<p>看一个例子：</p>
+
+<p>假设数组是 [A, B, A, B, C, B, C, D, B], 下面模拟整个投票过程， 左边的三列分别是两个候选者和抵消者，右边是当前轮次的输入。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312203123157.png" alt="image-20250312203123157" style="zoom:50%;" /></p>
+
+<p>在这个图中，X 矩阵的个数不超过 N, 一共有三列。</p>
+
+<p>而抵消的时机是一行中的三个元素互不相同，那么一个元素在 X 矩阵中的每一行中至多出现一次。 也就是说 X 矩阵中的任一个数字的出现次数都不会超过 N/3 次。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312203147440.png" alt="image-20250312203147440" style="zoom:50%;" /></p>
+
+<p>也就是说，X 矩阵排除了不可能成为目标众数的元素。剩下的两个候选元素是仅剩的可能。</p>
+
+<p>显然，这个分析可以直接推广到 N/K 的情况。</p>
+
+<p>需要强调的是，从分析中可以看到，摩尔投票算法仅仅排除了不可能的元素，它并没有保证剩余的元素就是目标众数。 我们还需要再实际统计验证一下。因为最终要验证的候选元素的个数是常数的 K 个，所以最终总的时间复杂度也不会超过 O(N) 。</p>
+
+<hr />
+
+<h2 id="我的解法">我的解法</h2>
+
+<p>结合上面的思路，我写了下面的解法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">majorityElement</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="no">N</span> <span class="o">=</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="kt">int</span> <span class="n">countA</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">countB</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">candidateA</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">MIN_VALUE</span><span class="o">,</span> <span class="n">candidateB</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">MIN_VALUE</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="no">N</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">countA</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="n">candidateA</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">countA</span><span class="o">++;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">countB</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="n">candidateB</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">countB</span><span class="o">++;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">countA</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">candidateA</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+                <span class="n">countA</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">countB</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">candidateB</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+                <span class="n">countB</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">countB</span><span class="o">--;</span>
+                <span class="n">countA</span><span class="o">--;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="kt">int</span> <span class="n">na</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">nb</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nums</span><span class="o">){</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="n">candidateA</span><span class="o">)</span> <span class="n">na</span><span class="o">++;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="n">candidateB</span><span class="o">)</span> <span class="n">nb</span><span class="o">++;</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">countA</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">na</span> <span class="o">&gt;</span> <span class="no">N</span> <span class="o">/</span> <span class="mi">3</span><span class="o">)</span> <span class="n">res</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">candidateA</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">countB</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">nb</span> <span class="o">&gt;</span> <span class="no">N</span> <span class="o">/</span> <span class="mi">3</span><span class="o">)</span> <span class="n">res</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">candidateB</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">;</span>        
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>时间复杂度 O(n) 和空间复杂度 O(1) 在理论上接近最优。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312221524030.png" alt="image-20250312221524030" style="zoom:50%;" /></p>
+
+<p>注意：</p>
+
+<p>在验证阶段，条件<code class="language-plaintext highlighter-rouge">countA &gt; 0 &amp;&amp; na &gt; N / 3</code>不可简化为<code class="language-plaintext highlighter-rouge">na &gt; N / 3</code></p>
+
+<p>可以看个例子验证下：</p>
+
+<p>输入是：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="o">[</span><span class="mi">4</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">4</span><span class="o">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>导致最终输出是4， 4，是重复的。模拟一下就会罚下，最终，两个count都是0。</p>
+
+<p>所以<code class="language-plaintext highlighter-rouge">countA &gt; 0 </code>表示 candidateA 在投票结束时仍然“存活”，有可能是多数元素。</p>
+
+<p>如果 <code class="language-plaintext highlighter-rouge">countA == 0</code>，说明 candidateA 在某个时间点被完全抵消，后续可能被其他元素替换，失去候选资格。</p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML1-4%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/" data-toggle="tooltip" data-placement="top" title="1-4 非监督学习">
+                        <a href="/2025/03/12/%E5%8A%9B%E6%89%A3169%E6%91%A9%E5%B0%94%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="力扣 169. 多数元素(摩尔投票算法)">
                         Previous<br>
-                        <span>1-4 非监督学习</span>
+                        <span>力扣 169. 多数元素(摩尔投票算法)</span>
                         </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-2to2-4/" data-toggle="tooltip" data-placement="top" title="2-2 代价函数Cost Function">
+                        <a href="/2025/03/12/%E5%8A%9B%E6%89%A327/" data-toggle="tooltip" data-placement="top" title="力扣 27. 移除元素 26. 删除有序数组中的重复项 80. 删除有序数组中的重复项 II">
                         Next<br>
-                        <span>2-2 代价函数Cost Function</span>
+                        <span>力扣 27. 移除元素 26. 删除有序数组中的重复项 80. 删除有序数组中的重复项 II</span>
                         </a>
                     </li>
                     
