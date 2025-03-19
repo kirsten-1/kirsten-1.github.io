@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="力扣 169. 多数元素(摩尔投票算法) - Hilda的博客 | Your genius girlfriend's blog">
+        content="023 随机快速排序 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-03-12T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-03-19T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="力扣">
+    <meta property="article:tag" content="算法">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A3169%E6%91%A9%E5%B0%94%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/19/%E7%AE%97%E6%B3%95023/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>力扣 169. 多数元素(摩尔投票算法) - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>023 随机快速排序 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A3169%E6%91%A9%E5%B0%94%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/19/%E7%AE%97%E6%B3%95023/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -248,13 +248,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=%E5%8A%9B%E6%89%A3" title="力扣">力扣</a>
+                        <a class="tag" href="/archive/?tag=%E7%AE%97%E6%B3%95" title="算法">算法</a>
                         
                     </div>
-                    <h1>力扣 169. 多数元素(摩尔投票算法)</h1>
+                    <h1>023 随机快速排序</h1>
                     
-                    <h2 class="subheading">169. 多数元素</h2>
-                    <span class="meta">Posted by Hilda on March 12, 2025</span>
+                    <h2 class="subheading">经典随机快速排序和用荷兰国旗问题优化后的随机快速排序。经典快排易受重复元素影响，优化后的版本通过荷兰国旗问题将数组划分为小于、等于、大于x三部分，提升效率。文章分析了普通快排和随机快排在不同情况下的时间和空间复杂度，强调随机选择的重要性，并指出随机快排的期望时间复杂度为O(n log n)，空间复杂度为O(log n)。</h2>
+                    <span class="meta">Posted by Hilda on March 19, 2025</span>
                 </div>
             </div>
         </div>
@@ -284,47 +284,65 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<h1 id="169-多数元素">169. 多数元素</h1>
+<p>概览：</p>
 
-<p><a href="https://leetcode.cn/problems/majority-element/">169. 多数元素</a></p>
+<p>前置知识：讲解007-时间复杂度和空间复杂度-分析随机行为的时间复杂度的部分 <a href="https://kirsten-1.github.io/2025/03/17/%E7%AE%97%E6%B3%95007/">007笔记</a></p>
 
-<p>给定一个大小为 <code class="language-plaintext highlighter-rouge">n</code> 的数组 <code class="language-plaintext highlighter-rouge">nums</code> ，返回其中的多数元素。多数元素是指在数组中出现次数 <strong>大于</strong> <code class="language-plaintext highlighter-rouge">⌊ n/2 ⌋</code> 的元素。</p>
+<p>经典随机快速排序流程讲解</p>
 
-<p>你可以假设数组是非空的，并且给定的数组总是存在多数元素。</p>
+<p>荷兰国旗问题优化随机快速排序流程讲解</p>
 
-<p><strong>示例 1：</strong></p>
+<p>荷兰国旗问题优化后的过程：
+在当前范围上选择一个数字x，利用荷兰国旗问题进行数组的划分，&lt;x =x &gt;x
+对&lt;x范围重复这个过程，对&gt;x范围重复这个过程</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre>输入：nums = [3,2,3]
-输出：3
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><strong>示例 2：</strong></p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre>输入：nums = [2,2,1,1,1,2,2]
-输出：2
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><strong>提示：</strong></p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">n == nums.length</code></li>
-  <li><code class="language-plaintext highlighter-rouge">1 &lt;= n &lt;= 5 * 104</code></li>
-  <li><code class="language-plaintext highlighter-rouge">-109 &lt;= nums[i] &lt;= 109</code></li>
-</ul>
-
-<p><strong>进阶：</strong>尝试设计时间复杂度为 O(n)、空间复杂度为 O(1) 的算法解决此问题。</p>
+<p>荷兰国旗问题的优化点：选出一个数字x，数组在划分时会搞定所有值是x的数字</p>
 
 <hr />
 
-<p>写了一个方法，通过了，但是不是很快：</p>
+<p>快速排序的时间和空间复杂度分析</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312195558259.png" alt="image-20250312195558259" style="zoom:50%;" /></p>
+<p>核心点：怎么选择数字？</p>
 
-<p>这个方法的时间复杂度是O(n)，空间复杂度也是O(n)</p>
+<p>选择的数字是当前范围上的固定位置，比如范围上的最右数字，那么就是普通快速排序</p>
+
+<p>选择的数字是当前范围上的随机位置，那么就是随机快速排序</p>
+
+<p>普通快速排序，时间复杂度O(n^2)，额外空间复杂度O(n)</p>
+
+<p>随机快速排序，时间复杂度O(n * logn)，额外空间复杂度O(logn)</p>
+
+<p>关于复杂度的分析，进行定性的说明，定量证明略，因为证明较为复杂</p>
+
+<p>算法导论-7.4.2有详细证明</p>
+
+<hr />
+
+<h1 id="1-经典随机快速排序流程">1 经典随机快速排序流程</h1>
+
+<p>以一个例子为例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">无序数组</span><span class="o">[</span><span class="mi">6</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">1</span> <span class="mi">5</span> <span class="mi">9</span><span class="o">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>每一轮的规则如下：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319204502977.png" alt="image-20250319204502977" style="zoom:50%;" /></p>
+
+<p>我将每一步都详细记录了：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319204532469.png" alt="image-20250319204532469" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319204543765.png" alt="image-20250319204543765" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319204557460.png" alt="image-20250319204557460" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319204731723.png" alt="image-20250319204731723" style="zoom:50%;" /></p>
+
+<p>接着将在两侧发生递归，在两侧随机选择数，最终一定会使得整个数组有序。</p>
+
+<h2 id="代码">代码</h2>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -346,62 +364,79 @@
 18
 19
 20
-</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">majorityElement</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
-        <span class="kt">int</span> <span class="no">N</span> <span class="o">=</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
-        <span class="k">if</span> <span class="o">(</span><span class="no">N</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="k">return</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
-        <span class="kt">int</span> <span class="n">range</span> <span class="o">=</span> <span class="no">N</span> <span class="o">/</span> <span class="mi">2</span><span class="o">;</span>
-        <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
-        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="no">N</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-            <span class="k">if</span> <span class="o">(!</span><span class="n">map</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]))</span> <span class="o">{</span>
-                <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="mi">1</span><span class="o">);</span>
-            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-                <span class="kt">int</span> <span class="n">time</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
-                <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="o">++</span><span class="n">time</span><span class="o">);</span>
-                <span class="k">if</span> <span class="o">(</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">range</span><span class="o">)</span> <span class="o">{</span>
-                    <span class="k">return</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
-                <span class="o">}</span>
-            <span class="o">}</span>
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kt">void</span> <span class="nf">quickSort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">l</span><span class="o">,</span> <span class="kt">int</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">l</span> <span class="o">&gt;=</span> <span class="n">r</span><span class="o">)</span> <span class="k">return</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">l</span> <span class="o">+</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="nc">Math</span><span class="o">.</span><span class="na">random</span><span class="o">()</span> <span class="o">*</span> <span class="o">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="o">))];</span><span class="c1">//随机选择一个数</span>
+    <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">partition1</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+    <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+    <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">r</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="c1">//注意返回的是x的最终位置</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">partition1</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">l</span><span class="o">,</span> <span class="kt">int</span> <span class="n">r</span><span class="o">,</span> <span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">l</span><span class="o">,</span> <span class="n">xi</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span><span class="c1">//xi就是用来记录x的位置的</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">l</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">swap</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">a</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">a</span><span class="o">]</span> <span class="o">==</span> <span class="n">x</span><span class="o">)</span> <span class="n">xi</span> <span class="o">=</span> <span class="n">a</span><span class="o">;</span>
+            <span class="n">a</span><span class="o">++;</span>
         <span class="o">}</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>        
     <span class="o">}</span>
+    <span class="n">swap</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">xi</span><span class="o">,</span> <span class="n">a</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">swap</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+    <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+    <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">;</span>
 <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>使用 HashMap 记录每个元素的出现次数：</p>
+<p>用上面的代码可以测试https://leetcode.cn/problems/sort-an-array/description/</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319210131753.png" alt="image-20250319210131753" style="zoom:50%;" /></p>
+
+<p>其实这也显示了这个经典算法的弊端。当随机选择x之后，如果有一堆数字和x相同，那么这个算法就很慢了</p>
+
+<p>因此就有了荷兰国旗问题优化随机快速排序来优化上面出现的这个情况。</p>
+
+<h1 id="2-荷兰国旗问题优化随机快速排序">2 荷兰国旗问题优化随机快速排序</h1>
+
+<p>上面的流程可以看出比x小的始终都在a这个边界的左侧，现在利用荷兰国旗问题优化，将整个数组分成三个部分：</p>
 
 <ul>
-  <li>遍历数组，对于每个元素：
-    <ul>
-      <li>如果 HashMap 中没有该元素，加入并设置次数为 1。</li>
-      <li>如果已有该元素，取出当前次数，递增后更新，并检查是否超过 range。</li>
-      <li>如果找到次数超过 range 的元素，立即返回该元素。</li>
-    </ul>
-  </li>
+  <li>小于x</li>
+  <li>等于x</li>
+  <li>大于x</li>
 </ul>
 
-<hr />
-
-<p>当前算法使用 HashMap 统计频率，虽然时间复杂度已经是线性的 O(N)，但仍有优化空间</p>
-
-<p><strong>Boyer-Moore 投票算法：</strong></p>
-
-<blockquote>
-  <p>注：这个算法除了力扣169，还有LeetCode 229。可以一起尝试下</p>
-</blockquote>
+<p>思路如下：还是拿i去扫描遍历一遍数组</p>
 
 <ul>
-  <li>基本思想：多数元素出现次数超过一半，因此可以用“抵消”策略。即维护一个候选元素和计数器：
-    <ul>
-      <li>遇到相同元素，计数器加 1。</li>
-      <li>遇到不同元素，计数器减 1。</li>
-      <li>当计数器为 0 时，替换候选元素。</li>
-      <li>因为多数元素超过一半，最终留下的候选必然是多数元素。</li>
-    </ul>
-  </li>
+  <li>小于x，交换a，i位置上的数，a++且i++</li>
+  <li>等于x，i++</li>
+  <li>大于x，交换b，i位置上的数，b–且i不变</li>
 </ul>
 
-<p>代码如下：</p>
+<p>以刚才的无序数组[6 2 4 1 5 9]为例，遍历一轮看看上面的思路到底是个什么意思。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319211638808.png" alt="image-20250319211638808" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319211654213.png" alt="image-20250319211654213" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319211709198.png" alt="image-20250319211709198" style="zoom:50%;" /></p>
+
+<p>这个例子没有体现如果有两个或者多个4会怎样，但是如果是有多个4，其实最终从a到b都是4，也就是说a到b最终更新成<code class="language-plaintext highlighter-rouge">==x</code>区域的左右边界</p>
+
+<h2 id="代码-1">代码</h2>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -422,52 +457,122 @@
 17
 18
 19
-</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">majorityElement</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
-        <span class="kt">int</span> <span class="no">N</span> <span class="o">=</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
-        <span class="k">if</span> <span class="o">(</span><span class="no">N</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="k">return</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
-        <span class="kt">int</span> <span class="n">vote</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span><span class="c1">//备选元素</span>
-        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span><span class="c1">//计数器</span>
-        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="no">N</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="o">){</span>
-                <span class="n">vote</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
-                <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
-            <span class="o">}</span><span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="n">vote</span><span class="o">){</span>
-                <span class="n">count</span><span class="o">++;</span>
-            <span class="o">}</span><span class="k">else</span> <span class="o">{</span>
-                <span class="n">count</span><span class="o">--;</span>
-            <span class="o">}</span>
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre></td><td class="rouge-code"><pre><span class="c1">//荷兰国旗问题</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">first</span><span class="o">,</span> <span class="n">last</span><span class="o">;</span>
+
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">quickSort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">l</span><span class="o">,</span> <span class="kt">int</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">l</span> <span class="o">&gt;=</span> <span class="n">r</span><span class="o">)</span> <span class="k">return</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">l</span> <span class="o">+</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="nc">Math</span><span class="o">.</span><span class="na">random</span><span class="o">()</span> <span class="o">*</span> <span class="o">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="o">))];</span>
+    <span class="n">partition2</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+    <span class="c1">// 为了防止底层的递归过程覆盖全局变量</span>
+    <span class="c1">// 这里用临时变量记录first、last</span>
+    <span class="c1">// first、last包括这2个位置都是等于x的</span>
+    <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="n">first</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="n">last</span><span class="o">;</span>
+    <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">left</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+    <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">right</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">r</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">partition2</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">l</span><span class="o">,</span> <span class="kt">int</span> <span class="n">r</span><span class="o">,</span> <span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">l</span><span class="o">;</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="n">r</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">l</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">last</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">swap</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">first</span><span class="o">++,</span> <span class="n">i</span><span class="o">++);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">i</span><span class="o">++;</span>
+        <span class="o">}</span><span class="k">else</span> <span class="o">{</span>
+            <span class="n">swap</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">last</span><span class="o">--,</span> <span class="n">i</span><span class="o">);</span>
         <span class="o">}</span>
-        <span class="k">return</span> <span class="n">vote</span><span class="o">;</span>
     <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">swap</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+    <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+    <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">;</span>
 <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312201204584.png" alt="image-20250312201204584" style="zoom:50%;" /></p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250319212829598.png" alt="image-20250319212829598" style="zoom:50%;" /></p>
 
-<p>更加简洁的写法（参考他人）：</p>
+<h1 id="3-快速排序的时间和空间复杂度分析">3 快速排序的时间和空间复杂度分析</h1>
+
+<p>之前在<a href="https://kirsten-1.github.io/2025/03/17/%E7%AE%97%E6%B3%95007/">007节</a>强调过，对于引入随机行为的算法（如快速排序），最差情况（如每次选到最大/最小值）发生的概率极低，分析其平均时间复杂度或期望时间复杂度更有意义。</p>
+
+<blockquote>
+  <p>比如生成一个数组，要求每个数字不一样，现在生成了索引0位置的数为8，万一是最差情况，那么索引为1位置的数生成的始终是8，那么此时时间复杂度就会评估成无穷大，这么估计就没有任何意义了。</p>
+</blockquote>
+
+<p>同理，如果快速排序每次选择的数不是随机的，而是最左侧或者最右侧（比如下面就以最右侧为例），那么此时如果数组长这样：</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">majorityElement</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
-        <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">votes</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">num</span> <span class="o">:</span> <span class="n">nums</span><span class="o">){</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">votes</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="n">x</span> <span class="o">=</span> <span class="n">num</span><span class="o">;</span>
-            <span class="n">votes</span> <span class="o">+=</span> <span class="n">num</span> <span class="o">==</span> <span class="n">x</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+</pre></td><td class="rouge-code"><pre><span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">]</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>那么每一轮其实就和冒泡/选择排序没有什么区别了，第一轮确定了6的位置是最后一个，第二轮确定5的位置是倒数第二个……</p>
+
+<p>这时候时间复杂度就是\(O(n^2)\)，此时空间复杂度是\(O(N)\)</p>
+
+<hr />
+
+<p>上面是情况最差的时候快速排序的时间复杂度分析。</p>
+
+<p>现在分析比较好的情况：即选择的数（不管是随机选的还是其他方式选择的，最终导致这个数的结果位置就是钟点位置），导致可以用master公式来估计，那么\(T(N) = 2*T(N/2)+O(n)\)，即a = 2, b = 2, c = 1，根据master公式，得到时间复杂度就是\(O(N*logN)\)，这和归并排序时间复杂度一样。</p>
+
+<hr />
+
+<p>那么空间复杂度呢？最佳是\(O(logN)\)</p>
+
+<p>因为递归调用的层数就是\(logN\)</p>
+
+<hr />
+
+<p>没错，测试数据有时候就会用最恶心的情况来为难你！（从上面的测试结果就可以看出）</p>
+
+<hr />
+
+<h2 id="总结">总结</h2>
+
+<p>对于快速排序：</p>
+
+<p>最差情况：时间复杂度\(O(n^2)\)，空间复杂度\(O(n)\)</p>
+
+<p>最佳情况：时间复杂度\(O(NlogN)\)，空间复杂度\(O(logN)\)</p>
+
+<p>如果是固定流程（选择x的位置是固定的，不管是最后还是最前，还是最中间），那么时间复杂度和空间复杂度就得按照最差情况来估计。</p>
+
+<p>所以随机产生的x到底应该怎么估计时间复杂度呢？</p>
+
+<p>数学家已经证明，<strong>如果按照均等的概率（1/N）来到某一个位置，对其求期望，时间复杂度是\(O(N*logN)\)，空间复杂度是\(O(logN)\)</strong></p>
+
+<p>要看详细证明可以看【算法导论-7.4.2】</p>
+
+<h1 id="另外-关于力扣912">另外-关于力扣912</h1>
+
+<p>其比较快的解法是计数排序。这里不做笔记。</p>
 
 
 
@@ -475,19 +580,12 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/03/12/%E5%88%A9%E7%94%A8numpy%E5%AF%B9%E5%9B%BE%E5%83%8F%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C/" data-toggle="tooltip" data-placement="top" title="利用numpy对图像进行操作">
+                        <a href="/2025/03/18/%E7%AE%97%E6%B3%95008/" data-toggle="tooltip" data-placement="top" title="008 数据结构和算法 简介">
                         Previous<br>
-                        <span>利用numpy对图像进行操作</span>
+                        <span>008 数据结构和算法 简介</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/03/12/%E5%8A%9B%E6%89%A3229/" data-toggle="tooltip" data-placement="top" title="力扣 229. 多数元素 II(摩尔投票算法)">
-                        Next<br>
-                        <span>力扣 229. 多数元素 II(摩尔投票算法)</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
