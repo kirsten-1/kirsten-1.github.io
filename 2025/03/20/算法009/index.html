@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="力扣 229. 多数元素 II(摩尔投票算法) - Hilda的博客 | Your genius girlfriend's blog">
+        content="009 单双链表及其反转-堆栈诠释 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-03-12T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-03-20T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="力扣">
+    <meta property="article:tag" content="算法">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A3229/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/20/%E7%AE%97%E6%B3%95009/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>力扣 229. 多数元素 II(摩尔投票算法) - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>009 单双链表及其反转-堆栈诠释 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/12/%E5%8A%9B%E6%89%A3229/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/20/%E7%AE%97%E6%B3%95009/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -248,13 +248,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=%E5%8A%9B%E6%89%A3" title="力扣">力扣</a>
+                        <a class="tag" href="/archive/?tag=%E7%AE%97%E6%B3%95" title="算法">算法</a>
                         
                     </div>
-                    <h1>力扣 229. 多数元素 II(摩尔投票算法)</h1>
+                    <h1>009 单双链表及其反转-堆栈诠释</h1>
                     
-                    <h2 class="subheading">229. 多数元素 II</h2>
-                    <span class="meta">Posted by Hilda on March 12, 2025</span>
+                    <h2 class="subheading">这篇博客主要讲解链表相关知识，首先强调了按值传递与按引用传递的区别。然后介绍了单链表和双链表的定义，并重点通过 LeetCode 206和92 题详细讲解了链表反转的迭代解法，展示了使用指针调整链表结构的思路，最后给出了双链表反转的迭代代码。作者认为链表题是检验编码能力的重要手段。</h2>
+                    <span class="meta">Posted by Hilda on March 20, 2025</span>
                 </div>
             </div>
         </div>
@@ -284,80 +284,172 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<h1 id="229-多数元素-ii">229. 多数元素 II</h1>
+<p>概览：</p>
 
-<p><a href="https://leetcode.cn/problems/majority-element-ii/">229. 多数元素 II</a></p>
+<p>1）按值传递、按引用传递
+（我不知道为什么如此多的同学会犯这种错误，这完全是语言问题）</p>
 
-<p>给定一个大小为 <em>n</em> 的整数数组，找出其中所有出现超过 <code class="language-plaintext highlighter-rouge">⌊ n/3 ⌋</code> 次的元素。</p>
+<p>2）单链表、双链表的定义</p>
+
+<p>3）根据反转功能，彻底从系统角度解释链表是如何调整的</p>
+
+<p>链表题目在笔试、面试中的意义就是检验coding能力如何</p>
+
+<p>更难的题目会在【必备】课程里讲述</p>
+
+<hr />
+
+<h1 id="1-按值传递按引用传递">1 按值传递、按引用传递</h1>
+
+<p>左老师讲了Java中的按值传递、按引用传递。结合我个人的一些理解，我将其书面的表达总结了。参考博客：<a href="https://kirsten-1.github.io/2025/03/18/java%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92%E4%B8%8E%E6%8C%89%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/">java只有按值传递</a></p>
+
+<h1 id="2-单链表和双链表的定义">2 单链表和双链表的定义</h1>
+
+<p>单链表维持val和next</p>
+
+<p>双链表维持val,next和pre</p>
+
+<h1 id="3-力扣206-反转链表">3 力扣206. 反转链表</h1>
+
+<p><a href="https://leetcode.cn/problems/reverse-linked-list/">206. 反转链表</a></p>
+
+<p>给你单链表的头节点 <code class="language-plaintext highlighter-rouge">head</code> ，请你反转链表，并返回反转后的链表。</p>
 
 <p><strong>示例 1：</strong></p>
 
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/rev1ex1.jpg" alt="img" /></p>
+
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre>输入：nums = [3,2,3]
-输出：[3]
+</pre></td><td class="rouge-code"><pre>输入：head = [1,2,3,4,5]
+输出：[5,4,3,2,1]
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <p><strong>示例 2：</strong></p>
 
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/rev1ex2.jpg" alt="img" /></p>
+
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre>输入：nums = [1]
-输出：[1]
+</pre></td><td class="rouge-code"><pre>输入：head = [1,2]
+输出：[2,1]
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <p><strong>示例 3：</strong></p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
-</pre></td><td class="rouge-code"><pre>输入：nums = [1,2]
-输出：[1,2]
+</pre></td><td class="rouge-code"><pre>输入：head = []
+输出：[]
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">1 &lt;= nums.length &lt;= 5 * 104</code></li>
-  <li><code class="language-plaintext highlighter-rouge">-109 &lt;= nums[i] &lt;= 109</code></li>
+  <li>链表中节点的数目范围是 <code class="language-plaintext highlighter-rouge">[0, 5000]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">-5000 &lt;= Node.val &lt;= 5000</code></li>
 </ul>
 
-<p><strong>进阶：</strong>尝试设计时间复杂度为 O(n)、空间复杂度为 O(1)的算法解决此问题。</p>
+<p><strong>进阶：</strong>链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题？</p>
 
 <hr />
 
-<p>推荐阅读帖子：https://writings.sh/post/boyer%E2%80%93moore-majority-vote</p>
+<h2 id="解法遍历一次">解法：遍历一次</h2>
 
-<p>本题的规则就是，准备2个候选人，只要出现其中一个，那么就相应加1；如果都不是这2个那么就这俩的票数都减1</p>
+<p>拿3个指针(<code class="language-plaintext highlighter-rouge">cur,pre,next</code>)搞一搞就行：</p>
 
-<p>只要有一个票数是0，就替换</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">reverseList</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">head</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">head</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">,</span> <span class="n">pre</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">next</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">){</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">cur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">pre</span><span class="o">;</span>
+            <span class="n">pre</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">pre</span><span class="o">;</span>      
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>另外最终的候选者并不一定是要找的众数</p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250318122645834.png" alt="image-20250318122645834" style="zoom:50%;" /></p>
 
-<p>但是消掉的数字一定不是要找的众数</p>
+<p>时间复杂度O(n),空间复杂度O(1)</p>
 
-<p>看一个例子：</p>
+<h2 id="解法递归版">解法：递归版</h2>
 
-<p>假设数组是 [A, B, A, B, C, B, C, D, B], 下面模拟整个投票过程， 左边的三列分别是两个候选者和抵消者，右边是当前轮次的输入。</p>
+<h2 id="解法迭代版">解法：迭代版</h2>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312203123157.png" alt="image-20250312203123157" style="zoom:50%;" /></p>
+<h1 id="力扣92-反转链表-ii">力扣92. 反转链表 II</h1>
 
-<p>在这个图中，X 矩阵的个数不超过 N, 一共有三列。</p>
+<p><a href="https://leetcode.cn/problems/reverse-linked-list-ii/">92. 反转链表 II</a></p>
 
-<p>而抵消的时机是一行中的三个元素互不相同，那么一个元素在 X 矩阵中的每一行中至多出现一次。 也就是说 X 矩阵中的任一个数字的出现次数都不会超过 N/3 次。</p>
+<p>给你单链表的头指针 <code class="language-plaintext highlighter-rouge">head</code> 和两个整数 <code class="language-plaintext highlighter-rouge">left</code> 和 <code class="language-plaintext highlighter-rouge">right</code> ，其中 <code class="language-plaintext highlighter-rouge">left &lt;= right</code> 。请你反转从位置 <code class="language-plaintext highlighter-rouge">left</code> 到位置 <code class="language-plaintext highlighter-rouge">right</code> 的链表节点，返回 <strong>反转后的链表</strong> 。</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312203147440.png" alt="image-20250312203147440" style="zoom:50%;" /></p>
+<p><strong>示例 1：</strong></p>
 
-<p>也就是说，X 矩阵排除了不可能成为目标众数的元素。剩下的两个候选元素是仅剩的可能。</p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/rev2ex2.jpg" alt="img" /></p>
 
-<p>显然，这个分析可以直接推广到 N/K 的情况。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>输入：head = [1,2,3,4,5], left = 2, right = 4
+输出：[1,4,3,2,5]
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>需要强调的是，从分析中可以看到，摩尔投票算法仅仅排除了不可能的元素，它并没有保证剩余的元素就是目标众数。 我们还需要再实际统计验证一下。因为最终要验证的候选元素的个数是常数的 K 个，所以最终总的时间复杂度也不会超过 O(N) 。</p>
+<p><strong>示例 2：</strong></p>
 
-<hr />
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>输入：head = [5], left = 1, right = 1
+输出：[5]
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<h2 id="我的解法">我的解法</h2>
+<p><strong>提示：</strong></p>
 
-<p>结合上面的思路，我写了下面的解法。</p>
+<ul>
+  <li>链表中节点数目为 <code class="language-plaintext highlighter-rouge">n</code></li>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= n &lt;= 500</code></li>
+  <li><code class="language-plaintext highlighter-rouge">-500 &lt;= Node.val &lt;= 500</code></li>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= left &lt;= right &lt;= n</code></li>
+</ul>
+
+<h2 id="解法遍历一次-1">解法：遍历一次</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250318215619877.png" alt="image-20250318215619877" style="zoom:50%;" /></p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -390,79 +482,139 @@
 29
 30
 31
-</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">majorityElement</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
-        <span class="kt">int</span> <span class="no">N</span> <span class="o">=</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
-        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
-        <span class="kt">int</span> <span class="n">countA</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">countB</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">candidateA</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">MIN_VALUE</span><span class="o">,</span> <span class="n">candidateB</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">MIN_VALUE</span><span class="o">;</span>
-        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="no">N</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">countA</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="n">candidateA</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">countA</span><span class="o">++;</span>
-            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">countB</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="n">candidateB</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">countB</span><span class="o">++;</span>
-            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">countA</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">candidateA</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
-                <span class="n">countA</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
-            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">countB</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">candidateB</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
-                <span class="n">countB</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
-            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-                <span class="n">countB</span><span class="o">--;</span>
-                <span class="n">countA</span><span class="o">--;</span>
-            <span class="o">}</span>
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">reverseBetween</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head</span><span class="o">,</span> <span class="kt">int</span> <span class="n">left</span><span class="o">,</span> <span class="kt">int</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">head</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">left</span> <span class="o">==</span> <span class="n">right</span><span class="o">)</span> <span class="k">return</span> <span class="n">head</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">,</span> <span class="n">pre</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">next</span><span class="o">,</span> <span class="n">partOneTail</span><span class="o">,</span> <span class="n">partTwoTail</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+
+        <span class="k">while</span> <span class="o">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">left</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">pre</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">k</span><span class="o">++;</span>
         <span class="o">}</span>
-        <span class="kt">int</span> <span class="n">na</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">nb</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nums</span><span class="o">){</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="n">candidateA</span><span class="o">)</span> <span class="n">na</span><span class="o">++;</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="n">candidateB</span><span class="o">)</span> <span class="n">nb</span><span class="o">++;</span>
+        <span class="n">partOneTail</span> <span class="o">=</span> <span class="n">pre</span><span class="o">;</span>
+        <span class="n">partTwoTail</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+        <span class="n">pre</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+
+        <span class="k">while</span> <span class="o">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">cur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">pre</span><span class="o">;</span>
+            <span class="n">pre</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+            <span class="n">k</span><span class="o">++;</span>
         <span class="o">}</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">countA</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">na</span> <span class="o">&gt;</span> <span class="no">N</span> <span class="o">/</span> <span class="mi">3</span><span class="o">)</span> <span class="n">res</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">candidateA</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">countB</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">nb</span> <span class="o">&gt;</span> <span class="no">N</span> <span class="o">/</span> <span class="mi">3</span><span class="o">)</span> <span class="n">res</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">candidateB</span><span class="o">);</span>
-        <span class="k">return</span> <span class="n">res</span><span class="o">;</span>        
+        <span class="k">if</span> <span class="o">(</span><span class="n">partOneTail</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">pre</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span> <span class="o">{</span>
+            <span class="n">partOneTail</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">pre</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">partTwoTail</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">head</span><span class="o">;</span>      
     <span class="o">}</span>
 <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>时间复杂度 O(n) 和空间复杂度 O(1) 在理论上接近最优。</p>
+<p>总结下思路：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250312221524030.png" alt="image-20250312221524030" style="zoom:50%;" /></p>
+<ol>
+  <li>定位反转区间的起点和前驱：
+    <ul>
+      <li>使用指针 cur 和 pre，遍历到第 left 个节点。</li>
+      <li>pre 停在第 left-1 个节点（可能是 null，如果 left=1），cur 指向第 left 个节点。</li>
+      <li>记录 partOneTail = pre（第一部分的尾节点）。</li>
+    </ul>
+  </li>
+  <li>标记反转区间的起点：
+    <ul>
+      <li>partTwoTail = cur，即反转部分的原始起点（第 left 个节点），后续用来连接第三部分。</li>
+    </ul>
+  </li>
+  <li>反转第 left 到 right 的部分：
+    <ul>
+      <li>使用经典链表反转方法（prev, curr, next 指针法，也就是力扣206题的思路）。</li>
+      <li>从第 left 到第 right 个节点，逐个调整 next 指针，使其指向前一个节点。</li>
+      <li>反转后，pre 指向第 right 个节点（新头部），cur 指向第 right+1 个节点。</li>
+    </ul>
+  </li>
+  <li>连接三部分：
+    <ul>
+      <li>如果 partOneTail 是 null（即 left=1），新头节点是反转后的 pre。</li>
+      <li>否则，partOneTail.next = pre，连接第一部分和反转后的第二部分。</li>
+      <li>partTwoTail.next = cur，连接反转后的第二部分和第三部分。</li>
+    </ul>
+  </li>
+  <li>返回结果：
+    <ul>
+      <li>返回 head（可能是原始头或新头）。</li>
+    </ul>
+  </li>
+</ol>
 
-<p>注意：</p>
+<hr />
 
-<p>在验证阶段，条件<code class="language-plaintext highlighter-rouge">countA &gt; 0 &amp;&amp; na &gt; N / 3</code>不可简化为<code class="language-plaintext highlighter-rouge">na &gt; N / 3</code></p>
+<p>这个思路还是比较丝滑的，其中需要考虑partOneTail是不是空的问题（当left=1的时候就需要这么考虑）</p>
 
-<p>可以看个例子验证下：</p>
-
-<p>输入是：</p>
+<h1 id="反转双链表">反转双链表</h1>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="o">[</span><span class="mi">4</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="mi">4</span><span class="o">]</span>
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="nc">DoubleListNode</span> <span class="nf">reverse</span><span class="o">(</span><span class="nc">DoubleListNode</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">DoubleListNode</span> <span class="n">pre</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">next</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">head</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">pre</span><span class="o">;</span>
+        <span class="n">head</span><span class="o">.</span><span class="na">pre</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+        <span class="n">pre</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">pre</span><span class="o">;</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>导致最终输出是4， 4，是重复的。模拟一下就会罚下，最终，两个count都是0。</p>
-
-<p>所以<code class="language-plaintext highlighter-rouge">countA &gt; 0 </code>表示 candidateA 在投票结束时仍然“存活”，有可能是多数元素。</p>
-
-<p>如果 <code class="language-plaintext highlighter-rouge">countA == 0</code>，说明 candidateA 在某个时间点被完全抵消，后续可能被其他元素替换，失去候选资格。</p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/03/12/%E5%8A%9B%E6%89%A3169%E6%91%A9%E5%B0%94%E6%8A%95%E7%A5%A8%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="力扣 169. 多数元素(摩尔投票算法)">
+                        <a href="/2025/03/19/%E7%AE%97%E6%B3%95023/" data-toggle="tooltip" data-placement="top" title="023 随机快速排序">
                         Previous<br>
-                        <span>力扣 169. 多数元素(摩尔投票算法)</span>
+                        <span>023 随机快速排序</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/03/12/%E5%8A%9B%E6%89%A327/" data-toggle="tooltip" data-placement="top" title="力扣 27. 移除元素 26. 删除有序数组中的重复项 80. 删除有序数组中的重复项 II">
-                        Next<br>
-                        <span>力扣 27. 移除元素 26. 删除有序数组中的重复项 80. 删除有序数组中的重复项 II</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
