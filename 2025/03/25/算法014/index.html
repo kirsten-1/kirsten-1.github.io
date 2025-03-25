@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="014【入门】队列和栈入门题目-栈和队列相互实现 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-03-25T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="算法">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/25/%E7%AE%97%E6%B3%95014/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>014【入门】队列和栈入门题目-栈和队列相互实现 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/25/%E7%AE%97%E6%B3%95014/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E7%AE%97%E6%B3%95" title="算法">算法</a>
+                        
+                    </div>
+                    <h1>014【入门】队列和栈入门题目-栈和队列相互实现</h1>
+                    
+                    <h2 class="subheading">本篇介绍了如何用栈模拟队列（均摊O(1)）和用队列模拟栈。栈模拟队列使用双栈倒数据，需注意倒数据时机和完整性。队列模拟栈，可用双队列或单队列实现，单队列每次push时需将之前元素重排。双端队列ArrayDeque也可高效实现栈。</h2>
+                    <span class="meta">Posted by Hilda on March 25, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>概览</p>
+
+<p><strong>用栈实现队列</strong></p>
+
+<p>题目是：<a href="https://leetcode.cn/problems/implement-queue-using-stacks/">232. 用栈实现队列</a></p>
+
+<p>请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：</p>
+
+<p>实现 MyQueue 类：</p>
+
+<p>void push(int x) 将元素 x 推到队列的末尾</p>
+
+<p>int pop() 从队列的开头移除并返回元素</p>
+
+<p>int peek() 返回队列开头的元素</p>
+
+<p>boolean empty() 如果队列为空，返回 true ；否则，返回 false</p>
+
+<p>说明：</p>
+
+<p>你 只能 使用标准的栈操作 —— 也就是只有 push to top, peek/pop from top, size, 和 is empty 操作是合法的</p>
+
+<p>你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可</p>
+
+<hr />
+
+<p><strong>用队列实现栈</strong></p>
+
+<p>题目是：<a href="https://leetcode.cn/problems/implement-stack-using-queues/">225. 用队列实现栈</a></p>
+
+<p>请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部四种操作（push、top、pop 和 empty）。</p>
+
+<p>实现 MyStack 类：</p>
+
+<p>void push(int x) 将元素 x 压入栈顶。</p>
+
+<p>int pop() 移除并返回栈顶元素。</p>
+
+<p>int top() 返回栈顶元素。</p>
+
+<p>boolean empty() 如果栈是空的，返回 true ；否则，返回 false 。</p>
+
+<p>注意：</p>
+
+<p>你只能使用队列的基本操作 —— 也就是 push to back、peek/pop from front、size 和 is empty 这些操作</p>
+
+<p>你所使用的语言也许不支持队列。 你可以使用 list （列表）或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可</p>
+
+<hr />
+
+<h1 id="力扣-232-用栈实现队列">力扣-232. 用栈实现队列</h1>
+
+<p><a href="https://leetcode.cn/problems/implement-queue-using-stacks/">232. 用栈实现队列</a></p>
+
+<p>请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（<code class="language-plaintext highlighter-rouge">push</code>、<code class="language-plaintext highlighter-rouge">pop</code>、<code class="language-plaintext highlighter-rouge">peek</code>、<code class="language-plaintext highlighter-rouge">empty</code>）：</p>
+
+<p>实现 <code class="language-plaintext highlighter-rouge">MyQueue</code> 类：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">void push(int x)</code> 将元素 x 推到队列的末尾</li>
+  <li><code class="language-plaintext highlighter-rouge">int pop()</code> 从队列的开头移除并返回元素</li>
+  <li><code class="language-plaintext highlighter-rouge">int peek()</code> 返回队列开头的元素</li>
+  <li><code class="language-plaintext highlighter-rouge">boolean empty()</code> 如果队列为空，返回 <code class="language-plaintext highlighter-rouge">true</code> ；否则，返回 <code class="language-plaintext highlighter-rouge">false</code></li>
+</ul>
+
+<p><strong>说明：</strong></p>
+
+<ul>
+  <li>你 <strong>只能</strong> 使用标准的栈操作 —— 也就是只有 <code class="language-plaintext highlighter-rouge">push to top</code>, <code class="language-plaintext highlighter-rouge">peek/pop from top</code>, <code class="language-plaintext highlighter-rouge">size</code>, 和 <code class="language-plaintext highlighter-rouge">is empty</code> 操作是合法的。</li>
+  <li>你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。</li>
+</ul>
+
+<p><strong>示例 1：</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre>输入：
+["MyQueue", "push", "push", "peek", "pop", "empty"]
+[[], [1], [2], [], [], []]
+输出：
+[null, null, null, 1, 1, false]
+
+解释：
+MyQueue myQueue = new MyQueue();
+myQueue.push(1); // queue is: [1]
+myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
+myQueue.peek(); // return 1
+myQueue.pop(); // return 1, queue is [2]
+myQueue.empty(); // return false
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>提示：</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= x &lt;= 9</code></li>
+  <li>最多调用 <code class="language-plaintext highlighter-rouge">100</code> 次 <code class="language-plaintext highlighter-rouge">push</code>、<code class="language-plaintext highlighter-rouge">pop</code>、<code class="language-plaintext highlighter-rouge">peek</code> 和 <code class="language-plaintext highlighter-rouge">empty</code></li>
+  <li>假设所有操作都是有效的 （例如，一个空的队列不会调用 <code class="language-plaintext highlighter-rouge">pop</code> 或者 <code class="language-plaintext highlighter-rouge">peek</code> 操作）</li>
+</ul>
+
+<p><strong>进阶：</strong></p>
+
+<ul>
+  <li>你能否实现每个操作均摊时间复杂度为 <code class="language-plaintext highlighter-rouge">O(1)</code> 的队列？换句话说，执行 <code class="language-plaintext highlighter-rouge">n</code> 个操作的总时间复杂度为 <code class="language-plaintext highlighter-rouge">O(n)</code> ，即使其中一个操作可能花费较长时间。</li>
+</ul>
+
+<h2 id="解法1我自己写的实现">解法1:我自己写的实现</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">MyQueue</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="no">N</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+
+    <span class="kt">int</span><span class="o">[]</span> <span class="n">stack1</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="no">N</span><span class="o">],</span> <span class="n">stack2</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="no">N</span><span class="o">];</span>
+    <span class="kt">int</span> <span class="n">size1</span><span class="o">,</span> <span class="n">size2</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">MyQueue</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">size1</span> <span class="o">=</span> <span class="n">size2</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">push</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">stack1</span><span class="o">[</span><span class="n">size1</span><span class="o">++]</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">pop</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">size2</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span>
+            <span class="k">return</span> <span class="n">stack2</span><span class="o">[--</span><span class="n">size2</span><span class="o">];</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">size1</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="o">;</span><span class="c1">// 注意 1 &lt;= x &lt;= 9 所以x=0就是代表没有元素了</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">size1</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+            <span class="n">stack2</span><span class="o">[</span><span class="n">size2</span><span class="o">++]</span> <span class="o">=</span> <span class="n">stack1</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="n">size1</span><span class="o">--;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">stack2</span><span class="o">[--</span><span class="n">size2</span><span class="o">];</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">peek</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">size2</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span>
+            <span class="k">return</span> <span class="n">stack2</span><span class="o">[</span><span class="n">size2</span> <span class="o">-</span> <span class="mi">1</span><span class="o">];</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">size1</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="o">;</span> <span class="c1">// 注意 1 &lt;= x &lt;= 9 所以x=0就是代表没有元素了</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">size1</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+            <span class="n">stack2</span><span class="o">[</span><span class="n">size2</span><span class="o">++]</span> <span class="o">=</span> <span class="n">stack1</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="n">size1</span><span class="o">--;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">stack2</span><span class="o">[</span><span class="n">size2</span> <span class="o">-</span> <span class="mi">1</span><span class="o">];</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">empty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">size1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">size2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>分析：</p>
+
+<ul>
+  <li>
+    <p>push每次加一个数时间为 O(1)。</p>
+  </li>
+  <li>
+    <p>当 stack2 为空且需要 pop 或 peek 时，stack1 中的所有元素会被转移到 stack2，时间为 O(n)。但转移后，stack1 变空，stack2 包含所有元素（以相反顺序）。</p>
+
+    <p>关键点：每个元素最多被转移一次——从 stack1 到 stack2。一旦转移到 stack2，它要么被弹出，要么留在那里直到队列变空。</p>
+  </li>
+  <li>
+    <p>考虑一个包含 n 个操作的序列（例如 n/2 次 push 和 n/2 次 pop）：</p>
+
+    <ul>
+      <li>n/2 次 push：总时间 O(n/2) = O(n)</li>
+      <li>转移操作：假设所有元素都在某个时刻转移，总共转移 n/2 个元素，花费 O(n/2) = O(n)</li>
+      <li>n/2 次 pop：如果转移发生在某一次 pop，则那次操作花费 O(n)，但之后每次 pop 都是 O(1)，因为 stack2 已填充</li>
+    </ul>
+
+    <p>总时间：</p>
+
+    <ul>
+      <li>push：O(n)</li>
+      <li>转移（总和）：O(n)</li>
+      <li>pop 和 peek 从 stack2 取元素：O(n)</li>
+    </ul>
+
+    <p>总时间为 O(n)，n 个操作均摊下来每个操作 O(1)。</p>
+  </li>
+</ul>
+
+<p>所以以上实现：这个队列实现每个操作的均摊时间复杂度为 O(1)。尽管单个 pop 或 peek 操作在最坏情况下可能是 O(n)（当需要转移所有元素时），但通过均摊分析，n 个操作的总时间复杂度为 O(n)。这种方法是经典的“双栈队列”实现，广泛认可其均摊 O(1) 的性能。</p>
+
+<h2 id="解法2左神的代码">解法2:左神的代码</h2>
+
+<p>首先左神的思路也是2个栈倒，分为in和out两个栈，但是要注意：</p>
+
+<ul>
+  <li>只有out是空才能从in栈中倒到out中，不然会出错。（其实和我上面自己写的思路是一致的，当size2不为0的时候优先返回stack2中的值，当size2=0，那么再看size1，如果size1不为0，则从stack1倒入stack2，然后再pop或者peek，如果size1也等于0，说明此时这个逻辑队列就是空）</li>
+  <li>如果要倒数据（即从in栈倒到out栈），数据必须要全部倒完。（就是我上面自己写的思路，在pop以及peek中写的循环，i从size1-1到0，全部需要倒过去）</li>
+</ul>
+
+<p>上面提到的关键的2点，在下面的<code class="language-plaintext highlighter-rouge">inToOut</code>方法中都有体现了。</p>
+
+<p>代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">MyQueue</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">Stack</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">in</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Stack</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">out</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">MyQueue</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">&lt;&gt;();</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Stack</span><span class="o">&lt;&gt;();</span>
+    <span class="o">}</span>
+    <span class="c1">// 用来倒数据的</span>
+    <span class="c1">// 从in栈，把数据倒入out栈</span>
+    <span class="c1">// 1) out空了，才能倒数据</span>
+    <span class="c1">// 2) 如果倒数据，in必须倒完</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">inToOut</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">out</span><span class="o">.</span><span class="na">empty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(!</span><span class="n">in</span><span class="o">.</span><span class="na">empty</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">out</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">pop</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">push</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">in</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+        <span class="n">inToOut</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">pop</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">inToOut</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">peek</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">inToOut</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="na">peek</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">empty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">in</span><span class="o">.</span><span class="na">empty</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">out</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>分析时间复杂度：</p>
+
+<p>每一个数，只有可能进in一次出in一次，进out一次出out一次，所以就是入栈和出栈4次，就是均摊O(1)</p>
+
+<h1 id="225-用队列实现栈">225. 用队列实现栈</h1>
+
+<p><a href="https://leetcode.cn/problems/implement-stack-using-queues/">225. 用队列实现栈</a></p>
+
+<p>请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部四种操作（<code class="language-plaintext highlighter-rouge">push</code>、<code class="language-plaintext highlighter-rouge">top</code>、<code class="language-plaintext highlighter-rouge">pop</code> 和 <code class="language-plaintext highlighter-rouge">empty</code>）。</p>
+
+<p>实现 <code class="language-plaintext highlighter-rouge">MyStack</code> 类：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">void push(int x)</code> 将元素 x 压入栈顶。</li>
+  <li><code class="language-plaintext highlighter-rouge">int pop()</code> 移除并返回栈顶元素。</li>
+  <li><code class="language-plaintext highlighter-rouge">int top()</code> 返回栈顶元素。</li>
+  <li><code class="language-plaintext highlighter-rouge">boolean empty()</code> 如果栈是空的，返回 <code class="language-plaintext highlighter-rouge">true</code> ；否则，返回 <code class="language-plaintext highlighter-rouge">false</code> 。</li>
+</ul>
+
+<p><strong>注意：</strong></p>
+
+<ul>
+  <li>你只能使用队列的标准操作 —— 也就是 <code class="language-plaintext highlighter-rouge">push to back</code>、<code class="language-plaintext highlighter-rouge">peek/pop from front</code>、<code class="language-plaintext highlighter-rouge">size</code> 和 <code class="language-plaintext highlighter-rouge">is empty</code> 这些操作。</li>
+  <li>你所使用的语言也许不支持队列。 你可以使用 list （列表）或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可。</li>
+</ul>
+
+<p><strong>示例：</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre>输入：
+["MyStack", "push", "push", "top", "pop", "empty"]
+[[], [1], [2], [], [], []]
+输出：
+[null, null, null, 2, 2, false]
+
+解释：
+MyStack myStack = new MyStack();
+myStack.push(1);
+myStack.push(2);
+myStack.top(); // 返回 2
+myStack.pop(); // 返回 2
+myStack.empty(); // 返回 False
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>提示：</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= x &lt;= 9</code></li>
+  <li>最多调用<code class="language-plaintext highlighter-rouge">100</code> 次 <code class="language-plaintext highlighter-rouge">push</code>、<code class="language-plaintext highlighter-rouge">pop</code>、<code class="language-plaintext highlighter-rouge">top</code> 和 <code class="language-plaintext highlighter-rouge">empty</code></li>
+  <li>每次调用 <code class="language-plaintext highlighter-rouge">pop</code> 和 <code class="language-plaintext highlighter-rouge">top</code> 都保证栈不为空</li>
+</ul>
+
+<p><strong>进阶：</strong>你能否仅用一个队列来实现栈。</p>
+
+<hr />
+
+<h2 id="解法1临时队列正式队列">解法1:临时队列+正式队列</h2>
+
+<p>先补充一个Java中LinkedList数据结构的API：</p>
+
+<ul>
+  <li><strong>poll()</strong>：
+    <ul>
+      <li>移除并返回队列的头部元素。</li>
+      <li><strong>如果队列为空，则返回 null。</strong></li>
+      <li>不会抛出异常。</li>
+    </ul>
+  </li>
+  <li><strong>remove()</strong>：
+    <ul>
+      <li>移除并返回队列的头部元素。</li>
+      <li><strong>如果队列为空，则抛出 NoSuchElementException 异常。</strong></li>
+      <li>需要捕获异常或者在方法声明中throws该异常</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>先贴解法：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250325195531478.png" alt="image-20250325195531478" style="zoom:50%;" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">MyStack</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">Queue</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">queue1</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Queue</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">queue2</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">MyStack</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">queue1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedList</span><span class="o">&lt;&gt;();</span>  <span class="c1">// queue1是临时的</span>
+        <span class="n">queue2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedList</span><span class="o">&lt;&gt;();</span>  <span class="c1">// queue2是正式的</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">push</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">queue1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+
+        <span class="k">while</span> <span class="o">(!</span><span class="n">queue2</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">queue1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">queue2</span><span class="o">.</span><span class="na">poll</span><span class="o">());</span>
+        <span class="o">}</span>
+
+        <span class="k">while</span> <span class="o">(!</span><span class="n">queue1</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">queue2</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">queue1</span><span class="o">.</span><span class="na">poll</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="n">queue1</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">pop</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue2</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">top</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue2</span><span class="o">.</span><span class="na">peek</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">empty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue2</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>思路是，queue1永远都是临时队列，queue2永远都是正式队列。</p>
+
+<p>每次进来一个数x，先进入queue1，如果queue2是空的，说明此时逻辑栈迎接了第一个元素x，然后直接把x从queue1弹出，弹到queue2即可。如果queue2不是空，那么此时将queue2中的元素以此弹出，进入到queue1的尾巴中。这样就保证了后进先出。然后再将queue1中的元素捯饬到queue2中。每次取数（不管是pop还是peek都是从queue2中）。</p>
+
+<h2 id="解法2一个队列实现栈">解法2:一个队列实现栈</h2>
+
+<p>步骤：</p>
+
+<ol>
+  <li>将元素入列到队尾；</li>
+  <li>再将除队尾之外的所有元素移除并重写入列。</li>
+</ol>
+
+<hr />
+
+<p>代码如下：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250325200545919.png" alt="image-20250325200545919" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">MyStack</span> <span class="o">{</span>
+
+    <span class="nc">Queue</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">queue</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">MyStack</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">queue</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedList</span><span class="o">&lt;&gt;();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">push</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+        <span class="c1">// 除队尾之外的所有元素移除并重写入列</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+            <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">queue</span><span class="o">.</span><span class="na">poll</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">pop</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">top</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="na">peek</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">empty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="解法3双端队列实现栈">解法3:双端队列实现栈</h2>
+
+<p>队尾入，队尾出</p>
+
+<p>在 Java 中，双端队列（Double-Ended Queue，简称 Deque）是一个接口，定义在 java.util 包中。它扩展了 Queue 接口，提供了在队列两端（头部和尾部）添加、移除和检查元素的能力。</p>
+
+<p>Java 中的双端队列由 Deque 接口定义，主要实现包括：</p>
+
+<ol>
+  <li>ArrayDeque：循环数组实现，高效且常用。</li>
+  <li>LinkedList：双向链表实现，功能丰富。</li>
+  <li>ConcurrentLinkedDeque：并发安全的双向链表实现。</li>
+</ol>
+
+<p>其中，ArrayDeque 是最推荐的通用实现，因其 O(1) 的均摊时间复杂度和优异的性能表现。</p>
+
+<p>如果这道力扣225用ArrayDeque实现的话：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250325201158073.png" alt="image-20250325201158073" style="zoom:50%;" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">MyStack</span> <span class="o">{</span>
+
+    <span class="nc">ArrayDeque</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">queue</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">MyStack</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">queue</span> <span class="o">=</span><span class="k">new</span> <span class="nc">ArrayDeque</span><span class="o">&lt;&gt;();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">push</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">queue</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">pop</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="na">pollLast</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">top</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="na">peekLast</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">empty</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">queue</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/03/25/%E7%AE%97%E6%B3%95013/" data-toggle="tooltip" data-placement="top" title="013【入门】队列和栈-链表、数组实现">
+                        Previous<br>
+                        <span>013【入门】队列和栈-链表、数组实现</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0068" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0053" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0053" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="18">算法</a>
+        
+                <a data-sort="0059" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0062" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="9">力扣</a>
+        
+                <a data-sort="0069" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="2">numpy</a>
+        
+                <a data-sort="0069" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
