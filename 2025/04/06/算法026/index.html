@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="026 哈希表，有序表和比较器的用法 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-04-06T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="算法">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/04/06/%E7%AE%97%E6%B3%95026/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>026 哈希表，有序表和比较器的用法 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/04/06/%E7%AE%97%E6%B3%95026/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E7%AE%97%E6%B3%95" title="算法">算法</a>
+                        
+                    </div>
+                    <h1>026 哈希表，有序表和比较器的用法</h1>
+                    
+                    <h2 class="subheading">哈希表(集)：O(1)操作依赖hashCode/equals；有序表(集)：O(log n)操作依赖比较器维护顺序。介绍根据值/地址作键、数组替代哈希表场景、比较器定制和字典序概念。</h2>
+                    <span class="meta">Posted by Hilda on April 6, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>概览：</p>
+
+<p>前置知识：无</p>
+
+<p>提醒：讲解虽然用的java语言，但是任何语言都有对等的概念</p>
+
+<p>提醒：后续有专门的章节来详解哈希函数、有序表，这节课就是常规用法展示</p>
+
+<p>哈希表的用法（认为是集合，根据值来做key 或者 根据内存地址做key）</p>
+
+<p>HashSet和HashMap原理一样，有无伴随数据的区别</p>
+
+<p>增、删、改、查时间为O(1)，但是大常数</p>
+
+<p>所以当key的范围是固定的、可控的情况下，可以用数组结构替代哈希表结构</p>
+
+<p>注意：</p>
+
+<p>Java中通过自定义hashCode、equals等方法</p>
+
+<p>任何类都可以实现“根据值做key”或者“根据内存地址做key”的需求</p>
+
+<p>但是这里不再展开，因为在算法学习这个范畴内，这些并不重要，还有其他语言的同学也不关心这些</p>
+
+<p>笔试、面试、比赛也都不会用到，课上只说对算法学习重要的内容</p>
+
+<p>有序表的用法（认为是集合，但是有序组织）</p>
+
+<p>TreeSet和TreeMap原理一样，有无伴随数据的区别</p>
+
+<p>增、删、改、查 + 很多和有序相关的操作(floor、ceilling等)，时间为O(log n)</p>
+
+<p>有序表比较相同的东西会去重，如果不想去重就加入更多的比较策略（比较器定制）。堆不会去重。</p>
+
+<p>有序表在java里就是红黑树实现的</p>
+
+<p>AVL树、SB树、替罪羊树、Treap、Splay、跳表等等很多结构都可实现同样功能</p>
+
+<p>后续的课程会涉及，这里不做展开，只讲解简单用法</p>
+
+<p>比较器：定制比较策略。用在排序、堆、有序表等很多需要序的结构中都可使用</p>
+
+<p>定义类、直接Lamda表达式</p>
+
+<p>字典序的概念</p>
+
+<hr />
+
+<h1 id="哈希表的用法">哈希表的用法</h1>
+
+<p>哈希表（Hash Table）是一种基于<strong>键值对</strong>（key-value）的高效数据结构，Java 中常见的实现包括 <strong>HashMap 和 HashSet</strong>。哈希表的核心思想是通过哈希函数将 key 映射到一个索引位置，从而实现快速的增、删、改、查操作。</p>
+
+<h2 id="根据值做-key-vs-根据内存地址做-key">根据值做 key vs 根据内存地址做 key</h2>
+
+<ul>
+  <li>根据内存地址做key</li>
+</ul>
+
+<p>默认情况下，Java 中的对象使用其内存地址（引用）作为身份标识。</p>
+
+<p>通过 <code class="language-plaintext highlighter-rouge">==</code> 比较的是对象的内存地址是否相同。</p>
+
+<p>如果不重写 hashCode 和 equals，哈希表会根据对象的内存地址判断是否为同一个 key。</p>
+
+<ul>
+  <li>根据值做key</li>
+</ul>
+
+<p>通过重写 hashCode 和 equals 方法，可以让哈希表根据对象的值来判断是否为同一个 key。</p>
+
+<p>例如，两个内容相同但内存地址不同的对象可以被认为是同一个 key。</p>
+
+<p><strong>例如：</strong>(其实下面的内容也可以作为Java基础考察)</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">s1</span> <span class="o">=</span> <span class="s">"Hello"</span><span class="o">;</span>
+    <span class="nc">String</span> <span class="n">s2</span> <span class="o">=</span> <span class="s">"Hello"</span><span class="o">;</span>
+    <span class="c1">// 比较内存地址, 但是对于创建s2时，JVM 再次检查字符串常量池，发现 "Hello" 已经存在</span>
+    <span class="c1">// （由 s1 创建或之前已存在）。此时，JVM 不会创建新对象，而是直接让 s2 指向池中已有的那个 "Hello" 对象。</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span> <span class="o">==</span> <span class="n">s2</span><span class="o">);</span>  <span class="c1">// 输出True</span>
+    <span class="c1">// String重写了equals方法，比较的是值，而不是内容地址</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s2</span><span class="o">));</span>  <span class="c1">// 输出True</span>
+
+
+    <span class="c1">// 对比上面的例子</span>
+    <span class="c1">// 如果使用 new String("Hello") 来创建字符串，情况就不同了：</span>
+    <span class="nc">String</span> <span class="n">s3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="s">"Hello"</span><span class="o">);</span>
+    <span class="nc">String</span> <span class="n">s4</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="s">"Hello"</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s3</span> <span class="o">==</span> <span class="n">s4</span><span class="o">);</span> <span class="c1">// false</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s3</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s4</span><span class="o">));</span> <span class="c1">// true</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="hashset-和-hashmap-的原理">HashSet 和 HashMap 的原理</h2>
+
+<p>HashSet：</p>
+
+<ul>
+  <li>本质上是一个 HashMap，但只存储 key，不存储 value。</li>
+  <li>内部维护一个 HashMap，value 固定为一个常量对象（通常是 PRESENT，一个 Object 实例）。</li>
+  <li>用于表示集合，检查元素是否存在。</li>
+</ul>
+
+<p>HashMap：</p>
+
+<ul>
+  <li>存储键值对（key-value），key 通过哈希函数映射到数组索引。</li>
+  <li>内部是一个数组（<code class="language-plaintext highlighter-rouge">Node[]</code>），每个数组位置可能是单个节点或链表（<strong>JDK 8 后若冲突过多会转为红黑树</strong>）。</li>
+</ul>
+
+<p>有无伴随数据的区别</p>
+
+<ul>
+  <li>HashSet：无伴随数据，只关心 key 是否存在。</li>
+  <li>HashMap：有伴随数据，key 关联一个 value，可以通过 key 获取 value。</li>
+</ul>
+
+<p>下面举例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="nc">String</span> <span class="n">s1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="s">"Hello"</span><span class="o">);</span>
+<span class="nc">String</span> <span class="n">s2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="s">"Hello"</span><span class="o">);</span>
+
+<span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+<span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">s1</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">s1</span><span class="o">));</span> <span class="c1">// true</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">s2</span><span class="o">));</span> <span class="c1">// true, 因为值相同，不会重复添加</span>
+<span class="n">set</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">s2</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 1</span>
+
+<span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">s1</span><span class="o">,</span> <span class="s">"world"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">map</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="s">"Hello"</span><span class="o">));</span> <span class="c1">// true</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">map</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">s2</span><span class="o">));</span> <span class="c1">// true</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">s2</span><span class="o">));</span> <span class="c1">// world</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注：</p>
+
+<ul>
+  <li>HashSet 只关心 key 的存在性，size 不会因为添加相同值的 str2 而增加。</li>
+  <li>HashMap 允许通过 key 获取对应的 value，且相同值的 key 会覆盖之前的 value。</li>
+</ul>
+
+<h2 id="增删改查时间复杂度为-o1但有大常数">增、删、改、查时间复杂度为 O(1)，但有大常数</h2>
+
+<p>哈希表的操作（put、get、remove、contains）通过哈希函数直接定位到数组索引，理想情况下是 O(1)。</p>
+
+<p>但如果发生哈希冲突（多个 key 映射到同一索引），需要通过链表或红黑树解决冲突，最坏情况可能退化为 O(n) 或 O(log n)。</p>
+
+<p>JDK 8 的 HashMap 在冲突严重时将链表转为红黑树，保持 O(log n) 的复杂度。</p>
+
+<p>哈希函数计算、冲突处理、内存分配等操作引入了较大的常数开销。</p>
+
+<p>相比简单数组的直接索引（几乎无额外开销），哈希表的 O(1) 常数较大。</p>
+
+<h2 id="当-key-范围固定可控时可用数组替代哈希表">当 key 范围固定、可控时，可用数组替代哈希表</h2>
+
+<p>如果 key 的取值范围是有限且连续的（例如 0 到 99），可以用数组直接索引代替哈希表。</p>
+
+<p>数组的优势：</p>
+
+<ul>
+  <li>无哈希计算开销，常数更小。</li>
+  <li>直接通过下标访问，效率更高。</li>
+</ul>
+
+<p>哈希表的优势：</p>
+
+<ul>
+  <li>适用于 key 范围很大或不连续的场景（如字符串、自定义对象）。</li>
+</ul>
+
+<p>例如：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">map2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">map2</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">56</span><span class="o">,</span> <span class="mi">7285</span><span class="o">);</span>  <span class="c1">// O(1)，但有哈希计算</span>
+<span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">100</span><span class="o">];</span>
+<span class="n">arr</span><span class="o">[</span><span class="mi">56</span><span class="o">]</span> <span class="o">=</span> <span class="mi">7285</span><span class="o">;</span>  <span class="c1">// O(1)，直接索引，无额外开销</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>比如力扣<a href="https://leetcode.cn/problems/most-frequent-even-element/">2404. 出现最频繁的偶数元素</a>的解法如下：下面的<code class="language-plaintext highlighter-rouge">int[] count = new int[50001];</code>就是这个意思</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">mostFrequentEven</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span><span class="o">[]</span> <span class="n">count</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">50001</span><span class="o">];</span>
+        <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="n">mx</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="kt">int</span> <span class="n">freq</span> <span class="o">=</span> <span class="o">++</span><span class="n">count</span><span class="o">[</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="o">];</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="n">mx</span> <span class="o">||</span> <span class="o">(</span><span class="n">freq</span> <span class="o">==</span> <span class="n">mx</span> <span class="o">&amp;&amp;</span> <span class="n">ans</span> <span class="o">&gt;</span> <span class="n">n</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">mx</span> <span class="o">=</span> <span class="n">freq</span><span class="o">;</span>
+                    <span class="n">ans</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">ans</span><span class="o">;</span>        
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="自定义-hashcode-和-equals-方法">自定义 hashCode 和 equals 方法</h2>
+
+<p>Java 中任何类都可以通过重写 hashCode 和 equals 方法，决定哈希表是“根据值做 key”还是“根据内存地址做 key”：</p>
+
+<ul>
+  <li>默认行为：不重写时，基于内存地址（Object 的 hashCode 返回对象的哈希码，通常与地址相关）。</li>
+  <li>自定义行为：重写后，可以基于对象的值。</li>
+</ul>
+
+<hr />
+
+<p>例子：</p>
+
+<p>定义Student类如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Student</span> <span class="o">{</span>
+    <span class="nc">Integer</span> <span class="n">age</span><span class="o">;</span>
+
+    <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Student</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">age</span><span class="o">,</span> <span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Integer</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>测试：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="nc">Student</span> <span class="n">stu1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">(</span><span class="mi">17</span><span class="o">,</span> <span class="s">"张三"</span><span class="o">);</span>
+<span class="nc">Student</span> <span class="n">stu2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">(</span><span class="mi">17</span><span class="o">,</span> <span class="s">"张三"</span><span class="o">);</span>
+<span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">Student</span><span class="o">&gt;</span> <span class="n">setStu</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+<span class="n">setStu</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">stu1</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setStu</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">stu1</span><span class="o">));</span> <span class="c1">// true</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setStu</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">stu2</span><span class="o">));</span> <span class="c1">// false</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setStu</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 1</span>
+<span class="n">setStu</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">stu2</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setStu</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 2</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>现在重写Student类的hashCode和equals方法。</p>
+
+<p>首先补充：</p>
+
+<blockquote>
+  <h5 id="实现高质量的equals方法的诀窍包括">实现高质量的equals方法的诀窍包括　　</h5>
+
+  <ul>
+    <li>使用==操作符检查“参数是否为这个对象的引用”；</li>
+    <li>使用instanceof操作符检查“参数是否为正确的类型”；</li>
+    <li>对于类中的关键属性，检查参数传入对象的属性是否与之相匹配；</li>
+    <li>编写完equals方法后，问自己它是否满足对称性、传递性、一致性；</li>
+    <li>重写equals时总是要重写hashCode；</li>
+    <li>不要将equals方法参数中的Object对象替换为其他的类型，在重写时不要忘掉@Override注解。</li>
+  </ul>
+
+  <p><strong>实现<code class="language-plaintext highlighter-rouge">hashCode</code>方法的通用约定</strong>   参考阅读<a href="https://kirsten-1.github.io/2025/04/06/%E5%AE%9E%E7%8E%B0hashCode%E6%96%B9%E6%B3%95%E7%9A%84%E9%80%9A%E7%94%A8%E7%BA%A6%E5%AE%9A/">博客</a></p>
+
+  <ol>
+    <li>在应用程序的执行期间，只要对象的<code class="language-plaintext highlighter-rouge">equals</code>方法的比较操作所用到的信息没有被修改，那么对这个同一对象调用多次，<code class="language-plaintext highlighter-rouge">hashCode</code>方法必须始终如一地返回同一个整数。在同一个应用程序的多次执行过程中，每次执行所返回的整数可以不一致。</li>
+    <li>如果两个对象根据<code class="language-plaintext highlighter-rouge">equals(Object)</code>方法比较是相等的，那么调用这两个对象中任意一个对象的<code class="language-plaintext highlighter-rouge">hashCode</code>方法都<strong>必须产生同样的整数结果</strong>。反之，如果两个对象<code class="language-plaintext highlighter-rouge">hashCode</code>方法返回整数结果一样，则不代表两个对象相等，因为<code class="language-plaintext highlighter-rouge">equals</code>方法可以被重载。</li>
+    <li>如果两个对象根据<code class="language-plaintext highlighter-rouge">equals(Object)</code>方法比较是不相等的，那么调用这两个对象中任意一个对象的<code class="language-plaintext highlighter-rouge">hashCode</code>方法，则不一定要产生不同的整数结果。但，如果能让不同的对象产生不同的整数结果，则有可能提高散列表的性能。</li>
+  </ol>
+
+  <p><strong><code class="language-plaintext highlighter-rouge">hashCode</code>散列码计算</strong>（来自：Effective Java）</p>
+
+  <ol>
+    <li>把某个非零的常数值，比如<code class="language-plaintext highlighter-rouge">17</code>，保存在一个名为<code class="language-plaintext highlighter-rouge">result</code>的<code class="language-plaintext highlighter-rouge">int</code>类型的变量中。</li>
+    <li>对于对象中每个关键域<code class="language-plaintext highlighter-rouge">f</code>(<strong>指<code class="language-plaintext highlighter-rouge">equals</code>方法中涉及的每个域</strong>)，完成以下步骤：
+      <blockquote>
+        <ol>
+          <li>为该域计算<code class="language-plaintext highlighter-rouge">int</code>类型的散列码c：
+    &gt;       1. 如果该域是<code class="language-plaintext highlighter-rouge">boolean</code>类型，则计算(<code class="language-plaintext highlighter-rouge">f?1:0</code>)。</li>
+        </ol>
+      </blockquote>
+      <ol>
+        <li>如果该域是<code class="language-plaintext highlighter-rouge">byte</code>，<code class="language-plaintext highlighter-rouge">char</code>，<code class="language-plaintext highlighter-rouge">short</code>或者int类型，则计算<code class="language-plaintext highlighter-rouge">(int)f</code>。</li>
+        <li>如果该域是<code class="language-plaintext highlighter-rouge">long</code>类型，则计算<code class="language-plaintext highlighter-rouge">(int)(f^(f&gt;&gt;&gt;32))</code>。</li>
+        <li>如果该域是<code class="language-plaintext highlighter-rouge">float</code>类型，则计算<code class="language-plaintext highlighter-rouge">Float.floatToIntBits(f)</code>。</li>
+        <li>如果该域是<code class="language-plaintext highlighter-rouge">double</code>类型，则计算<code class="language-plaintext highlighter-rouge">Double.doubleToLongBits(f)</code>，然后按照步骤<strong>2.1.3</strong>，为得到的<code class="language-plaintext highlighter-rouge">long</code>类型值计算散列值。</li>
+        <li>如果该域是一个对象引用，并且该类的<code class="language-plaintext highlighter-rouge">equals</code>方法通过递归地调用<code class="language-plaintext highlighter-rouge">equals</code>的方式来比较这个域，则同样为这个域递归地调用<code class="language-plaintext highlighter-rouge">hashCode</code>。如果需要更复杂的比较，则为这个域计算一个范式<code class="language-plaintext highlighter-rouge">(canonical representation)</code>，然后针对这个范式调用<code class="language-plaintext highlighter-rouge">hashCode</code>。如果这个域的值为<code class="language-plaintext highlighter-rouge">null</code>，则返回<code class="language-plaintext highlighter-rouge">0</code>(其他常数也行)。</li>
+        <li>如果该域是一个数组，则要把每一个元素当做单独的域来处理。也就是说，递归地应用上述规则，对每个重要的元素计算一个散列码，然后根据步骤<strong>2.2</strong>中的做法把这些散列值组合起来。如果数组域中的每个元素都很重要，可以利用发行版本<strong>1.5</strong>中增加的其中一个<code class="language-plaintext highlighter-rouge">Arrays.hashCode</code>方法。</li>
+        <li>按照下面的公式，把步骤2.1中计算得到的散列码<code class="language-plaintext highlighter-rouge">c</code>合并到<code class="language-plaintext highlighter-rouge">result</code>中：<code class="language-plaintext highlighter-rouge">result = 31 * result + c</code>; //此处<code class="language-plaintext highlighter-rouge">31</code>是个奇素数，并且有个很好的特性，即用移位和减法来代替乘法，可以得到更好的性能：<code class="language-plaintext highlighter-rouge">31*i == (i&lt;&lt;5) - i</code>， 现代JVM能自动完成此优化。</li>
+      </ol>
+    </li>
+    <li>返回<code class="language-plaintext highlighter-rouge">result</code></li>
+    <li>检验并测试该<code class="language-plaintext highlighter-rouge">hashCode</code>实现是否符合通用约定。</li>
+  </ol>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Student</span> <span class="o">{</span>
+    <span class="nc">Integer</span> <span class="n">age</span><span class="o">;</span>
+
+    <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Student</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">age</span><span class="o">,</span> <span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Integer</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="nc">Integer</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span> <span class="o">==</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 先判断是不是自己,提高运行效率</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">obj</span> <span class="k">instanceof</span> <span class="nc">Student</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 再判断是不是Person类,提高代码的健壮性</span>
+            <span class="nc">Student</span> <span class="n">s</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Student</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span><span class="c1">// 向下转型,父类无法调用子类的成员和方法</span>
+            <span class="c1">// 最后判断类的所有属性是否相等，其中String类型和Object类型可以用相应的equals()来判断</span>
+            <span class="k">return</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">getName</span><span class="o">())</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="o">.</span><span class="na">getAge</span><span class="o">()</span> <span class="o">==</span> <span class="n">s</span><span class="o">.</span><span class="na">getAge</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">17</span><span class="o">;</span><span class="c1">// 准备一个质数</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">*</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">age</span><span class="o">;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">*</span> <span class="mi">17</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="na">hashCode</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>运行测试：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="nc">Student</span> <span class="n">stu1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">(</span><span class="mi">17</span><span class="o">,</span> <span class="s">"张三"</span><span class="o">);</span>
+<span class="nc">Student</span> <span class="n">stu2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">(</span><span class="mi">17</span><span class="o">,</span> <span class="s">"张三"</span><span class="o">);</span>
+<span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">Student</span><span class="o">&gt;</span> <span class="n">setStu</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+<span class="n">setStu</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">stu1</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setStu</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">stu1</span><span class="o">));</span> <span class="c1">// true</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setStu</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">stu2</span><span class="o">));</span> <span class="c1">// true</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setStu</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 1</span>
+<span class="n">setStu</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">stu2</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">setStu</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="有序表的用法">有序表的用法</h1>
+
+<h2 id="有序表的概念">有序表的概念</h2>
+
+<p>有序表可以看作是一个集合，但其元素是有序组织的。</p>
+
+<p>它通过某种比较策略（默认或自定义）保持元素的顺序，支持快速的增删改查以及与顺序相关的操作。</p>
+
+<p>Java中，有序表的数据结构是TreeSet 和 TreeMap</p>
+
+<p>TreeSet 和 TreeMap的共同点：底层原理相同，都是基于红黑树实现的有序结构，时间复杂度为 O(log n)。</p>
+
+<p>TreeSet 和 TreeMap的区别：</p>
+
+<ul>
+  <li>TreeSet：只有键（key），没有伴随数据，类似于一个有序的集合，会自动去重。</li>
+  <li>TreeMap：键值对（key-value）结构，键有序，值是伴随数据。</li>
+</ul>
+
+<p>例如：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nc">TreeSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeSet</span><span class="o">&lt;&gt;();</span>
+<span class="n">s</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"hello"</span><span class="o">);</span>
+<span class="nc">TreeMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">m</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"a"</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="基本操作及时间复杂度">基本操作及时间复杂度</h2>
+
+<p>增（add/put）、删（remove）、改（put 更新值）、查（containsKey/get）：时间复杂度均为 O(log n)。(因为底层是红黑树实现的有序结构)</p>
+
+<p>与有序相关的操作：</p>
+
+<ul>
+  <li>floorKey(x)：返回 ≤ x 的最大键。</li>
+  <li>ceilingKey(x)：返回 ≥ x 的最小键。</li>
+  <li>firstKey()：返回最小键。</li>
+  <li>lastKey()：返回最大键。</li>
+</ul>
+
+<p>例如：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="rouge-code"><pre><span class="nc">TreeSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">set1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeSet</span><span class="o">&lt;&gt;();</span>
+<span class="n">set1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"a"</span><span class="o">);</span>
+<span class="n">set1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"a"</span><span class="o">);</span>
+<span class="n">set1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"b"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set1</span><span class="o">.</span><span class="na">size</span><span class="o">());</span><span class="c1">// 2   去重</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set1</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"a"</span><span class="o">));</span><span class="c1">// true</span>
+<span class="n">set1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"e"</span><span class="o">);</span>
+<span class="n">set1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"z"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set1</span><span class="o">.</span><span class="na">last</span><span class="o">());</span><span class="c1">// z</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set1</span><span class="o">.</span><span class="na">first</span><span class="o">());</span><span class="c1">// a</span>
+
+<span class="nc">TreeMap</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">map1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">map1</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"jello"</span><span class="o">);</span>
+<span class="n">map1</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"you"</span><span class="o">);</span>
+<span class="n">map1</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="s">"90"</span><span class="o">);</span>
+<span class="n">map1</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="s">"tee"</span><span class="o">);</span>
+<span class="n">map1</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">7</span><span class="o">,</span> <span class="s">"foot"</span><span class="o">);</span>
+<span class="n">map1</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">9</span><span class="o">,</span> <span class="s">"head"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">map1</span><span class="o">.</span><span class="na">floorKey</span><span class="o">(</span><span class="mi">5</span><span class="o">));</span><span class="c1">// 5  返回&lt;=5</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">map1</span><span class="o">.</span><span class="na">ceilingKey</span><span class="o">(</span><span class="mi">5</span><span class="o">));</span><span class="c1">// 5  返回&gt;=8</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">map1</span><span class="o">.</span><span class="na">firstKey</span><span class="o">());</span><span class="c1">// 1</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">map1</span><span class="o">.</span><span class="na">lastKey</span><span class="o">());</span><span class="c1">// 9</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="去重特性">去重特性</h2>
+
+<p>有序表（TreeSet/TreeMap）：默认会对相同元素去重（基于比较策略判断相等）。</p>
+
+<ul>
+  <li>如果不想去重，可以通过定制比较器，加入更多比较条件（如内存地址或唯一标识）。</li>
+</ul>
+
+<p>堆（PriorityQueue）：不会去重，允许重复元素。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="nc">TreeSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">treeset</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeSet</span><span class="o">&lt;&gt;();</span>
+<span class="n">treeset</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"p"</span><span class="o">);</span>
+<span class="n">treeset</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"p"</span><span class="o">);</span>
+<span class="n">treeset</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"q"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">treeset</span><span class="o">.</span><span class="na">size</span><span class="o">());</span><span class="c1">// 2</span>
+
+<span class="nc">PriorityQueue</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">pQueue</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PriorityQueue</span><span class="o">&lt;&gt;();</span>
+<span class="n">pQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"p"</span><span class="o">);</span>
+<span class="n">pQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"p"</span><span class="o">);</span>
+<span class="n">pQueue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"q"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">pQueue</span><span class="o">.</span><span class="na">size</span><span class="o">());</span><span class="c1">// 3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="底层实现">底层实现</h2>
+
+<p>Java 中的实现：有序表（如 TreeSet 和 TreeMap）在 Java 中由红黑树实现。</p>
+
+<p>其他实现方式：</p>
+
+<ul>
+  <li>AVL 树、SB 树（Size-Balanced Tree）、替罪羊树、Treap、Splay 树、跳表等。</li>
+</ul>
+
+<h1 id="比较器comparator">比较器（Comparator）</h1>
+
+<p>定制比较策略，用于排序、堆、有序表等需要序的结构。</p>
+
+<p>定义方式：</p>
+
+<ul>
+  <li>定义类：实现 Comparator 接口。</li>
+  <li>Lambda 表达式：直接 inline 定义。</li>
+</ul>
+
+<p>比较规则：</p>
+
+<ul>
+  <li>返回负数：第一个元素优先级更高。</li>
+  <li>返回正数：第二个元素优先级更高。</li>
+  <li>返回 0：认为相等（有序表会去重）。</li>
+</ul>
+
+<hr />
+
+<p>例如：</p>
+
+<p>有EmployEE类：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EmployEE</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">employeeId</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">departmentId</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">EmployEE</span><span class="o">(</span><span class="kt">int</span> <span class="n">employeeId</span><span class="o">,</span> <span class="kt">int</span> <span class="n">departmentId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">employeeId</span> <span class="o">=</span> <span class="n">employeeId</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">departmentId</span> <span class="o">=</span> <span class="n">departmentId</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getEmployeeId</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">employeeId</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setEmployeeId</span><span class="o">(</span><span class="kt">int</span> <span class="n">employeeId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">employeeId</span> <span class="o">=</span> <span class="n">employeeId</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getDepartmentId</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">departmentId</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setDepartmentId</span><span class="o">(</span><span class="kt">int</span> <span class="n">departmentId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">departmentId</span> <span class="o">=</span> <span class="n">departmentId</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>方法1:定义一个<code class="language-plaintext highlighter-rouge">EmployeeComparator</code>类，实现接口Comparator，定义比较策略，比较员工部门ID，如果一样，employeeId越小的优先级越高，否则部门ID越小的优先级越高。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kd">static</span> <span class="kd">class</span> <span class="nc">EmployeeComparator</span> <span class="kd">implements</span> <span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">EmployEE</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="nc">EmployEE</span> <span class="n">o1</span><span class="o">,</span> <span class="nc">EmployEE</span> <span class="n">o2</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 返回负数，o1优先级更高</span>
+        <span class="k">return</span> <span class="n">o1</span><span class="o">.</span><span class="na">getDepartmentId</span><span class="o">()</span> <span class="o">-</span> <span class="n">o2</span><span class="o">.</span><span class="na">getDepartmentId</span><span class="o">()</span> <span class="o">!=</span> <span class="mi">0</span>
+                <span class="o">?</span> <span class="n">o1</span><span class="o">.</span><span class="na">getDepartmentId</span><span class="o">()</span> <span class="o">-</span> <span class="n">o2</span><span class="o">.</span><span class="na">getDepartmentId</span><span class="o">()</span>
+                <span class="o">:</span> <span class="n">o1</span><span class="o">.</span><span class="na">getEmployeeId</span><span class="o">()</span> <span class="o">-</span> <span class="n">o2</span><span class="o">.</span><span class="na">getEmployeeId</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>测试代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nc">EmployEE</span> <span class="n">e1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmployEE</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+<span class="nc">EmployEE</span> <span class="n">e2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmployEE</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+<span class="nc">EmployEE</span><span class="o">.</span><span class="na">EmployeeComparator</span> <span class="n">comparator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmployEE</span><span class="o">.</span><span class="na">EmployeeComparator</span><span class="o">();</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">));</span><span class="c1">// -1</span>
+
+<span class="n">e1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmployEE</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmployEE</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">));</span><span class="c1">// 4</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>方法2:也可以写Lambda表达式：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="nc">EmployEE</span> <span class="n">e1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmployEE</span><span class="o">(</span><span class="mi">8</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>  <span class="c1">// dept=2, emp=8</span>
+<span class="nc">EmployEE</span> <span class="n">e2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmployEE</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>  <span class="c1">// dept=3, emp=6</span>
+<span class="nc">EmployEE</span> <span class="n">e3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EmployEE</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>  <span class="c1">// dept=2, emp=5</span>
+
+<span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">EmployEE</span><span class="o">&gt;</span> <span class="n">comparator</span> <span class="o">=</span> <span class="nc">Comparator</span><span class="o">.</span><span class="na">comparingInt</span><span class="o">(</span><span class="nl">EmployEE:</span><span class="o">:</span><span class="n">getDepartmentId</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">thenComparingInt</span><span class="o">(</span><span class="nl">EmployEE:</span><span class="o">:</span><span class="n">getEmployeeId</span><span class="o">);</span>
+
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">));</span> <span class="c1">// dept: 2 vs 3</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e3</span><span class="o">));</span> <span class="c1">// dept: 2 vs 2, emp: 8 vs 5</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">e3</span><span class="o">,</span> <span class="n">e1</span><span class="o">));</span> <span class="c1">// dept: 2 vs 2, emp: 5 vs 8</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="字典序的概念">字典序的概念</h1>
+
+<p>比较规则</p>
+
+<ol>
+  <li>逐字符比较：
+    <ul>
+      <li>从两个序列的第一个元素开始比较。</li>
+      <li>如果当前元素不同，则较小的元素所在的序列在字典序中靠前。</li>
+      <li>如果当前元素相同，继续比较下一个元素。</li>
+    </ul>
+  </li>
+  <li>长度规则：
+    <ul>
+      <li>如果一个序列是另一个序列的前缀（即较短的序列先结束），则较短的序列在字典序中靠前。</li>
+    </ul>
+  </li>
+  <li>空序列：
+    <ul>
+      <li>空序列（长度为 0）在字典序中通常小于任何非空序列。</li>
+    </ul>
+  </li>
+</ol>
+
+<p>例如：</p>
+
+<p>“apple” vs “banana”：</p>
+
+<ul>
+  <li>‘a’ vs ‘b’：’a’ &lt; ‘b’，所以 “apple” &lt; “banana”。</li>
+</ul>
+
+<p>“cat” vs “cattle”：</p>
+
+<ul>
+  <li>‘c’ vs ‘c’：相等，继续。</li>
+  <li>‘a’ vs ‘a’：相等，继续。</li>
+  <li>‘t’ vs ‘t’：相等，继续。</li>
+  <li>“cat” 结束，”cattle” 还有字符，所以 “cat” &lt; “cattle”。</li>
+</ul>
+
+<p>“abc” vs “ab”：</p>
+
+<ul>
+  <li>‘a’ vs ‘a’：相等。</li>
+  <li>‘b’ vs ‘b’：相等。</li>
+  <li>“ab” 结束，”abc” 还有 ‘c’，所以 “ab” &lt; “abc”。</li>
+</ul>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/04/06/%E5%AE%9E%E7%8E%B0hashCode%E6%96%B9%E6%B3%95%E7%9A%84%E9%80%9A%E7%94%A8%E7%BA%A6%E5%AE%9A/" data-toggle="tooltip" data-placement="top" title="java基础(2) 实现hashCode方法的通用约定">
+                        Previous<br>
+                        <span>java基础(2) 实现hashCode方法的通用约定</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0076" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0055" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0061" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0067" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0069" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0077" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0077" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="2">numpy</a>
+        
+                <a data-sort="0077" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
