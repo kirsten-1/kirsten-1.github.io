@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="2-2 代价函数Cost Function - Hilda的博客 | Your genius girlfriend's blog">
+        content="ollama工具-自定义模型 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-03-02T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-04-07T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="机器学习-吴恩达">
+    <meta property="article:tag" content="ollama工具">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-2to2-4/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/04/07/Ollama%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>2-2 代价函数Cost Function - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>ollama工具-自定义模型 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-2to2-4/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/04/07/Ollama%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -252,13 +252,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE" title="机器学习-吴恩达">机器学习-吴恩达</a>
+                        <a class="tag" href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7" title="ollama工具">ollama工具</a>
                         
                     </div>
-                    <h1>2-2 代价函数Cost Function</h1>
+                    <h1>ollama工具-自定义模型</h1>
                     
-                    <h2 class="subheading">代价函数的数学定义、代价函数的直观理解</h2>
-                    <span class="meta">Posted by Hilda on March 2, 2025</span>
+                    <h2 class="subheading">这篇博客介绍了如何使用Ollama的Modelfile定制化模型。通过在Modelfile中指定基础模型、调整temperature等参数和设置SYSTEM系统提示，可以使用ollama create命令创建个性化的模型，然后运行交互。</h2>
+                    <span class="meta">Posted by Hilda on April 7, 2025</span>
                 </div>
             </div>
         </div>
@@ -288,63 +288,156 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<p>吴恩达课程系列</p>
+<p>Ollama中允许用户基于现有模型进行定制化设置，如：调整模型推理参数、设置提示模版等，自定义模型需要创建一个Modelfile文件，在文件中设置参数和提示模版相关内容，如下：</p>
 
-<p><a href="https://kirsten-1.github.io/2025/02/28/%E5%90%B4%E6%81%A9%E8%BE%BEML1-1/">1-1 欢迎参加《机器学习》课程【机器学习简介/例子】</a></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre>FROM llama3.2
 
-<p><a href="https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BEML1-2/">1-2 什么是机器学习【机器学习的2个定义和分类】</a></p>
+# set the temperature to 1 [higher is more creative, lower is more coherent]，范围0-1
+PARAMETER temperature 1
 
-<p><a href="https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BE1-3/">1-3监督学习【监督学习的定义，监督学习的分类（回归与分类）】</a></p>
+# set the system message
+SYSTEM """
+You are Mario from Super Mario Bros. Answer as Mario, the assistant, only.
+"""
 
-<p><a href="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML1-4%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">1-4无监督学习【无监督学习的定义，无监督学习问题的分类（聚类/信号分离/降维）】</a></p>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p><a href="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-1/">2-1模型描述【如何描述一个模型（用一些符号），单变量线性回归是什么？】</a></p>
+<p>比如我下载了一个llama 3.2 3b的模型（内存有限）</p>
 
-<h1 id="2-2-代价函数cost--function">2-2 代价函数Cost  Function</h1>
+<blockquote>
+  <p>备注，如果觉得下载太慢，可以Control+C 先退出，然后重新执行命令。之前下载过的还有，但是重新退出又安装可以提升下载速率。</p>
+</blockquote>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302134331467.png" alt="image-20250302134331467" style="zoom:50%;" /></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ollama run llama3.2:3b
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>我们现在要做的便是为我们的模型选择合适的参数（parameters）\(\theta_0\)和 \(\theta_1\)，在房价问题这个例子中便是直线的斜率和在 \(y\) 轴上的截距。</p>
+<p>后续基于此模型个性化我自己的模型。</p>
 
-<p>我们选择的参数决定了我们得到的直线相对于我们的训练集的准确程度，模型所预测的值与训练集中实际值之间的差距（下图中蓝线所指）就是<strong>建模误差（modeling error）</strong>。</p>
+<p>准备一个Modelfile:</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302134427455.png" alt="image-20250302134427455" style="zoom:50%;" /></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre>FROM llama3.2:3b
 
-<p>我们的目标便是选择出可以使得建模误差的平方和能够最小的模型参数。 即使得代价函数 \(J(\theta_0, \theta_1)=\frac{1}{2m}\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2\)最小。</p>
+# set the temperature to 1 [higher is more creative, lower is more coherent]，范围0-1
+PARAMETER temperature 0.2
 
-<p>我们绘制一个等高线图，三个坐标分别为\(\theta_0\)和 \(\theta_1\)和\(J(\theta_0, \theta_1)\)：</p>
+# set the system message
+SYSTEM """
+你的名字是“小奶龙”，你将以生动有趣的形式回答你擅长的领域————计算机与软件开发，算法。提供深入且易于理解的解答。请你每句话都以“真是我的小可爱，”开头。
+"""
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302134729295.png" alt="image-20250302134729295" style="zoom:50%;" /></p>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p>则可以看出在三维空间中存在一个使得\(J(\theta_0, \theta_1)\)最小的点。</p>
+<blockquote>
+  <p>备注：temperature值越高，创造性越强；值越低，连贯性越强</p>
+</blockquote>
 
-<p>目标是找到\(\theta_0\)和 \(\theta_1\)，最小化\(minimizeJ(\theta_0, \theta_1)\)</p>
+<p>然后在终端中指定Modelfile创建并运行模型，命令如下：</p>
 
-<hr />
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ollama create my_llama -f C:\Modelfile
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135131652.png" alt="image-20250302135131652" style="zoom:50%;" /></p>
+<blockquote>
+  <p>备注：</p>
 
-<hr />
+  <ul>
+    <li>my_llama是一个自定义的名字</li>
+    <li>` -f`后面跟上Modelfile的路径。注意文件的名字就叫Modelfile</li>
+  </ul>
+</blockquote>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135413980.png" alt="image-20250302135413980" style="zoom:50%;" /></p>
+<p>创建很快：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135539093.png" alt="image-20250302135539093" style="zoom:50%;" /></p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407165518452.png" alt="image-20250407165518452" style="zoom:50%;" /></p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135617759.png" alt="image-20250302135617759" style="zoom:50%;" /></p>
+<p>查看先有的模型：</p>
 
-<p>最终：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>ollama list
+NAME               ID              SIZE      MODIFIED
+my_llama:latest    f63bda3ce68c    2.0 GB    51 seconds ago
+llama3.2:3b        a80c4f17acd5    2.0 GB    5 minutes ago
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135648414.png" alt="image-20250302135648414" style="zoom:50%;" /></p>
+<p>查看<code class="language-plaintext highlighter-rouge">my_llama:latest</code>的详细信息：</p>
 
-<p>即当\(\theta_1=1\)时，这个J（代价函数）是最小的。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ollama show my_llama:latest
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<hr />
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407165630596.png" alt="image-20250407165630596" style="zoom:50%;" /></p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302140357226.png" alt="image-20250302140357226" style="zoom:50%;" /></p>
+<p>创建完成后，就可以运行：</p>
 
-<h2 id="总结">总结</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ollama run my_llama
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135937191.png" alt="image-20250302135937191" style="zoom:50%;" /></p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407165743738.png" alt="image-20250407165743738" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>可能领域是计算机，所以看不出答案形式有多么生动有趣。</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407165857395.png" alt="image-20250407165857395" style="zoom:50%;" /></p>
+</blockquote>
+
+<p>更多模型调试的参数及用法请看官方文档：</p>
+
+<p>https://github.com/ollama/ollama/blob/main/docs/modelfile.md</p>
+
+<p>参数补充：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre>top_k：控制生成时考虑的词汇范围（越高越多样，默认 40）。
+
+PARAMETER top_k 50
+
+top_p：核采样参数（值越小越聚焦，默认 0.9）。
+
+PARAMETER top_p 0.8
+
+repeat_penalty：减少重复生成（默认 1.1，值越大越惩罚重复）。
+
+PARAMETER repeat_penalty 1.2
+
+
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 
 
@@ -352,19 +445,12 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-1/" data-toggle="tooltip" data-placement="top" title="2-1 模型描述">
+                        <a href="/2025/04/07/Ollama%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" data-toggle="tooltip" data-placement="top" title="ollama工具-下载安装快速上手">
                         Previous<br>
-                        <span>2-1 模型描述</span>
+                        <span>ollama工具-下载安装快速上手</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-5/" data-toggle="tooltip" data-placement="top" title="2-5 梯度下降  Gradient Descent">
-                        Next<br>
-                        <span>2-5 梯度下降  Gradient Descent</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
