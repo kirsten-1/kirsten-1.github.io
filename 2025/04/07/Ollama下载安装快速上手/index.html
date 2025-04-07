@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="2-2 代价函数Cost Function - Hilda的博客 | Your genius girlfriend's blog">
+        content="ollama工具-下载安装快速上手 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-03-02T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-04-07T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="机器学习-吴恩达">
+    <meta property="article:tag" content="ollama工具">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-2to2-4/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/04/07/Ollama%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>2-2 代价函数Cost Function - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>ollama工具-下载安装快速上手 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-2to2-4/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/04/07/Ollama%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -250,13 +250,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE" title="机器学习-吴恩达">机器学习-吴恩达</a>
+                        <a class="tag" href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7" title="ollama工具">ollama工具</a>
                         
                     </div>
-                    <h1>2-2 代价函数Cost Function</h1>
+                    <h1>ollama工具-下载安装快速上手</h1>
                     
-                    <h2 class="subheading">代价函数的数学定义、代价函数的直观理解</h2>
-                    <span class="meta">Posted by Hilda on March 2, 2025</span>
+                    <h2 class="subheading">介绍本地大模型运行器Ollama，说明了如何安装、通过命令行下载并运行Gemma等模型进行交互，以及如何列出、删除模型。还演示了直接提问、查看效率和使用llava分析图片功能</h2>
+                    <span class="meta">Posted by Hilda on April 7, 2025</span>
                 </div>
             </div>
         </div>
@@ -286,63 +286,198 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<p>吴恩达课程系列</p>
+<p>简单来说Ollama就是一个大模型的管理平台，<strong>“LLM 运行器”</strong> 或 <strong>“本地 LLM 管理器”</strong></p>
 
-<p><a href="https://kirsten-1.github.io/2025/02/28/%E5%90%B4%E6%81%A9%E8%BE%BEML1-1/">1-1 欢迎参加《机器学习》课程【机器学习简介/例子】</a></p>
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">Ollama</code> 是一个基于 Go 语言开发的简单易用的本地大语言模型运行框架。可以将其类比为 docker，事实上它也的确制定了类 docker 的一种模型应用标准</p>
 
-<p><a href="https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BEML1-2/">1-2 什么是机器学习【机器学习的2个定义和分类】</a></p>
+  <p>在管理模型的同时，它还基于 Go 语言中的 Web 框架 <a href="https://github.com/gin-gonic/gin">gin</a>提供了一些 Api 接口，让你能够像跟 OpenAI 提供的接口那样进行交互。</p>
+</blockquote>
 
-<p><a href="https://kirsten-1.github.io/2025/03/01/%E5%90%B4%E6%81%A9%E8%BE%BE1-3/">1-3监督学习【监督学习的定义，监督学习的分类（回归与分类）】</a></p>
+<p>几个关键点：</p>
 
-<p><a href="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML1-4%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">1-4无监督学习【无监督学习的定义，无监督学习问题的分类（聚类/信号分离/降维）】</a></p>
+<ul>
+  <li>允许用户下载并在自己的 Mac、Windows (通过 WSL) 或 Linux 电脑上运行各种强大的开源 LLMs，例如DeepSeek，llama等。</li>
+  <li>Ollama 是一个开源项目，代码托管在 GitHub 上，社区活跃，发展迅速</li>
+  <li>提供了一个简单易用的<strong>命令行工具</strong>（也有webUI）来管理（下载、删除、列出）模型和运行模型进行交互式聊天</li>
+  <li>当你运行一个模型时，Ollama 会在本地启动一个 API 服务器（默认在 11434 端口）。这使得其他应用程序（如自定义脚本、Web 界面、开发工具等）可以通过标准的 REST API 与本地运行的 LLM 进行交互，通常兼容 OpenAI 的 API 格式，方便集成。</li>
+  <li>Ollama 维护了一个包含许多流行开源模型的库，用户可以方便地从中选择和下载。用户也可以导入自定义模型</li>
+  <li>支持利用 GPU（如果你的系统有兼容的 NVIDIA GPU 或 Apple Silicon）进行加速，以提高模型推理的速度。当然，它也可以仅在 CPU 上运行（速度会慢很多）。——<strong>灵活：没有GPU就用CPU</strong></li>
+</ul>
 
-<p><a href="https://kirsten-1.github.io/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-1/">2-1模型描述【如何描述一个模型（用一些符号），单变量线性回归是什么？】</a></p>
+<p><a href="https://ollama.com/">官网链接</a></p>
 
-<h1 id="2-2-代价函数cost--function">2-2 代价函数Cost  Function</h1>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250404204402314.png" alt="image-20250404204402314" style="zoom:50%;" /></p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302134331467.png" alt="image-20250302134331467" style="zoom:50%;" /></p>
+<p>直接在官网根据不同的操作系统下载与安装即可。</p>
 
-<p>我们现在要做的便是为我们的模型选择合适的参数（parameters）\(\theta_0\)和 \(\theta_1\)，在房价问题这个例子中便是直线的斜率和在 \(y\) 轴上的截距。</p>
+<h1 id="ollama支持的模型">Ollama支持的模型</h1>
 
-<p>我们选择的参数决定了我们得到的直线相对于我们的训练集的准确程度，模型所预测的值与训练集中实际值之间的差距（下图中蓝线所指）就是<strong>建模误差（modeling error）</strong>。</p>
+<p>https://ollama.com/search列出了支持的模型。</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302134427455.png" alt="image-20250302134427455" style="zoom:50%;" /></p>
+<p>例如有<a href="https://ollama.com/library/gemma3">gemma3</a>，<a href="https://ollama.com/library/qwq">qwq</a>，<a href="https://ollama.com/library/deepseek-r1">deepseek-r1</a>，<a href="https://ollama.com/library/llama3.3">llama3.3</a>，<a href="https://ollama.com/library/phi4">phi4</a></p>
 
-<p>我们的目标便是选择出可以使得建模误差的平方和能够最小的模型参数。 即使得代价函数 \(J(\theta_0, \theta_1)=\frac{1}{2m}\sum_{i=1}^m(h_{\theta}(x^{(i)})-y^{(i)})^2\)最小。</p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250404210435534.png" alt="image-20250404210435534" style="zoom:50%;" /></p>
 
-<p>我们绘制一个等高线图，三个坐标分别为\(\theta_0\)和 \(\theta_1\)和\(J(\theta_0, \theta_1)\)：</p>
+<p>7B表示70亿的参数，以此类推。</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302134729295.png" alt="image-20250302134729295" style="zoom:50%;" /></p>
+<p>选择相应的模型参数数量级之后通过右侧的命令进行下载：</p>
 
-<p>则可以看出在三维空间中存在一个使得\(J(\theta_0, \theta_1)\)最小的点。</p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250404221750593.png" alt="image-20250404221750593" style="zoom:50%;" /></p>
 
-<p>目标是找到\(\theta_0\)和 \(\theta_1\)，最小化\(minimizeJ(\theta_0, \theta_1)\)</p>
+<p>注：ollama官方给出的参考如下：</p>
+
+<p>如果下载7b，建议本机拥有8G内存；如果下载13b，建议本机拥有16G内存；如果下载33b，建议本机拥有32G内存；如果下载70b，建议本机拥有128G内存</p>
+
+<p>下载建议：</p>
+
+<p>如果是语言类模型，建议Gemma，DeepSeek，Qwen</p>
+
+<p>如果是视觉类(图片)，建议llava，Phi，minicpm-v</p>
+
+<h1 id="ollama-快速上手">Ollama 快速上手</h1>
+
+<p>可以通过“ollama run +模型”来运行模型，这里以运行“gemma”模型为例演示如何使用Ollama。</p>
+
+<p>打开终端窗口，输入“ollama run gemma:2b”运行Gemma模型（或者官网看到的其他模型的运行命令），如果Ollama没有该模型，会自动下载模型后再运行，后续运行不会重复下载模型。(下面这个命令是7b的)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ollama run gemma
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407142832882.png" alt="image-20250407142832882" style="zoom:50%;" /></p>
+
+<p>Ollama支持命令行方式使用模型，也支持API方式使用模型，这里先演示命令行方式使用模型，API方式使用模型参考后文。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407153958877.png" alt="image-20250407153958877" style="zoom:50%;" /></p>
+
+<p>可以在与模型多次对话后输入“/clear”来清除上下文信息。最后使用ctrl+d 或者 输入<code class="language-plaintext highlighter-rouge"> /bye </code>退出Ollama。</p>
+
+<p>注：</p>
+
+<p>通过<code class="language-plaintext highlighter-rouge">ollama list</code>查看ollama已经下载过的模型有哪些：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407155429937.png" alt="image-20250407155429937" style="zoom:50%;" /></p>
+
+<p>删除某个模型：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ollama rm gemma:latest
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407155522970.png" alt="image-20250407155522970" style="zoom:50%;" /></p>
+
+<p>补充其他命令：</p>
+
+<p>模型会话中支持多行输入，可以使用<code class="language-plaintext highlighter-rouge">“"""”</code>将文本括起来，进行对话。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="o">&gt;&gt;&gt;</span><span class="sh">"""
+... 请给我讲一个故事
+... 不超过100字
+... """</span>
+<span class="o">&lt;</span><span class="n">think</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">think</span><span class="o">&gt;</span>
+<span class="n">当然可以</span><span class="err">，</span><span class="n">请听一下这个有趣的故事</span><span class="err">：</span>
+<span class="o">...</span> <span class="o">...</span>
+<span class="o">&gt;&gt;&gt;/</span><span class="n">bye</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>在运行模型时，可以将prompt（提示词）作为参数传入给模型，无需进入与模型对话的交互式窗口即可获取模型返回内容。如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>ollama run deepseek-r1:1.5b "你是谁"
+&lt;think&gt;
+&lt;/think&gt;
+您好！我是由中国的深度求索（DeepSeek）公司开发的智能助手DeepSeek-R1。如您有任何任何问题，我会尽我所能为您提供帮助。
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>执行模型时，可以加入“–verbose”来查看每次对话后模型执行的效率细节。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre>ollama run deepseek-r1:1.5b --verbose
+&gt;&gt;&gt; 你是谁
+&lt;think&gt;
+
+&lt;/think&gt;
+
+您好！我是由中国的深度求索（DeepSeek）公司开发的智能助手DeepSeek-R1。如您有任何任何问题，我会尽我所能为您提供帮助。
+
+total duration:       578.5214ms 
+load duration:        28.5914ms
+prompt eval count:    5 token(s)
+prompt eval duration: 37.5937ms
+prompt eval rate:     133.00 tokens/s
+eval count:           40 token(s)
+eval duration:        511.8619ms
+eval rate:            78.15 tokens/s
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>total duration：表示整个运行过程所花费的总时间。</p>
+
+<p>load duration：表示加载模型所花费的时间，单位为毫秒。</p>
+
+<p>prompt eval count：表示在处理提示（prompt）时评估的标记（token）数量。</p>
+
+<p>prompt eval duration：表示评估提示所花费的时间，单位为毫秒。</p>
+
+<p>prompt eval rate：表示评估提示时的速度，以每秒处理的标记数量表示。</p>
+
+<p>eval count：表示在生成响应时评估的标记数量。</p>
+
+<p>eval duration：表示生成响应所花费的时间，单位为毫秒。</p>
+
+<p>eval rate：表示生成响应时的速度，以每秒处理的标记数量表示。</p>
 
 <hr />
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135131652.png" alt="image-20250302135131652" style="zoom:50%;" /></p>
+<p>不仅仅可以与模型进行对话，也可以让模型分析文本文件及图片内容。这里下载llava模型并进行图片内容分析。</p>
 
-<hr />
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="err">#</span><span class="n">拉取模型</span>
+<span class="n">ollama</span> <span class="n">pull</span> <span class="nl">llava:</span><span class="mi">7</span><span class="n">b</span>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135413980.png" alt="image-20250302135413980" style="zoom:50%;" /></p>
+<span class="err">#</span><span class="n">在C盘下准备pic</span><span class="o">.</span><span class="na">png图片</span><span class="err">，</span><span class="n">并通过该模型分析图片内容</span>
+<span class="nl">C:</span><span class="err">\</span><span class="nc">Users</span><span class="err">\</span><span class="n">wubai</span><span class="o">&gt;</span><span class="n">ollama</span> <span class="n">run</span> <span class="nl">llava:</span><span class="mi">7</span><span class="n">b</span> <span class="s">"请中文回复图片中是什么内容？ C:\pic1.png"</span>
+<span class="nc">Added</span> <span class="n">image</span> <span class="err">'</span><span class="nl">C:</span><span class="err">\</span><span class="n">pic1</span><span class="o">.</span><span class="na">png</span><span class="err">'</span>
+ <span class="n">这张照片显示了一名人</span><span class="err">，</span><span class="n">戴着头部上的葫叶服饰</span><span class="err">，</span><span class="n">手中也戴着一些装饰</span><span class="err">。</span><span class="n">他们身穿的衣服有多彩的元素</span><span class="err">，</span><span class="n">以及一些华佩样式的鞋和裙</span><span class="err">。</span><span class="n">照片背景是一个山谷场景</span><span class="err">，</span><span class="n">可以看到远处的山岭</span><span class="err">、</span><span class="n">天空和白云</span><span class="err">。</span><span class="n">整体感觉像是一位在中国农村地区的人</span><span class="err">，</span><span class="n">戴着传统服饰</span><span class="err">，</span><span class="n">与自然环境相轨</span><span class="err">。</span>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135539093.png" alt="image-20250302135539093" style="zoom:50%;" /></p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135617759.png" alt="image-20250302135617759" style="zoom:50%;" /></p>
-
-<p>最终：</p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135648414.png" alt="image-20250302135648414" style="zoom:50%;" /></p>
-
-<p>即当\(\theta_1=1\)时，这个J（代价函数）是最小的。</p>
-
-<hr />
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302140357226.png" alt="image-20250302140357226" style="zoom:50%;" /></p>
-
-<h2 id="总结">总结</h2>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250302135937191.png" alt="image-20250302135937191" style="zoom:50%;" /></p>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 
 
@@ -350,19 +485,12 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-1/" data-toggle="tooltip" data-placement="top" title="2-1 模型描述">
+                        <a href="/2025/04/06/%E7%AE%97%E6%B3%95026/" data-toggle="tooltip" data-placement="top" title="026 哈希表，有序表和比较器的用法">
                         Previous<br>
-                        <span>2-1 模型描述</span>
+                        <span>026 哈希表，有序表和比较器的用法</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/03/02/%E5%90%B4%E6%81%A9%E8%BE%BEML2-5/" data-toggle="tooltip" data-placement="top" title="2-5 梯度下降  Gradient Descent">
-                        Next<br>
-                        <span>2-5 梯度下降  Gradient Descent</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
