@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="java闭包 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-05-12T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="java基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/05/12/Java%E9%97%AD%E5%8C%85/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>java闭包 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/05/12/Java%E9%97%AD%E5%8C%85/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=java%E5%9F%BA%E7%A1%80" title="java基础">java基础</a>
+                        
+                    </div>
+                    <h1>java闭包</h1>
+                    
+                    <h2 class="subheading">闭包是JavaScript和Java中重要的概念，指函数或Lambda捕获外部作用域变量。JavaScript通过内部函数访问局部变量形成闭包；Java中，Lambda或匿名类捕获final变量实现闭包，动态绑定状态，增强函数式编程灵活性。</h2>
+                    <span class="meta">Posted by Hilda on May 12, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>通常讲到闭包，一般都是指在javascript的环境中。闭包是JS中一个非常重要的也非常常用的概念。闭包产生的原因就是变量的作用域范围不同。一般来说函数内部的定义的变量只有函数内部可见。如果想要在函数外部操作这个变量就需要用到闭包了。</p>
+
+<h1 id="js中的闭包">JS中的闭包</h1>
+
+<p>在JS中，变量可以分为两种全局作用域和局部作用域。在函数外部无法读取函数内部定义的局部变量。</p>
+
+<p>例如：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kd">function</span> <span class="nf">fun1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">x1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">x1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>控制台会报错：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250512144802802.png" alt="image-20250512144802802" style="zoom:50%;" /></p>
+
+<p>在函数<code class="language-plaintext highlighter-rouge">fun1</code>中定义了一个局部变量<code class="language-plaintext highlighter-rouge">x1</code>，然后尝试从函数外部访问它。结果出错。</p>
+
+<p>虽然函数中定义的变量在函数外部无法被访问。但是在函数中定义的函数中可以访问</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kd">function</span> <span class="nf">fun1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">x1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kd">function</span> <span class="nf">fun2</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">alert</span><span class="p">(</span><span class="nx">x1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">fun2</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="nf">fun1</span><span class="p">();</span>
+<span class="nf">res</span><span class="p">();</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250512145047587.png" alt="image-20250512145047587" style="zoom:50%;" /></p>
+
+<p>上面的例子中，在<code class="language-plaintext highlighter-rouge">fun1</code>中定义了<code class="language-plaintext highlighter-rouge">fun2</code>，在<code class="language-plaintext highlighter-rouge">fun2</code>中访问了局部变量<code class="language-plaintext highlighter-rouge">x1</code>。最后将<code class="language-plaintext highlighter-rouge">fun2</code>返回。接着可以操作返回的函数<code class="language-plaintext highlighter-rouge">fun2</code>来对函数中定义的局部变量<code class="language-plaintext highlighter-rouge">x1</code>进行操作。</p>
+
+<p>所以得出了闭包的定义：闭包就是<strong>定义在函数内部的函数，或者闭包是能够访问函数局部变量的函数</strong>。</p>
+
+<h1 id="java-中的闭包">java 中的闭包</h1>
+
+<p>在lambda表达式出现之前，java中是没有函数的概念的。和函数差不多相当的就是方法了。</p>
+
+<p>在方法内部可以定义方法的局部变量。我们无法在方法内部定义方法，但是我们可以在方法内部定义匿名类。那么这个匿名类是可以访问方法中定义的局部变量的。如下例所示：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ClosureTest</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Runnable</span> <span class="nf">closureExample</span><span class="o">(){</span>
+        <span class="kt">int</span> <span class="n">x2</span> <span class="o">=</span> <span class="mi">90</span><span class="o">;</span>
+        <span class="nc">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Runnable</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">x2</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+        <span class="k">return</span> <span class="n">runnable</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ClosureTest</span> <span class="n">closureTest</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ClosureTest</span><span class="o">();</span>
+        <span class="nc">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="n">closureTest</span><span class="o">.</span><span class="na">closureExample</span><span class="o">();</span>
+        <span class="n">runnable</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>在上面的方法中，定义了一个局部变量<code class="language-plaintext highlighter-rouge">x2</code>。然后创建了一个匿名类runnable。在runnable中，访问了局部变量<code class="language-plaintext highlighter-rouge">x2</code>。</p>
+
+<p>最后将这个创建的匿名类返回。这样返回的匿名类就包含了对方法局部变量的操作，这样就叫做闭包。</p>
+
+<p><strong>在内部类中，会创建一个新的作用域范围，在这个作用域范围之内，你可以定义新的变量，并且可以用this引用它。</strong></p>
+
+<p><strong>但是在Lambda表达式中，并没有定义新的作用域范围，如果在Lambda表达式中使用this，则指向的是外部类。</strong></p>
+
+<blockquote>
+  <p>注：在 Java 中，<strong>内部类</strong>是定义在另一个类内部的类。当你在一个内部类中使用 <code class="language-plaintext highlighter-rouge">this</code> 时，它指向的是<strong>内部类的实例</strong>，而不是外部类的实例。例如：</p>
+
+  <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OuterClass</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"Outer"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">InnerClass</span><span class="o">{</span>
+        <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"Inner"</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">printName</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">OuterClass</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">OuterClass</span> <span class="n">outerClass</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">OuterClass</span><span class="o">();</span>
+        <span class="nc">InnerClass</span> <span class="n">innerClass</span> <span class="o">=</span> <span class="n">outerClass</span><span class="o">.</span><span class="na">new</span> <span class="nf">InnerClass</span><span class="o">();</span>
+        <span class="n">innerClass</span><span class="o">.</span><span class="na">printName</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+
+  <p>与内部类不同，<strong>Lambda 表达式</strong>并没有引入一个新的作用域，它直接继承了外部类的作用域。换句话说，Lambda 表达式内部的 <code class="language-plaintext highlighter-rouge">this</code> 关键字不会指向 Lambda 自身，而是指向外部类的实例。例如：</p>
+
+  <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OuterClass</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"Outer"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">runLambda</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+        <span class="o">};</span>
+        <span class="n">runnable</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">OuterClass</span> <span class="n">outerClass</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">OuterClass</span><span class="o">();</span>
+        <span class="n">outerClass</span><span class="o">.</span><span class="na">runLambda</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</pre></td></tr></tbody></table></code></pre></div>  </div>
+</blockquote>
+
+<p>虽然this的指向是不同的，但是在lambda表达式中也是可以访问方法的局部变量：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="nc">Runnable</span> <span class="nf">closureExample</span><span class="o">(){</span>
+    <span class="kt">int</span> <span class="n">x2</span> <span class="o">=</span> <span class="mi">90</span><span class="o">;</span>
+    <span class="nc">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">x2</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">runnable</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="深入理解lambda表达式和函数的局部变量">深入理解lambda表达式和函数的局部变量</h1>
+
+<h2 id="为什么-lambda-表达式没有新的作用域">为什么 Lambda 表达式没有新的作用域？</h2>
+
+<p>Lambda 表达式并不像内部类那样创建一个新的类或作用域。它是在编译时转换为一个匿名类，并且在该匿名类中没有一个单独的 <code class="language-plaintext highlighter-rouge">this</code> 指向 Lambda 自身，而是直接使用外部类的 <code class="language-plaintext highlighter-rouge">this</code>。因此，Lambda 表达式中的 <code class="language-plaintext highlighter-rouge">this</code> 总是指向外部类的实例。</p>
+
+<p>可以通过查看编译后的字节码来确认这一点。Java 编译器会将 Lambda 表达式转换为一个匿名类，这个匿名类实现了目标接口（如 <code class="language-plaintext highlighter-rouge">Runnable</code>、<code class="language-plaintext highlighter-rouge">Function</code> 等），并将 Lambda 的代码逻辑放在匿名类的 <code class="language-plaintext highlighter-rouge">run()</code> 或相应方法中。</p>
+
+<p>验证过程：</p>
+
+<p><strong>1.编写一个简单的 Lambda 表达式示例</strong>：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LambdaTest</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"Outer"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+        <span class="o">};</span>
+        <span class="n">runnable</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LambdaTest</span> <span class="n">lambdaTest</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LambdaTest</span><span class="o">();</span>
+        <span class="n">lambdaTest</span><span class="o">.</span><span class="na">test</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>2.编译并查看字节码</strong>：</p>
+
+<ul>
+  <li>首先使用 <code class="language-plaintext highlighter-rouge">javac LambdaTest.java</code> 编译代码。</li>
+  <li>然后使用 <code class="language-plaintext highlighter-rouge">javap -c LambdaTest</code> 查看字节码。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></td><td class="rouge-code"><pre><span class="nc">Compiled</span> <span class="n">from</span> <span class="s">"LambdaTest.java"</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LambdaTest</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">LambdaTest</span><span class="o">();</span>
+    <span class="nl">Code:</span>
+       <span class="mi">0</span><span class="o">:</span> <span class="n">aload_0</span>
+       <span class="mi">1</span><span class="o">:</span> <span class="n">invokespecial</span> <span class="err">#</span><span class="mi">1</span>                  <span class="c1">// Method java/lang/Object."&lt;init&gt;":()V</span>
+       <span class="mi">4</span><span class="o">:</span> <span class="n">aload_0</span>
+       <span class="mi">5</span><span class="o">:</span> <span class="n">ldc</span>           <span class="err">#</span><span class="mi">7</span>                  <span class="c1">// String Outer</span>
+       <span class="mi">7</span><span class="o">:</span> <span class="n">putfield</span>      <span class="err">#</span><span class="mi">9</span>                  <span class="c1">// Field name:Ljava/lang/String;</span>
+      <span class="mi">10</span><span class="o">:</span> <span class="k">return</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">();</span>
+    <span class="nl">Code:</span>
+       <span class="mi">0</span><span class="o">:</span> <span class="n">aload_0</span>
+       <span class="mi">1</span><span class="o">:</span> <span class="n">invokedynamic</span> <span class="err">#</span><span class="mi">15</span><span class="o">,</span>  <span class="mi">0</span>             <span class="c1">// InvokeDynamic #0:run:(LLambdaTest;)Ljava/lang/Runnable;</span>
+       <span class="mi">6</span><span class="o">:</span> <span class="n">astore_1</span>
+       <span class="mi">7</span><span class="o">:</span> <span class="n">aload_1</span>
+       <span class="mi">8</span><span class="o">:</span> <span class="n">invokeinterface</span> <span class="err">#</span><span class="mi">19</span><span class="o">,</span>  <span class="mi">1</span>           <span class="c1">// InterfaceMethod java/lang/Runnable.run:()V</span>
+      <span class="mi">13</span><span class="o">:</span> <span class="k">return</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">String</span><span class="o">[]);</span>
+    <span class="nl">Code:</span>
+       <span class="mi">0</span><span class="o">:</span> <span class="k">new</span>           <span class="err">#</span><span class="mi">10</span>                 <span class="c1">// class LambdaTest</span>
+       <span class="mi">3</span><span class="o">:</span> <span class="n">dup</span>
+       <span class="mi">4</span><span class="o">:</span> <span class="n">invokespecial</span> <span class="err">#</span><span class="mi">23</span>                 <span class="c1">// Method "&lt;init&gt;":()V</span>
+       <span class="mi">7</span><span class="o">:</span> <span class="n">astore_1</span>
+       <span class="mi">8</span><span class="o">:</span> <span class="n">aload_1</span>
+       <span class="mi">9</span><span class="o">:</span> <span class="n">invokevirtual</span> <span class="err">#</span><span class="mi">24</span>                 <span class="c1">// Method test:()V</span>
+      <span class="mi">12</span><span class="o">:</span> <span class="k">return</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>在字节码中，<code class="language-plaintext highlighter-rouge">this</code> 被隐式地引用。具体来说，Lambda 表达式是通过 <code class="language-plaintext highlighter-rouge">invokedynamic</code> 动态地生成并绑定的。在字节码中的 <code class="language-plaintext highlighter-rouge">invokedynamic</code> 指令会链接到相应的 Lambda 实现，而 Lambda 表达式中的 <code class="language-plaintext highlighter-rouge">this</code> 会引用外部类（<code class="language-plaintext highlighter-rouge">LambdaTest</code>）的实例。</p>
+
+<h2 id="lambda-表达式的无状态与有状态">Lambda 表达式的无状态与有状态</h2>
+
+<p><strong>Lambda 表达式</strong> 是一种简洁的表示方法，它通常用于表示 <strong>函数</strong> 或 <strong>行为</strong>。Lambda 表达式的本质是一个匿名的、没有名称的函数。它通常接受一个或多个参数，并且返回一个结果（或者没有返回值）。</p>
+
+<p><strong>无状态</strong> 这个概念指的是 <strong>Lambda 表达式不持有任何外部或内部的可变状态</strong>，它仅仅根据输入来计算输出，不依赖于任何外部的可变数据。</p>
+
+<p>Lambda 表达式的作用通常是接受一定的输入，并根据这些输入计算出一个输出。这个过程是 <strong>确定性的</strong>，也就是说，对于相同的输入，Lambda 表达式总是会产生相同的输出。</p>
+
+<p>Lambda 表达式不持有可变状态：在传统的面向对象编程中，一个对象可能有 <strong>成员变量</strong>（状态），这些变量可能在方法调用过程中被修改。而 Lambda 表达式不持有这样的成员变量，它的行为完全由它的输入决定。</p>
+
+<p><strong>但是</strong>，如果lambda表达式中引用的方法中的局部变量，则lambda表达式就变成了闭包，因为这个时候lambda表达式是有状态的。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LambdaStatelessTest</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">returnRunnable</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">++;</span>
+        <span class="n">runnable</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">LambdaStatelessTest</span> <span class="n">lambdaStatelessTest</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LambdaStatelessTest</span><span class="o">();</span>
+        <span class="n">lambdaStatelessTest</span><span class="o">.</span><span class="na">returnRunnable</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>上面这个例子控制台会输出<code class="language-plaintext highlighter-rouge">2</code>。</p>
+
+<p>在这个例子中，Lambda 表达式修改了外部变量 <code class="language-plaintext highlighter-rouge">x</code>，这就使得它是有状态的。Lambda 表达式访问并修改了 <strong>外部的可变状态</strong>。我们称这种情况为 <strong>闭包</strong>（closure），其中 Lambda 表达式捕获了外部变量并能够修改它的值。</p>
+
+<p>这种行为是 <strong>有状态</strong> 的，因为它依赖于外部状态 <code class="language-plaintext highlighter-rouge">x</code> 并且对其进行修改。通常，Lambda 表达式如果在外部状态（如类的字段或局部变量）上进行修改，则被认为是 <strong>有状态的</strong>。</p>
+
+<p>虽然 Lambda 表达式本身是无状态的，但它仍然能够捕获外部状态（如局部变量和字段），并在执行时修改它们。这种情况被称为 <strong>闭包</strong>，并不是 Lambda 本身的状态，而是 <strong>Lambda 捕获了外部的可变状态</strong>。</p>
+
+<hr />
+
+<p>为了深入理解lambda表达式和局部变量传值的关系，我们将编译好的class文件进行反编译。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">javac</span> <span class="nc">LambdaStatelessTest</span><span class="o">.</span><span class="na">java</span>   <span class="err">#</span> <span class="n">编译</span>
+<span class="n">javap</span> <span class="o">-</span><span class="n">v</span> <span class="nc">LambdaStatelessTest</span><span class="o">.</span><span class="na">class</span>    <span class="err">#</span> <span class="n">字节码反编译</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250512153045906.png" alt="image-20250512153045906" /></p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">getfield #13</code></strong> 指令表示对外部变量 <code class="language-plaintext highlighter-rouge">x</code> 的访问，<code class="language-plaintext highlighter-rouge">x</code> 是 <code class="language-plaintext highlighter-rouge">LambdaStatelessTest</code> 类中的一个实例变量，类型是 <code class="language-plaintext highlighter-rouge">Integer</code>。</p>
+
+<p>这个字段的访问和修改发生在 Lambda 表达式的 <code class="language-plaintext highlighter-rouge">run</code> 方法中，说明 Lambda 表达式是捕获了外部的 <strong>可变状态</strong>，并且修改了它。</p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/04/07/Ollama%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="ollama工具-自定义模型">
+                        Previous<br>
+                        <span>ollama工具-自定义模型</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0079" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0058" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0064" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0070" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0072" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0080" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0080" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="2">numpy</a>
+        
+                <a data-sort="0080" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0080" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
