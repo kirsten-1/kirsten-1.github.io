@@ -5,9 +5,1492 @@
     <description>这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员</description>
     <link>https://kirsten-1.github.io/</link>
     <atom:link href="https://kirsten-1.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 12 May 2025 07:36:49 +0000</pubDate>
-    <lastBuildDate>Mon, 12 May 2025 07:36:49 +0000</lastBuildDate>
+    <pubDate>Thu, 05 Jun 2025 05:38:15 +0000</pubDate>
+    <lastBuildDate>Thu, 05 Jun 2025 05:38:15 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>jvm-class文件格式</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;官网关于ClassFileFormat（JDK8）：https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;1-一个最简单的案例开始&quot;&gt;1 一个最简单的案例开始&lt;/h1&gt;
+
+&lt;p&gt;准备一个最简单的java源代码：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;利用idea的build工具进行编译：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250603133759170.png&quot; alt=&quot;image-20250603133759170&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;out/production&lt;/code&gt;目录中找到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample.class&lt;/code&gt;字节码文件。&lt;/p&gt;
+
+&lt;p&gt;利用javap进行反编译，并且将内容输出为一个txt文件：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;javap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;txt&lt;/span&gt; 
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;example.txt&lt;/code&gt;内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nc&quot;&gt;Classfile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Documents&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;study&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JVM_Exer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;production&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;E_ClassFileFormat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;
+  &lt;span class=&quot;nc&quot;&gt;Last&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modified&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2025&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;年6月3日&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;264&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;SHA&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;checksum&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;062&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d6c4064cb0c855239a3a067596316804edc006b2232a562e6bdb325ecb5b8&lt;/span&gt;
+  &lt;span class=&quot;nc&quot;&gt;Compiled&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;SimpleExample.java&quot;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;minor&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;version:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;major&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;version:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;52&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;flags:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0021&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ACC_PUBLIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ACC_SUPER&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;this_class:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;                          &lt;span class=&quot;c1&quot;&gt;// SimpleExample&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;super_class:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;                         &lt;span class=&quot;c1&quot;&gt;// java/lang/Object&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;interfaces:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;fields:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;methods:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;attributes:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Constant&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;pool:&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Methodref&lt;/span&gt;          &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;         &lt;span class=&quot;c1&quot;&gt;// java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;              &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// SimpleExample&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;              &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// java/lang/Object&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;V&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;Code&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LineNumberTable&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LocalVariableTable&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LSimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SourceFile&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NameAndType&lt;/span&gt;        &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// &quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;descriptor:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;V&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;flags:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0001&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ACC_PUBLIC&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;Code:&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args_size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aload_0&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invokespecial&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// Method java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;LineNumberTable:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;LocalVariableTable:&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Start&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Length&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Slot&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Name&lt;/span&gt;   &lt;span class=&quot;nc&quot;&gt;Signature&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;       &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;   &lt;span class=&quot;nc&quot;&gt;LSimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;SourceFile:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;SimpleExample.java&quot;&lt;/span&gt;
+
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;魔术与版本号&quot;&gt;魔术与版本号&lt;/h2&gt;
+
+&lt;p&gt;首先&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SHA-256 checksum 062d6c...&lt;/code&gt;是文件的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SHA-256&lt;/code&gt;校验和，用于验证文件完整性。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Compiled from &quot;SimpleExample.java&quot;&lt;/code&gt;: 表明这个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.class&lt;/code&gt;文件是由&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample.java&lt;/code&gt;源代码编译而来。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public class SimpleExample&lt;/code&gt;: 对应源代码中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public class SimpleExample {}&lt;/code&gt;，表示这是一个公共类。&lt;/p&gt;
+
+&lt;p&gt;这些内容都不用重点关注。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;minor version: 0&lt;/code&gt;&lt;/strong&gt; 和 &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;major version: 52&lt;/code&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;major version: 52&lt;/code&gt; 对应 Java SE 8 (JDK 1.8)。这意味着该类文件是由JDK 1.8或更高版本编译的，并且可以在JDK 1.8或更高版本的JVM上运行。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;minor version&lt;/code&gt; 通常在主版本号不变的情况下进行微小的更新，这里是0。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;根据官网，class文件结构其实是遵循下面这样的结构的：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nc&quot;&gt;ClassFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u4&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;magic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;minor_version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;major_version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;constant_pool_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cp_info&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;constant_pool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constant_pool_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;access_flags&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;this_class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;super_class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;interfaces_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;interfaces&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;interfaces_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;fields_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;field_info&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fields_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;methods_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;method_info&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;methods&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;methods_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;u2&lt;/span&gt;             &lt;span class=&quot;n&quot;&gt;attributes_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;attribute_info&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;attributes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attributes_count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u4&lt;/code&gt;代表unsigned 4字节，同理&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u2&lt;/code&gt;就代表unsigned 2字节。&lt;/p&gt;
+
+&lt;p&gt;一开始4个字节是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;magic&lt;/code&gt;，一般翻译成魔术，是固定的4个字节的值——&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cafe babe&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250603134819416.png&quot; alt=&quot;image-20250603134819416&quot; style=&quot;zoom:40%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在上面的文件中&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;minor_version&lt;/code&gt;就是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0000&lt;/code&gt;,&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;major version&lt;/code&gt;就是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0034&lt;/code&gt;。而34（十六进制，3*16+4=52）变成十进制就是52，就代表是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;JDK 1.8&lt;/code&gt;。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;常量池&quot;&gt;常量池&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool_count&lt;/code&gt;:常量池计数器,上图中是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0010&lt;/code&gt;，即十进制的16，其实真正常量池中应该有15个。官网详细说明了：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The value of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool_count&lt;/code&gt; item is equal to the number of entries in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool&lt;/code&gt; table plus one. A &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool&lt;/code&gt; index is considered valid if it is greater than zero and less than &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool_count&lt;/code&gt;, with the exception for constants of type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;long&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;double&lt;/code&gt; noted in &lt;a href=&quot;https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4.5&quot;&gt;§4.4.5&lt;/a&gt;.&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Constant_pool_count &lt;/code&gt;项的值等于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool &lt;/code&gt;表中的条目数加 1。如果 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool&lt;/code&gt; 索引大于 0 且小于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool_count&lt;/code&gt;, 则视为有效，但 4.4.5 节中提到的 long 类型和 double 类型的常量除外。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;反编译的结果中也验证了这一点：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250603135358607.png&quot; alt=&quot;image-20250603135358607&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;那么，&lt;strong&gt;常量池中最多可以有几个？&lt;/strong&gt;因为是2字节，又要减1，所以是$2^{16}-1$。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;然后就是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cp_info&lt;/code&gt;类型的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool[constant_pool_count-1];&lt;/code&gt;。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Constant_pool&lt;/code&gt; 是一个结构表, 表示 ClassFile 结构及其子结构中引用的各种字符串常量、类和接口名称、字段名称以及其他常量。每个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool&lt;/code&gt; 表项的格式由其第一个 “tag” 字节指示。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Constant_pool&lt;/code&gt; 表的索引从 1 到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constant_pool_count-1&lt;/code&gt;(上图中就是从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#1&lt;/code&gt;到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#15&lt;/code&gt;)。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;tag是什么？是常量池表项的第一个字节，指示表项的类型（如 CONSTANT_Utf8、CONSTANT_Class、CONSTANT_Methodref 等）。&lt;/p&gt;
+
+  &lt;p&gt;下面是所有的类型罗列：&lt;/p&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;tag&lt;/th&gt;
+        &lt;th&gt;常量类型 (cp_info)&lt;/th&gt;
+        &lt;th&gt;描述&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;1&lt;/td&gt;
+        &lt;td&gt;CONSTANT_Utf8_info&lt;/td&gt;
+        &lt;td&gt;length: 2字节，表示 UTF-8 编码字符串的字节数 bytes: 长度为 length 的字节序列&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;3&lt;/td&gt;
+        &lt;td&gt;CONSTANT_Integer_info&lt;/td&gt;
+        &lt;td&gt;bytes: 4字节，Big-Endian（高位在前）存储的整数值&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;4&lt;/td&gt;
+        &lt;td&gt;CONSTANT_Float_info&lt;/td&gt;
+        &lt;td&gt;bytes: 4字节，Big-Endian（高位在前）存储的 IEEE 754 浮点数&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;5&lt;/td&gt;
+        &lt;td&gt;CONSTANT_Long_info&lt;/td&gt;
+        &lt;td&gt;bytes: 8字节，Big-Endian（高位在前）存储的长整数值&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;6&lt;/td&gt;
+        &lt;td&gt;CONSTANT_Double_info&lt;/td&gt;
+        &lt;td&gt;bytes: 8字节，Big-Endian（高位在前）存储的 IEEE 754 双精度浮点数&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;7&lt;/td&gt;
+        &lt;td&gt;CONSTANT_Class_info&lt;/td&gt;
+        &lt;td&gt;index: 2字节，指向常量池中某个 CONSTANT_Utf8_info 表项，表示类或接口名&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;8&lt;/td&gt;
+        &lt;td&gt;CONSTANT_String_info&lt;/td&gt;
+        &lt;td&gt;index: 2字节，指向常量池中某个 CONSTANT_Utf8_info 表项，表示字符串&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;9&lt;/td&gt;
+        &lt;td&gt;CONSTANT_Fieldref_info&lt;/td&gt;
+        &lt;td&gt;index: 2字节，指向声明字段的类或接口的 CONSTANT_Class_info 表项 index: 2字节，指向 CONSTANT_NameAndType_info 表项&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;10&lt;/td&gt;
+        &lt;td&gt;CONSTANT_Methodref_info&lt;/td&gt;
+        &lt;td&gt;index: 2字节，指向声明方法的类的 CONSTANT_Class_info 表项 index: 2字节，指向 CONSTANT_NameAndType_info 表项&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;11&lt;/td&gt;
+        &lt;td&gt;CONSTANT_InterfaceMethodref_info&lt;/td&gt;
+        &lt;td&gt;index: 2字节，指向声明接口方法的接口的 CONSTANT_Class_info 表项 index: 2字节，指向 CONSTANT_NameAndType_info 表项&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;12&lt;/td&gt;
+        &lt;td&gt;CONSTANT_NameAndType_info&lt;/td&gt;
+        &lt;td&gt;index: 2字节，指向字段或方法的名称的 CONSTANT_Utf8_info 表项 index: 2字节，指向字段或方法的描述符的 CONSTANT_Utf8_info 表项&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;15&lt;/td&gt;
+        &lt;td&gt;CONSTANT_MethodHandle_info&lt;/td&gt;
+        &lt;td&gt;reference_kind: 1字节，1-9 之间的值，表示引用的类型（如方法调用、字段访问等） reference_index: 2字节，指向常量池中对应的表项&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;16&lt;/td&gt;
+        &lt;td&gt;CONSTANT_MethodType_info&lt;/td&gt;
+        &lt;td&gt;descriptor_index: 2字节，指向 CONSTANT_Utf8_info 表项，表示方法的描述符&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;18&lt;/td&gt;
+        &lt;td&gt;CONSTANT_InvokeDynamic_info&lt;/td&gt;
+        &lt;td&gt;bootstrap_method_attr_index: 2字节，指向 Class 文件中 BootstrapMethods 属性的表项 name_and_type_index: 2字节，指向 CONSTANT_NameAndType_info 表项，表示方法名和描述符&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;表格中的每一行对应一个 tag 值及其对应的 cp_info 结构。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;例如对于刚才反编译的结果：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Methodref&lt;/span&gt;          &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;         &lt;span class=&quot;c1&quot;&gt;// java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;              &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// SimpleExample&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;              &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// java/lang/Object&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;V&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;Code&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LineNumberTable&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LocalVariableTable&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LSimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SourceFile&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NameAndType&lt;/span&gt;        &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// &quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;第一个是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Methodref&lt;/code&gt;类型，对应tag=10,表示：指向声明方法的类的 CONSTANT_Class_info 表项（2字节），指向 CONSTANT_NameAndType_info 表项（2字节）。这里指向了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#3&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#13&lt;/code&gt;，对应的是&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;              &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// java/lang/Object&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NameAndType&lt;/span&gt;        &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// &quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#3&lt;/code&gt;是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object&lt;/code&gt;类，而&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#13&lt;/code&gt;对应的是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/code&gt;，其中&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;()&lt;/code&gt;代表的是空的参数列表，V代表返回值类型是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt;，其实这个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/code&gt;就是空的构造方法，表示当前类（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample&lt;/code&gt;）的构造器将调用其父类&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.lang.Object&lt;/code&gt;的无参构造器。（我们都知道当一个类被实例化时，java语言规范要求在调用子类构造器之前，必须先调用其父类的构造器）。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;接着往下就是&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#2 = Class #14 // SimpleExample&lt;/code&gt;&lt;/strong&gt;: 这是一个类引用，指向常量池中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#14&lt;/code&gt;，它是一个UTF-8字符串&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample&lt;/code&gt;，表示当前类的名称。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#3 = Class #15 // java/lang/Object&lt;/code&gt;&lt;/strong&gt;: 这是一个类引用，指向常量池中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#15&lt;/code&gt;，它是一个UTF-8字符串&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java/lang/Object&lt;/code&gt;，表示父类的名称。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#4 = Utf8 &amp;lt;init&amp;gt;&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示特殊方法名&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;init&amp;gt;&lt;/code&gt;，这是Java中实例构造器的名称。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#5 = Utf8 ()V&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示方法的描述符。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;()&lt;/code&gt;表示无参数，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;V&lt;/code&gt;表示返回类型为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt;。所以&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;()V&lt;/code&gt;表示一个无参数且无返回值的构造器或方法。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;然后就到了code 属性，这是决定代码逻辑最重要的东西：code属性是方法信息（method_info）结构中的一个可选属性，用于存储方法的字节码以及相关的执行信息。它主要出现在非抽象、非本地（non-native）方法的定义中，例如 SimpleExample.class 中 public SimpleExample() 方法的 Code 属性部分。下面是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#6&lt;/code&gt;是UTF-8字符串，表示一个方法属性的名称，即&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Code&lt;/code&gt;属性，它包含了方法的字节码指令。&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;Code&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250603152051318.png&quot; alt=&quot;image-20250603152051318&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在后面会有详细的code属性。后面再解释，先把所有的常量池大致看完：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#7 = Utf8 LineNumberTable&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示一个方法属性的名称，即&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LineNumberTable&lt;/code&gt;属性，用于将字节码指令的偏移量映射到源代码的行号。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#8 = Utf8 LocalVariableTable&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示一个方法属性的名称，即&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LocalVariableTable&lt;/code&gt;属性，用于描述方法中的局部变量。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#9 = Utf8 this&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示局部变量的名称&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#10 = Utf8 LSimpleExample;&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示局部变量的类型描述符。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;L&lt;/code&gt;表示这是一个对象类型，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample;&lt;/code&gt;是其全限定名，分号表示结束。所以&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LSimpleExample;&lt;/code&gt;表示类型为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample&lt;/code&gt;的对象。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#11 = Utf8 SourceFile&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示一个类文件属性的名称，即&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SourceFile&lt;/code&gt;属性。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#12 = Utf8 SimpleExample.java&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示源文件的名称。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#13 = NameAndType #4:#5 // &quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/code&gt;&lt;/strong&gt;: 这是一个名称和类型描述符的组合。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;它引用了常量池中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#4&lt;/code&gt;（名称&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;init&amp;gt;&lt;/code&gt;）和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#5&lt;/code&gt;（描述符&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;()V&lt;/code&gt;）。&lt;/li&gt;
+  &lt;li&gt;组合起来表示一个无参无返回值的构造器。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#14 = Utf8 SimpleExample&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示类名&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#15 = Utf8 java/lang/Object&lt;/code&gt;&lt;/strong&gt;: UTF-8字符串，表示类名&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java/lang/Object&lt;/code&gt;。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;method&quot;&gt;Method&lt;/h2&gt;
+
+&lt;p&gt;常量池之后会有这样一块内容：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;descriptor:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;V&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;flags:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0001&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ACC_PUBLIC&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;Code:&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args_size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aload_0&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invokespecial&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// Method java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;LineNumberTable:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;LocalVariableTable:&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Start&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Length&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Slot&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Name&lt;/span&gt;   &lt;span class=&quot;nc&quot;&gt;Signature&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;       &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;   &lt;span class=&quot;nc&quot;&gt;LSimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;显示了类中定义的所有方法。由于&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample&lt;/code&gt;类没有显式定义任何方法，编译器为其生成了一个默认的无参构造器&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public SimpleExample();&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;然后这个构造方法分成了3部分描述：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;descriptor: ()V&lt;/code&gt;&lt;/strong&gt;: 方法的描述符。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;()&lt;/code&gt;表示该构造器不接受任何参数（参数列表是空），&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;V&lt;/code&gt;表示返回类型为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt;（构造器没有显式返回值）。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flags: (0x0001) ACC_PUBLIC&lt;/code&gt;&lt;/strong&gt;: 表示该构造器是公共的，可以被其他类访问。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这里需要补充下flags.&lt;/p&gt;
+
+&lt;h3 id=&quot;flags&quot;&gt;flags&lt;/h3&gt;
+
+&lt;p&gt;在这个类中也有flags：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250603153300074.png&quot; alt=&quot;image-20250603153300074&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;构造方法中也有flags:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250603153327386.png&quot; alt=&quot;image-20250603153327386&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;flags 字段用于描述类、方法或字段的访问权限和属性。flags 是一个位掩码（bitmask），通过按位或（&lt;/td&gt;
+      &lt;td&gt;）组合多个标志位来表示不同的属性。每个标志位对应一个特定的二进制位，值的计算基于这些位的组合。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;首先说明：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_PUBLIC&lt;/code&gt;：表示类是公共的（public），可以被其他类访问。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_SUPER&lt;/code&gt;：一个历史遗留标志，用于控制 invokespecial 指令的行为（在现代 JVM 中通常被忽略，但编译器会默认设置）。
+    &lt;ul&gt;
+      &lt;li&gt;可以简单理解为：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_SUPER&lt;/code&gt;一般的类都会有，jvm默认都是有这个值的。（JDK1.0.2之后编译出来的类的这个标志都必须为真）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;其实不止这2个取值，根据 Java 虚拟机规范（JVM Specification），类的访问标志（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;access_flags&lt;/code&gt;）是 16 位（2 字节），每个标志位对应一个特定的值（以十六进制表示）。&lt;/p&gt;
+
+&lt;p&gt;下面是所有的取值可能：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250603153750021.png&quot; alt=&quot;image-20250603153750021&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以看到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_SUPER&lt;/code&gt;标志值是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x0020&lt;/code&gt;，而&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_PUBLIC&lt;/code&gt;标志值是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x0001&lt;/code&gt;，如何计算得到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x0021&lt;/code&gt;的呢？&lt;/p&gt;
+
+&lt;p&gt;按位或即可：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250603154834303.png&quot; alt=&quot;image-20250603154834303&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;code&quot;&gt;code&lt;/h3&gt;
+
+&lt;p&gt;code包含了方法的字节码指令以及其他与代码执行相关的信息&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;    &lt;span class=&quot;nl&quot;&gt;Code:&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args_size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aload_0&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invokespecial&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// Method java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;LineNumberTable:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;LocalVariableTable:&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Start&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Length&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Slot&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Name&lt;/span&gt;   &lt;span class=&quot;nc&quot;&gt;Signature&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;       &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;   &lt;span class=&quot;nc&quot;&gt;LSimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;stack=1&lt;/code&gt;: 操作数栈的最大深度为1。在执行过程中，最多需要1个栈帧来存储数据。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;locals=1&lt;/code&gt;: 局部变量表的大小为1。局部变量表用于存储方法的参数和局部变量。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;args_size=1&lt;/code&gt;: 方法的参数数量为1。对于实例方法（包括构造器），第一个局部变量槽（Slot 0）总是用来存储&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;引用。所以这里的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;args_size=1&lt;/code&gt;表示除了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;之外没有其他显式参数。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;后面是3条指令：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;         &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aload_0&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invokespecial&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// Method java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;关于常见的指令总结在最后附录中。&lt;/p&gt;
+
+&lt;p&gt;解释这里3条指令：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0: aload_0&lt;/code&gt;：冒号前面的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0&lt;/code&gt; 是字节码指令的偏移量（offset）。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aload_0&lt;/code&gt; 指令将局部变量表中索引为0的引用类型变量加载到操作数栈顶。在实例方法和构造器中，局部变量表的Slot 0 总是用于存储&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;引用。所以这条指令的作用是将当前对象（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;）的引用压入操作数栈。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1: invokespecial #1  // Method java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/code&gt;:&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1&lt;/code&gt; 是字节码指令的偏移量。
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;invokespecial&lt;/code&gt; 指令用于调用实例初始化方法（构造器）、私有方法和父类方法。&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#1&lt;/code&gt; 指向常量池中索引为1的项，即&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/code&gt;，表示调用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.lang.Object&lt;/code&gt;类的无参构造器。&lt;/li&gt;
+      &lt;li&gt;在Java中，每个构造器的第一行（如果没有显式调用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this()&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;super()&lt;/code&gt;）都会隐式调用父类的无参构造器。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4: return&lt;/code&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4&lt;/code&gt; 是字节码指令的偏移量。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return&lt;/code&gt; 指令用于从方法中返回。对于&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt;方法或构造器，它只是简单地结束方法的执行。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;画图说明这3行指令的过程：&lt;/p&gt;
+
+&lt;p&gt;首先要注意：在任何Java实例方法或构造器开始执行时，JVM 会为该方法创建一个 &lt;strong&gt;栈帧（Stack Frame）&lt;/strong&gt;。栈帧中包含：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;局部变量表 (Local Variable Table)&lt;/strong&gt;：用于存储方法的参数和局部变量。对于实例方法，第一个槽位（Slot 0）总是用来存储 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt; 引用。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;操作数栈 (Operand Stack)&lt;/strong&gt;：一个基于栈的临时存储区域，用于存储计算过程中的中间结果以及方法调用的参数和返回值。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;当 JVM 调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample&lt;/code&gt; 构造器时，会创建一个新的栈帧。局部变量表中的 Slot 0 会被填充为当前 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample&lt;/code&gt; 实例的引用（即 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;），操作数栈为空。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250604155134474.png&quot; alt=&quot;image-20250604155134474&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aload_0&lt;/code&gt; 将局部变量表索引为 0 的引用类型变量（即 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt; 引用）加载到操作数栈顶。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250604155442153.png&quot; alt=&quot;image-20250604155442153&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;invokespecial&lt;/code&gt; 用于调用父类的构造器。它会从操作数栈顶弹出一个对象引用（这里是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt; 引用），作为隐式参数传递给被调用的方法（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.lang.Object&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;init&amp;gt;&lt;/code&gt; 方法），然后执行该方法。&lt;/p&gt;
+
+&lt;p&gt;在这个例子中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#1&lt;/code&gt; 指向 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/code&gt;，表示调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object&lt;/code&gt; 类的无参构造器。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;invokespecial&lt;/code&gt; 会消耗栈顶的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt; 引用。&lt;/p&gt;
+
+&lt;p&gt;执行完 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;invokespecial&lt;/code&gt; 后，PC 会更新为下一条指令的偏移量 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;栈帧变化：&lt;/strong&gt; 操作数栈顶的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt; 引用被消耗（弹出）。在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object.&amp;lt;init&amp;gt;()V&lt;/code&gt; 执行期间，JVM 会创建并压入一个新的栈帧到JVM栈上（这里未显示，因为它属于另一个方法调用），当 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object.&amp;lt;init&amp;gt;()V&lt;/code&gt; 执行完毕后，该栈帧会被弹出，控制权返回给 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample.&amp;lt;init&amp;gt;()&lt;/code&gt; 的栈帧。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250604155642940.png&quot; alt=&quot;image-20250604155642940&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;4: return&lt;/code&gt; 表示从方法中返回。对于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt; 方法或构造器，它不需要返回任何值。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;程序计数器 (PC) 变化：&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return&lt;/code&gt; 指令执行后，当前方法结束，PC 的值通常会变得不确定或指向调用者的下一条指令（取决于JVM实现，但对于当前方法而言，其PC不再有效）。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;栈帧变化：&lt;/strong&gt; 当前 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SimpleExample.&amp;lt;init&amp;gt;()&lt;/code&gt; 的栈帧被销毁，并从JVM栈中弹出。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250604155918812.png&quot; alt=&quot;image-20250604155918812&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;方法描述符补充&quot;&gt;方法描述符补充&lt;/h2&gt;
+
+&lt;p&gt;上面已经看到对于参数列表是空，返回值是void的方法（包括构造方法），方法描述符是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;()V&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果是其他情况呢？下面是字段描述符：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;FieldType 中的字符&lt;/th&gt;
+      &lt;th&gt;类型&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;B&lt;/td&gt;
+      &lt;td&gt;byte&lt;/td&gt;
+      &lt;td&gt;有符号的字节型数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;char&lt;/td&gt;
+      &lt;td&gt;Unicode 字符码点，UTF-16 编码&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;D&lt;/td&gt;
+      &lt;td&gt;double&lt;/td&gt;
+      &lt;td&gt;双精度浮点数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;F&lt;/td&gt;
+      &lt;td&gt;float&lt;/td&gt;
+      &lt;td&gt;单精度浮点数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;I&lt;/td&gt;
+      &lt;td&gt;int&lt;/td&gt;
+      &lt;td&gt;整型数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;J&lt;/td&gt;
+      &lt;td&gt;long&lt;/td&gt;
+      &lt;td&gt;长整型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;L &lt;em&gt;className&lt;/em&gt;;&lt;/td&gt;
+      &lt;td&gt;reference&lt;/td&gt;
+      &lt;td&gt;&lt;em&gt;ClassName&lt;/em&gt; 类的实例&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;S&lt;/td&gt;
+      &lt;td&gt;short&lt;/td&gt;
+      &lt;td&gt;有符号短整型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Z&lt;/td&gt;
+      &lt;td&gt;boolean&lt;/td&gt;
+      &lt;td&gt;布尔值 true/false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;[&lt;/td&gt;
+      &lt;td&gt;Reference&lt;/td&gt;
+      &lt;td&gt;一个一维数组&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;如 String 类的实例，其描述符为 Ljava/lang/String。二维数组 int [][] 类型的实例变量，其描述符为 [[I。&lt;/p&gt;
+
+&lt;p&gt;看一道习题：&lt;/p&gt;
+
+&lt;p&gt;如果一个方法需要接收一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;类型的参数并返回一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;对象，它的方法描述符会是什么样子？&lt;/p&gt;
+
+&lt;p&gt;A.(I)LString;&lt;/p&gt;
+
+&lt;p&gt;B.(I)Ljava/lang/String;&lt;/p&gt;
+
+&lt;p&gt;C.(I)S&lt;/p&gt;
+
+&lt;p&gt;D.(int)String&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;答案：B&lt;/p&gt;
+
+  &lt;p&gt;首先int对应FieldType 中的字符中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;I&lt;/code&gt;，其次String对应的是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ljava/lang/String&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;附录&quot;&gt;附录&lt;/h1&gt;
+
+&lt;h2 id=&quot;1常见jvm指令&quot;&gt;1.常见jvm指令&lt;/h2&gt;
+
+&lt;p&gt;关于jvm的指令集（一共也就二百多条指令）官网：https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.10.1.9&lt;/p&gt;
+
+&lt;p&gt;下面是常见的总结：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;类型&lt;/th&gt;
+      &lt;th&gt;助记符&lt;/th&gt;
+      &lt;th&gt;含义&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;常量&lt;/td&gt;
+      &lt;td&gt;const_null&lt;/td&gt;
+      &lt;td&gt;将 null 推到栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;iconst_1&lt;/td&gt;
+      &lt;td&gt;将整数类型的 1 推到栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;fconst_0&lt;/td&gt;
+      &lt;td&gt;将 float 类型的 2 推到栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;dcounst_0&lt;/td&gt;
+      &lt;td&gt;将 double 类型的 0 推到栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;ldc&lt;/td&gt;
+      &lt;td&gt;将 int 、float 或 String 类型常量值从常量池推至栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;加载&lt;/td&gt;
+      &lt;td&gt;iload&lt;/td&gt;
+      &lt;td&gt;将指定的 int 类型本地变量推送至栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;iload_2&lt;/td&gt;
+      &lt;td&gt;第 2 个 int 类型本地变量推送至栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;aload_3&lt;/td&gt;
+      &lt;td&gt;将第 3 个引用类型的本地变量推送至栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;cload&lt;/td&gt;
+      &lt;td&gt;将 char 类型数组的指定元素推送至栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;存储&lt;/td&gt;
+      &lt;td&gt;istore&lt;/td&gt;
+      &lt;td&gt;将栈顶 int 类型数值存入指定的本地变量&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;astore&lt;/td&gt;
+      &lt;td&gt;将栈顶引用类型的数值存入指定的本地变量&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;istore_3&lt;/td&gt;
+      &lt;td&gt;将栈顶 int 类型数值存入第 3 个本地变量&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;引用&lt;/td&gt;
+      &lt;td&gt;getstatic&lt;/td&gt;
+      &lt;td&gt;获取指定类的静态字段，并将其压入栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;putstatic&lt;/td&gt;
+      &lt;td&gt;为指定类的静态字段赋值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;getfield&lt;/td&gt;
+      &lt;td&gt;获取指定类的实例字段，并将其值压入栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;putfield&lt;/td&gt;
+      &lt;td&gt;为指定类的实例字段赋值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;invokevirtual&lt;/td&gt;
+      &lt;td&gt;调用实例方法&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;invokespecial&lt;/td&gt;
+      &lt;td&gt;调用父方法、实例初始化方法、私有方法&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;invokestatic&lt;/td&gt;
+      &lt;td&gt;调用静态方法&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;invokeinterface&lt;/td&gt;
+      &lt;td&gt;调用接口方法&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;invokedynamic&lt;/td&gt;
+      &lt;td&gt;调用动态连接方法&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;new&lt;/td&gt;
+      &lt;td&gt;创建一个对象，并将其引用压入栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;athrow&lt;/td&gt;
+      &lt;td&gt;将栈顶异常抛出&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;instanceof&lt;/td&gt;
+      &lt;td&gt;检查对象是否为指定类的实例，如果是，将 1 压到栈顶，否则将 0 压到栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;栈&lt;/td&gt;
+      &lt;td&gt;pop&lt;/td&gt;
+      &lt;td&gt;将栈顶数值弹出（非 long 和 double）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;pop2&lt;/td&gt;
+      &lt;td&gt;将栈顶 long 或 double 数值弹出&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;dup&lt;/td&gt;
+      &lt;td&gt;复制栈顶数值并将复制值压入栈顶&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;控制&lt;/td&gt;
+      &lt;td&gt;ireturn&lt;/td&gt;
+      &lt;td&gt;从当前方法返回 int 值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;return&lt;/td&gt;
+      &lt;td&gt;从当前方法返回 void 值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;比较&lt;/td&gt;
+      &lt;td&gt;ifeq&lt;/td&gt;
+      &lt;td&gt;当栈顶的 int 类型的数值等于 0 时跳转&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;ifne&lt;/td&gt;
+      &lt;td&gt;当栈顶的 int 类型的数值不等于 0 时跳转&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;拓展&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;为 null 时跳转&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;数学&lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;转换&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;比较&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;2习题&quot;&gt;2.习题&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;字节码指令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aload_0&lt;/code&gt; 在这个构造器中的作用是什么？&lt;/p&gt;
+
+    &lt;p&gt;A.将 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt; 引用从局部变量表加载到操作数栈。&lt;/p&gt;
+
+    &lt;p&gt;B.分配内存给一个新对象。&lt;/p&gt;
+
+    &lt;p&gt;C.调用地址为0的方法。&lt;/p&gt;
+
+    &lt;p&gt;D.将整数0加载到操作数栈。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.class&lt;/code&gt; 文件中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SourceFile&lt;/code&gt; 属性有什么用途？&lt;/p&gt;
+
+    &lt;p&gt;A.指定该类文件依赖的其他源文件。&lt;/p&gt;
+
+    &lt;p&gt;B.在抛出异常时，用于在堆栈跟踪中显示源文件名和行号。&lt;/p&gt;
+
+    &lt;p&gt;C.包含整个Java源代码，以便JVM可以动态编译它。&lt;/p&gt;
+
+    &lt;p&gt;D.为编译器提供一个唯一的标识符。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在JVM的运行时数据区中，哪个区域是所有线程共享的？&lt;/p&gt;
+
+    &lt;p&gt;A.Java虚拟机栈 (JVM Stack)&lt;/p&gt;
+
+    &lt;p&gt;B.方法区 (Method Area)&lt;/p&gt;
+
+    &lt;p&gt;C.本地方法栈 (Native Method Stack)&lt;/p&gt;
+
+    &lt;p&gt;D.程序计数器 (PC Register)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;阅读下面javap -p -v的反编译结果，在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javap&lt;/code&gt;输出中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this_class: #2&lt;/code&gt; 这个条目指向常量池中的什么内容？&lt;/p&gt;
+
+    &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nc&quot;&gt;Classfile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Documents&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;study&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JVM_Exer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;production&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;E_ClassFileFormat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;
+  &lt;span class=&quot;nc&quot;&gt;Last&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;modified&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2025&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;年6月3日&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;264&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bytes&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;SHA&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;checksum&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;062&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d6c4064cb0c855239a3a067596316804edc006b2232a562e6bdb325ecb5b8&lt;/span&gt;
+  &lt;span class=&quot;nc&quot;&gt;Compiled&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;SimpleExample.java&quot;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;minor&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;version:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;major&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;version:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;52&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;flags:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0021&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ACC_PUBLIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ACC_SUPER&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;this_class:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;                          &lt;span class=&quot;c1&quot;&gt;// SimpleExample&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;super_class:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;                         &lt;span class=&quot;c1&quot;&gt;// java/lang/Object&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;interfaces:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;fields:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;methods:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;attributes:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;nc&quot;&gt;Constant&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;pool:&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Methodref&lt;/span&gt;          &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt;         &lt;span class=&quot;c1&quot;&gt;// java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;              &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// SimpleExample&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;              &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// java/lang/Object&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;V&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;Code&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LineNumberTable&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LocalVariableTable&lt;/span&gt;
+   &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;LSimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SourceFile&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;NameAndType&lt;/span&gt;        &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;// &quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;nc&quot;&gt;SimpleExample&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Utf8&lt;/span&gt;               &lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;descriptor:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;V&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;flags:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0001&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ACC_PUBLIC&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;Code:&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;locals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args_size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aload_0&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invokespecial&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// Method java/lang/Object.&quot;&amp;lt;init&amp;gt;&quot;:()V&lt;/span&gt;
+         &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;LineNumberTable:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;LocalVariableTable:&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Start&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Length&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Slot&lt;/span&gt;  &lt;span class=&quot;nc&quot;&gt;Name&lt;/span&gt;   &lt;span class=&quot;nc&quot;&gt;Signature&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;       &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;     &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;   &lt;span class=&quot;nc&quot;&gt;LSimpleExample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;SourceFile:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;SimpleExample.java&quot;&lt;/span&gt;
+   
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;A.一个指向当前类的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt;类型常量。&lt;/p&gt;
+
+    &lt;p&gt;B.一个指向父类的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt;类型常量。&lt;/p&gt;
+
+    &lt;p&gt;C.当前类的实例（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;引用）。&lt;/p&gt;
+
+    &lt;p&gt;D.一个名为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this_class&lt;/code&gt;的UTF-8字符串。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在Java中，如果一个类显式地定义了一个带参数的构造器，编译器还会自动生成一个无参构造器吗？&lt;/p&gt;
+
+    &lt;p&gt;A.会，但会将其设为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;private&lt;/code&gt;。&lt;/p&gt;
+
+    &lt;p&gt;B.不会，一旦用户定义了任何构造器，编译器就不再提供默认的无参构造器。&lt;/p&gt;
+
+    &lt;p&gt;C.会，编译器总是会确保有一个无参构造器。&lt;/p&gt;
+
+    &lt;p&gt;D.这取决于构造器是否是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public&lt;/code&gt;的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Code&lt;/code&gt;属性的字节码中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return&lt;/code&gt;指令的作用是什么？&lt;/p&gt;
+
+    &lt;p&gt;A.结束当前方法的执行并销毁当前栈帧。&lt;/p&gt;
+
+    &lt;p&gt;B.清空操作数栈和局部变量表。&lt;/p&gt;
+
+    &lt;p&gt;C.将操作数栈顶的值返回给调用者。&lt;/p&gt;
+
+    &lt;p&gt;D.跳转到方法的起始位置，重新执行。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.class&lt;/code&gt;文件中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LineNumberTable&lt;/code&gt;属性的主要作用是什么？&lt;/p&gt;
+
+    &lt;p&gt;A.存储每个源代码行的文本内容。&lt;/p&gt;
+
+    &lt;p&gt;B.优化代码，移除不必要的代码行。&lt;/p&gt;
+
+    &lt;p&gt;C.定义类文件中总共有多少行代码。&lt;/p&gt;
+
+    &lt;p&gt;D.将字节码指令的偏移量映射到Java源代码的行号。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;程序计数器（PC Register）中存储的是什么？&lt;/p&gt;
+
+    &lt;p&gt;A.当前线程正在执行的字节码指令的地址（或偏移量）。&lt;/p&gt;
+
+    &lt;p&gt;B.当前操作数栈顶元素的值。&lt;/p&gt;
+
+    &lt;p&gt;C.下一个要执行的Java方法的内存地址。&lt;/p&gt;
+
+    &lt;p&gt;D.局部变量表中&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;引用的地址。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在JVM中，“栈帧”（Stack Frame）是在什么时候被创建的？&lt;/p&gt;
+
+    &lt;p&gt;A.当一个对象被创建时（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new&lt;/code&gt;）。&lt;/p&gt;
+
+    &lt;p&gt;B.当一个线程启动时。&lt;/p&gt;
+
+    &lt;p&gt;C.当一个类被加载时。&lt;/p&gt;
+
+    &lt;p&gt;D.当一个方法被调用时。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果一个方法需要接收一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;类型的参数并返回一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;对象，它的方法描述符会是什么样子？&lt;/p&gt;
+
+    &lt;p&gt;A.(I)LString;&lt;/p&gt;
+
+    &lt;p&gt;B.(I)Ljava/lang/String;&lt;/p&gt;
+
+    &lt;p&gt;C.(I)S&lt;/p&gt;
+
+    &lt;p&gt;D.(int)String&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;字节码指令&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iconst_1&lt;/code&gt;的作用是什么？(可查附录1的表)&lt;/p&gt;
+
+    &lt;p&gt;A.创建一个包含一个元素的整型数组。&lt;/p&gt;
+
+    &lt;p&gt;B.将局部变量表中索引为1的整数加载到操作数栈。&lt;/p&gt;
+
+    &lt;p&gt;C.将常量1压入操作数栈。&lt;/p&gt;
+
+    &lt;p&gt;D.检查栈顶的整数是否等于1。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在常量池中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Utf8&lt;/code&gt;类型的条目存储的是什么？&lt;/p&gt;
+
+    &lt;p&gt;A.一个32位的整数常量。&lt;/p&gt;
+
+    &lt;p&gt;B.一个指向其他常量池条目的索引。&lt;/p&gt;
+
+    &lt;p&gt;C.一个编译后的方法代码。&lt;/p&gt;
+
+    &lt;p&gt;D.一个UTF-8编码的字符串值。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;以下哪项是JVM中堆（Heap）区域的主要特点？&lt;/p&gt;
+
+    &lt;p&gt;A.它是所有线程共享的，用于存储对象实例和数组。&lt;/p&gt;
+
+    &lt;p&gt;B.它是线程私有的，用于存储局部变量。&lt;/p&gt;
+
+    &lt;p&gt;C.它存储了下一条要执行的字节码指令的地址。&lt;/p&gt;
+
+    &lt;p&gt;D.它主要用于存储运行时常量池。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javap&lt;/code&gt;输出中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flags: (0x0001) ACC_PUBLIC&lt;/code&gt; 在方法描述符中代表什么？&lt;/p&gt;
+
+    &lt;p&gt;A.该方法是公共的，可以从任何类访问。&lt;/p&gt;
+
+    &lt;p&gt;B.该方法是静态的。&lt;/p&gt;
+
+    &lt;p&gt;C.该方法可以被重写。&lt;/p&gt;
+
+    &lt;p&gt;D.该方法是抽象的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;以下哪个字节码指令用于创建新的对象实例？&lt;/p&gt;
+
+    &lt;p&gt;A.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;invokevirtual&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;B.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;astore_0&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;C.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;D.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;putfield&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;方法描述符 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(Ljava/lang/String;I)V&lt;/code&gt; 意味着什么？&lt;/p&gt;
+
+    &lt;p&gt;A.一个接受一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;参数和一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;参数，并且没有返回值的方法。&lt;/p&gt;
+
+    &lt;p&gt;B.一个接受一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;参数并返回一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;的方法。&lt;/p&gt;
+
+    &lt;p&gt;C.一个接受两个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;参数的方法。&lt;/p&gt;
+
+    &lt;p&gt;D.一个返回&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;类型的方法，没有参数。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在JVM中，为什么局部变量表中的Slot 0通常被&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;引用占据（对于实例方法而言）？&lt;/p&gt;
+
+    &lt;p&gt;A.因为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;引用是唯一不需要初始化的局部变量。&lt;/p&gt;
+
+    &lt;p&gt;B.为了防止栈溢出错误。&lt;/p&gt;
+
+    &lt;p&gt;C.为了节省内存空间，因为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;引用是最小的。&lt;/p&gt;
+
+    &lt;p&gt;D.为了在方法内部能够访问当前对象实例的成员。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;哪个JVM运行时数据区是线程私有的，用于存储每个方法调用的栈帧？&lt;/p&gt;
+
+    &lt;p&gt;A.Java虚拟机栈 (JVM Stack)&lt;/p&gt;
+
+    &lt;p&gt;B.运行时常量池 (Runtime Constant Pool)&lt;/p&gt;
+
+    &lt;p&gt;C.方法区 (Method Area)&lt;/p&gt;
+
+    &lt;p&gt;D.堆 (Heap)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在常量池中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NameAndType&lt;/code&gt;类型的条目主要用于什么？&lt;/p&gt;
+
+    &lt;p&gt;A.指示一个方法是静态的还是实例的。&lt;/p&gt;
+
+    &lt;p&gt;B.存储字面量字符串。&lt;/p&gt;
+
+    &lt;p&gt;C.定义一个类的完整限定名。&lt;/p&gt;
+
+    &lt;p&gt;D.将字段或方法的名称和描述符组合起来。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;字节码指令&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getfield&lt;/code&gt;的作用是什么？&lt;/p&gt;
+
+    &lt;p&gt;A.调用一个方法。&lt;/p&gt;
+
+    &lt;p&gt;B.获取静态字段的值。&lt;/p&gt;
+
+    &lt;p&gt;C.获取数组中指定索引的元素。&lt;/p&gt;
+
+    &lt;p&gt;D.获取对象实例字段的值。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在Java中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;final&lt;/code&gt;关键字修饰的类在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javap&lt;/code&gt;输出的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flags&lt;/code&gt;中会体现为什么标志？&lt;/p&gt;
+
+    &lt;p&gt;A.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_FINAL&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;B.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_ABSTRACT&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;C.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_SUPER&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;D.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_PUBLIC&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;以下哪项是JVM中“垃圾回收”（Garbage Collection）的主要目标？&lt;/p&gt;
+
+    &lt;p&gt;A.将字节码转换为机器码。&lt;/p&gt;
+
+    &lt;p&gt;B.在程序运行时加载&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.class&lt;/code&gt;文件。&lt;/p&gt;
+
+    &lt;p&gt;C.优化CPU使用率。&lt;/p&gt;
+
+    &lt;p&gt;D.自动管理堆内存，回收不再被引用的对象。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在JVM的内存区域中，哪一部分是用于存储方法运行时产生的局部变量和操作数栈的？&lt;/p&gt;
+
+    &lt;p&gt;A.方法区 (Method Area)&lt;/p&gt;
+
+    &lt;p&gt;B.堆 (Heap)&lt;/p&gt;
+
+    &lt;p&gt;C.程序计数器 (PC Register)&lt;/p&gt;
+
+    &lt;p&gt;D.Java虚拟机栈 (JVM Stack)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javap&lt;/code&gt;输出的常量池中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Methodref&lt;/code&gt;类型的条目通常指向哪两种其他类型的条目？&lt;/p&gt;
+
+    &lt;p&gt;A.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Fieldref&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Methodref&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;B.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Utf8&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Integer&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;C.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NameAndType&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;D.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果一个Java方法在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javap&lt;/code&gt;输出的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flags&lt;/code&gt;中包含&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_STATIC&lt;/code&gt;，这意味着什么？&lt;/p&gt;
+
+    &lt;p&gt;A.该方法是私有的，只能在类内部访问。&lt;/p&gt;
+
+    &lt;p&gt;B.该方法是一个类方法，不依赖于任何对象实例。&lt;/p&gt;
+
+    &lt;p&gt;C.该方法是同步的。&lt;/p&gt;
+
+    &lt;p&gt;D.该方法可以被子类重写。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;字节码指令&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dup&lt;/code&gt;的作用是什么？&lt;/p&gt;
+
+    &lt;p&gt;A.从局部变量表中复制一个值到另一个槽位。&lt;/p&gt;
+
+    &lt;p&gt;B.复制操作数栈顶的一个或多个字，并将其压回栈顶。&lt;/p&gt;
+
+    &lt;p&gt;C.将一个值从操作数栈复制到局部变量表。&lt;/p&gt;
+
+    &lt;p&gt;D.将操作数栈顶的两个值相加。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;方法描述符 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;([Ljava/lang/String;)V&lt;/code&gt; 最常用于表示哪个Java方法？&lt;/p&gt;
+
+    &lt;p&gt;A.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public String toString()&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;B.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public static void main(String[] args)&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;C.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public void run()&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;D.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public int hashCode()&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在JVM中，当一个方法正常返回时，会发生什么？&lt;/p&gt;
+
+    &lt;p&gt;A.程序计数器重置为0。&lt;/p&gt;
+
+    &lt;p&gt;B.当前栈帧被销毁，并从Java虚拟机栈中弹出。&lt;/p&gt;
+
+    &lt;p&gt;C.当前线程被终止。&lt;/p&gt;
+
+    &lt;p&gt;D.垃圾回收器立即运行，清理所有不再使用的对象。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;以下哪种常量池条目类型用于表示一个类的全限定名？&lt;/p&gt;
+
+    &lt;p&gt;A.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Methodref&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;B.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Fieldref&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;C.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NameAndType&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;D.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;字节码指令&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;putstatic&lt;/code&gt;的作用是什么？&lt;/p&gt;
+
+    &lt;p&gt;A.给对象实例字段赋值。&lt;/p&gt;
+
+    &lt;p&gt;B.将一个值从操作数栈存储到局部变量表。&lt;/p&gt;
+
+    &lt;p&gt;C.获取类的静态字段的值。&lt;/p&gt;
+
+    &lt;p&gt;D.给类的静态字段赋值。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在Java中，当一个方法被&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;synchronized&lt;/code&gt;关键字修饰时，在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javap&lt;/code&gt;输出的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;flags&lt;/code&gt;中会体现为什么标志？&lt;/p&gt;
+
+    &lt;p&gt;A.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_ABSTRACT&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;B.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_SYNCHRONIZED&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;C.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_FINAL&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;D.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_PUBLIC&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JVM的类加载过程通常包括哪三个主要阶段？&lt;/p&gt;
+
+    &lt;p&gt;A.分析、优化、执行&lt;/p&gt;
+
+    &lt;p&gt;B.编译、链接、运行&lt;/p&gt;
+
+    &lt;p&gt;C.创建、初始化、销毁&lt;/p&gt;
+
+    &lt;p&gt;D.加载、验证、准备&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;答案：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;A，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aload_0&lt;/code&gt; 指令将局部变量表中索引为0的对象引用（在此上下文中是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;）压入操作数栈，为后续的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;invokespecial&lt;/code&gt; 调用做准备。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B，JVM使用此属性以及 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LineNumberTable&lt;/code&gt; 在异常堆栈跟踪中提供精确的调试信息，将字节码与源代码关联起来。为什么不选A？依赖关系通过常量池中的类和方法引用来管理，而不是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SourceFile&lt;/code&gt; 属性。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;B：&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250604161349613.png&quot; alt=&quot;image-20250604161349613&quot; style=&quot;zoom:50%;&quot; /&gt;
+      &lt;blockquote&gt;
+
+        &lt;p&gt;方法区用于存储已被虚拟机加载的类信息、常量、静态变量等数据，是所有线程共享的。&lt;/p&gt;
+      &lt;/blockquote&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this_class&lt;/code&gt;通过索引指向常量池中的一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CONSTANT_Class_info&lt;/code&gt;结构，该结构进一步指向定义当前类名的UTF-8字符串。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B,如果程序员已经提供了至少一个构造器，编译器会认为程序员已经接管了对象创建的逻辑，因此不会再自动添加任何构造器。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A , 对于返回类型为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt;的方法（或构造器），&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;return&lt;/code&gt;指令用于正常完成方法的执行，并导致当前栈帧从Java虚拟机栈中出栈。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D ,这个属性是调试和异常堆栈跟踪的关键，它允许工具（如调试器和JVM）将执行中的字节码位置与开发者编写的源代码行对应起来。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B ,程序计数器精确地指向下一条将要被解释器执行的字节码指令的地址，确保程序流程的正确执行。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D , 每当一个方法被调用，JVM就会为该方法创建一个新的栈帧，并将其压入当前线程的Java虚拟机栈中。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B , 首先int对应FieldType 中的字符中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;I&lt;/code&gt;，其次String对应的是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ljava/lang/String&lt;/code&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;C， &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;iconst_1&lt;/code&gt;是一条高效的指令，专门用于将&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;类型的常量值1加载到操作数栈顶。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Utf8&lt;/code&gt;条目用于存储各种字符串字面量，包括类名、方法名、字段名以及描述符等。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A，堆是JVM中最大的一块内存区域，所有线程共享，主要用于存储Java对象实例和数组，也是垃圾回收的主要区域。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_PUBLIC&lt;/code&gt;标志表示该方法具有公共访问权限，可以被其他类调用。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;C，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new&lt;/code&gt;指令用于在堆上分配内存并创建新的对象实例，通常后面会跟&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dup&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;invokespecial&lt;/code&gt;来初始化对象。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ljava/lang/String;&lt;/code&gt;代表&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;参数，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;I&lt;/code&gt;代表&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;参数，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;V&lt;/code&gt;代表&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void&lt;/code&gt;返回类型。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;this&lt;/code&gt;引用允许实例方法在执行时访问和操作属于当前对象的字段和方法，它是实例方法能够工作的核心机制。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A，Java虚拟机栈是线程私有的，每个线程都有自己的栈，用于存储方法调用时的栈帧。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NameAndType&lt;/code&gt;条目将一个字段或方法的名称（UTF-8字符串）和其描述符（UTF-8字符串）关联起来，以便在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Fieldref&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Methodref&lt;/code&gt;中引用。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;getfield&lt;/code&gt;指令用于从操作数栈顶的对象引用中，获取指定实例字段的值并将其压入操作数栈。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_FINAL&lt;/code&gt;标志表示该类不能被继承，这与Java源代码中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;final&lt;/code&gt;关键字修饰类是一致的。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D，垃圾回收器自动识别并回收堆中不再被程序引用的对象所占用的内存空间，从而防止内存泄漏和提高内存利用率。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D，Java虚拟机栈是线程私有的，每个方法调用都会创建一个栈帧，栈帧中包含局部变量表和操作数栈。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;C , &lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250604164928254.png&quot; alt=&quot;image-20250604164928254&quot; style=&quot;zoom:50%;&quot; /&gt;
+      &lt;blockquote&gt;
+
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;`Methodref`通过`Class`条目指定方法所属的类，通过`NameAndType`条目指定方法的名称和描述符。
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/blockquote&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B ,&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_STATIC&lt;/code&gt;标志表示该方法是静态方法，可以直接通过类名调用，不需要创建对象实例。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B , &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dup&lt;/code&gt;指令用于复制操作数栈顶的一个或两个字（根据具体指令类型），并将其副本压入栈顶，常用于&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;new&lt;/code&gt;指令之后来为构造器提供对象引用。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B ,这是Java应用程序的入口方法，它接受一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;String&lt;/code&gt;数组作为参数，并且没有返回值，与描述符完全匹配。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B , 方法正常返回的典型操作是销毁并弹出其对应的栈帧，将控制权返回给调用者。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D ,&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Class&lt;/code&gt;类型的常量池条目用于表示一个类或接口的全限定名，它会指向一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Utf8&lt;/code&gt;条目来存储实际的名称字符串。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;D , &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;putstatic&lt;/code&gt;指令用于从操作数栈顶弹出一个值，并将其存储到指定的静态字段中&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;B , &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ACC_SYNCHRONIZED&lt;/code&gt;标志表示该方法是同步的，JVM会在方法进入时自动获取对象监视器，并在方法退出时释放。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;D ,  类加载机制：加载，链接（验证，准备，解析），初始化；类的生命周期：加载，链接，初始化，使用，卸载。&lt;/li&gt;
+  &lt;/ol&gt;
+
+&lt;/blockquote&gt;
+
+</description>
+        <pubDate>Thu, 05 Jun 2025 00:00:00 +0000</pubDate>
+        <link>https://kirsten-1.github.io/2025/06/05/classfileformat/</link>
+        <guid isPermaLink="true">https://kirsten-1.github.io/2025/06/05/classfileformat/</guid>
+        
+        <category>jvm</category>
+        
+        
+      </item>
     
       <item>
         <title>java闭包</title>
@@ -4334,599 +5817,6 @@ eval rate:            78.15 tokens/s
         <pubDate>Sat, 29 Mar 2025 00:00:00 +0000</pubDate>
         <link>https://kirsten-1.github.io/2025/03/29/%E7%AE%97%E6%B3%95018/</link>
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/29/%E7%AE%97%E6%B3%95018/</guid>
-        
-        <category>算法</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>016 双端队列-力扣641-双链表和固定数组实现</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
-&lt;/script&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/design-circular-deque/&quot;&gt;641. 设计循环双端队列&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;1-双端队列介绍&quot;&gt;1 双端队列介绍&lt;/h1&gt;
-
-&lt;p&gt;既能头出也能头入，既能尾出也能尾入。&lt;/p&gt;
-
-&lt;h1 id=&quot;2-双链表实现双端队列&quot;&gt;2 双链表实现双端队列&lt;/h1&gt;
-
-&lt;p&gt;我自己预先写了一个解法：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250325222502307.png&quot; alt=&quot;image-20250325222502307&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyCircularDeque&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;prev&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maxN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MyCircularDeque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;maxN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;insertFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;prev&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;insertLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;prev&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;deleteFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;prev&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;deleteLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newLast&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;prev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newLast&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;prev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getRear&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maxN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**
- * Your MyCircularDeque object will be instantiated and called as such:
- * MyCircularDeque obj = new MyCircularDeque(k);
- * boolean param_1 = obj.insertFront(value);
- * boolean param_2 = obj.insertLast(value);
- * boolean param_3 = obj.deleteFront();
- * boolean param_4 = obj.deleteLast();
- * int param_5 = obj.getFront();
- * int param_6 = obj.getRear();
- * boolean param_7 = obj.isEmpty();
- * boolean param_8 = obj.isFull();
- */&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;可以直接用LinkedList实现的，下面是代码：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;注：其实LinkedList底部就是Node&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250325224123879.png&quot; alt=&quot;image-20250325224123879&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyCircularDeque&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Deque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MyCircularDeque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LinkedList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;insertFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;offerFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;insertLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;offerLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;deleteFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;pollFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;deleteLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;pollLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;peekFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getRear&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;peekLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**
- * Your MyCircularDeque object will be instantiated and called as such:
- * MyCircularDeque obj = new MyCircularDeque(k);
- * boolean param_1 = obj.insertFront(value);
- * boolean param_2 = obj.insertLast(value);
- * boolean param_3 = obj.deleteFront();
- * boolean param_4 = obj.deleteLast();
- * int param_5 = obj.getFront();
- * int param_6 = obj.getRear();
- * boolean param_7 = obj.isEmpty();
- * boolean param_8 = obj.isFull();
- */&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;可见在这道题的测试用例上，不如自己实现Node更快。&lt;/p&gt;
-
-&lt;p&gt;但是这种直接用内部API的方法写起来不需要费什么脑子。&lt;/p&gt;
-
-&lt;h1 id=&quot;3-固定数组实现双端队列&quot;&gt;3 固定数组实现双端队列&lt;/h1&gt;
-
-&lt;p&gt;题目一般会说清楚双端队列的大小，或者同时在这个队列中上限会有多少个，或者说明某一些操作会有至多多少次。&lt;/p&gt;
-
-&lt;p&gt;此时就可以用动态数组实现。&lt;/p&gt;
-
-&lt;p&gt;下面计算位置我用了取模运算，不用这个也可以，就用下面的逻辑：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;头插：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;l = l == 0 ? (limit - 1) : (l - 1);&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;尾插：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;r = r == limit - 1 ? 0 : (r + 1);&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;头删：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;l = (l == limit - 1) ? 0 : (l + 1);&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;尾删：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;r = r == 0 ? (limit - 1) : (r - 1);&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250326213630600.png&quot; alt=&quot;image-20250326213630600&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyCircularDeque&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;MyCircularDeque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;deque&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;insertFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;deque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;insertLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;deque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;deleteFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;deleteLast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFront&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getRear&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deque&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isFull&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;limit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;cm&quot;&gt;/**
- * Your MyCircularDeque object will be instantiated and called as such:
- * MyCircularDeque obj = new MyCircularDeque(k);
- * boolean param_1 = obj.insertFront(value);
- * boolean param_2 = obj.insertLast(value);
- * boolean param_3 = obj.deleteFront();
- * boolean param_4 = obj.deleteLast();
- * int param_5 = obj.getFront();
- * int param_6 = obj.getRear();
- * boolean param_7 = obj.isEmpty();
- * boolean param_8 = obj.isFull();
- */&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Wed, 26 Mar 2025 00:00:00 +0000</pubDate>
-        <link>https://kirsten-1.github.io/2025/03/26/%E7%AE%97%E6%B3%95016/</link>
-        <guid isPermaLink="true">https://kirsten-1.github.io/2025/03/26/%E7%AE%97%E6%B3%95016/</guid>
         
         <category>算法</category>
         
