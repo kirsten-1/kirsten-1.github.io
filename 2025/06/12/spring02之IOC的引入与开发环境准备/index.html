@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="ollama工具-自定义模型 - Hilda的博客 | Your genius girlfriend's blog">
+        content="spring6-IOC/DI的引入与开发环境的准备 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-04-07T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-06-12T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="ollama工具">
+    <meta property="article:tag" content="spring6">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/04/07/Ollama%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/06/12/spring02%E4%B9%8BIOC%E7%9A%84%E5%BC%95%E5%85%A5%E4%B8%8E%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>ollama工具-自定义模型 - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>spring6-IOC/DI的引入与开发环境的准备 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/04/07/Ollama%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/06/12/spring02%E4%B9%8BIOC%E7%9A%84%E5%BC%95%E5%85%A5%E4%B8%8E%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -252,13 +252,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7" title="ollama工具">ollama工具</a>
+                        <a class="tag" href="/archive/?tag=spring6" title="spring6">spring6</a>
                         
                     </div>
-                    <h1>ollama工具-自定义模型</h1>
+                    <h1>spring6-IOC/DI的引入与开发环境的准备</h1>
                     
-                    <h2 class="subheading">这篇博客介绍了如何使用Ollama的Modelfile定制化模型。通过在Modelfile中指定基础模型、调整temperature等参数和设置SYSTEM系统提示，可以使用ollama create命令创建个性化的模型，然后运行交互。</h2>
-                    <span class="meta">Posted by Hilda on April 7, 2025</span>
+                    <h2 class="subheading">Spring 6 是一个轻量级开源框架，基于 JDK 17 和 Jakarta EE 9+，以 IoC/DI 和 AOP 为核心，管理 Bean 生命周期和依赖关系，提供事务、AOP 等模块。本篇聚焦 IoC/DI，介绍其概念、优势及开发环境搭建。</h2>
+                    <span class="meta">Posted by Hilda on June 12, 2025</span>
                 </div>
             </div>
         </div>
@@ -288,130 +288,80 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<p>Ollama中允许用户基于现有模型进行定制化设置，如：调整模型推理参数、设置提示模版等，自定义模型需要创建一个Modelfile文件，在文件中设置参数和提示模版相关内容，如下：</p>
+<p>前一节介绍了一些spring相关的引入，例如spring的优势，spring的发展历程（Spring6最重要的就是基线更新，JDK17以及命名空间变成Jakarta），Spring的模块介绍（比如核心容器实现Bean对象生命周期和依赖关系的管理，实现IOC/DI，还有事务等等…）</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-</pre></td><td class="rouge-code"><pre>FROM llama3.2
+<p>现在聚焦于Spring的IOC/DI的学习，本篇笔记专注于：理解IOC/DI是什么，以及为了实现IOC/DI的练习，提前准备好开发的环境。</p>
 
-# set the temperature to 1 [higher is more creative, lower is more coherent]，范围0-1
-PARAMETER temperature 1
+<hr />
 
-# set the system message
-SYSTEM """
-You are Mario from Super Mario Bros. Answer as Mario, the assistant, only.
-"""
+<h1 id="1iocdi的引入--概念的解释辨析">1.IOC/DI的引入- 概念的解释辨析</h1>
 
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>很多视频/书籍都喜欢把IOC和DI两者做区分，但是其实<strong>IoC（Inversion of Control，控制反转）和 DI（Dependency Injection，依赖注入）</strong>是一个东西，他们是描述同一个东西的不同的名称而已。</p>
 
-<p>比如我下载了一个llama 3.2 3b的模型（内存有限）</p>
+<p>首先：</p>
+
+<p>IOC：控制反转指的是<strong>创建对象的权利，或者说对对象的控制权，从开发者编写的 Java 代码中转移到了 Spring 容器。</strong> 传统上，当一个对象需要使用另一个对象时，开发者会手动使用 <code class="language-plaintext highlighter-rouge">new</code> 关键字来创建这个被依赖的对象。而在 IoC 的思想下，开发者不再需要这样做。Spring 容器会负责对象的创建、配置和生命周期管理。</p>
 
 <blockquote>
-  <p>备注，如果觉得下载太慢，可以Control+C 先退出，然后重新执行命令。之前下载过的还有，但是重新退出又安装可以提升下载速率。</p>
+  <p>直白来说：【对象的创建、依赖关系的组装及其生命周期的管理权】这个控制权被反转了，转移到由容器自动化管理。</p>
 </blockquote>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ollama run llama3.2:3b
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>DI：由于“控制反转”这个概念相对抽象，2004 年，著名软件大师 Martin Fowler 提出了一个更具描述性的新名称：“依赖注入”。<strong>依赖注入明确描述了“被注入对象依赖 IoC 容器来配置依赖对象”</strong>。简单来说，当 Spring 容器创建好某个对象（这个对象就是“依赖对象”）后，它会将这个依赖对象自动地“注入”到那些需要它的地方（即“被注入对象”）。</p>
 
-<p>后续基于此模型个性化我自己的模型。</p>
+<p>——一句话理解就是：【<strong>创建对象及对象之间依赖关系的管理权，都交由 Spring 容器来完成。</strong> 】</p>
 
-<p>准备一个Modelfile:</p>
+<p>开发者无需关心对象的创建过程，只需声明它们之间的依赖关系，Spring 容器就会在运行时自动满足这些依赖。</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-</pre></td><td class="rouge-code"><pre>FROM llama3.2:3b
+<p>那么这一点是怎么做的呢？</p>
 
-# set the temperature to 1 [higher is more creative, lower is more coherent]，范围0-1
-PARAMETER temperature 0.2
+<p><strong>工作原理：</strong> Spring 容器在启动时，会读取开发者提供的配置信息（例如 XML 配置或注解），然后使用【反射】机制创建好相应的对象，并将这些对象存储在一个内部的集合（通常可以理解为一个 <code class="language-plaintext highlighter-rouge">Map</code> 集合，数据结构就是键值对）中。当应用程序代码需要某个对象时，它不再通过 <code class="language-plaintext highlighter-rouge">new</code> 来创建，而是向 Spring 容器“索取”（通过 ID 或类型），容器就会将已经创建并管理好的对象提供给它。</p>
 
-# set the system message
-SYSTEM """
-你的名字是“小奶龙”，你将以生动有趣的形式回答你擅长的领域————计算机与软件开发，算法。提供深入且易于理解的解答。请你每句话都以“真是我的小可爱，”开头。
-"""
+<hr />
 
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>除了这些，再解释2个概念：</p>
+
+<p>【1】容器Container：在 Spring 框架中，<strong>容器是放置所有被管理对象的“场所”或“载体”。</strong> 它是 IoC/DI 机制的实现者，负责管理应用程序中组件的生命周期和依赖关系。</p>
+
+<ul>
+  <li>Spring 容器的本质是一个复杂的软件组件，其核心是一个<strong>全局的 <code class="language-plaintext highlighter-rouge">Map</code> 对象</strong>（或类似的内部数据结构）。这个 <code class="language-plaintext highlighter-rouge">Map</code> 中存储了所有被 Spring 容器管理的对象实例。</li>
+  <li>在 Spring 中，容器通常指的是 <strong><code class="language-plaintext highlighter-rouge">ApplicationContext</code> 接口及其子接口或实现类</strong>。<code class="language-plaintext highlighter-rouge">ApplicationContext</code> 提供了更丰富的功能，如国际化、事件传播、资源加载等，是访问和管理 Spring Bean 的主要入口点。早期的 Spring 容器还有 <code class="language-plaintext highlighter-rouge">BeanFactory</code>，但 <code class="language-plaintext highlighter-rouge">ApplicationContext</code> 是 <code class="language-plaintext highlighter-rouge">BeanFactory</code> 的超集，提供了更多企业级功能。</li>
+</ul>
+
+<p>【2】Bean:在 Spring 容器中，<strong>所有被 Spring 容器管理的对象都被称为 Bean</strong>。如果特指其中的一个对象，则称为“一个 Bean”。</p>
+
+<ul>
+  <li>Bean 的创建、配置、生命周期（初始化、使用、销毁）都由 Spring 容器管理</li>
+  <li>Bean 通常代表应用程序中的一个功能模块或组件，例如一个 Service 类、一个 Dao 类、一个 Controller 类等。</li>
+  <li>Bean 可以通过 XML 文件、Java 配置类（<code class="language-plaintext highlighter-rouge">@Configuration</code> 和 <code class="language-plaintext highlighter-rouge">@Bean</code> 注解）或组件扫描（<code class="language-plaintext highlighter-rouge">@Component</code>、<code class="language-plaintext highlighter-rouge">@Service</code>、<code class="language-plaintext highlighter-rouge">@Repository</code>、<code class="language-plaintext highlighter-rouge">@Controller</code> 等注解）来定义和注册到 Spring 容器中。</li>
+</ul>
 
 <blockquote>
-  <p>备注：temperature值越高，创造性越强；值越低，连贯性越强</p>
+  <p>可以这样理解这三者之间的关系：开发者将需要 Spring 管理的<strong>对象（Bean）</strong>的定义告知给 <strong>Spring 容器</strong>，然后容器负责<strong>反转控制（IoC）</strong>，即自行创建和管理这些 Bean，并在 Bean 之间需要协作时，自动地将一个 Bean <strong>注入（DI）</strong> 到另一个 Bean 中，从而实现了松耦合的应用程序架构。</p>
 </blockquote>
 
-<p>然后在终端中指定Modelfile创建并运行模型，命令如下：</p>
+<h1 id="2使用iocdi的好处">2.使用IOC/DI的好处</h1>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ollama create my_llama -f C:\Modelfile
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>Spring IoC/DI使用后可以管理项目中相关对象，让对象管理的事情和业务分离（解耦）。同时程序员也不管理对象的依赖关系，所有的依赖关系交给Spring容器进行管理。</p>
 
-<blockquote>
-  <p>备注：</p>
+<p>没有使用spring之前：</p>
 
-  <ul>
-    <li>my_llama是一个自定义的名字</li>
-    <li>` -f`后面跟上Modelfile的路径。注意文件的名字就叫Modelfile</li>
-  </ul>
-</blockquote>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/Spring-22.png" alt="" /></p>
 
-<p>创建很快：</p>
+<p>使用spring-IoC/DI以后：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407165518452.png" alt="image-20250407165518452" style="zoom:50%;" /></p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/Spring-23.png" alt="" /></p>
 
-<p>查看先有的模型：</p>
+<p>以后如果改变实现类，只需要修改配置文件即可，不需要去java代码中操作了。</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre>ollama list
-NAME               ID              SIZE      MODIFIED
-my_llama:latest    f63bda3ce68c    2.0 GB    51 seconds ago
-llama3.2:3b        a80c4f17acd5    2.0 GB    5 minutes ago
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>要注意我们改都是改实现类，不会改接口，接口是规范</p>
 
-<p>查看<code class="language-plaintext highlighter-rouge">my_llama:latest</code>的详细信息：</p>
+<p>Spring IoC/DI 的使用使得项目中<strong>对象管理</strong>（对象的创建、组装、生命周期）的职责与<strong>业务逻辑</strong>完全分离。在没有 Spring 之前，开发者需要在业务代码中手动 <code class="language-plaintext highlighter-rouge">new</code> 对象并管理它们的依赖关系，这导致业务代码与对象管理细节紧密耦合。引入 Spring 后，程序员不再需要亲自管理对象的依赖关系，所有的依赖关系都交由 <strong>Spring 容器进行管理</strong>。</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ollama show my_llama:latest
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>如果通过代码举例，可以看下面的例子：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407165630596.png" alt="image-20250407165630596" style="zoom:50%;" /></p>
+<p><strong>没有使用 Spring 之前：</strong></p>
 
-<p>创建完成后，就可以运行：</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ollama run my_llama
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407165743738.png" alt="image-20250407165743738" style="zoom:50%;" /></p>
-
-<blockquote>
-  <p>可能领域是计算机，所以看不出答案形式有多么生动有趣。</p>
-
-  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407165857395.png" alt="image-20250407165857395" style="zoom:50%;" /></p>
-</blockquote>
-
-<p>更多模型调试的参数及用法请看官方文档：</p>
-
-<p>https://github.com/ollama/ollama/blob/main/docs/modelfile.md</p>
-
-<p>参数补充：</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -424,20 +374,168 @@ llama3.2:3b        a80c4f17acd5    2.0 GB    5 minutes ago
 11
 12
 13
-</pre></td><td class="rouge-code"><pre>top_k：控制生成时考虑的词汇范围（越高越多样，默认 40）。
+</pre></td><td class="rouge-code"><pre><span class="c1">// 假设 Service 层需要 Dao 层对象</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PeopleServiceImpl</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">PeopleDao</span> <span class="n">peopleDao</span><span class="o">;</span>
 
-PARAMETER top_k 50
+    <span class="kd">public</span> <span class="nf">PeopleServiceImpl</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 需要手动创建 Dao 对象，耦合性高</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">peopleDao</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PeopleDaoImpl</span><span class="o">();</span>
+    <span class="o">}</span>
 
-top_p：核采样参数（值越小越聚焦，默认 0.9）。
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">peopleDao</span><span class="o">.</span><span class="na">queryData</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-PARAMETER top_p 0.8
+<p>这种方式的缺点是，如果 <code class="language-plaintext highlighter-rouge">PeopleDaoImpl</code> 改变为 <code class="language-plaintext highlighter-rouge">PeopleDaoHibernateImpl</code>，那么 <code class="language-plaintext highlighter-rouge">PeopleServiceImpl</code> 的代码也必须修改。</p>
 
-repeat_penalty：减少重复生成（默认 1.1，值越大越惩罚重复）。
+<p><strong>使用 Spring-IoC/DI 以后：</strong></p>
 
-PARAMETER repeat_penalty 1.2
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="c1">// Spring 会自动注入 Dao 对象</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PeopleServiceImpl</span> <span class="o">{</span>
+    <span class="c1">// 只需要声明依赖，Spring 会在运行时注入具体的实现</span>
+    <span class="kd">private</span> <span class="nc">PeopleDao</span> <span class="n">peopleDao</span><span class="o">;</span>
 
+    <span class="c1">// 通过构造器、Setter 方法或字段注解实现依赖注入</span>
+    <span class="kd">public</span> <span class="nf">PeopleServiceImpl</span><span class="o">(</span><span class="nc">PeopleDao</span> <span class="n">peopleDao</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">peopleDao</span> <span class="o">=</span> <span class="n">peopleDao</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">// 或者使用 @Autowired 注解</span>
+    <span class="c1">// @Autowired</span>
+    <span class="c1">// private PeopleDao peopleDao;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">peopleDao</span><span class="o">.</span><span class="na">queryData</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>通过 Spring IoC/DI，开发者只需在配置文件（或通过注解）中声明 <code class="language-plaintext highlighter-rouge">PeopleServiceImpl</code> 依赖于 <code class="language-plaintext highlighter-rouge">PeopleDao</code> 接口的具体实现，Spring 容器就会在运行时自动将 <code class="language-plaintext highlighter-rouge">PeopleDaoImpl</code>（或任何其他 <code class="language-plaintext highlighter-rouge">PeopleDao</code> 的实现）注入到 <code class="language-plaintext highlighter-rouge">PeopleServiceImpl</code> 中。</p>
+
+<p>以后如果需要改变 <code class="language-plaintext highlighter-rouge">PeopleDao</code> 的具体实现类，例如从 <code class="language-plaintext highlighter-rouge">PeopleDaoImpl</code> 切换到 <code class="language-plaintext highlighter-rouge">PeopleDaoMybatisImpl</code>，只需要<strong>修改 Spring 的配置文件或 Java 配置类</strong>即可，而无需去改动业务 Java 代码。这大大降低了系统变更的风险和成本。</p>
+
+<h1 id="3iocdi的具体使用场景">3.IOC/DI的具体使用场景</h1>
+
+<p>IoC/DI 的主要作用就是<strong>管理对象的实例化和对象之间依赖关系</strong>。项目中以前需要自己实例化的各种<strong>层对象</strong>、以及需要自己实例化的<strong>框架或工具包的入口类</strong>，都可以交给 Spring 容器进行管理。</p>
+
+<ul>
+  <li><strong>层对象：</strong> 比如 <code class="language-plaintext highlighter-rouge">PeopleMapper</code> 接口的代理对象（通常由 Mybatis 生成并与 Spring 集成）、<code class="language-plaintext highlighter-rouge">PeopleDaoImpl</code>（数据访问层实现类）、<code class="language-plaintext highlighter-rouge">PeopleServiceImpl</code>（业务逻辑层实现类）、<code class="language-plaintext highlighter-rouge">PeopleController</code>（控制层类）等这些不同层中的普通对象都可以交给 Spring 容器进行管理。这些放入到容器中的对象可以相互之间直接声明依赖，由 Spring 负责注入。</li>
+  <li><strong>框架入口类：</strong> 像 <code class="language-plaintext highlighter-rouge">SqlSessionFactory</code>（Mybatis 的核心工厂类）、<code class="language-plaintext highlighter-rouge">Hibernate SessionFactory</code>（Hibernate 的核心工厂类）、<code class="language-plaintext highlighter-rouge">DataSource</code>（数据库连接池）等这些第三方框架或工具包的入口类，它们通常需要复杂的初始化过程，也都可以交给 Spring 容器进行统一管理。</li>
+</ul>
+
+<p><strong>需要注意的特例：</strong> 需要注意的是，并非所有对象都能被 Spring 容器管理。例如，<strong><code class="language-plaintext highlighter-rouge">Servlet</code> 只能被 Tomcat 或其他 Web 容器管理</strong>（由 Tomcat 帮助实例化和创建的），所以 Spring 容器是无法直接管理 <code class="language-plaintext highlighter-rouge">Servlet</code> 的生命周期的。然而，<code class="language-plaintext highlighter-rouge">Servlet</code> 可以在其内部通过 Spring 的 API 从 Spring 容器中<strong>取出</strong>它所需要的对象（即 Bean），从而实现业务逻辑的解耦。这体现了 Spring 容器的强大集成能力和灵活性。</p>
+
+<h1 id="4开发环境的搭建">4.开发环境的搭建</h1>
+
+<p>注意：JDK17，maven起码3.6+</p>
+
+<p>目前spring版本（最新的GA版本）：<code class="language-plaintext highlighter-rouge">6.2.7</code></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250612222754936.png" alt="image-20250612222754936" style="zoom:50%;" /></p>
+
+<p>实现案例：创建Person类，让Spring帮我们管理对象。</p>
+
+<p>在`pom.xml中添加spring的依赖。</p>
+
+<p>Spring项目的最基本依赖包含：</p>
+
+<ul>
+  <li>spring-context.jar。spring上下文依赖，它依赖了下面的四个jar。</li>
+  <li>spring-core.jar。Spring 核心jar包。它依赖了spring-jcl.jar</li>
+  <li>spring-aop.jar。Spring AOP面向切面编程的基本支持。</li>
+  <li>spring-expression.jar。Spring的表达式语言支持。</li>
+  <li>spring-beans.jar。Spring容器的bean管理，创建对象非常重要的包。</li>
+  <li>spring-jcl.jar。内置的日志包，Spring 4版本时使用的还是common-logging.jar呢，但是从5开始Spring自己对日志进行了封装。</li>
+</ul>
+
+<p><strong>但是在Maven项目中想要使用Spring框架只需要在项目中导入spring-context就可以了，其他的jar包根据Maven依赖传递性都可以导入进来。</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">"http://maven.apache.org/POM/4.0.0"</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+  <span class="na">xsi:schemaLocation=</span><span class="s">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+
+  <span class="nt">&lt;groupId&gt;</span>com.kirsten<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>IOCProject01<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;packaging&gt;</span>jar<span class="nt">&lt;/packaging&gt;</span>
+
+  <span class="nt">&lt;name&gt;</span>IOCProject01<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;url&gt;</span>http://maven.apache.org<span class="nt">&lt;/url&gt;</span>
+
+  <span class="nt">&lt;properties&gt;</span>
+    <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+  <span class="nt">&lt;/properties&gt;</span>
+
+  <span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.springframework<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>spring-context<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>6.2.7<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>3.8.1<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
 
 </pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250612223042027.png" alt="image-20250612223042027" style="zoom:50%;" /></p>
 
 
 
@@ -445,19 +543,12 @@ PARAMETER repeat_penalty 1.2
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/04/07/Ollama%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" data-toggle="tooltip" data-placement="top" title="ollama工具-下载安装快速上手">
+                        <a href="/2025/06/12/spring01%E5%9F%BA%E7%A1%80/" data-toggle="tooltip" data-placement="top" title="spring6-基础">
                         Previous<br>
-                        <span>ollama工具-下载安装快速上手</span>
+                        <span>spring6-基础</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/05/12/Java%E9%97%AD%E5%8C%85/" data-toggle="tooltip" data-placement="top" title="java闭包">
-                        Next<br>
-                        <span>java闭包</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
