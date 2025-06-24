@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="print函数与转义字符 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-06-24T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="python基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/06/24/python%E5%9F%BA%E7%A1%8001print%E5%87%BD%E6%95%B0%E4%B8%8E%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>print函数与转义字符 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/06/24/python%E5%9F%BA%E7%A1%8001print%E5%87%BD%E6%95%B0%E4%B8%8E%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=python%E5%9F%BA%E7%A1%80" title="python基础">python基础</a>
+                        
+                    </div>
+                    <h1>print函数与转义字符</h1>
+                    
+                    <h2 class="subheading">本博客介绍了Python由Guido van Rossum创建，适用于AI、爬虫等领域的特性及开发环境搭建（如PyCharm配置）。内容涵盖print()输出、转义字符、文件操作，并通过任务展示天气预报、机票购买和地铁1号线运行图的代码实现。</h2>
+                    <span class="meta">Posted by Hilda on June 24, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<blockquote>
+  <p>本系列主要是觉得自己对于python语言没有java那么熟悉，借着2025暑期的充裕时间，打算好好详细学习下机器学习、深度学习等。所以第一步就是把python语言的基础打好。</p>
+</blockquote>
+
+<h1 id="python是什么">python是什么</h1>
+
+<p>python是由<code class="language-plaintext highlighter-rouge">Guido van Rossum</code>创造，1989年首次发布。对于不会编程的小伙伴来说，python无疑是快速上手的最佳编程语言。如今AI（特别是大模型）处于风口，python也因此非常热门。除了AI领域（机器学习，深度学习，大模型等等），AI还在爬虫、数据科学、办公自动化、自动化运维、量化交易、数据挖掘、推荐算法、搜索算法等领域应用颇多。</p>
+
+<p>python虽然在网站开发、游戏开发应用并不是很多，但是也有比较完善的生态。</p>
+
+<p>python是一门解释型语言，这点与java，cpp都不同，可以简单理解为：python是执行一行输出一行的。同样是解释型语言的还有javascript。</p>
+
+<p>python与java一样，属于面向对象的编程语言。在python中，万事万物皆对象。</p>
+
+<h1 id="python开发环境的搭建">python开发环境的搭建</h1>
+
+<p>关于python解释器的下载、Jupyter notebook、pycharm等等的下载网上教程颇多，不再赘述。此处记录一些个人个性化配置的内容，便于翻阅调整。</p>
+
+<p>首先在pycharm中如果想要每次创建一个python文件都有时间、创建者等模版信息，需要在下面内容中调整：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622152933683.png" alt="image-20250622152933683" style="zoom:50%;" /></p>
+
+<p>效果就是这样：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622153008003.png" alt="image-20250622153008003" style="zoom:50%;" /></p>
+
+<h1 id="python的输出函数print">python的输出函数<code class="language-plaintext highlighter-rouge">print()</code></h1>
+
+<ul>
+  <li>
+    <p>print函数能输出什么？</p>
+
+    <ul>
+      <li>数字、字符串、表达式</li>
+    </ul>
+  </li>
+  <li>
+    <p>print函数能输出到哪里？</p>
+
+    <ul>
+      <li>
+        <p>显示器（控制台/终端）</p>
+      </li>
+      <li>
+        <p>文件</p>
+
+        <ul>
+          <li>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c1"># 输出到文件
+# a+：如果文件不存在，创建文件， 如果文件存在，那么追加（原先有的内容不会删除）
+</span><span class="n">fp</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">/Users/apple/Documents/PythonWorkSpace/PythonBasicWorkSpace/PythonProject01/test1.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">a+</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello kirsten-1</span><span class="sh">"</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">fp</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li>
+            <p>执行结果：</p>
+
+            <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622162329644.png" alt="image-20250622162329644" style="zoom:50%;" /></p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>换行输出与不换行输出？</p>
+
+    <ul>
+      <li>
+        <p>上面都是换行输出，下面是不换行输出：</p>
+      </li>
+      <li>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>  <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">111</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">123</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">你好</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+      </li>
+      <li><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622162446143.png" alt="image-20250622162446143" style="zoom:50%;" /></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="转义字符和原字符">转义字符和原字符</h1>
+
+<p>转义字符（Escape Characters）是以反斜杠 <code class="language-plaintext highlighter-rouge">\</code> 开头的特殊字符序列，用于表示某些无法直接输入或显示的字符（如换行、制表符）或对特殊字符（如引号）进行转义处理。转义字符在字符串中起到特殊作用，广泛用于格式化输出、文件处理和正则表达式等场景。</p>
+
+<p>python中的转义字符有很多，比如：</p>
+
+<p><code class="language-plaintext highlighter-rouge">\n</code>：换行</p>
+
+<p><code class="language-plaintext highlighter-rouge">\t</code>：制表符，这个看下面图需要详细了解</p>
+
+<p>以4个为一组，如果前面不满4个，那么就留出几个空格，满了4个就留出4个空格。</p>
+
+<p>比如下面代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">hello</span><span class="se">\t</span><span class="s">world</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">helloooo</span><span class="se">\t</span><span class="s">world</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622170622274.png" alt="image-20250622170622274" style="zoom:50%;" /></p>
+
+<p>如何理解这个结果？这个图清楚的解释了：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622171145312.png" alt="image-20250622171145312" style="zoom:50%;" /></p>
+
+<p>通常4 或 8 个空格（具体取决于环境）。上面是4个空格为一个单位。</p>
+
+<p><code class="language-plaintext highlighter-rouge">\b</code>：back，表示回退一个。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello</span><span class="se">\b</span><span class="s">world</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 输出Hellworld
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>输出结果少了一个o，就是回退了一个位置</p>
+
+<p><code class="language-plaintext highlighter-rouge">\r</code>：将光标移到当前行的开头，覆盖之前的输出（常用于 Windows 文本文件的换行 \r\n）。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello</span><span class="se">\r</span><span class="s">world</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出world
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">\\</code>：相当于<code class="language-plaintext highlighter-rouge">\</code>,比如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">http:</span><span class="se">\\\\</span><span class="s">www.baidu.com</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出http:\\www.baidu.com
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>下面两个同理。</p>
+
+<p><code class="language-plaintext highlighter-rouge">\'</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">\"</code></p>
+
+<hr />
+
+<p>如果希望引号中的内容原样输出，不要转义，那么可以这么写：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sa">r</span><span class="sh">"</span><span class="s">http:\\\\www.baidu.com</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出http:\\\\www.baidu.com
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">R</span><span class="sh">"</span><span class="s">http:\\\\www.baidu.com</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出http:\\\\www.baidu.com
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>但是要注意上面这么写不能引号中<code class="language-plaintext highlighter-rouge">\</code>(单个的反斜杠)结尾，不然会报错：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622171704647.png" alt="image-20250622171704647" style="zoom:50%;" /></p>
+
+<p>因为如果字符串以 \ 结束，解析器会认为 \ 正在转义下一个字符（即使是原始字符串）。在原始字符串中，\ 虽然不触发转义，但语法解析器在扫描引号前仍会检查 \ 是否合法。当 \ 后直接跟结束引号（如 r”abc"），解析器认为 \ 试图转义 “，但在原始字符串中，" 不是合法的转义序列，导致语法错误。</p>
+
+<p>如果需要在原始字符串中表示以单个反斜杠 \ 结尾的内容，那么用两个<code class="language-plaintext highlighter-rouge">\</code>就可以，即<code class="language-plaintext highlighter-rouge">\\</code>，或者写完<code class="language-plaintext highlighter-rouge">\</code>之后添加一个空格。</p>
+
+<p>即：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nf">print</span><span class="p">(</span><span class="sa">R</span><span class="sh">"</span><span class="s">http:\\\\www.baidu.com\ </span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出http:\\\\www.baidu.com
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">R</span><span class="sh">"</span><span class="s">http:\\\\www.baidu.com\\</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># 输出http:\\\\www.baidu.com
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="小任务1">小任务1</h1>
+
+<h2 id="任务1向文件输出奋斗成就更好的你">任务1：向文件输出‘奋斗成就更好的你‘</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">fp</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">/Users/apple/Documents/PythonWorkSpace/PythonBasicWorkSpace/PythonProject01/task1.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">a+</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">奋斗成就更好的你</span><span class="sh">"</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">fp</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>效果：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622173144224.png" alt="image-20250622173144224" style="zoom:50%;" /></p>
+
+<h2 id="任务2输出北京天气预报">任务2:输出北京天气预报</h2>
+
+<p>要求：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250622173222340.png" alt="image-20250622173222340" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>可以去https://dev.qweather.com/注册，然后创建项目和项目的凭据，得到API Key</p>
+
+<p>另外需要记录自己的API_host:在https://console.qweather.com/setting链接中查看，格式类似于<code class="language-plaintext highlighter-rouge">abcxyz.qweatherapi.com</code></p>
+
+<p>然后书写代码进行简单的测试：（下面代码中需要自己填写<code class="language-plaintext highlighter-rouge">API_host</code>和<code class="language-plaintext highlighter-rouge">api_key</code>两个参数）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/6/24  15:09
+</span>
+<span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="n">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># 需要填写这2个参数
+</span><span class="n">API_host</span> <span class="o">=</span> <span class="sh">"</span><span class="s">XXXXXXXXXXXXXXXXXX</span><span class="sh">"</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="sh">"</span><span class="s">XXXXXXXXXXXXXXXXXX</span><span class="sh">"</span>
+
+<span class="k">class</span> <span class="nc">QWEATHER</span><span class="p">:</span>
+    <span class="n">_geo_api</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://</span><span class="sh">"</span> <span class="o">+</span> <span class="n">API_host</span> <span class="o">+</span> <span class="sh">"</span><span class="s">/v2/</span><span class="sh">"</span>
+    <span class="n">_weather_api</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://</span><span class="sh">"</span> <span class="o">+</span> <span class="n">API_host</span> <span class="o">+</span> <span class="sh">"</span><span class="s">/v7/</span><span class="sh">"</span>
+    <span class="n">_weather_api_free</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://</span><span class="sh">"</span> <span class="o">+</span> <span class="n">API_host</span> <span class="o">+</span> <span class="sh">"</span><span class="s">/v7/</span><span class="sh">"</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">API_KEY</span> <span class="o">=</span> <span class="n">api_key</span>
+
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">service</span><span class="o">=</span><span class="sh">"</span><span class="s">city</span><span class="sh">"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">"</span><span class="s">lookup</span><span class="sh">"</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="sh">"</span><span class="s">北京</span><span class="sh">"</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="sh">"</span><span class="s">116.39,39.91</span><span class="sh">"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="sh">"</span><span class="s">scenic</span><span class="sh">"</span><span class="p">,</span>
+               <span class="nb">range</span><span class="o">=</span><span class="sh">"</span><span class="s">cn</span><span class="sh">"</span><span class="p">):</span>
+        <span class="n">api_type</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">service</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="sh">"</span>
+
+        <span class="n">api_params_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">"</span><span class="s">city/lookup</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">location</span><span class="sh">"</span><span class="p">:</span> <span class="n">location</span><span class="p">},</span>
+            <span class="sh">"</span><span class="s">city/top</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">range</span><span class="sh">"</span><span class="p">:</span> <span class="nb">range</span><span class="p">},</span>
+            <span class="sh">"</span><span class="s">poi/lookup</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">location</span><span class="sh">"</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span> <span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="nb">type</span><span class="p">},</span>
+            <span class="sh">"</span><span class="s">poi/range</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">location</span><span class="sh">"</span><span class="p">:</span> <span class="n">coordinate</span><span class="p">,</span> <span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="nb">type</span><span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">api_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">api_params_map</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">跳过不支持的 API 类型</span><span class="sh">"</span><span class="p">,</span> <span class="n">api_type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="c1"># 从 api_params_map 中获取对应参数
+</span>        <span class="n">params</span> <span class="o">=</span> <span class="n">api_params_map</span><span class="p">[</span><span class="n">api_type</span><span class="p">]</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">_geo_api</span><span class="si">}{</span><span class="n">api_type</span><span class="si">}</span><span class="sh">"</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">http_request_v2</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">"</span><span class="s">GET</span><span class="sh">"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="nf">headers</span><span class="p">(),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="k">def</span> <span class="nf">weather</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">service</span><span class="o">=</span><span class="sh">"</span><span class="s">weather</span><span class="sh">"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="sh">"</span><span class="s">now</span><span class="sh">"</span><span class="p">,</span> <span class="n">locationid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="sh">"</span><span class="s">116.39,39.91</span><span class="sh">"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="n">date</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">_weather_api_free</span><span class="si">}{</span><span class="n">service</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="sh">"</span>
+        <span class="k">if</span> <span class="n">service</span> <span class="ow">in</span> <span class="p">[</span><span class="sh">"</span><span class="s">historical</span><span class="sh">"</span><span class="p">]:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">_weather_api</span><span class="si">}{</span><span class="n">service</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="sh">"</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">location</span><span class="sh">"</span><span class="p">:</span> <span class="n">locationid</span> <span class="k">if</span> <span class="n">locationid</span> <span class="k">else</span> <span class="n">coordinate</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="sh">'</span><span class="s">type</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="k">if</span> <span class="n">date</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">http_request_v2</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">"</span><span class="s">GET</span><span class="sh">"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="nf">headers</span><span class="p">(),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="c1"># 生成 headers 头
+</span>    <span class="k">def</span> <span class="nf">headers</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">Content-Type</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">application/json</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">X-QW-Api-Key</span><span class="sh">'</span><span class="p">:</span> <span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">API_KEY</span><span class="si">}</span><span class="sh">'</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">headers</span>
+
+    <span class="k">def</span> <span class="nf">http_request_v2</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">"</span><span class="s">GET</span><span class="sh">"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{},</span> <span class="n">params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36</span><span class="sh">'</span><span class="p">}</span>
+        <span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">headers</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">attempts</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="sh">"</span><span class="s">GET</span><span class="sh">"</span><span class="p">:</span>
+                    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="sh">"</span><span class="s">POST</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">DELETE</span><span class="sh">"</span><span class="p">):</span>
+                    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="n">response</span><span class="p">.</span><span class="nf">raise_for_status</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+            <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nf">print</span><span class="p">([</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d %H:%M:%S</span><span class="sh">'</span><span class="p">),</span> <span class="n">attempts</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span>
+                       <span class="nf">repr</span><span class="p">(</span><span class="n">e</span><span class="p">)])</span>
+                <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="n">timeout</span> <span class="o">*</span> <span class="n">attempts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="c1"># 使用示例
+</span>    <span class="n">client</span> <span class="o">=</span> <span class="nc">QWEATHER</span><span class="p">(</span><span class="n">api_key</span><span class="p">)</span>
+    <span class="c1"># 城市天气
+</span>    <span class="c1"># periods = ["now", "3d", "7d", "10d", "15d", "30d", "24h", "72h", "168h"]
+</span>    <span class="n">periods</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">now</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">3d</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">7d</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">24h</span><span class="sh">"</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">()</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s"> - period: </span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">weather</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span> <span class="n">locationid</span><span class="o">=</span><span class="sh">'</span><span class="s">101010100</span><span class="sh">'</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>测试结果：控制台输出了很多信息：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250624151506381.png" alt="image-20250624151506381" style="zoom:50%;" /></p>
+
+<p>现在依次提取需要的信息。</p>
+
+<p>经过调试最终我得到如下代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/6/24  15:09
+</span>
+
+
+<span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="n">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># 需要填写这2个参数
+</span><span class="n">API_host</span> <span class="o">=</span> <span class="sh">"</span><span class="s">nv6r6x3txk.re.qweatherapi.com</span><span class="sh">"</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="sh">"</span><span class="s">9544100b5f4f436db7da5d3b027a5f9a</span><span class="sh">"</span>
+
+<span class="k">class</span> <span class="nc">QWEATHER</span><span class="p">:</span>
+    <span class="n">_geo_api</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://</span><span class="sh">"</span> <span class="o">+</span> <span class="n">API_host</span> <span class="o">+</span> <span class="sh">"</span><span class="s">/v2/</span><span class="sh">"</span>
+    <span class="n">_weather_api</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://</span><span class="sh">"</span> <span class="o">+</span> <span class="n">API_host</span> <span class="o">+</span> <span class="sh">"</span><span class="s">/v7/</span><span class="sh">"</span>
+    <span class="n">_weather_api_free</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://</span><span class="sh">"</span> <span class="o">+</span> <span class="n">API_host</span> <span class="o">+</span> <span class="sh">"</span><span class="s">/v7/</span><span class="sh">"</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">API_KEY</span> <span class="o">=</span> <span class="n">api_key</span>
+
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">service</span><span class="o">=</span><span class="sh">"</span><span class="s">city</span><span class="sh">"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="sh">"</span><span class="s">lookup</span><span class="sh">"</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="sh">"</span><span class="s">北京</span><span class="sh">"</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="sh">"</span><span class="s">116.39,39.91</span><span class="sh">"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="sh">"</span><span class="s">scenic</span><span class="sh">"</span><span class="p">,</span>
+               <span class="nb">range</span><span class="o">=</span><span class="sh">"</span><span class="s">cn</span><span class="sh">"</span><span class="p">):</span>
+        <span class="n">api_type</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">service</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="sh">"</span>
+
+        <span class="n">api_params_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">"</span><span class="s">city/lookup</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">location</span><span class="sh">"</span><span class="p">:</span> <span class="n">location</span><span class="p">},</span>
+            <span class="sh">"</span><span class="s">city/top</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">range</span><span class="sh">"</span><span class="p">:</span> <span class="nb">range</span><span class="p">},</span>
+            <span class="sh">"</span><span class="s">poi/lookup</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">location</span><span class="sh">"</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span> <span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="nb">type</span><span class="p">},</span>
+            <span class="sh">"</span><span class="s">poi/range</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">location</span><span class="sh">"</span><span class="p">:</span> <span class="n">coordinate</span><span class="p">,</span> <span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="nb">type</span><span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">api_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">api_params_map</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">跳过不支持的 API 类型</span><span class="sh">"</span><span class="p">,</span> <span class="n">api_type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="c1"># 从 api_params_map 中获取对应参数
+</span>        <span class="n">params</span> <span class="o">=</span> <span class="n">api_params_map</span><span class="p">[</span><span class="n">api_type</span><span class="p">]</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">_geo_api</span><span class="si">}{</span><span class="n">api_type</span><span class="si">}</span><span class="sh">"</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">http_request_v2</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">"</span><span class="s">GET</span><span class="sh">"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="nf">headers</span><span class="p">(),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="k">def</span> <span class="nf">weather</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">service</span><span class="o">=</span><span class="sh">"</span><span class="s">weather</span><span class="sh">"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="sh">"</span><span class="s">now</span><span class="sh">"</span><span class="p">,</span> <span class="n">locationid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="sh">"</span><span class="s">116.39,39.91</span><span class="sh">"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="n">date</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">_weather_api_free</span><span class="si">}{</span><span class="n">service</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="sh">"</span>
+        <span class="k">if</span> <span class="n">service</span> <span class="ow">in</span> <span class="p">[</span><span class="sh">"</span><span class="s">historical</span><span class="sh">"</span><span class="p">]:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">_weather_api</span><span class="si">}{</span><span class="n">service</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="sh">"</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">location</span><span class="sh">"</span><span class="p">:</span> <span class="n">locationid</span> <span class="k">if</span> <span class="n">locationid</span> <span class="k">else</span> <span class="n">coordinate</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="sh">'</span><span class="s">type</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="k">if</span> <span class="n">date</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">http_request_v2</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">"</span><span class="s">GET</span><span class="sh">"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="nf">headers</span><span class="p">(),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="c1"># 生成 headers 头
+</span>    <span class="k">def</span> <span class="nf">headers</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">Content-Type</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">application/json</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">X-QW-Api-Key</span><span class="sh">'</span><span class="p">:</span> <span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">API_KEY</span><span class="si">}</span><span class="sh">'</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">headers</span>
+
+    <span class="k">def</span> <span class="nf">http_request_v2</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">"</span><span class="s">GET</span><span class="sh">"</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{},</span> <span class="n">params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36</span><span class="sh">'</span><span class="p">}</span>
+        <span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">headers</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">attempts</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="sh">"</span><span class="s">GET</span><span class="sh">"</span><span class="p">:</span>
+                    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="sh">"</span><span class="s">POST</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">DELETE</span><span class="sh">"</span><span class="p">):</span>
+                    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="n">response</span><span class="p">.</span><span class="nf">raise_for_status</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+            <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nf">print</span><span class="p">([</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d %H:%M:%S</span><span class="sh">'</span><span class="p">),</span> <span class="n">attempts</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span>
+                       <span class="nf">repr</span><span class="p">(</span><span class="n">e</span><span class="p">)])</span>
+                <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="n">timeout</span> <span class="o">*</span> <span class="n">attempts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">def</span> <span class="nf">get_weekday_from_iso</span><span class="p">(</span><span class="n">iso_time_str</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    从 ISO 8601 格式或 YYYY-MM-DD 格式的日期字符串获取中文星期几。
+
+    参数:
+        iso_time_str (str): 日期字符串，例如 </span><span class="sh">'</span><span class="s">2025-06-24</span><span class="sh">'</span><span class="s"> 或 </span><span class="sh">'</span><span class="s">2025-06-24T15:13+08:00</span><span class="sh">'</span><span class="s">
+
+    返回:
+        str: 中文星期几，例如 </span><span class="sh">'</span><span class="s">星期二</span><span class="sh">'</span><span class="s">
+
+    异常:
+        ValueError: 如果输入的字符串格式不正确
+    </span><span class="sh">"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># 尝试解析输入字符串（支持 YYYY-MM-DD 和 ISO 8601 格式）
+</span>        <span class="n">dt</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">iso_time_str</span><span class="p">)</span>
+
+        <span class="c1"># 获取星期几（0=星期一，1=星期二，...，6=星期日）
+</span>        <span class="n">weekday_num</span> <span class="o">=</span> <span class="n">dt</span><span class="p">.</span><span class="nf">weekday</span><span class="p">()</span>
+
+        <span class="c1"># 映射到中文星期名称
+</span>        <span class="n">weekdays</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">星期一</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">星期二</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">星期三</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">星期四</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">星期五</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">星期六</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">星期日</span><span class="sh">'</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">weekdays</span><span class="p">[</span><span class="n">weekday_num</span><span class="p">]</span>
+    <span class="k">except</span> <span class="nb">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">无效的日期格式: </span><span class="si">{</span><span class="n">iso_time_str</span><span class="si">}</span><span class="s">, 必须为 YYYY-MM-DD 或 ISO 8601 格式, 错误: </span><span class="si">{</span><span class="nf">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_time_from_iso</span><span class="p">(</span><span class="n">iso_time_str</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    从 ISO 8601 格式的日期时间字符串提取 T 之后的时间（HH:MM）。
+
+    参数:
+        iso_time_str (str): ISO 8601 格式的日期时间字符串，例如 </span><span class="sh">'</span><span class="s">2025-06-24T16:00+08:00</span><span class="sh">'</span><span class="s">
+
+    返回:
+        str: 时间字符串，例如 </span><span class="sh">'</span><span class="s">16:00</span><span class="sh">'</span><span class="s">
+
+    异常:
+        ValueError: 如果输入的字符串格式不正确
+    </span><span class="sh">"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># 解析 ISO 8601 格式的日期时间
+</span>        <span class="n">dt</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">iso_time_str</span><span class="p">)</span>
+
+        <span class="c1"># 提取时间（HH:MM 格式）
+</span>        <span class="k">return</span> <span class="n">dt</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">"</span><span class="s">%H:%M</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">无效的 ISO 8601 日期时间格式: </span><span class="si">{</span><span class="n">iso_time_str</span><span class="si">}</span><span class="s">, 错误: </span><span class="si">{</span><span class="nf">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_short_date</span><span class="p">(</span><span class="n">date_str</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    从 YYYY-MM-DD 格式的日期字符串提取 MM/DD 格式。
+
+    参数:
+        date_str (str): 日期字符串，例如 </span><span class="sh">'</span><span class="s">2025-06-24</span><span class="sh">'</span><span class="s">
+
+    返回:
+        str: 日期字符串，例如 </span><span class="sh">'</span><span class="s">6/24</span><span class="sh">'</span><span class="s">
+
+    异常:
+        ValueError: 如果输入的字符串格式不正确
+    </span><span class="sh">"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># 解析 YYYY-MM-DD 格式的日期
+</span>        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">strptime</span><span class="p">(</span><span class="n">date_str</span><span class="p">,</span> <span class="sh">"</span><span class="s">%Y-%m-%d</span><span class="sh">"</span><span class="p">)</span>
+
+        <span class="c1"># 格式化为 MM/DD（无前导零）
+</span>        <span class="k">return</span> <span class="n">dt</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">"</span><span class="s">%-m/%-d</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># Unix/Linux
+</span>        <span class="c1"># return dt.strftime("%#m/%#d")  # Windows
+</span>    <span class="k">except</span> <span class="nb">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">无效的日期格式: </span><span class="si">{</span><span class="n">date_str</span><span class="si">}</span><span class="s">, 必须为 YYYY-MM-DD, 错误: </span><span class="si">{</span><span class="nf">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="c1"># 使用示例
+</span>    <span class="n">client</span> <span class="o">=</span> <span class="nc">QWEATHER</span><span class="p">(</span><span class="n">api_key</span><span class="p">)</span>
+
+    <span class="c1"># 得到今天、24小时、一周的天气：
+</span>    <span class="n">today_weather</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">weather</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="sh">"</span><span class="s">now</span><span class="sh">"</span><span class="p">,</span> <span class="n">locationid</span><span class="o">=</span><span class="sh">'</span><span class="s">101010100</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">h24_weather</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">weather</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="sh">"</span><span class="s">24h</span><span class="sh">"</span><span class="p">,</span> <span class="n">locationid</span><span class="o">=</span><span class="sh">'</span><span class="s">101010100</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">week_weather</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">weather</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="sh">"</span><span class="s">7d</span><span class="sh">"</span><span class="p">,</span> <span class="n">locationid</span><span class="o">=</span><span class="sh">'</span><span class="s">101010100</span><span class="sh">'</span><span class="p">)</span>
+    <span class="c1"># updateTime参数
+</span>    <span class="n">today_time</span> <span class="o">=</span> <span class="n">today_weather</span><span class="p">[</span><span class="sh">"</span><span class="s">updateTime</span><span class="sh">"</span><span class="p">]</span>
+    <span class="c1"># 转换成星期几
+</span>    <span class="nf">print</span><span class="p">(</span><span class="nf">get_weekday_from_iso</span><span class="p">(</span><span class="n">today_time</span><span class="p">),</span> <span class="sh">"</span><span class="s">今天  北京</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">------------------------------------------</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="n">hourly</span> <span class="o">=</span> <span class="n">h24_weather</span><span class="p">[</span><span class="sh">"</span><span class="s">hourly</span><span class="sh">"</span><span class="p">]</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="sh">""</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="sh">""</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">hourly</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>  <span class="c1"># 只显示前6项
+</span>            <span class="n">time</span> <span class="o">+=</span> <span class="nf">get_time_from_iso</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="sh">"</span><span class="s">fxTime</span><span class="sh">"</span><span class="p">])</span>
+            <span class="n">time</span> <span class="o">+=</span> <span class="sh">"</span><span class="se">\t</span><span class="sh">"</span>
+            <span class="n">temp</span> <span class="o">+=</span> <span class="n">item</span><span class="p">[</span><span class="sh">"</span><span class="s">temp</span><span class="sh">"</span><span class="p">]</span>
+            <span class="n">temp</span> <span class="o">+=</span> <span class="sh">"</span><span class="s">°C</span><span class="se">\t</span><span class="sh">"</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">------------------------------------------</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="n">daily</span> <span class="o">=</span> <span class="n">week_weather</span><span class="p">[</span><span class="sh">"</span><span class="s">daily</span><span class="sh">"</span><span class="p">]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">daily</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">明天</span><span class="se">\t\t</span><span class="sh">"</span><span class="p">,</span> <span class="nf">get_short_date</span><span class="p">(</span><span class="n">day</span><span class="p">[</span><span class="sh">"</span><span class="s">fxDate</span><span class="sh">"</span><span class="p">]),</span> <span class="sh">"</span><span class="se">\t</span><span class="sh">"</span><span class="p">,</span> <span class="n">day</span><span class="p">[</span><span class="sh">"</span><span class="s">tempMin</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">°C/</span><span class="sh">"</span><span class="p">,</span> <span class="n">day</span><span class="p">[</span><span class="sh">"</span><span class="s">tempMax</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">°C</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="nf">get_weekday_from_iso</span><span class="p">(</span><span class="n">day</span><span class="p">[</span><span class="sh">"</span><span class="s">fxDate</span><span class="sh">"</span><span class="p">]),</span> <span class="sh">"</span><span class="se">\t</span><span class="sh">"</span><span class="p">,</span> <span class="nf">get_short_date</span><span class="p">(</span><span class="n">day</span><span class="p">[</span><span class="sh">"</span><span class="s">fxDate</span><span class="sh">"</span><span class="p">]),</span> <span class="sh">"</span><span class="se">\t</span><span class="sh">"</span><span class="p">,</span> <span class="n">day</span><span class="p">[</span><span class="sh">"</span><span class="s">tempMin</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">°C/</span><span class="sh">"</span><span class="p">,</span> <span class="n">day</span><span class="p">[</span><span class="sh">"</span><span class="s">tempMax</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">°C</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>最终效果：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250624154941886.png" alt="image-20250624154941886" style="zoom:50%;" /></p>
+
+<h2 id="任务3机票购买界面">任务3：机票购买界面</h2>
+
+<p>最终效果是</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250624155040994.png" alt="image-20250624155040994" style="zoom:50%;" /></p>
+
+<p>这个特殊符号就不打印了。也不爬取任何信息了。就单纯打印。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/6/24  15:52
+</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+
+<span class="k">def</span> <span class="nf">add_days_to_date</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    获取当前日期并加上指定天数，返回格式为 YYYY-MM-DD 的字符串。
+
+    参数:
+        days (int): 要添加的天数，默认 5 天
+
+    返回:
+        str: 格式化后的日期字符串，例如 </span><span class="sh">'</span><span class="s">2025-06-29</span><span class="sh">'</span><span class="s">
+    </span><span class="sh">"""</span>
+    <span class="n">current_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span>
+    <span class="n">future_date</span> <span class="o">=</span> <span class="n">current_date</span> <span class="o">+</span> <span class="nf">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">future_date</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d</span><span class="sh">'</span><span class="p">)</span>
+
+
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">国内  国际·港澳台 发现低价</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">----------------------------</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">航班类型  ·单程 ·往返 ·多程（含缺口程）</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">出发城市：北京</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">到达城市：长春</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">出发日期：</span><span class="si">{</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">返回日期：</span><span class="si">{</span><span class="nf">add_days_to_date</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">----------------------------</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\t</span><span class="s">·带儿童  ·带婴儿</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\t\t</span><span class="s">[搜索]</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>最终效果：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250624155908789.png" alt="image-20250624155908789" style="zoom:50%;" /></p>
+
+<h2 id="任务4北京地铁1号线运行图">任务4：北京地铁1号线运行图</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250624160057004.png" alt="image-20250624160057004" style="zoom:50%;" /></p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">print_subway_info_only_tabs</span><span class="p">():</span>
+    <span class="c1"># 顶部信息
+</span>    <span class="n">line_info</span> <span class="o">=</span> <span class="sh">"</span><span class="s">地铁1    四惠东 → 苹果园</span><span class="sh">"</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">line_info</span><span class="p">)</span>
+
+    <span class="n">first_train</span> <span class="o">=</span> <span class="sh">"</span><span class="s">首车：05:05</span><span class="sh">"</span>
+    <span class="n">last_train_time</span> <span class="o">=</span> <span class="sh">"</span><span class="s">末车：23:30</span><span class="sh">"</span>
+    <span class="n">fare_info</span> <span class="o">=</span> <span class="sh">"</span><span class="s">票价：起步价2元</span><span class="sh">"</span>
+
+    <span class="c1"># 首车信息
+</span>    <span class="nf">print</span><span class="p">(</span><span class="n">first_train</span><span class="p">)</span>
+
+    <span class="c1"># 末车和票价信息，使用多个 \t 来尝试将其推向右侧
+</span>    <span class="c1"># 这里 \t 的数量需要你根据实际运行效果手动调整，以尽量让“票价”靠右
+</span>    <span class="c1"># 如果 \t 数量不够，票价会太靠左；如果过多，票价会被推到下一行或太远
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">last_train_time</span><span class="si">}</span><span class="se">\t\t\t</span><span class="si">{</span><span class="n">fare_info</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># &lt;-- 这里的 \t 数量是关键微调点
+</span>
+    <span class="c1"># 分隔线
+</span>    <span class="c1"># 长度无法精确控制，因为 \t 的宽度不确定，这里给一个大致长度
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">-</span><span class="sh">"</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="c1"># &lt;-- 这个长度可能需要根据你终端的视觉效果调整
+</span>
+    <span class="c1"># 站台信息数据
+</span>    <span class="n">station_numbers</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">3</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">5</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">7</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">9</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">11</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">12</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">14</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">16</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">18</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">20</span><span class="sh">"</span><span class="p">]</span>
+    <span class="n">indicators</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">═</span><span class="sh">"</span><span class="p">]</span> <span class="o">*</span> <span class="nf">len</span><span class="p">(</span><span class="n">station_numbers</span><span class="p">)</span>
+    <span class="n">station_names</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sh">"</span><span class="s">四惠东</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">大望路</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">永安里</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">东单  </span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">天安门东</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">西单  </span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">复兴门</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">木樨地</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">公主坟</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">五棵松</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">八宝山</span><span class="sh">"</span>
+    <span class="p">]</span>
+
+    <span class="c1"># 使用 \t.join() 来连接每一列的元素
+</span>    <span class="c1"># 这将使每个元素后都跟着一个制表符，从而尝试对齐到制表位
+</span>    <span class="c1"># 注意：由于字符长度不一，制表符后的空白长度会变化，导致列无法垂直对齐
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\t\t</span><span class="sh">"</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">station_numbers</span><span class="p">))</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\t\t</span><span class="sh">"</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">indicators</span><span class="p">))</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\t</span><span class="sh">"</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">station_names</span><span class="p">))</span>
+
+<span class="c1"># 调用函数打印
+</span><span class="nf">print_subway_info_only_tabs</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250624164846853.png" alt="image-20250624164846853" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/06/23/spring03IOC%E5%85%A5%E9%97%A8%E4%B8%8E%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%B9%E5%99%A8%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0/" data-toggle="tooltip" data-placement="top" title="Spring 6 IOC 入门与自定义容器模拟实现">
+                        Previous<br>
+                        <span>Spring 6 IOC 入门与自定义容器模拟实现</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/06/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F01%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%A6%82%E8%BF%B0/" data-toggle="tooltip" data-placement="top" title="设计模式概述">
+                        Next<br>
+                        <span>设计模式概述</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0085" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0064" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0070" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0076" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0078" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0085" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0086" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0086" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="2">numpy</a>
+        
+                <a data-sort="0086" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0086" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
