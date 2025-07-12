@@ -1,0 +1,2678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="python基础-文件操作和目录管理 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-12T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="python基础">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/12/python%E5%9F%BA%E7%A1%8015%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%92%8C%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>python基础-文件操作和目录管理 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/12/python%E5%9F%BA%E7%A1%8015%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%92%8C%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=python%E5%9F%BA%E7%A1%80" title="python基础">python基础</a>
+                        
+                    </div>
+                    <h1>python基础-文件操作和目录管理</h1>
+                    
+                    <h2 class="subheading">字符编码将字符转为二进制，常见格式包括ASCII、Unicode（UTF-8、UTF-16、UTF-32）、GBK等。文件读写通过操作系统句柄、缓冲区操作，支持文本/二进制模式。Python的open()函数、with语句、os模块实现文件和目录操作</h2>
+                    <span class="meta">Posted by Hilda on July 12, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1编码格式介绍">1、编码格式介绍</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250709173048003.png" alt="image-20250709173048003" style="zoom:50%;" /></p>
+
+<p>字符编码是将字符（如字母、数字、符号）转换为计算机可以存储和处理的二进制数据（字节）的过程。常见的编码格式包括ASCII、Unicode（及其实现UTF-8、UTF-16等）。理解编码对于正确处理文本数据至关重要。</p>
+
+<p>计算机只能理解二进制数据（0和1）。当我们处理文本时，需要一种方式将人类可读的字符映射到这些二进制数据上。这就是字符编码的作用。</p>
+
+<p><strong>ASCII</strong>：最早且最简单的编码标准之一。使用7位二进制数表示128个字符，包括英文字母（大小写）、数字、标点符号和一些控制字符。无法表示非英文字符，如中文、日文、德文的变音符号等。</p>
+
+<p><strong>Unicode</strong>：为了解决ASCII的局限性，Unicode应运而生。它是一个国际标准，旨在为世界上所有字符提供一个唯一的数字编码（称为码点）。Unicode本身只是一个字符集，定义了字符和码点之间的映射关系，例如字符 ‘A’ 的码点是 U+0041，字符 ‘中’ 的码点是 U+4E2D。 Unicode只是定义了每个字符的唯一数字标识，但并没有规定这些数字如何存储为字节。因此，需要不同的编码方案来将Unicode码点转换为字节序列。最常见的Unicode编码方案有：</p>
+
+<ul>
+  <li>
+    <p><strong>UTF-8 (Unicode Transformation Format - 8-bit)</strong>：最流行和推荐的Unicode编码。它使用1到4个字节来表示一个Unicode字符。ASCII字符（0-127）只占用1个字节，与ASCII兼容。节省存储空间（对于英文文本），向后兼容ASCII，并且能够表示所有Unicode字符。它是Web、Linux系统和许多现代应用程序的首选编码。</p>
+  </li>
+  <li>
+    <p><strong>UTF-16 (Unicode Transformation Format - 16-bit)</strong>：使用2或4个字节表示一个Unicode字符。在Windows系统和Java内部常用。</p>
+  </li>
+  <li>
+    <p><strong>UTF-32 (Unicode Transformation Format - 32-bit)</strong>：使用固定的4个字节表示一个Unicode字符。</p>
+
+    <p>■ <strong>优点：</strong> 查找字符速度快（因为每个字符长度固定）。</p>
+
+    <p>■ <strong>缺点：</strong> 占用大量存储空间，即使是ASCII字符也占用4个字节，因此不常用。</p>
+  </li>
+</ul>
+
+<p>其他编码格式：</p>
+
+<ul>
+  <li><strong>GBK (国标扩展)：</strong> 中国大陆常用的编码，用于表示简体中文。</li>
+  <li><strong>Big5 (大五码)：</strong> 台湾和香港常用的编码，用于表示繁体中文。</li>
+  <li><strong>Latin-1 (ISO-8859-1)：</strong> 欧洲常用，支持西欧语言的字符。</li>
+</ul>
+
+<p>● 在Python 3中，str 类型（字符串）默认是Unicode，表示抽象的字符序列。</p>
+
+<p>● bytes 类型（字节串）表示实际的二进制数据，由0到255的整数组成。</p>
+
+<p>● <strong>编码 (Encoding)：</strong> 将 str 对象转换为 bytes 对象，需要指定编码格式（例如 <code class="language-plaintext highlighter-rouge">my_string.encode('utf-8')</code>）。</p>
+
+<p>● <strong>解码 (Decoding)：</strong> 将 bytes 对象转换为 str 对象，也需要指定编码格式（例如 <code class="language-plaintext highlighter-rouge">my_bytes.decode('utf-8')</code>）。</p>
+
+<p>编码/解码错误处理：</p>
+
+<p>在编码或解码过程中，如果遇到无法处理的字符或字节序列，Python会抛出 UnicodeEncodeError 或 UnicodeDecodeError。<code class="language-plaintext highlighter-rouge">str.encode() </code>和 <code class="language-plaintext highlighter-rouge">bytes.decode() </code>方法都接受一个 errors 参数来控制错误处理行为：</p>
+
+<p>● ‘strict’ (默认)：抛出错误。</p>
+
+<p>● ‘ignore’：忽略无法处理的字符/字节。</p>
+
+<p>● ‘replace’：用问号 <code class="language-plaintext highlighter-rouge">?</code> 或其他占位符替换无法处理的字符/字节。</p>
+
+<p>● ‘xmlcharrefreplace’ (仅编码)：用XML字符引用替换。</p>
+
+<p>● ‘backslashreplace’ (仅编码)：用反斜杠转义序列替换。</p>
+
+<blockquote>
+  <p>当Python处理文件I/O或网络通信时，它必须在Unicode字符（str）和字节序列（bytes）之间进行转换。</p>
+
+  <p>● <strong>写入文件：</strong> 当你向文件写入字符串时，Python会根据你指定的编码（或默认编码，通常是UTF-8）将字符串编码成字节序列，然后这些字节被写入到磁盘上。</p>
+
+  <p>● <strong>读取文件：</strong> 当你从文件读取字节序列时，Python会根据你指定的编码（或默认编码）将这些字节解码成Unicode字符，然后返回一个字符串对象。</p>
+
+  <p>这种分离的设计（str 负责字符，bytes 负责字节）使得Python能够清晰地处理不同编码的文本，避免了Python 2 中字符串处理的混乱。</p>
+</blockquote>
+
+<h2 id="1字符串和字节串的基本转换">（1）字符串和字节串的基本转换</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/7/9  23:15
+</span>
+<span class="n">s</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Hello, 世界</span><span class="sh">"</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始字符串:</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s">， 类型是:</span><span class="si">{</span><span class="nf">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 编码 str --&gt; bytes
+</span><span class="n">b_utf8</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">UTF-8编码结果:</span><span class="si">{</span><span class="n">b_utf8</span><span class="si">}</span><span class="s">, 类型是:</span><span class="si">{</span><span class="nf">type</span><span class="p">(</span><span class="n">b_utf8</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 编码GBK
+</span><span class="n">b_gbk</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="sh">"</span><span class="s">gbk</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">GBK编码结果:</span><span class="si">{</span><span class="n">b_gbk</span><span class="si">}</span><span class="s">, 类型是:</span><span class="si">{</span><span class="nf">type</span><span class="p">(</span><span class="n">b_gbk</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 解码
+</span><span class="n">utf8_str</span> <span class="o">=</span> <span class="n">b_utf8</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">UTF-8解码结果:</span><span class="si">{</span><span class="n">utf8_str</span><span class="si">}</span><span class="s">, 类型是:</span><span class="si">{</span><span class="n">utf8_str</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">utf_error</span> <span class="o">=</span> <span class="n">b_utf8</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">"</span><span class="s">ascii</span><span class="sh">"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="sh">"</span><span class="s">replace</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">utf_error</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">UnicodeDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">报错:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250709232113982.png" alt="image-20250709232113982" style="zoom:50%;" /></p>
+
+<h2 id="2习题11">（2）习题1.1</h2>
+
+<p>给定一个字符串<code class="language-plaintext highlighter-rouge"> s = "你好 World!"</code>。</p>
+
+<p>○ 尝试将其编码为 UTF-8 和 GBK 字节串，并打印出它们的长度和内容。</p>
+
+<p>○ 将 UTF-8 字节串解码回字符串。</p>
+
+<p>○ 将 GBK 字节串解码回字符串。</p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="n">s</span> <span class="o">=</span> <span class="sh">"</span><span class="s">你好 World!</span><span class="sh">"</span>
+<span class="c1"># 尝试将其编码为 UTF-8 和 GBK 字节串，并打印出它们的长度和内容。
+</span><span class="n">b_utf_8</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">b_gbk</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="sh">"</span><span class="s">gbk</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">UTF-8编码结果:</span><span class="si">{</span><span class="n">b_utf_8</span><span class="si">}</span><span class="s">, 长度是:</span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">b_utf_8</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">GBK编码结果:</span><span class="si">{</span><span class="n">b_gbk</span><span class="si">}</span><span class="s">, 长度是:</span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">b_gbk</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 将 UTF-8 字节串解码回字符串。
+</span><span class="n">s1</span> <span class="o">=</span> <span class="n">b_utf_8</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+<span class="c1"># 将 GBK 字节串解码回字符串。
+</span><span class="n">s2</span> <span class="o">=</span> <span class="n">b_gbk</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">"</span><span class="s">gbk</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250709232527601.png" alt="image-20250709232527601" style="zoom:50%;" /></p>
+
+<h2 id="3习题12">（3）习题1.2</h2>
+
+<p>给定一个包含特殊字符的字符串 <code class="language-plaintext highlighter-rouge">s = "这是一个€符号和一些中文：你好"</code>。</p>
+
+<p>○ 尝试将其编码为 ASCII 格式，并分别使用 <code class="language-plaintext highlighter-rouge">errors='strict'</code>、<code class="language-plaintext highlighter-rouge">errors='ignore'</code> 和<code class="language-plaintext highlighter-rouge"> errors='replace' </code>模式，观察并解释结果。</p>
+
+<p>○ 将 <code class="language-plaintext highlighter-rouge">errors='replace' </code>模式编码后的字节串再解码回字符串，观察结果。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="rouge-code"><pre><span class="n">s</span> <span class="o">=</span> <span class="sh">"</span><span class="s">这是一个€符号和一些中文：你好</span><span class="sh">"</span>
+<span class="c1"># 尝试将其编码为 ASCII 格式，并分别使用 errors='strict'、errors='ignore' 和 errors='replace' 模式，观察并解释结果。
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">strict_encode</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="sh">"</span><span class="s">ascii</span><span class="sh">"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="sh">"</span><span class="s">strict</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">编码结果:</span><span class="si">{</span><span class="n">strict_encode</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">UnicodeEncodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">报错:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">ignore_encode</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="sh">"</span><span class="s">ascii</span><span class="sh">"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="sh">"</span><span class="s">ignore</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">编码结果:</span><span class="si">{</span><span class="n">ignore_encode</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">UnicodeEncodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">报错:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">replace_encode</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="sh">"</span><span class="s">ascii</span><span class="sh">"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="sh">"</span><span class="s">replace</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">编码结果:</span><span class="si">{</span><span class="n">replace_encode</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="c1"># 将 errors='replace' 模式编码后的字节串再解码回字符串，观察结果。
+</span>    <span class="n">res</span> <span class="o">=</span> <span class="n">replace_encode</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">"</span><span class="s">ascii</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">UnicodeEncodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">报错:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250709233011132.png" alt="image-20250709233011132" style="zoom:50%;" /></p>
+
+<h1 id="2文件的读写原理">2、文件的读写原理</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250709173126417.png" alt="image-20250709173126417" style="zoom:50%;" /></p>
+
+<p>文件读写是程序与持久化存储（如硬盘）交互的过程。其核心原理涉及操作系统提供的文件句柄/描述符、缓冲区机制以及文本模式与二进制模式的区别。</p>
+
+<p>当Python程序进行文件读写操作时，它并不是直接操作硬盘上的物理扇区，而是通过操作系统提供的服务来完成的。</p>
+
+<ul>
+  <li><strong>文件句柄/文件描述符 (File Handle/File Descriptor)</strong>: 当程序成功打开一个文件时，操作系统会返回一个整数标识符，称为文件描述符（在Unix/Linux系统中）或文件句柄（在Windows系统中）。这个标识符是程序与打开的文件之间的唯一关联。程序后续对文件的所有操作（读、写、定位、关闭）都通过这个句柄/描述符来引用文件，而不是直接使用文件名。这就像你拿到了一本书的“借书证”，后续所有关于这本书的操作都凭这张证进行。操作系统维护一个打开文件表，其中记录了每个文件描述符对应的文件信息（如文件路径、访问模式、当前读写位置等）。当程序请求读写时，操作系统根据文件描述符找到对应的文件，并执行I/O操作。</li>
+  <li><strong>缓冲区 (Buffering)</strong>: 缓冲区是内存中的一块临时存储区域。在文件I/O操作中，数据通常不会直接从应用程序写入硬盘，或直接从硬盘读取到应用程序。而是先经过缓冲区。当程序请求从文件读取数据时，操作系统通常会一次性读取比请求量更大的数据块到内存缓冲区中。下次程序再次请求读取时，如果所需数据已经在缓冲区中，就可以直接从内存获取，避免了较慢的磁盘I/O操作。当程序写入数据时，数据通常不会立即写入硬盘，而是先写入内存缓冲区。当缓冲区满、或者程序显式调用 flush()、或者文件被关闭时，缓冲区中的数据才会被“刷新”（flush）到硬盘上。
+    <ul>
+      <li>优点：减少了频繁的磁盘I/O操作（磁盘I/O比内存I/O慢得多），提高了读写效率。</li>
+      <li>缺点：写入的数据可能不会立即持久化到磁盘，存在数据丢失的风险（例如程序崩溃或断电）。</li>
+    </ul>
+  </li>
+  <li><strong>文本模式 (Text Mode) 与 二进制模式 (Binary Mode)</strong>：这是Python open() 函数中的一个重要概念。
+    <ul>
+      <li><strong>文本模式 (‘t’ 或默认)：</strong>用于处理文本文件。在读写过程中会进行<strong>编码/解码</strong>转换。当你写入字符串时，它会根据指定的编码（或系统默认编码）将其转换为字节序列；当你读取字节序列时，它会根据编码将其解码为字符串。还会对换行符进行处理：在Windows上，<code class="language-plaintext highlighter-rouge">\n（LF）</code>在写入时会自动转换为<code class="language-plaintext highlighter-rouge"> \r\n（CRLF）</code>，在读取时会将<code class="language-plaintext highlighter-rouge"> \r\n</code> 转换为<code class="language-plaintext highlighter-rouge"> \n</code>。在Unix/Linux上，通常不进行这种转换。适合处理包含可读字符的文本文件（如 .txt, .csv, .json, .py 等）</li>
+      <li><strong>二进制模式 (‘b’)</strong>: 用于处理非文本文件（如图片、视频、音频、可执行文件等）或需要精确控制字节流的文本文件。在读写过程中<strong>不会</strong>进行编码/解码转换，也不会对换行符进行特殊处理。数据以原始字节的形式进行读写。适合处理任何非文本数据，或者当你需要手动控制编码/解码过程时。</li>
+    </ul>
+  </li>
+  <li><strong>文件指针/文件游标 (File Pointer/File Cursor)</strong>：每个打开的文件都有一个内部的文件指针，它指示了下一次读写操作将从文件的哪个位置开始。读写操作会自动移动文件指针。也可以使用 <code class="language-plaintext highlighter-rouge">seek() </code>方法显式地移动文件指针到文件的某个特定位置。</li>
+</ul>
+
+<blockquote>
+  <p>程序通过调用操作系统提供的API（如 <code class="language-plaintext highlighter-rouge">open()</code>,<code class="language-plaintext highlighter-rouge"> read()</code>,<code class="language-plaintext highlighter-rouge"> write()</code>,<code class="language-plaintext highlighter-rouge"> close()</code> 等系统调用）来与文件系统交互。操作系统负责管理文件在磁盘上的物理存储，并提供抽象层给应用程序。缓冲区机制在应用程序和操作系统之间充当一个中间层，优化了I/O性能。文本模式和二进制模式则是在Python层面对字节流进行解释和转换的两种不同策略。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="1文本模式和二进制模式的区别">（1）文本模式和二进制模式的区别</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/7/10  12:48
+</span>
+
+<span class="c1"># 写入文件
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">text_file.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, World!</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">你好，世界!</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 读取文件(文本模式)
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">text_file.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">读取内容（文本模式）:</span><span class="se">\n</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">内容类型:</span><span class="si">{</span><span class="nf">type</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># str
+</span>
+<span class="c1"># 读取文件(二进制模式)
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">text_file.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">rb</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>  <span class="c1"># 这里没有encoding参数
+</span>    <span class="n">cont</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">读取内容（二进制模式）:</span><span class="se">\n</span><span class="si">{</span><span class="n">cont</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">内容类型:</span><span class="si">{</span><span class="nf">type</span><span class="p">(</span><span class="n">cont</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># bytes
+</span>    <span class="n">decoded_cont</span> <span class="o">=</span> <span class="n">cont</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 解码
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">解码后：</span><span class="se">\n</span><span class="si">{</span><span class="n">decoded_cont</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710142314379.png" alt="image-20250710142314379" style="zoom:50%;" /></p>
+
+<h2 id="2二进制模式下写入非文本数据">（2）二进制模式下写入非文本数据</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">binary_data.bin</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">wb</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># 写入一些字节数据
+</span>    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">b</span><span class="sh">'</span><span class="se">\x00\x01\x02\xff</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="nf">bytes</span><span class="p">([</span><span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">67</span><span class="p">]))</span>  <span class="c1"># A, B, C
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">二进制文件已经创建</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710142544472.png" alt="image-20250710142544472" style="zoom:50%;" /></p>
+
+<p>清理测试文件：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="sh">"</span><span class="s">text_file.txt</span><span class="sh">"</span><span class="p">):</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="sh">"</span><span class="s">text_file.txt</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="sh">"</span><span class="s">binary_data.bin</span><span class="sh">"</span><span class="p">):</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="sh">"</span><span class="s">binary_data.bin</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="习题21">习题2.1</h2>
+
+<p>解释为什么在处理图片、音频等文件时，必须使用二进制模式（’b’）而不是文本模式。如果强行使用文本模式会发生什么？</p>
+
+<blockquote>
+  <p>处理图片、音频等文件时，<strong>必须使用二进制模式（’b’）</strong>，而不是文本模式。这是因为这些文件类型包含的是<strong>非文本数据</strong>，它们是字节序列，而不是由字符编码（如UTF-8、GBK等）构成的文本信息。</p>
+
+  <p>图片、音频、视频等文件在计算机内部存储的都是原始的字节数据。这些字节直接代表了像素颜色、声音波形等信息，它们没有像文本文件那样遵循任何字符编码规则。</p>
+
+  <p>当你在文本模式下打开文件时，Python（以及其他编程语言）会尝试使用一个<strong>字符编码</strong>（通常是系统默认编码，或者你指定的编码如 <code class="language-plaintext highlighter-rouge">UTF-8</code>）对读入或写入的字节进行<strong>自动编解码</strong>。如果这些字节不符合任何文本编码规则，那么自动编解码过程就会出错。</p>
+
+  <p>文本模式下的编解码过程可能会修改或删除某些字节，例如：</p>
+
+  <ul>
+    <li><strong>行末转换：</strong> 在不同的操作系统中，文本文件的行结束符表示方式不同（Windows 是 <code class="language-plaintext highlighter-rouge">\r\n</code>，Unix/Linux 是 <code class="language-plaintext highlighter-rouge">\n</code>）。文本模式下，系统可能会自动将 <code class="language-plaintext highlighter-rouge">\n</code> 转换为 <code class="language-plaintext highlighter-rouge">\r\n</code>（写入时），或将 <code class="language-plaintext highlighter-rouge">\r\n</code> 转换为 <code class="language-plaintext highlighter-rouge">\n</code>（读取时），这会破坏非文本文件的数据结构。</li>
+    <li><strong>编码错误：</strong> 遇到无法解码的字节序列时，可能会抛出 <code class="language-plaintext highlighter-rouge">UnicodeDecodeError</code>，或者根据错误处理策略（如 <code class="language-plaintext highlighter-rouge">errors='ignore'</code> 或 <code class="language-plaintext highlighter-rouge">errors='replace'</code>）跳过或替换这些字节，导致数据丢失或损坏。</li>
+  </ul>
+
+  <p>如果你强行使用文本模式（例如 <code class="language-plaintext highlighter-rouge">open('image.jpg', 'r', encoding='utf-8')</code> 或 <code class="language-plaintext highlighter-rouge">open('audio.mp3', 'w', encoding='utf-8')</code>）来处理图片或音频文件，通常会发生以下几种情况：</p>
+
+  <ol>
+    <li><strong><code class="language-plaintext highlighter-rouge">UnicodeDecodeError</code> 或 <code class="language-plaintext highlighter-rouge">UnicodeEncodeError</code>：</strong> 这是最常见的情况。当你尝试以文本模式读取一个二进制文件时，Python 解释器会尝试将其字节流按照指定的（或默认的）文本编码进行解码。由于图片或音频的字节数据并不符合任何文本编码规范，它很可能会遇到无法识别的字节序列，从而抛出 <code class="language-plaintext highlighter-rouge">UnicodeDecodeError</code>。同样，如果尝试以文本模式写入非字符串数据或格式错误的字符串，可能会遇到 <code class="language-plaintext highlighter-rouge">UnicodeEncodeError</code>。</li>
+    <li><strong>文件损坏：</strong> 即使没有立即抛出错误，系统也可能在内部尝试进行不必要的行末符转换或其他字节操作。这会导致文件内容发生改变，从而损坏原始数据结构。结果就是，图片可能无法打开或显示乱码，音频文件无法播放或出现杂音。</li>
+    <li><strong>行为不确定性：</strong> 某些情况下，你可能会读到一些看似“乱码”的字符串，或者写入一些看似成功的“乱码”文件。但实际上，这些操作都没有正确地处理二进制数据，文件已经无法正常使用。</li>
+  </ol>
+
+  <p>在处理图片、音频、视频或任何其他非文本文件时，始终记住它们是<strong>字节流</strong>。为了确保数据完整性并避免不必要的编解码过程，<strong>务必使用二进制模式（<code class="language-plaintext highlighter-rouge">'rb'</code> 用于读取，<code class="language-plaintext highlighter-rouge">'wb'</code> 用于写入）</strong>。</p>
+</blockquote>
+
+<h2 id="习题22">习题2.2</h2>
+
+<p>简述文件I/O中缓冲区的优点和潜在的风险。在什么情况下，你可能需要强制刷新缓冲区？</p>
+
+<blockquote>
+  <p>在文件I/O操作中，缓冲区是一个非常重要的概念。它就像一个临时存储区域，位于应用程序和实际物理存储设备（如硬盘）之间。当程序进行读写操作时，数据通常不会直接发送到硬盘，而是先进入这个缓冲区。</p>
+
+  <p>优点</p>
+
+  <ol>
+    <li><strong>提高效率（性能优化）:</strong> 这是缓冲区最主要的优点。
+      <blockquote>
+        <ul>
+          <li><strong>减少I/O操作次数：</strong> 磁盘I/O操作（读写硬盘）通常比内存操作慢很多。通过缓冲区，程序可以积累一定量的数据后再进行一次性写入，或一次性读取大量数据到缓冲区，避免了频繁、零散的磁盘访问，从而显著提高读写效率。</li>
+        </ul>
+      </blockquote>
+      <ul>
+        <li><strong>匹配设备速度差异：</strong> 缓冲区可以协调CPU（或应用程序）与慢速I/O设备之间的速度差异。CPU可以快速地向缓冲区写入数据，然后继续执行其他任务，而无需等待数据完全写入磁盘；同样，从缓冲区读取数据也比直接从磁盘读取快。</li>
+      </ul>
+    </li>
+    <li><strong>数据吞吐量：</strong> 通过批处理（batching）数据，缓冲区增加了单位时间内可以处理的数据量，提升了系统的整体吞吐量。</li>
+  </ol>
+
+  <p>潜在的风险</p>
+
+  <ol>
+    <li><strong>数据丢失风险：</strong> 这是最主要的风险。
+      <blockquote>
+        <ul>
+          <li>如果程序在数据从缓冲区完全写入磁盘之前崩溃、断电或异常终止，缓冲区中的数据可能会丢失，导致数据不一致或损坏。</li>
+        </ul>
+      </blockquote>
+    </li>
+    <li><strong>数据不一致性：</strong>
+      <blockquote>
+        <ul>
+          <li>当多个程序或进程同时访问同一个文件时，由于数据可能存在于不同进程或操作系统的缓冲区中，而未及时同步到磁盘，可能导致它们读取到旧的数据，造成数据不一致的问题。</li>
+        </ul>
+      </blockquote>
+    </li>
+  </ol>
+
+  <p>强制刷新缓冲区（flush）是指将缓冲区中的所有待写入数据立即写入到底层存储设备，而不管缓冲区是否已满。在以下情况下，你可能需要强制刷新缓冲区：</p>
+
+  <ol>
+    <li><strong>关键数据写入：</strong> 当你正在写入对<strong>数据完整性要求极高</strong>的关键信息时，例如数据库事务日志、配置文件、财务记录或任何程序状态数据。在这种情况下，即使系统崩溃，也希望已写入的数据能够持久化。</li>
+    <li><strong>进程间通信：</strong> 当一个进程写入文件，并期望另一个进程能够<strong>立即读取到最新的数据</strong>时。如果数据停留在缓冲区而没有写入磁盘，其他进程将无法获取到最新的信息。</li>
+    <li><strong>调试和日志记录：</strong> 在调试程序或写入重要日志信息时，你可能希望日志能够<strong>实时地写入文件</strong>，而不是等到缓冲区满或程序结束。这有助于在程序崩溃时捕获到最新的错误信息。</li>
+    <li><strong>程序正常退出前：</strong> 虽然大多数文件I/O库在程序正常退出时会自动刷新缓冲区，但在某些特殊情况下（例如，为了确保数据在所有退出路径上都已保存），你可能希望在程序关闭前<strong>显式地刷新</strong>所有打开的文件缓冲区。</li>
+    <li><strong>文件句柄关闭前：</strong> 在<strong>关闭文件句柄</strong>之前，通常不需要手动调用 <code class="language-plaintext highlighter-rouge">flush()</code>，因为 <code class="language-plaintext highlighter-rouge">close()</code> 方法在关闭文件时会隐式地执行刷新操作。然而，如果出于某种原因，你在关闭文件之前需要确保数据已写入，也可以显式调用。</li>
+  </ol>
+</blockquote>
+
+<h1 id="3文件读写操作">3、文件读写操作</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250709173145038.png" alt="image-20250709173145038" style="zoom:50%;" /></p>
+
+<p>Python通过内置的 <code class="language-plaintext highlighter-rouge">open() </code>函数来打开文件，并返回一个文件对象。文件对象提供了<code class="language-plaintext highlighter-rouge"> read()</code>, <code class="language-plaintext highlighter-rouge">readline()</code>, <code class="language-plaintext highlighter-rouge">readlines()</code> 用于读取，以及 <code class="language-plaintext highlighter-rouge">write()</code>,<code class="language-plaintext highlighter-rouge"> writelines() </code>用于写入数据。完成操作后，必须使用<code class="language-plaintext highlighter-rouge"> close()</code> 方法关闭文件。</p>
+
+<h2 id="1open函数">（1）open函数</h2>
+
+<p>语法：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">open</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">closefd</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">opener</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>
+    <p><strong>file：</strong> 必需参数，表示要打开的文件路径（可以是相对路径或绝对路径）</p>
+  </li>
+  <li>
+    <p><strong>mode：</strong> 可选参数，指定文件打开模式。默认为 ‘r’ (只读文本模式)</p>
+
+    <ul>
+      <li>
+        <p><strong>核心模式：</strong></p>
+
+        <p>■ ‘r’：只读（默认）。文件指针位于文件开头。如果文件不存在，抛出 FileNotFoundError。</p>
+
+        <p>■ ‘w’：只写。如果文件存在，会<strong>截断（清空）</strong>文件内容；如果文件不存在，则创建新文件。文件指针位于文件开头。</p>
+
+        <p>■ ‘a’：追加。如果文件存在，文件指针位于文件末尾，<strong>新内容会追加到文件末尾</strong>；如果文件不存在，则创建新文件。</p>
+
+        <p>■ ‘x’：独占创建。如果文件已存在，则抛出 <code class="language-plaintext highlighter-rouge">FileExistsError</code>。如果文件不存在，则创建并以写入模式打开。</p>
+      </li>
+      <li>
+        <p><strong>组合模式：</strong></p>
+
+        <p>■ ‘t’：文本模式（默认）。与 ‘r’, ‘w’, ‘a’, ‘x’ 结合使用，例如 ‘rt’, ‘wt’。</p>
+
+        <p>■ ‘b’：二进制模式。与 ‘r’, ‘w’, ‘a’, ‘x’ 结合使用，例如 ‘rb’, ‘wb’。</p>
+
+        <p>■ <code class="language-plaintext highlighter-rouge">'+'</code>：读写模式。与 ‘r’, ‘w’, ‘a’, ‘x’ 结合使用，例如 ‘r+’ (读写，指针在开头)，’w+’ (读写，清空文件)，’a+’ (读写，指针在末尾)。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>encoding：</strong> 仅在文本模式下有效，指定文件的编码格式（如 ‘utf-8’, ‘gbk’）。强烈建议显式指定编码，避免跨平台问题</p>
+  </li>
+  <li>
+    <p><strong>errors：</strong> 仅在文本模式下有效，指定编码/解码错误处理方式（如 ‘strict’, ‘ignore’, ‘replace’）</p>
+  </li>
+</ul>
+
+<h2 id="2写入操作">（2）写入操作</h2>
+
+<p>○ <strong><code class="language-plaintext highlighter-rouge">file_object.write(string)</code>：</strong></p>
+
+<p>■ 向文件写入一个字符串（文本模式）或字节串（二进制模式）。</p>
+
+<p>■ 返回写入的字符数（文本模式）或字节数（二进制模式）。</p>
+
+<p>■ 不会自动添加换行符，需要手动添加 <code class="language-plaintext highlighter-rouge">\n</code>。</p>
+
+<p>○ <strong><code class="language-plaintext highlighter-rouge">file_object.writelines(list_of_strings)</code>：</strong></p>
+
+<p>■ 接受一个字符串列表（或任何可迭代的字符串对象），将所有字符串写入文件。</p>
+
+<p>■ 不会自动添加换行符，列表中的每个字符串需要包含换行符。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="c1"># 写入文件
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, Python!!!</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">This is the first line.</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>  <span class="c1"># 必须关闭文件
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt已经创建并写入内容...</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">写入文件发生异常:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 追加
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">这行是追加的...</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">这行也是追加的...</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">追加内容已经写入my_output.txt...</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">追加内容出现报错:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710150035464.png" alt="image-20250710150035464" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>下面是读写图片的例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">f1</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">albert.jpg</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">rb</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">f2</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">albert_copy.jpg</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">wb</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">f2</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">f1</span><span class="p">.</span><span class="nf">read</span><span class="p">())</span>
+<span class="n">f2</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="n">f1</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="3读取操作">（3）读取操作</h2>
+
+<p>○ <strong><code class="language-plaintext highlighter-rouge">file_object.read(size=-1)</code>：</strong></p>
+
+<p>■ size 为可选参数。如果省略或为负数，则读取文件所有内容。</p>
+
+<p>■ 如果 size 为正数，则读取指定数量的字符（文本模式）或字节（二进制模式）。</p>
+
+<p>■ 文件指针会移动到读取结束的位置。</p>
+
+<p>○ <strong><code class="language-plaintext highlighter-rouge">file_object.readline(size=-1)</code>：</strong></p>
+
+<p>■ 读取文件的一行内容，包括行尾的换行符 <code class="language-plaintext highlighter-rouge">\n</code>。</p>
+
+<p>■ 如果 size 存在，则最多读取 size 个字符/字节。</p>
+
+<p>■ <strong>当到达文件末尾时，返回空字符串 ‘‘。</strong></p>
+
+<p>○ <strong><code class="language-plaintext highlighter-rouge">file_object.readlines()</code>：</strong></p>
+
+<p>■ 读取文件所有行，并将每行作为一个字符串元素存储在列表中返回。</p>
+
+<p>■ 每个字符串元素都包含行尾的换行符 <code class="language-plaintext highlighter-rouge">\n</code>。</p>
+
+<p>○ <strong>迭代文件对象：</strong> 文件对象本身是可迭代的，可以直接在 for 循环中逐行读取文件，这种方式效率最高。</p>
+
+<hr />
+
+<p>例子1:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre></td><td class="rouge-code"><pre><span class="c1"># 读取文件  r模式
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">content_all</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">文件全部内容：</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">content_all</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件不存在，报错:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件读取发生异常:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="c1"># 逐行读取
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">使用deadline():</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="nf">readline</span><span class="p">(),</span> <span class="n">end</span> <span class="o">=</span> <span class="sh">""</span><span class="p">)</span> <span class="c1"># 读取第一行
+</span>    <span class="nf">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="nf">readline</span><span class="p">(),</span> <span class="n">end</span> <span class="o">=</span> <span class="sh">""</span><span class="p">)</span> <span class="c1"># 读取第二行
+</span>    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">使用for循环迭代文件对象:</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">''</span><span class="p">)</span>  <span class="c1"># line已经包含换行符
+</span>    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件读取发生异常:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 读取所有文件内容到列表中
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">readlines</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">所有行列表:</span><span class="si">{</span><span class="n">lines</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件读取发生异常:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710151009831.png" alt="image-20250710151009831" style="zoom:50%;" /></p>
+
+<p>例子2:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/7/10  15:10
+</span>
+<span class="c1"># 读写模式   r+  w+(清空文件)
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">r_plus_w_plus.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w+</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">First line for w+</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Second line for w+</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 将文件指针移到开头
+</span>    <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">w+模式写入后读取内容：</span><span class="se">\n</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># r+模式不会清空文件，但是 文件必须存在
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">r_plus_w_plus.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r+</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s"> r+初始内容:</span><span class="se">\n</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">r+ 追加内容...</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 写入到文件末尾
+</span>    <span class="n">f</span><span class="p">.</span><span class="nf">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 再次移动到开头
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">r+模式追加后读取:</span><span class="se">\n</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710151454214.png" alt="image-20250710151454214" style="zoom:50%;" /></p>
+
+<h2 id="4关闭文件">（4）关闭文件</h2>
+
+<p>○ <strong><code class="language-plaintext highlighter-rouge">file_object.close()</code>：</strong></p>
+
+<p>■ 释放文件句柄，将缓冲区中所有未写入的数据刷新到磁盘。</p>
+
+<p>■ <strong>重要性：</strong> 忘记关闭文件可能导致数据丢失、资源泄露、文件损坏或文件被其他程序锁定。</p>
+
+<p>■ <strong>推荐：</strong> 始终使用 with 语句来自动管理文件的打开和关闭。</p>
+
+<blockquote>
+  <p>文件读写操作的原理是基于操作系统提供的文件I/O系统调用。Python的 open() 函数是对这些系统调用的封装。</p>
+
+  <p>● <strong>写入：</strong> 当调用 write() 时，Python会将数据发送给操作系统。操作系统会将数据放入内核缓冲区，并最终写入磁盘。</p>
+
+  <p>● <strong>读取：</strong> 当调用 read() 时，Python会向操作系统请求数据。操作系统从磁盘读取数据到内核缓冲区，再传输给Python的应用程序缓冲区，最终返回给程序。</p>
+
+  <p>● <strong>close()：</strong> 调用 close() 会强制操作系统将所有待写入的缓冲区数据刷新到磁盘，并释放文件句柄，解除文件锁定。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c1"># 清理测试文件
+</span><span class="kn">import</span> <span class="n">os</span>
+<span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt</span><span class="sh">"</span><span class="p">):</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="sh">"</span><span class="s">my_output.txt</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="sh">"</span><span class="s">r_plus_w_plus.txt</span><span class="sh">"</span><span class="p">):</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="sh">"</span><span class="s">r_plus_w_plus.txt</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="习题31">习题3.1</h2>
+
+<p>创建一个名为 <code class="language-plaintext highlighter-rouge">my_log.txt </code>的文件。</p>
+
+<p>○ 向文件中写入三行日志信息，每行包含当前时间戳和一条消息（例如<code class="language-plaintext highlighter-rouge"> [2025-07-09 10:00:00] - Application started.</code>）。</p>
+
+<p>○ 然后，以追加模式向文件中再写入两行新的日志信息。</p>
+
+<p>○ 最后，读取整个文件内容并打印出来。</p>
+
+<hr />
+
+<p>参考：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="k">def</span> <span class="nf">getTimeAndMsg</span><span class="p">():</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">now</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">"</span><span class="s">[%Y-%m-%d %H:%M:%S] - Application started.</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_log.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># 向文件中写入三行日志信息，每行包含当前时间戳和一条消息（例如` [2025-07-09 10:00:00] - Application started.`）。
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="nf">getTimeAndMsg</span><span class="p">())</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="c1"># 以追加模式向文件中再写入两行新的日志信息
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_log.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span> <span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="nf">getTimeAndMsg</span><span class="p">())</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="nf">getTimeAndMsg</span><span class="p">())</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_log.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># 读取整个文件内容并打印出来。
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">读取文件内容:</span><span class="se">\n</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710152428035.png" alt="image-20250710152428035" style="zoom:50%;" /></p>
+
+<h2 id="习题32">习题3.2</h2>
+
+<p>编写一个函数 <code class="language-plaintext highlighter-rouge">count_lines(filepath)</code>，接收文件路径作为参数。</p>
+
+<p>○ 该函数应打开文件并逐行读取，统计文件中的总行数，并返回该数量。</p>
+
+<p>○ 如果文件不存在，捕获 FileNotFoundError 并返回 -1。</p>
+
+<p>○ 使用 with 语句来确保文件正确关闭。</p>
+
+<hr />
+
+<p>参考：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">count_lines</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    打开文件并逐行读取，统计文件中的总行数，并返回该数量
+    使用 with 语句来确保文件正确关闭。
+    </span><span class="sh">"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">line_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">line_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">line_count</span>
+        <span class="c1"># 如果文件不存在，捕获 FileNotFoundError 并返回 -1。
+</span>    <span class="k">except</span> <span class="nb">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件不存在， 报错：</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+
+
+<span class="c1"># 测试
+</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">count_lines</span><span class="p">(</span><span class="sh">"</span><span class="s">my_log.txt</span><span class="sh">"</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">count_lines</span><span class="p">(</span><span class="sh">"</span><span class="s">myLog.txt</span><span class="sh">"</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710153401307.png" alt="image-20250710153401307" style="zoom:50%;" /></p>
+
+<h1 id="4文件对象常用的方法">4、文件对象常用的方法</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710153434503.png" alt="image-20250710153434503" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710153515020.png" alt="image-20250710153515020" style="zoom:50%;" /></p>
+
+<p>除了基本的读写方法，文件对象还提供了一些其他有用的方法来控制文件指针的位置、强制数据写入磁盘以及检查文件状态。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">file_object.tell()</code>：</strong></li>
+</ul>
+
+<p>○ <strong>作用：</strong> 返回文件当前读写位置的偏移量（以字节为单位）。这个偏移量是从文件开头算起的。</p>
+
+<p>○ <strong>原理：</strong> 文件指针是操作系统在内部维护的一个计数器，指示了下一次I/O操作的起始位置。tell() 方法就是查询这个计数器的当前值。在文本模式下，返回值可能不是简单的字节数，因为它会考虑编码转换和换行符处理。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">file_object.seek(offset, whence=0)</code>：</strong></li>
+</ul>
+
+<p>○ <strong>作用：</strong> 改变文件当前读写位置。</p>
+
+<p>○ <strong>offset：</strong> 偏移量，表示要移动的字节数。</p>
+
+<p>○ <strong>whence：</strong> 可选参数，指定偏移的起始位置：</p>
+
+<p>■ 0 (或<code class="language-plaintext highlighter-rouge"> os.SEEK_SET</code>)：默认值，从文件开头开始偏移。offset 必须是正数或零。</p>
+
+<p>■ 1 (或 <code class="language-plaintext highlighter-rouge">os.SEEK_CUR</code>)：从当前位置开始偏移。offset 可以是正数（向前）或负数（向后）。</p>
+
+<p>■ 2 (或 <code class="language-plaintext highlighter-rouge">os.SEEK_END</code>)：从文件末尾开始偏移。offset 通常是负数（向文件开头移动），或者为零（移动到文件末尾）。</p>
+
+<p>○ <strong>注意：</strong> 在文本模式下使用 seek() 可能会比较复杂，因为它涉及到编码和解码。通常，在文本模式下，seek() 只能用于移动到 tell() 返回的有效位置，或者移动到文件开头 (seek(0))。<strong>对于精确的字节定位，推荐使用二进制模式。</strong></p>
+
+<p>○ <strong>原理：</strong> seek() 方法会向操作系统发出指令，更新文件句柄内部的文件指针计数器。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">file_object.flush()</code>：</strong></li>
+</ul>
+
+<p>○ <strong>作用：</strong> 强制将内部缓冲区中所有未写入的数据立即写入到磁盘（或操作系统缓冲区）。</p>
+
+<p>○ <strong>原理：</strong> 通常，Python的I/O操作会先将数据写入内存缓冲区，待缓冲区满或文件关闭时再写入磁盘。flush() 绕过了这个等待机制，强制进行一次物理写入操作。这在需要确保数据及时持久化（例如，在程序崩溃前保存关键数据）时非常有用。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">file_object.readable() / writable() / seekable()</code>：</strong></li>
+</ul>
+
+<p>○ <strong>作用：</strong> 这些方法返回布尔值，指示文件对象是否支持相应的操作。</p>
+
+<p>○ readable()：如果文件可以读取，返回 True。</p>
+
+<p>○ writable()：如果文件可以写入，返回 True。</p>
+
+<p>○ seekable()：如果文件支持随机访问（即支持 seek() 操作），返回 True。</p>
+
+<p>○ <strong>原理：</strong> 这些方法检查文件对象的内部状态和打开模式，以确定文件句柄是否被赋予了相应的权限或能力。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">file_object.name / mode / closed 属性</code>：</strong></li>
+</ul>
+
+<p>○ <strong>作用：</strong> 这些是文件对象的只读属性，提供文件的元数据。</p>
+
+<p>○ name：返回文件的名称（路径）。</p>
+
+<p>○ mode：返回文件打开时使用的模式（如 ‘r’, ‘w+’, ‘rb’）。</p>
+
+<p>○ closed：如果文件已关闭，返回 True；否则返回 False。</p>
+
+<hr />
+
+<p>例子1:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/7/10  15:45
+</span>
+<span class="c1"># 准备一个测试文件:
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">seek_test.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, world!</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Python is great!</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Line 3, end of line.</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">seek_test.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r+</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件名称:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">打开模式:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="n">mode</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件是否关闭:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="n">closed</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件是否可读:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">readable</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件是否可写:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">writable</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件是否可查找:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">seekable</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># 获取当前位置
+</span>    <span class="n">current_pos</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">tell</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">初始文件指针位置:</span><span class="si">{</span><span class="n">current_pos</span><span class="si">}</span><span class="s">字节</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># 读取一行，文件指针会移动
+</span>    <span class="n">first_line</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">readline</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">读取第一行:</span><span class="si">{</span><span class="n">first_line</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">current_pos</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">tell</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">读取一行后文件指针位置:</span><span class="si">{</span><span class="n">current_pos</span><span class="si">}</span><span class="s">字节</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># seek改变文件位置
+</span>    <span class="n">f</span><span class="p">.</span><span class="nf">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 移动到文件开头
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">seek(0)之后文件指针位置是:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">tell</span><span class="p">()</span><span class="si">}</span><span class="s">字节</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">从开头读取:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">readline</span><span class="p">().</span><span class="nf">strip</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># 从文件开头偏移7个字节
+</span>    <span class="n">f</span><span class="p">.</span><span class="nf">seek</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">seek(7,0)后 文件指针位置:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">tell</span><span class="p">()</span><span class="si">}</span><span class="s">字节</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">从偏移7处读取:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="nf">readline</span><span class="p">().</span><span class="nf">strip</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># 从文件末尾向前偏移10个字节（二进制模式下更准确）
+</span>    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">seek_test.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">rb</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">bf</span><span class="p">:</span>
+        <span class="n">bf</span><span class="p">.</span><span class="nf">seek</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">二进制模式下seek(-10, 2)后的位置:</span><span class="si">{</span><span class="n">bf</span><span class="p">.</span><span class="nf">tell</span><span class="p">()</span><span class="si">}</span><span class="s">字节</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">末尾偏移10处读取（二进制）:</span><span class="si">{</span><span class="n">bf</span><span class="p">.</span><span class="nf">read</span><span class="p">().</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">).</span><span class="nf">strip</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710155646738.png" alt="image-20250710155646738" style="zoom:50%;" /></p>
+
+<p>例子2:flush</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="c1"># flush
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">flush_test.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">This is buffer...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">数据已经写入缓冲区， 但可能未写入磁盘...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">flush</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">数据已强制刷新到磁盘...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="c1"># 此时就算程序崩溃，这行数据也已经被保存了
+</span>    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">这是flush之后的数据</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">flush_test.txt已经写入完成</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件是否关闭:</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="n">closed</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># True, 因为with语句自动关闭了
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710160156342.png" alt="image-20250710160156342" style="zoom:50%;" /></p>
+
+<h1 id="5with语句上下文管理器">5、with语句(上下文管理器)</h1>
+
+<p>with 语句是Python中处理资源（如文件、网络连接、锁）的推荐方式。它确保资源在使用后被正确地获取和释放，即使在代码块执行过程中发生异常。</p>
+
+<p>在没有 with 语句之前，我们通常需要使用 <code class="language-plaintext highlighter-rouge">try...finally </code>结构来确保文件在操作完成后被关闭， 例如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="n">f</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_file.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="c1"># 其他操作
+</span><span class="k">except</span> <span class="nb">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件未找到:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">发生异常:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这种模式虽然有效，但是代码冗长，且容易出错（例如忘记<code class="language-plaintext highlighter-rouge">if f:</code>检查）。</p>
+
+<p>with 语句提供了一种更简洁、更安全的方式来管理资源。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="k">with</span> <span class="n">expression</span> <span class="k">as</span> <span class="n">variable</span><span class="p">:</span>
+      <span class="c1"># 在这里使用资源 (variable)
+</span>      <span class="c1"># 代码块结束或发生异常时，资源会自动释放
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>● with 语句要求 expression 返回一个上下文管理器 (Context Manager) 对象。上下文管理器是实现了两个特殊方法（“魔术方法”）的对象：</p>
+
+<p>○ <strong><code class="language-plaintext highlighter-rouge">__enter__(self)</code>：</strong></p>
+
+<p>■ 在进入 with 语句块时被调用。</p>
+
+<p>■ 它负责设置资源（例如打开文件、获取锁）。</p>
+
+<p>■ 它的返回值（如果有）会被赋给 as 关键字后面的 variable。</p>
+
+<p>○ <strong><code class="language-plaintext highlighter-rouge">__exit__(self, exc_type, exc_val, exc_tb)</code>：</strong></p>
+
+<p>■ 在退出 with 语句块时被调用，无论代码块是正常结束还是因为异常而退出。</p>
+
+<p>■ 它负责清理资源（例如关闭文件、释放锁）。</p>
+
+<p>■ <code class="language-plaintext highlighter-rouge">exc_type</code>,<code class="language-plaintext highlighter-rouge"> exc_val</code>,<code class="language-plaintext highlighter-rouge"> exc_tb</code> 分别表示异常类型、异常值和回溯信息。如果 with 块中没有发生异常，这三个参数都将是 None。</p>
+
+<p>■ 如果<code class="language-plaintext highlighter-rouge"> __exit__ </code>方法返回 True，表示它已经处理了异常，异常不会继续传播。如果返回 False 或 None，则异常会继续传播。</p>
+
+<p><strong>open() 函数作为上下文管理器</strong>：</p>
+
+<p>Python内置的 open() 函数返回的文件对象就是一个上下文管理器。它内部实现了<code class="language-plaintext highlighter-rouge"> __enter__ </code>和<code class="language-plaintext highlighter-rouge"> __exit__ </code>方法：</p>
+
+<p>● <strong>enter</strong>：打开文件并返回文件对象本身。</p>
+
+<p>● <strong>exit</strong>：确保文件被关闭，无论 with 块中发生什么。</p>
+
+<p><strong>自定义上下文管理器</strong>：</p>
+
+<p>除了文件对象，你也可以为自己的类实现 <strong>enter</strong> 和 <strong>exit</strong> 方法，使其成为上下文管理器，从而管理任何需要设置和清理的资源。</p>
+
+<p>contextlib 模块：</p>
+
+<p>对于简单的上下文管理器，可以使用<code class="language-plaintext highlighter-rouge"> contextlib </code>模块中的 <code class="language-plaintext highlighter-rouge">@contextmanager </code>装饰器，通过一个生成器函数来创建上下文管理器，避免编写完整的类。</p>
+
+<blockquote>
+  <p>with 语句的底层原理是Python解释器在编译时识别这种结构，并将其转换为等效的<code class="language-plaintext highlighter-rouge"> try...finally </code>块。</p>
+
+  <p>当解释器遇到 <code class="language-plaintext highlighter-rouge">with expression as variable:</code> 时，它会：</p>
+
+  <ul>
+    <li>
+      <p>调用 expression 返回的上下文管理器对象的<code class="language-plaintext highlighter-rouge"> __enter__() </code>方法。</p>
+    </li>
+    <li>
+      <p>将<code class="language-plaintext highlighter-rouge"> __enter__() </code>方法的返回值赋给 variable。</p>
+    </li>
+    <li>
+      <p>执行 with 块中的代码。</p>
+    </li>
+    <li>
+      <p>无论 with 块中的代码是正常执行完毕，还是因为 <code class="language-plaintext highlighter-rouge">return</code>,<code class="language-plaintext highlighter-rouge"> break</code>,<code class="language-plaintext highlighter-rouge"> continue </code>语句，或者因为异常而退出，finally 机制都会确保上下文管理器对象的<code class="language-plaintext highlighter-rouge"> __exit__() </code>方法被调用。</p>
+    </li>
+    <li>
+      <p>如果 with 块中发生了异常，该异常的详细信息会作为参数传递给<code class="language-plaintext highlighter-rouge"> __exit__() </code>方法。<code class="language-plaintext highlighter-rouge">__exit__() </code>可以选择处理这个异常（返回 True）或让它继续传播（返回 False 或 None）。</p>
+    </li>
+  </ul>
+
+  <p>这种机制提供了一种强大的抽象，使得资源管理变得自动化和安全。</p>
+</blockquote>
+
+<h2 id="1使用with语句进行文件读写">（1）使用with语句进行文件读写</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/7/10  17:07
+</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_safe_file.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">这是用with语句的写入文件操作...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">这个文件会被自动关闭...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="c1"># 不需要f.close()
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">my_safe_file.txt已经创建并写入，并自动关闭...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">my_safe_file.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">r</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">读取内容:</span><span class="se">\n</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">my_safe_file.txt已经读取，并且自动关闭...</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># 模拟一个异常，即使发生异常，文件也会关闭
+</span>    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">error.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">This line is written...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sh">"</span><span class="s">模拟一个异常发生...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">这行不会被写...</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">捕获到异常:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">, 文件仍然会被关闭...</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="c1"># 验证文件是否关闭， 实际上在with语句块结束后，文件对象，无法验证closed属性
+</span>    <span class="c1"># 但是可以通过尝试打开来间接验证
+</span>    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">error.txt</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">error.txt仍然可以被访问（已关闭并释放）...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">无法访问:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710171546955.png" alt="image-20250710171546955" style="zoom:50%;" /></p>
+
+<h2 id="2自定义上下文管理器">（2）自定义上下文管理器</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/7/10  17:16
+</span>
+<span class="k">class</span> <span class="nc">MyResource</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">is_open</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        进入with语句块时，被调用
+        </span><span class="sh">"""</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">正在获取资源</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">。。。</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">is_open</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="n">self</span> <span class="c1"># 返回自身，赋给as后的变量
+</span>
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        退出with块时，会被调用
+        </span><span class="sh">"""</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">资源</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">正在被释放...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">is_open</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">exc_type</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">在</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">内部发生了异常:</span><span class="si">{</span><span class="n">exc_type</span><span class="p">.</span><span class="n">__name__</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">exc_val</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span> <span class="c1"># 如果返回True 异常会被意志，不会向外传播
+</span>        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">资源</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">已经释放...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>  <span class="c1"># 返回False或者None  异常会被继续传播
+</span>
+<span class="k">with</span> <span class="nc">MyResource</span><span class="p">(</span><span class="sh">"</span><span class="s">Database Connection</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">db_conn</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">在with 内部，资源</span><span class="sh">'</span><span class="si">{</span><span class="n">db_conn</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="sh">'</span><span class="s">已经打开:</span><span class="si">{</span><span class="n">db_conn</span><span class="p">.</span><span class="n">is_open</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="c1"># 模拟一些操作
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">正在进行数据库查询...</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">在with块外部，资源</span><span class="si">{</span><span class="n">db_conn</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">已经关闭：</span><span class="si">{</span><span class="n">db_conn</span><span class="p">.</span><span class="n">is_open</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 演示异常情况下的上下文管理器
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nc">MyResource</span><span class="p">(</span><span class="sh">"</span><span class="s">Network Socket</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">net_sock</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">在with块内部，资源:</span><span class="si">{</span><span class="n">net_sock</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">已经打开;</span><span class="si">{</span><span class="n">net_sock</span><span class="p">.</span><span class="n">is_open</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="nc">ConnectionError</span><span class="p">(</span><span class="sh">"</span><span class="s">网络连接中断！</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># 模拟异常
+</span><span class="k">except</span> <span class="nb">ConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">在外部捕获到异常:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710174541295.png" alt="image-20250710174541295" style="zoom:50%;" /></p>
+
+<h2 id="3使用contextlib里的装饰器">（3）使用contextlib里的装饰器</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/7/10  17:46
+</span>
+<span class="kn">import</span> <span class="n">contextlib</span>
+
+<span class="nd">@contextlib.contextmanager</span>
+<span class="k">def</span> <span class="nf">managed_resource</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">资源:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">正在被获取(通过装饰器)</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">name</span> <span class="c1"># yield 是__enter__的逻辑，yield的值是as后的变量
+</span>    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">在</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">内部发生了异常(通过装饰器)：</span><span class="si">{</span><span class="nf">type</span><span class="p">(</span><span class="n">e</span><span class="p">).</span><span class="n">__name__</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="c1"># 异常处理逻辑，如果不想传播异常，这里可以不re raise
+</span>        <span class="k">raise</span> <span class="c1"># 如果要重新抛出异常
+</span>    <span class="k">finally</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">资源</span><span class="sh">'</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="sh">'</span><span class="s">正在被释放(通过装饰器)...</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nf">managed_resource</span><span class="p">(</span><span class="sh">"</span><span class="s">Temporary File</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp_file</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">在with内部，正在使用临时文件：</span><span class="si">{</span><span class="n">temp_file</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="c1"># 模拟文件操作
+</span>    <span class="k">raise</span> <span class="nc">IOError</span><span class="p">(</span><span class="sh">"</span><span class="s">文件写入失败！</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># 模拟异常
+</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250710175320353.png" alt="image-20250710175320353" /></p>
+
+<h2 id="习题">习题</h2>
+
+<p>创建一个自定义上下文管理器 FileLocker，用于模拟文件锁定。</p>
+
+<p>○ 在<code class="language-plaintext highlighter-rouge"> __enter__ </code>方法中打印“文件已锁定”，并返回一个表示锁定状态的字符串。</p>
+
+<p>○ 在<code class="language-plaintext highlighter-rouge"> __exit__ </code>方法中打印“文件已解锁”。</p>
+
+<p>○ 使用 <code class="language-plaintext highlighter-rouge">with FileLocker("report.txt") as lock: </code>结构来模拟对 report.txt 文件的锁定，并在 with 块内部打印“正在写入报告…”。</p>
+
+<hr />
+
+<p>参考代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="c1"># 博客地址: https://kirsten-1.github.io/
+# 创建者: kirsten-1
+# 时间: 2025/7/12  15:19
+</span>
+<span class="k">class</span> <span class="nc">FileLocker</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c1"># 文件没有锁定
+</span>
+    <span class="c1"># 进入with语句时
+</span>    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件:</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="si">}</span><span class="s">已锁定</span><span class="sh">"</span><span class="p">)</span>
+        <span class="c1"># 返回一个表示锁定状态的字符串
+</span>        <span class="k">return</span> <span class="sh">"</span><span class="s">locked</span><span class="sh">"</span>
+
+    <span class="c1"># 出with语句块时
+</span>    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件:</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="si">}</span><span class="s">已解锁</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 测试
+# 使用 `with FileLocker("report.txt") as lock: `结构来模拟对 report.txt 文件的锁定，并在 with 块内部打印“正在写入报告...”。
+</span><span class="k">with</span> <span class="nc">FileLocker</span><span class="p">(</span><span class="sh">"</span><span class="s">report.txt</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">lock</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">---- 正在写入报告...</span><span class="sh">"</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712152432983.png" alt="image-20250712152432983" style="zoom:50%;" /></p>
+
+<h1 id="6目录操作">6、目录操作</h1>
+
+<p>Python的 os 模块提供了与操作系统交互的功能，包括文件和目录的创建、删除、重命名、遍历等。<code class="language-plaintext highlighter-rouge">os.path</code> 模块则专门用于处理路径相关的操作，而 shutil 模块提供了更高级的文件和目录操作。</p>
+
+<p>os 模块是Python标准库中用于与操作系统进行交互的核心模块。它提供了大量函数来执行文件系统操作、进程管理、环境变量访问等。</p>
+
+<h2 id="1获取当前工作目录">（1）获取当前工作目录：</h2>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.getcwd()</code>：返回当前工作目录的字符串路径。</p>
+
+<p>○ <strong>原理：</strong> 调用操作系统的 <code class="language-plaintext highlighter-rouge">getcwd() </code>或类似系统调用。</p>
+
+<h2 id="2改变当前工作目录">（2）改变当前工作目录：</h2>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.chdir(path)</code>：将当前工作目录更改为 path。</p>
+
+<p>○ <strong>原理：</strong> 调用操作系统的 <code class="language-plaintext highlighter-rouge">chdir() </code>或类似系统调用。</p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span><span class="p">,</span> <span class="n">shutil</span>
+
+<span class="c1"># 1.获取和改变当前工作目录
+# 创建一个临时的目录
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="sh">"</span><span class="s">temp_dir</span><span class="sh">"</span><span class="p">):</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">mkdir</span><span class="p">(</span><span class="sh">"</span><span class="s">temp_dir</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">已经创建目录:temp_dir ......</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 改变当前工作目录
+</span><span class="n">os</span><span class="p">.</span><span class="nf">chdir</span><span class="p">(</span><span class="sh">"</span><span class="s">temp_dir</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">改变后的工作目录是temp_dir</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712153528535.png" alt="image-20250712153528535" style="zoom:50%;" /></p>
+
+<h2 id="3创建目录">（3）创建目录：</h2>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.mkdir(path, mode=0o777)</code>：创建单个目录。如果目录已存在，抛出 <code class="language-plaintext highlighter-rouge">FileExistsError</code>。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.makedirs(path, mode=0o777, exist_ok=False)</code>：递归创建目录（即可以创建多级目录）。</p>
+
+<p>■ <code class="language-plaintext highlighter-rouge">exist_ok=True</code>：如果目录已存在，则不抛出错误。</p>
+
+<p>○ <strong>原理：</strong> 调用操作系统的 <code class="language-plaintext highlighter-rouge">mkdir()</code> 或类似系统调用。<code class="language-plaintext highlighter-rouge">makedirs </code>会在内部循环调用 <code class="language-plaintext highlighter-rouge">mkdir</code>。</p>
+
+<h2 id="4删除目录">（4）删除目录：</h2>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.rmdir(path)</code>：删除空目录。如果目录不为空，抛出 <code class="language-plaintext highlighter-rouge">OSError</code>。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.removedirs(path)</code>：递归删除空目录。如果子目录被删除后，父目录也变为空，则会继续删除父目录。</p>
+
+<p>○ <strong>原理：</strong> 调用操作系统的 <code class="language-plaintext highlighter-rouge">rmdir() </code>或类似系统调用。</p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="c1"># 创建和删除目录：
+</span><span class="n">os</span><span class="p">.</span><span class="nf">mkdir</span><span class="p">(</span><span class="sh">"</span><span class="s">my_new_folder</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">已经创建目录:my_new_folder ......</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 创建多级目录
+</span><span class="n">os</span><span class="p">.</span><span class="nf">makedirs</span><span class="p">(</span><span class="sh">"</span><span class="s">nested/sub/folder</span><span class="sh">"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># `exist_ok=True`：如果目录已存在，则不抛出错误
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">已经创建目录:nested/sub/folder ......</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 只能删除空目录
+</span><span class="n">os</span><span class="p">.</span><span class="nf">rmdir</span><span class="p">(</span><span class="sh">"</span><span class="s">my_new_folder</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">已经删除目录my_new_folder......</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712153926431.png" alt="image-20250712153926431" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712153939744.png" alt="image-20250712153939744" style="zoom:50%;" /></p>
+
+<h2 id="5列出目录内容">（5）列出目录内容：</h2>
+
+<p>○<code class="language-plaintext highlighter-rouge"> os.listdir(path='.')</code>：返回指定路径下所有文件和目录的名称列表。不包含<code class="language-plaintext highlighter-rouge"> .</code> 和<code class="language-plaintext highlighter-rouge"> ..</code>。</p>
+
+<p>○ <strong>原理：</strong> 调用操作系统的 readdir() 或类似系统调用。</p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># 列出目录内容：
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">temp_dir中的内容:</span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="nf">listdir</span><span class="p">(</span><span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712154212463.png" alt="image-20250712154212463" style="zoom:50%;" /></p>
+
+<h2 id="6重命名文件或目录">（6）重命名文件或目录：</h2>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.rename(src, dst)</code>：将文件或目录 src 重命名为 dst。</p>
+
+<p>○ <strong>原理：</strong> 调用操作系统的 <code class="language-plaintext highlighter-rouge">rename() </code>或类似系统调用。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="c1"># 改变当前工作目录
+</span><span class="n">os</span><span class="p">.</span><span class="nf">chdir</span><span class="p">(</span><span class="sh">"</span><span class="s">temp_dir</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 创建一个文件存在temp_dir中
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">test_file.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello from test_file.txt...</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 重命名文件或者目录
+</span><span class="n">os</span><span class="p">.</span><span class="nf">rename</span><span class="p">(</span><span class="sh">"</span><span class="s">test_file.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">renamed_file.txt</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="7删除文件">（7）删除文件：</h2>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.remove(path)</code>：删除指定路径的文件。</p>
+
+<p>○ <strong>原理：</strong> 调用操作系统的 <code class="language-plaintext highlighter-rouge">unlink()</code> 或 <code class="language-plaintext highlighter-rouge">remove() </code>系统调用。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="sh">"</span><span class="s">renamed_file.txt</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">renamed_file.txt已经删除</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="8ospath-模块-路径操作">（8）os.path 模块 (路径操作)：</h2>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.join(path1, path2, ...)</code>：智能地拼接路径，自动处理斜杠。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.abspath(path)</code>：返回路径的绝对路径。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.basename(path)</code>：返回路径的最后一部分（文件名或目录名）。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.dirname(path)</code>：返回路径的目录部分。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.exists(path)</code>：检查路径是否存在。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.isfile(path)</code>：检查路径是否是文件。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.isdir(path)</code>：检查路径是否是目录。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.split(path)</code>：将路径分割为 (dirname, basename)。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">os.path.splitext(path)</code>：将路径分割为 (root, ext)。</p>
+
+<p>○ <strong>原理：</strong> 这些函数主要进行字符串操作和路径解析，不涉及实际的文件系统I/O，但它们遵循操作系统特定的路径约定。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="c1"># 改变当前工作目录
+</span><span class="n">os</span><span class="p">.</span><span class="nf">chdir</span><span class="p">(</span><span class="sh">"</span><span class="s">temp_dir</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">current_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getcwd</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">当前路径:</span><span class="si">{</span><span class="n">current_path</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 路径拼接
+</span><span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">current_path</span><span class="p">,</span> <span class="sh">"</span><span class="s">my_new_folder</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">another_file.txt</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拼接的路径是:</span><span class="si">{</span><span class="n">full_path</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">路径是否存在:</span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">是文件吗？</span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">isfile</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">是目录吗？</span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">isdir</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件名：</span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">basename</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">目录名：</span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">dirname</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">root</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">splitext</span><span class="p">(</span><span class="sh">"</span><span class="s">document.docx</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">文件名根：</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s">，扩展名：</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712160229398.png" alt="image-20250712160229398" /></p>
+
+<h2 id="9shutil-模块-高级文件操作">（9）shutil 模块 (高级文件操作)：</h2>
+
+<p>○ <code class="language-plaintext highlighter-rouge">shutil.copy(src, dst)</code>：复制文件。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">shutil.copytree(src, dst)</code>：递归复制目录树。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">shutil.move(src, dst)</code>：移动文件或目录。</p>
+
+<p>○ <code class="language-plaintext highlighter-rouge">shutil.rmtree(path)</code>：递归删除目录及其所有内容（<strong>非常危险，慎用！</strong>）。</p>
+
+<p>○ <strong>原理：</strong> shutil 模块通常在内部调用 os 模块的底层函数，但提供了更高级、更方便的接口来执行复杂的文件系统操作，例如处理目录的递归复制或删除。</p>
+
+<h1 id="7os模块打开应用程序">7.os模块打开应用程序</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="n">os</span><span class="p">.</span><span class="nf">system</span><span class="p">(</span><span class="sh">"</span><span class="s">open /System/Applications/Calculator.app</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如果是windows：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="n">os</span><span class="p">.</span><span class="nf">system</span><span class="p">(</span><span class="sh">"</span><span class="s">calc.exe</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>或者打开可执行文件：(只适用于windows)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">os</span><span class="p">.</span><span class="nf">startfile</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="8递归遍历打印文件tree">8.递归遍历打印文件tree</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="n">current_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getcwd</span><span class="p">()</span>
+<span class="n">lst_files</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">walk</span><span class="p">(</span><span class="n">current_path</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">lst_files</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">=======</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>得到输出是：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span>
+<span class="p">[</span><span class="sh">'</span><span class="s">temp_dir</span><span class="sh">'</span><span class="p">]</span>
+<span class="p">[</span><span class="sh">'</span><span class="s">test10].py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test19.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test09.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test18.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">text04.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test08.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">albert.jpg</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test17.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test07.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test13.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test03.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test12.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test02.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">my_safe_file.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test16.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test06.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test11.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test01.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test15.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test05.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test14.py</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">my_log.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">albert_copy.jpg</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">error.txt</span><span class="sh">'</span><span class="p">]</span>
+<span class="o">=======</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span>
+<span class="p">[</span><span class="sh">'</span><span class="s">my_new_folder</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">nested</span><span class="sh">'</span><span class="p">]</span>
+<span class="p">[]</span>
+<span class="o">=======</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">my_new_folder</span>
+<span class="p">[]</span>
+<span class="p">[</span><span class="sh">'</span><span class="s">another_file.txt</span><span class="sh">'</span><span class="p">]</span>
+<span class="o">=======</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">nested</span>
+<span class="p">[</span><span class="sh">'</span><span class="s">sub</span><span class="sh">'</span><span class="p">]</span>
+<span class="p">[]</span>
+<span class="o">=======</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">nested</span><span class="o">/</span><span class="n">sub</span>
+<span class="p">[</span><span class="sh">'</span><span class="s">folder</span><span class="sh">'</span><span class="p">]</span>
+<span class="p">[]</span>
+<span class="o">=======</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">nested</span><span class="o">/</span><span class="n">sub</span><span class="o">/</span><span class="n">folder</span>
+<span class="p">[]</span>
+<span class="p">[]</span>
+<span class="o">=======</span>
+
+<span class="n">Process</span> <span class="n">finished</span> <span class="k">with</span> <span class="nb">exit</span> <span class="n">code</span> <span class="mi">0</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>可以做拼接等操作：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="n">current_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getcwd</span><span class="p">()</span>
+<span class="n">lst_files</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">walk</span><span class="p">(</span><span class="n">current_path</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">lst_files</span><span class="p">:</span>
+    <span class="k">for</span> <span class="nb">dir</span> <span class="ow">in</span> <span class="n">dirname</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="nb">dir</span><span class="p">))</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></td><td class="rouge-code"><pre><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test10</span><span class="p">].</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test19</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test09</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test18</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">text04</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test08</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">albert</span><span class="p">.</span><span class="n">jpg</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test17</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test07</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test13</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test03</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test12</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test02</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">my_safe_file</span><span class="p">.</span><span class="n">txt</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test16</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test06</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test11</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test01</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test15</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test05</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">test14</span><span class="p">.</span><span class="n">py</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">my_log</span><span class="p">.</span><span class="n">txt</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">albert_copy</span><span class="p">.</span><span class="n">jpg</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">error</span><span class="p">.</span><span class="n">txt</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">my_new_folder</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">nested</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">my_new_folder</span><span class="o">/</span><span class="n">another_file</span><span class="p">.</span><span class="n">txt</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">nested</span><span class="o">/</span><span class="n">sub</span>
+<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">PythonBasicWorkSpace</span><span class="o">/</span><span class="n">PythonProject15</span><span class="o">/</span><span class="n">temp_dir</span><span class="o">/</span><span class="n">nested</span><span class="o">/</span><span class="n">sub</span><span class="o">/</span><span class="n">folder</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>用tree命令看到，上面的输出就是打印了每个文件和目录：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></td><td class="rouge-code"><pre><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="n">apple</span><span class="o">@</span><span class="mi">192</span> <span class="n">PythonProject15</span> <span class="o">%</span> <span class="n">tree</span>
+<span class="p">.</span>
+<span class="err">├──</span> <span class="n">albert</span><span class="p">.</span><span class="n">jpg</span>
+<span class="err">├──</span> <span class="n">albert_copy</span><span class="p">.</span><span class="n">jpg</span>
+<span class="err">├──</span> <span class="n">error</span><span class="p">.</span><span class="n">txt</span>
+<span class="err">├──</span> <span class="n">my_log</span><span class="p">.</span><span class="n">txt</span>
+<span class="err">├──</span> <span class="n">my_safe_file</span><span class="p">.</span><span class="n">txt</span>
+<span class="err">├──</span> <span class="n">temp_dir</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">my_new_folder</span>
+<span class="err">│  </span> <span class="err">│  </span> <span class="err">└──</span> <span class="n">another_file</span><span class="p">.</span><span class="n">txt</span>
+<span class="err">│  </span> <span class="err">└──</span> <span class="n">nested</span>
+<span class="err">│  </span>     <span class="err">└──</span> <span class="n">sub</span>
+<span class="err">│  </span>         <span class="err">└──</span> <span class="n">folder</span>
+<span class="err">├──</span> <span class="n">test01</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test02</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test03</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test05</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test06</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test07</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test08</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test09</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test10</span><span class="p">].</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test11</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test12</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test13</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test14</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test15</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test16</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test17</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test18</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">test19</span><span class="p">.</span><span class="n">py</span>
+<span class="err">└──</span> <span class="n">text04</span><span class="p">.</span><span class="n">py</span>
+
+<span class="mi">5</span> <span class="n">directories</span><span class="p">,</span> <span class="mi">25</span> <span class="n">files</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>不行的话，可以统计下数量：(上面控制台输出是5个目录，25个文件，一共30个；下面代码输出也是30)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="n">current_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getcwd</span><span class="p">()</span>
+<span class="n">lst_files</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">walk</span><span class="p">(</span><span class="n">current_path</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">lst_files</span><span class="p">:</span>
+    <span class="k">for</span> <span class="nb">dir</span> <span class="ow">in</span> <span class="n">dirname</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="nb">dir</span><span class="p">))</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712191348984.png" alt="image-20250712191348984" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/12/2025-07-09-python%E5%9F%BA%E7%A1%8014%E6%A8%A1%E5%9D%97%E5%92%8C%E5%8C%85/" data-toggle="tooltip" data-placement="top" title="">
+                        Previous<br>
+                        <span></span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0102" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0081" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0087" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0088" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0093" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0095" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0102" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0103" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0103" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="2">numpy</a>
+        
+                <a data-sort="0103" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0103" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="2">pandas</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
