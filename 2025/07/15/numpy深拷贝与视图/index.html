@@ -1,0 +1,437 @@
+<p>layout: post
+title: “numpy-深拷贝与视图”
+date: 2025-07-15
+author: “Hilda”
+header-img: “img/post-bg-2015.jpg”
+tags:</p>
+<ul>
+  <li>
+    <h2 id="numpy">numpy</h2>
+  </li>
+</ul>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1完全没有复制引用赋值">1.完全没有复制（引用赋值）</h1>
+
+<p>当将一个 NumPy 数组直接赋值给另一个变量时，实际上并没有创建一个新的数组对象，而是创建了一个指向<strong>相同内存地址</strong>的新引用。这意味着两个变量现在都指向内存中的同一个 NumPy 数组对象。它们是“命运共同体”，对其中任何一个变量所代表的数组进行的修改，都会立即反映在另一个变量上，因为它们操作的是同一块数据。</p>
+
+<p>这种行为与 Python 中<strong>可变对象</strong>的默认赋值行为是一致的。例如，列表、字典等可变对象在赋值时也是传递引用。</p>
+
+<blockquote>
+  <p>在 Python 中，变量是<strong>名称</strong>，它们绑定到内存中的<strong>对象</strong>。当执行 <code class="language-plaintext highlighter-rouge">b = a</code> 时，Python 并没有复制 <code class="language-plaintext highlighter-rouge">a</code> 所指向的对象，而是让 <code class="language-plaintext highlighter-rouge">b</code> 这个名称也指向 <code class="language-plaintext highlighter-rouge">a</code> 原本指向的那个对象。</p>
+
+  <ul>
+    <li><strong>内存地址共享：</strong> <code class="language-plaintext highlighter-rouge">a</code> 和 <code class="language-plaintext highlighter-rouge">b</code> 都存储了指向同一块内存区域的地址。</li>
+    <li>Python 的 <code class="language-plaintext highlighter-rouge">is</code> 运算符可以看作是对 <code class="language-plaintext highlighter-rouge">id(a) == id(b) </code>的简化和封装，直接比较对象的身份而无需显式调用 id() 函数。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">is</code> 运算符：</strong> <code class="language-plaintext highlighter-rouge">is</code> 运算符用于检查两个变量是否指向内存中的同一个对象。如果 <code class="language-plaintext highlighter-rouge">a is b</code> 返回 <code class="language-plaintext highlighter-rouge">True</code>，则表示 <code class="language-plaintext highlighter-rouge">a</code> 和 <code class="language-plaintext highlighter-rouge">b</code> 是同一个对象。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">id()</code> 函数：</strong> <code class="language-plaintext highlighter-rouge">id()</code> 函数返回对象的唯一标识符（通常是其内存地址）。如果 <code class="language-plaintext highlighter-rouge">id(a) == id(b)</code>，则 <code class="language-plaintext highlighter-rouge">a</code> 和 <code class="language-plaintext highlighter-rouge">b</code> 是同一个对象。</li>
+    <li><strong>可变性：</strong> NumPy 数组是可变对象。这意味着它们的内容可以在创建后被修改。由于 <code class="language-plaintext highlighter-rouge">a</code> 和 <code class="language-plaintext highlighter-rouge">b</code> 指向同一个可变对象，因此通过 <code class="language-plaintext highlighter-rouge">a</code> 或 <code class="language-plaintext highlighter-rouge">b</code> 修改对象内容都会影响到另一个。</li>
+  </ul>
+</blockquote>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">arr1</span> <span class="o">=</span> <span class="n">arr</span>
+<span class="nf">display</span><span class="p">(</span><span class="nf">id</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="nf">id</span><span class="p">(</span><span class="n">arr1</span><span class="p">))</span>  <span class="c1"># 都是4607038192
+# is 检查两个变量是否指向内存中的同一个对象
+</span><span class="nf">display</span><span class="p">(</span><span class="n">arr1</span> <span class="ow">is</span> <span class="n">arr</span><span class="p">)</span>   <span class="c1"># True
+</span>
+<span class="n">arr1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="sh">"""</span><span class="s">
+array([[100,   5,   7,   5],
+       [  5,   7,   2,   0],
+       [  3,   4,   5,   1]])
+</span><span class="sh">"""</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+<span class="nf">display</span><span class="p">(</span><span class="nf">id</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="nf">id</span><span class="p">(</span><span class="n">arr1</span><span class="p">))</span>  <span class="c1"># 都是4607038192
+# is 检查两个变量是否指向内存中的同一个对象
+</span><span class="nf">display</span><span class="p">(</span><span class="n">arr1</span> <span class="ow">is</span> <span class="n">arr</span><span class="p">)</span>   <span class="c1"># True
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<p>选择题</p>
+
+<ol>
+  <li>
+    <p>给定以下代码：</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">arr1</span>
+<span class="n">arr2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <p>执行上述代码后，<code class="language-plaintext highlighter-rouge">arr1</code> 的值是什么？ A. <code class="language-plaintext highlighter-rouge">[1, 2, 3]</code> B. <code class="language-plaintext highlighter-rouge">[99, 2, 3]</code> C. <code class="language-plaintext highlighter-rouge">[99, 99, 99]</code> D. 报错</p>
+  </li>
+  <li>
+    <p>以下哪种情况会使得 <code class="language-plaintext highlighter-rouge">a is b</code> 返回 <code class="language-plaintext highlighter-rouge">True</code>？ A. <code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = np.array([1, 2])</code> B. <code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = a.copy()</code> C. <code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = a.view()</code> D. <code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = a</code></p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>答案：1.B,<code class="language-plaintext highlighter-rouge">arr2 = arr1</code> 使得 <code class="language-plaintext highlighter-rouge">arr1</code> 和 <code class="language-plaintext highlighter-rouge">arr2</code> 指向同一个数组对象。对 <code class="language-plaintext highlighter-rouge">arr2</code> 的修改会直接影响到 <code class="language-plaintext highlighter-rouge">arr1</code>。</p>
+
+  <p>2.D,<strong><code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = a</code></strong>,只有直接赋值操作会使得两个变量指向同一个对象</p>
+</blockquote>
+
+<h1 id="2查看-或-浅拷贝view">2.查看 或 浅拷贝(View)</h1>
+
+<p>“视图”或“浅拷贝”是指创建一个新的数组对象，但这个新对象<strong>与原始数组共享相同的数据内存</strong>。这意味着：</p>
+
+<ul>
+  <li><strong>独立的数组对象：</strong> <code class="language-plaintext highlighter-rouge">a</code> 和 <code class="language-plaintext highlighter-rouge">b</code> 是两个不同的 NumPy 数组对象，<code class="language-plaintext highlighter-rouge">a is b</code> 会返回 <code class="language-plaintext highlighter-rouge">False</code>。</li>
+  <li><strong>共享数据：</strong> 尽管对象不同，但它们底层的数据存储是同一份。因此，对视图数组的修改会直接影响到原始数组，反之亦然。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">view()</code> 方法：</strong> 这是显式创建视图的方法。</li>
+  <li><strong>切片操作：</strong> 在 NumPy 中，<strong>切片操作</strong>（例如 <code class="language-plaintext highlighter-rouge">a[0:2]</code>）通常会返回原始数组的一个视图，而不是一个副本。这是一个非常重要的特性，也是初学者容易混淆的地方。</li>
+</ul>
+
+<blockquote>
+  <p>NumPy 数组由两部分组成：</p>
+
+  <ol>
+    <li><strong>数组对象（Array Object）：</strong> 包含数组的元数据（如 <code class="language-plaintext highlighter-rouge">shape</code>、<code class="language-plaintext highlighter-rouge">dtype</code>、<code class="language-plaintext highlighter-rouge">strides</code> 等）以及一个指向实际数据内存块的指针。</li>
+    <li><strong>数据缓冲区（Data Buffer）：</strong> 实际存储数组元素值的内存区域。</li>
+  </ol>
+
+  <p>当创建一个视图时：</p>
+
+  <ul>
+    <li><strong>新的数组对象：</strong> NumPy 会创建一个全新的数组对象。这个新对象有自己的 <code class="language-plaintext highlighter-rouge">shape</code>、<code class="language-plaintext highlighter-rouge">dtype</code>、<code class="language-plaintext highlighter-rouge">strides</code> 等元数据。</li>
+    <li><strong>共享数据指针：</strong> 这个新的数组对象中的数据指针会指向<strong>原始数组的数据缓冲区</strong>。它们没有自己的数据缓冲区。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">base</code> 属性：</strong> 视图数组有一个 <code class="language-plaintext highlighter-rouge">base</code> 属性，它指向拥有实际数据内存的原始数组对象。如果一个数组是另一个数组的视图，那么它的 <code class="language-plaintext highlighter-rouge">base</code> 属性将是非 <code class="language-plaintext highlighter-rouge">None</code> 的，并且指向拥有数据内存的那个数组。如果一个数组拥有自己的数据，那么它的 <code class="language-plaintext highlighter-rouge">base</code> 属性将是 <code class="language-plaintext highlighter-rouge">None</code>。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">flags.owndata</code> 属性：</strong> 这是一个布尔标志，指示数组是否拥有其数据。如果 <code class="language-plaintext highlighter-rouge">flags.owndata</code> 为 <code class="language-plaintext highlighter-rouge">True</code>，则数组拥有自己的数据。如果为 <code class="language-plaintext highlighter-rouge">False</code>，则数组是另一个数组的视图（或以其他方式共享数据）。</li>
+  </ul>
+
+  <p>这种机制使得 NumPy 在处理大型数据集时非常高效，因为它避免了不必要的数据复制。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">id</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">a</span><span class="p">.</span><span class="n">flags</span><span class="p">.</span><span class="n">owndata</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">base</span><span class="p">)</span>   <span class="c1"># 4608066736 True None
+# 创建视图
+</span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="nf">view</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">id</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">b</span><span class="p">.</span><span class="n">flags</span><span class="p">.</span><span class="n">owndata</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">base</span><span class="p">)</span>   <span class="c1"># 4608068176 False [[6 2 1]]
+</span><span class="nf">print</span><span class="p">(</span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">a</span><span class="p">)</span>  <span class="c1"># False True
+</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>   <span class="c1"># 100 100
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>切片操作通常返回视图：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="c1"># 切片
+</span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">a的内存地址:</span><span class="si">{</span><span class="nf">id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s">, b的内存地址:</span><span class="si">{</span><span class="nf">id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 不同
+</span><span class="nf">print</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">a</span><span class="p">)</span>  <span class="c1"># True
+</span><span class="nf">print</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">flags</span><span class="p">.</span><span class="n">owndata</span><span class="p">)</span>  <span class="c1"># False   表示：不拥有自己的数据
+# 修改切片中的元素
+</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># 100
+</span><span class="nf">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># 响应也会发生变化
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250715124031722.png" alt="image-20250715124031722" style="zoom:50%;" /></p>
+
+<hr />
+
+<h2 id="选择题">选择题</h2>
+
+<ol>
+  <li>
+    <p>给定以下代码：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>import numpy as np
+arr1 = np.array([1, 2, 3, 4, 5])
+arr2 = arr1[1:4]
+arr2[0] = 99
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <p>执行上述代码后，<code class="language-plaintext highlighter-rouge">arr1</code> 的值是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">[1, 2, 3, 4, 5]</code> B. <code class="language-plaintext highlighter-rouge">[1, 99, 3, 4, 5]</code> C. <code class="language-plaintext highlighter-rouge">[99, 2, 3, 4, 5]</code> D. <code class="language-plaintext highlighter-rouge">[1, 99, 99, 99, 5]</code></p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下关于 NumPy 视图的描述，哪一项是错误的？</p>
+
+    <p>A. 视图是原始数组的一个独立对象。</p>
+
+    <p>B. 视图和原始数组共享底层数据。</p>
+
+    <p>C. 对视图的修改会影响原始数组。</p>
+
+    <p>D. 视图拥有自己的数据副本。</p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>答案：D</p>
+</blockquote>
+
+<h2 id="编程题">编程题</h2>
+
+<p>编写一段 Python 代码，创建一个 NumPy 数组 <code class="language-plaintext highlighter-rouge">data</code>。</p>
+
+<p>从 <code class="language-plaintext highlighter-rouge">data</code> 中创建一个切片 <code class="language-plaintext highlighter-rouge">sub_data</code>。</p>
+
+<p>验证 <code class="language-plaintext highlighter-rouge">data</code> 和 <code class="language-plaintext highlighter-rouge">sub_data</code> 是否是不同的对象，但共享相同的数据。</p>
+
+<p>修改 <code class="language-plaintext highlighter-rouge">sub_data</code> 中的一个元素，并打印 <code class="language-plaintext highlighter-rouge">data</code> 和 <code class="language-plaintext highlighter-rouge">sub_data</code>，以显示修改的效果。</p>
+
+<p>打印 <code class="language-plaintext highlighter-rouge">sub_data.base</code> 和 <code class="language-plaintext highlighter-rouge">sub_data.flags.owndata</code> 的值。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">sub_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始数组:</span><span class="se">\n</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">切片:</span><span class="se">\n</span><span class="si">{</span><span class="n">sub_data</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span> 
+<span class="nf">print</span><span class="p">(</span><span class="n">sub_data</span><span class="p">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">data</span><span class="p">)</span>  <span class="c1"># False
+</span><span class="nf">print</span><span class="p">(</span><span class="n">sub_data</span> <span class="ow">is</span> <span class="n">data</span><span class="p">)</span>  <span class="c1"># False
+</span><span class="n">sub_data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始数组:</span><span class="se">\n</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">切片:</span><span class="se">\n</span><span class="si">{</span><span class="n">sub_data</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">切片不拥有自己的数据:</span><span class="si">{</span><span class="n">sub_data</span><span class="p">.</span><span class="n">flags</span><span class="p">.</span><span class="n">owndata</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># False
+</span><span class="nf">print</span><span class="p">(</span><span class="n">sub_data</span><span class="p">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">data</span><span class="p">)</span>  <span class="c1"># False
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250715133819486.png" alt="image-20250715133819486" style="zoom:50%;" /></p>
+
+<h1 id="3深拷贝">3.深拷贝</h1>
+
+<p>“深拷贝”是指创建一个<strong>完全独立</strong>的数组副本。这意味着新数组拥有自己独立的内存空间来存储数据，与原始数组没有任何关联。对深拷贝数组的任何修改都不会影响到原始数组，反之亦然。它们是“分道扬镳”的。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">copy()</code> 方法：</strong> 这是执行深拷贝的方法。</li>
+  <li><strong>独立的数据：</strong> 新数组会分配新的内存空间，并将原始数组的所有数据复制到这个新空间中。</li>
+</ul>
+
+<blockquote>
+  <p>当执行深拷贝时：</p>
+
+  <ul>
+    <li><strong>新的数组对象：</strong> NumPy 会创建一个全新的数组对象。</li>
+    <li><strong>新的数据缓冲区：</strong> NumPy 会为这个新数组分配一块<strong>全新的内存区域</strong>。</li>
+    <li><strong>数据复制：</strong> 原始数组中的所有元素值都会被复制到新分配的内存区域中。</li>
+    <li><strong>完全独立：</strong> 原始数组和深拷贝数组在内存中是完全独立的实体。它们各自拥有自己的数据，互不影响。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">base</code> 属性：</strong> 深拷贝数组的 <code class="language-plaintext highlighter-rouge">base</code> 属性将是 <code class="language-plaintext highlighter-rouge">None</code>，因为它不依赖于任何其他数组的数据。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">flags.owndata</code> 属性：</strong> 深拷贝数组的 <code class="language-plaintext highlighter-rouge">flags.owndata</code> 将是 <code class="language-plaintext highlighter-rouge">True</code>，因为它拥有自己的数据。</li>
+  </ul>
+
+  <p>深拷贝通常需要一个完全独立的数据副本，并且不希望对副本的修改影响到原始数据时使用。虽然它提供了数据隔离，但由于需要分配新内存和复制数据，因此会比视图操作消耗更多的内存和计算资源，尤其是在处理大型数组时。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始数组：</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始数组的内存地址：</span><span class="si">{</span><span class="nf">id</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始数组是否拥有自己的数据:</span><span class="si">{</span><span class="n">arr</span><span class="p">.</span><span class="n">flags</span><span class="p">.</span><span class="n">owndata</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>   <span class="c1"># True
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始数组的base属性:</span><span class="si">{</span><span class="n">arr</span><span class="p">.</span><span class="n">base</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># None
+# 使用copy方法创建一个深拷贝
+</span><span class="n">b</span> <span class="o">=</span> <span class="n">arr</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拷贝数组:</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拷贝数组的内存地址：</span><span class="si">{</span><span class="nf">id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拷贝数组是不是原始数组:</span><span class="si">{</span><span class="n">b</span> <span class="ow">is</span> <span class="n">arr</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拷贝数据的base属性:</span><span class="si">{</span><span class="n">b</span><span class="p">.</span><span class="n">base</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># None   因为b有自己的数据
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拷贝数组是否拥有自己的数据:</span><span class="si">{</span><span class="n">b</span><span class="p">.</span><span class="n">flags</span><span class="p">.</span><span class="n">owndata</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># True
+</span>
+<span class="c1"># 修改b中的元素
+</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始数组:</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1">#  不变
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拷贝数组:</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250715134602077.png" alt="image-20250715134602077" /></p>
+
+<h2 id="补充切片后进行深拷贝以释放内存">补充:切片后进行深拷贝,以释放内存</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c1"># 假设a是一个巨大的中间结果
+</span><span class="n">a_large</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mf">1e8</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">a的大小(字节):</span><span class="si">{</span><span class="n">a_large</span><span class="p">.</span><span class="n">nbytes</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 800000000
+# 从a_large中取出一小部分进行深拷贝
+# 如果不copy()，b_small将是a_large的视图，a_large无法被垃圾回收
+</span><span class="n">b_small</span> <span class="o">=</span> <span class="n">a_large</span><span class="p">[::</span><span class="mi">1000000</span><span class="p">].</span><span class="nf">copy</span><span class="p">()</span>  <span class="c1"># 每100万个数据中取一个数据，进行深拷贝
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">b_small的大小(字节):</span><span class="si">{</span><span class="n">b_small</span><span class="p">.</span><span class="n">nbytes</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 800
+# 删除不再需要的大型数组a_large  释放其占用的内存
+# 如果b_small是其视图，del a_large并不能真正释放内存，因为b_small还在使用它
+</span><span class="k">del</span> <span class="n">a_large</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">大型数组a_large已经删除</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">b_small依然可以使用:</span><span class="si">{</span><span class="n">b_small</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250715135636007.png" alt="image-20250715135636007" style="zoom:50%;" /></p>
+
+<h2 id="选择题-1">选择题</h2>
+
+<ol>
+  <li>
+    <p>给定以下代码：</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">arr1</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+<span class="n">arr2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <p>执行上述代码后，<code class="language-plaintext highlighter-rouge">arr1</code> 和 <code class="language-plaintext highlighter-rouge">arr2</code> 的值分别是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">arr1 = [10, 20, 30]</code>, <code class="language-plaintext highlighter-rouge">arr2 = [10, 50, 30]</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">arr1 = [10, 50, 30]</code>, <code class="language-plaintext highlighter-rouge">arr2 = [10, 50, 30]</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">arr1 = [10, 20, 30]</code>, <code class="language-plaintext highlighter-rouge">arr2 = [10, 20, 30]</code></p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">arr1 = [10, 50, 30]</code>, <code class="language-plaintext highlighter-rouge">arr2 = [10, 20, 30]</code></p>
+
+    <blockquote>
+      <p>答案：A</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪种情况下，对 <code class="language-plaintext highlighter-rouge">b</code> 的修改不会影响到 <code class="language-plaintext highlighter-rouge">a</code>？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = a</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = a.view()</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = a.copy()</code></p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">a = np.array([1, 2]); b = a[0:1]</code></p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h2 id="编程题-1">编程题</h2>
+
+<p>编写一段 Python 代码，创建一个 NumPy 数组 <code class="language-plaintext highlighter-rouge">original_array</code>。</p>
+
+<p>创建一个 <code class="language-plaintext highlighter-rouge">original_array</code> 的深拷贝 <code class="language-plaintext highlighter-rouge">copied_array</code>。</p>
+
+<p>修改 <code class="language-plaintext highlighter-rouge">copied_array</code> 中的一个元素。</p>
+
+<p>打印 <code class="language-plaintext highlighter-rouge">original_array</code> 和 <code class="language-plaintext highlighter-rouge">copied_array</code>，以证明它们是独立的。</p>
+
+<p>验证 <code class="language-plaintext highlighter-rouge">copied_array.base</code> 是否为 <code class="language-plaintext highlighter-rouge">None</code>，以及 <code class="language-plaintext highlighter-rouge">copied_array.flags.owndata</code> 是否为 <code class="language-plaintext highlighter-rouge">True</code>。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="n">original_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">original_array</span><span class="p">)</span>
+<span class="n">copied_array</span> <span class="o">=</span> <span class="n">original_array</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">copied_array</span><span class="p">)</span>
+<span class="n">copied_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">999</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">original_array</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">copied_array</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">copied_array</span><span class="p">.</span><span class="n">base</span><span class="p">)</span>  <span class="c1"># None
+</span><span class="nf">print</span><span class="p">(</span><span class="n">copied_array</span><span class="p">.</span><span class="n">flags</span><span class="p">.</span><span class="n">owndata</span><span class="p">)</span>  <span class="c1"># True
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250715140615006.png" alt="image-20250715140615006" style="zoom:50%;" /></p>
+
