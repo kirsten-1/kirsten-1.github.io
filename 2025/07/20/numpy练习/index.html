@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="读图片-jupyter notebook - Hilda的博客 | Your genius girlfriend's blog">
+        content="numpy-练习 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-02-11T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-07-20T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="人工智能AI基础">
+    <meta property="article:tag" content="numpy">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/02/11/jupyter-notebook-%E8%AF%BB%E5%9B%BE%E7%89%87/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/20/numpy%E7%BB%83%E4%B9%A0/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>读图片-jupyter notebook - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>numpy-练习 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/02/11/jupyter-notebook-%E8%AF%BB%E5%9B%BE%E7%89%87/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/20/numpy%E7%BB%83%E4%B9%A0/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -258,13 +258,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80" title="人工智能AI基础">人工智能AI基础</a>
+                        <a class="tag" href="/archive/?tag=numpy" title="numpy">numpy</a>
                         
                     </div>
-                    <h1>读图片-jupyter notebook</h1>
+                    <h1>numpy-练习</h1>
                     
-                    <h2 class="subheading">三种方式+图像简单操作</h2>
-                    <span class="meta">Posted by Hilda on February 11, 2025</span>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 20, 2025</span>
                 </div>
             </div>
         </div>
@@ -294,325 +294,7 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<p>已有图片<code class="language-plaintext highlighter-rouge">cat.jpg</code>，如下</p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211143332537.png" alt="image-20250211143332537" style="zoom:50%;" /></p>
-
-<blockquote>
-  <p>相对于代码的位置，可以用<code class="language-plaintext highlighter-rouge">./cat.jpg</code>进行读取。</p>
-</blockquote>
-
-<p>下面是3种读图片的方法。</p>
-
-<h1 id="1python读图片-pillow">1.python读图片-pillow</h1>
-
-<p>图片文件不适合用open去读取</p>
-
-<blockquote>
-  <p>用open读图片，易引发<code class="language-plaintext highlighter-rouge">UnicodeDecodeError: 'gbk' codec can't decode byte 0xff in position 0: illegal multibyte sequence</code>错误。</p>
-</blockquote>
-
-<p><code class="language-plaintext highlighter-rouge">PIL</code> 是 Python Imaging Library 的缩写，它是一个非常流行的图像处理库，提供了广泛的图像处理功能，比如打开、保存、转换、调整大小、裁剪、旋转等操作。</p>
-
-<p>然而，<code class="language-plaintext highlighter-rouge">PIL</code> 本身已经不再更新和维护，取而代之的是一个称为 <strong>Pillow</strong> 的库。Pillow 是 <code class="language-plaintext highlighter-rouge">PIL</code> 的一个友好的分支和升级版本，现如今它是使用 <code class="language-plaintext highlighter-rouge">PIL</code> 功能的标准库。</p>
-
-<hr />
-
-<h2 id="pillow读图片">Pillow读图片</h2>
-
-<p>安装依赖（Jupyter notebook）</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="err">!</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">Pillow</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211143805172.png" alt="image-20250211143805172" style="zoom:50%;" /></p>
-
-<p>导入依赖读图片：</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="n">cat</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">./cat.jpg</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">cat</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211143920163.png" alt="image-20250211143920163" style="zoom:50%;" /></p>
-
-<h2 id="补充不同格式的图片">补充：不同格式的图片</h2>
-
-<p>JPG 或 JPEG（Joint Photographic Experts Group）是广泛使用的图像压缩格式，主要用于存储彩色照片。</p>
-
-<p>JPEG 图像采用的是<strong>8位颜色深度</strong>的表示方式。（0-255）</p>
-
-<p>每个颜色通道（红色、绿色、蓝色）都使用一个 <strong>8-bit</strong> 数值来表示，即 0 到 255 之间的整数。每个像素由三个颜色通道组成（RGB 模式），每个通道的值都在 0 到 255 之间。这里的 0 代表最暗的颜色，255 代表最亮的颜色。</p>
-
-<ul>
-  <li><strong>例如</strong>，一个红色像素的 RGB 值可能是 <code class="language-plaintext highlighter-rouge">(255, 0, 0)</code>，表示完全的红色，绿色和蓝色通道的值是 0。</li>
-</ul>
-
-<p>JPG 图像通常使用压缩算法对数据进行有损压缩，因此它的文件体积较小，但也会牺牲一些图像的细节和质量。</p>
-
-<hr />
-
-<p>PNG（Portable Network Graphics）是一种无损压缩格式，常用于需要保持透明度的图像（例如网页上的图标、图像等）。PNG 支持不同的颜色深度，可以是 <strong>8位</strong> 或 <strong>16位</strong>，但通常以 <strong>8位</strong> 来存储 RGB 图像数据。并且，PNG 格式的图像可以包含 <strong>透明通道</strong>（即 RGBA 模式，其中 A 表示透明度）。</p>
-
-<ul>
-  <li><strong>像素值范围</strong>：PNG 图像通常使用浮点数表示像素的颜色值，范围从 <strong>0 到 1</strong>。例如，每个颜色通道（R、G、B）的像素值被表示为 0 到 1 之间的小数值，这种方式是浮动值而非整数值。
-    <ul>
-      <li><strong>例如</strong>，一个红色像素的 RGB 值可能是 <code class="language-plaintext highlighter-rouge">(1.0, 0.0, 0.0)</code>，表示完全的红色，绿色和蓝色通道的值是 0。这些值是浮动的，而不是整数形式。</li>
-    </ul>
-  </li>
-</ul>
-
-<p>PNG 是一种 <strong>无损压缩格式</strong>，即不会丢失任何图像细节。虽然它可能比 JPG 图像更大，但保留了原始图像的所有信息。</p>
-
-<hr />
-
-<p>总结：</p>
-
-<p><strong>JPG/JPEG</strong>：使用 <strong>0 到 255</strong> 范围的整数来表示图像中的每个像素的 RGB 值，适合压缩图像（有损压缩）。</p>
-
-<p><strong>PNG</strong>：使用 <strong>0 到 1</strong> 之间的小数值来表示图像中的每个像素的 RGB 值，适合需要高质量和无损压缩的图像，特别是在透明通道的处理中。</p>
-
-<hr />
-
-<h2 id="对图片进行简单操作">对图片进行简单操作</h2>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="nf">type</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>  <span class="c1"># PIL.JpegImagePlugin.JpegImageFile
-</span>
-<span class="n">cat</span><span class="p">.</span><span class="n">size</span> <span class="c1"># (730, 456)
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
-<blockquote>
-  <p>补充：</p>
-
-  <p><strong><code class="language-plaintext highlighter-rouge">cat.size</code></strong>: 这是 <code class="language-plaintext highlighter-rouge">Pillow</code> 中 <code class="language-plaintext highlighter-rouge">Image</code> 对象的一个属性，返回图像的尺寸信息。具体来说，<code class="language-plaintext highlighter-rouge">cat.size</code> 返回一个元组 <code class="language-plaintext highlighter-rouge">(width, height)</code>，其中：</p>
-
-  <ul>
-    <li><code class="language-plaintext highlighter-rouge">width</code> 是图像的宽度（以像素为单位）</li>
-    <li><code class="language-plaintext highlighter-rouge">height</code> 是图像的高度（以像素为单位）</li>
-  </ul>
-</blockquote>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="n">cat</span><span class="p">.</span><span class="n">mode</span> <span class="c1"># 'RGB'
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
-<blockquote>
-  <p>补充：</p>
-
-  <p>除了 RGB，<code class="language-plaintext highlighter-rouge">Pillow</code> 还支持多种颜色模式，每种模式有不同的表示方式和用途。例如：</p>
-
-  <ul>
-    <li><strong>‘L’</strong>：灰度模式（Luminance），表示图像是灰度图像，每个像素只有一个通道，范围是 0 到 255。</li>
-    <li><strong>‘RGBA’</strong>：RGBA 模式表示图像包含红、绿、蓝和透明度（Alpha）通道。每个像素由四个通道的值组成，透明度通道用于表示图像的透明部分。</li>
-    <li><strong>‘CMYK’</strong>：印刷领域使用的颜色模式，表示青色（Cyan）、品红（Magenta）、黄色（Yellow）和黑色（Key）。</li>
-    <li><strong>‘1’</strong>：黑白模式，每个像素只有两个值：0（黑色）和 1（白色）。</li>
-  </ul>
-</blockquote>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="n">cat</span><span class="p">.</span><span class="nf">getchannel</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211144700659.png" alt="image-20250211144700659" style="zoom:50%;" /></p>
-
-<p><code class="language-plaintext highlighter-rouge">cat.getchannel(2)</code> 是用于从图像中提取指定通道的一个方法。这里的 <code class="language-plaintext highlighter-rouge">2</code> 表示我们要获取图像中的第三个颜色通道。</p>
-
-<ul>
-  <li><strong>0</strong>：红色通道 (R)</li>
-  <li><strong>1</strong>：绿色通道 (G)</li>
-  <li><strong>2</strong>：蓝色通道 (B)</li>
-</ul>
-
-<p>如果图像是 RGBA 模式（即包含透明通道的图像），通道索引 <code class="language-plaintext highlighter-rouge">0</code>、<code class="language-plaintext highlighter-rouge">1</code>、<code class="language-plaintext highlighter-rouge">2</code> 和 <code class="language-plaintext highlighter-rouge">3</code> 分别代表红色、绿色、蓝色和透明度（Alpha）通道。</p>
-
-<hr />
-
-<p><strong>可以直接通过np.array把pillow读取的image对象转换成ndarray</strong></p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="n">catArr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211144928116.png" alt="image-20250211144928116" style="zoom:50%;" /></p>
-
-<p>注意：</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="n">cat</span><span class="p">.</span><span class="n">size</span>
-<span class="n">catArr</span><span class="p">.</span><span class="n">shape</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211145021889.png" alt="image-20250211145021889" style="zoom:50%;" /></p>
-
-<p><strong><code class="language-plaintext highlighter-rouge">cat.size</code></strong>（来自 <code class="language-plaintext highlighter-rouge">PIL.Image</code> 对象），图像的尺寸（宽度和高度），表示图像的大小（以像素为单位）。</p>
-
-<p><strong><code class="language-plaintext highlighter-rouge">catArr.shape</code></strong>（来自 <code class="language-plaintext highlighter-rouge">numpy</code> 数组），数组的形状（即数组的维度信息）。在将 <code class="language-plaintext highlighter-rouge">PIL.Image</code> 对象转换为 <code class="language-plaintext highlighter-rouge">numpy</code> 数组后，图像数据就被存储为一个 <strong>多维数组</strong>。</p>
-
-<p><strong>456</strong>：图像的 <strong>高度</strong>（行数）</p>
-
-<p><strong>730</strong>：图像的 <strong>宽度</strong>（列数）</p>
-
-<p><strong>3</strong>：表示图像是 <strong>RGB</strong> 格式，每个像素包含 3 个颜色通道（红色、绿色、蓝色），因此是一个 3 通道的彩色图像。</p>
-
-<p>即：</p>
-
-<p><strong><code class="language-plaintext highlighter-rouge">catArr.shape</code></strong> 返回的是 <code class="language-plaintext highlighter-rouge">numpy</code> 数组的形状，它包含三个维度：</p>
-
-<ul>
-  <li>第一个维度：图像的高度（即行数）</li>
-  <li>第二个维度：图像的宽度（即列数）</li>
-  <li>第三个维度：图像的颜色通道数（对于 RGB 图像是 3）</li>
-</ul>
-
-<hr />
-
-<h1 id="2opencv读图片">2.opencv读图片</h1>
-
-<p>下载依赖（如果有必要，重启内核），下面指定了下载源—豆瓣</p>
-
-<blockquote>
-  <p>注：</p>
-
-  <p>豆瓣源: https://pypi.douban.com/simple</p>
-
-  <p>清华源: https://pypi.tuna.tsinghua.edu.cn/simple</p>
-</blockquote>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">opencv</span><span class="o">-</span><span class="n">python</span> <span class="o">-</span><span class="n">i</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="p">.</span><span class="n">douban</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">simple</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211145453145.png" alt="image-20250211145453145" style="zoom:50%;" /></p>
-
-<p>导入依赖读图片：</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">cv2</span>
-<span class="n">cat_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">./cat.jpg</span><span class="sh">'</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211145611010.png" alt="image-20250211145611010" style="zoom:50%;" /></p>
-
-<p>opencv默认的颜色空间是BGR</p>
-
-<p>展示图片：</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="rouge-code"><pre><span class="n">cv2</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="sh">'</span><span class="s">cat</span><span class="sh">'</span><span class="p">,</span> <span class="n">cat_cv</span><span class="p">)</span>
-<span class="n">cv2</span><span class="p">.</span><span class="nf">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">cv2</span><span class="p">.</span><span class="nf">destroyAllWindows</span><span class="p">()</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>会有弹窗：</p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211145710266.png" alt="image-20250211145710266" style="zoom:50%;" /></p>
-
-<p>注：</p>
-
-<p>1.<code class="language-plaintext highlighter-rouge">cat_cv</code> 是一个 NumPy 数组</p>
-
-<p>2.<strong><code class="language-plaintext highlighter-rouge">cv2.imshow()</code></strong> 用来在一个窗口中显示图像。它的第一个参数是窗口的名称（在这里是 <code class="language-plaintext highlighter-rouge">'cat'</code>），第二个参数是要显示的图像数据（<code class="language-plaintext highlighter-rouge">cat_cv</code>）。</p>
-
-<p>3.<strong><code class="language-plaintext highlighter-rouge">cv2.waitKey(0)</code></strong> 会暂停程序的执行，等待用户在显示图像窗口中按下任意键。如果传入的参数是 <code class="language-plaintext highlighter-rouge">0</code>，表示无限期等待直到用户按下一个键。如果传入的是正整数参数，表示等待指定的毫秒数。如果在这段时间内用户按下键，则继续执行程序。通常用于处理图像时添加时间延迟。</p>
-
-<p>4.<strong><code class="language-plaintext highlighter-rouge">cv2.destroyAllWindows()</code></strong> 会关闭所有由 <code class="language-plaintext highlighter-rouge">cv2.imshow()</code> 打开的窗口。在图像显示完并等待按键后，调用此函数来销毁所有显示的 OpenCV 窗口。</p>
-
-<h1 id="3matplotlib读取图片">3.<code class="language-plaintext highlighter-rouge">matplotlib</code>读取图片</h1>
-
-<p>导入依赖：</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>读图片：</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="n">cat_plt</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">./cat.jpg</span><span class="sh">'</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211150530460.png" alt="image-20250211150530460" style="zoom:50%;" /></p>
-
-<p>可以看出，也是RGB模式。</p>
-
-<p>展示图片：</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">cat_plt</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211150635443.png" alt="image-20250211150635443" style="zoom:50%;" /></p>
-
-<p>输出 <code class="language-plaintext highlighter-rouge">&lt;matplotlib.image.AxesImage at 0x1224862b0&gt;</code>，这表示你在图像显示过程中实际上得到了一个 <strong><code class="language-plaintext highlighter-rouge">AxesImage</code> 对象</strong>。它是 <code class="language-plaintext highlighter-rouge">matplotlib</code> 用来表示图像数据的对象类型。</p>
-
-<p><strong><code class="language-plaintext highlighter-rouge">&lt;matplotlib.image.AxesImage at 0x1224862b0&gt;</code></strong>：这是 Python 解释器打印出来的对象的字符串表示。它显示了 <code class="language-plaintext highlighter-rouge">AxesImage</code> 对象的类型和内存地址（这里是 <code class="language-plaintext highlighter-rouge">0x1224862b0</code>）。每次你创建新的图像对象时，内存地址会不同，因此这里的地址可能会发生变化。</p>
-
-<p>如果不希望显示，则加一句<code class="language-plaintext highlighter-rouge">plt.axis('off')</code>即可。</p>
-
-<hr />
-
-<h2 id="对图片进行翻转">对图片进行翻转</h2>
-
-<p>如何上下翻转, 左右翻转, 上下左右都翻转？颜色翻转？</p>
-
-<p>实质就是操作NumPy数组</p>
-
-<blockquote>
-  <p>注意维度信息：</p>
-
-  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="n">cat_plt</span><span class="p">.</span><span class="n">shape</span>   <span class="c1"># (456, 730, 3)   456高，730宽，3颜色
-</span></pre></td></tr></tbody></table></code></pre></div>  </div>
-</blockquote>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="c1"># 上下
-</span><span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">cat_plt</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211151912082.png" alt="image-20250211151912082" style="zoom:50%;" /></p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="c1"># 左右
-</span><span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">cat_plt</span><span class="p">[::,::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211151927884.png" alt="image-20250211151927884" style="zoom:50%;" /></p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="c1"># 上下左右都翻转
-</span><span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">cat_plt</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211151943630.png" alt="image-20250211151943630" style="zoom:50%;" /></p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-</pre></td><td class="rouge-code"><pre><span class="c1"># 颜色翻转---》R和B两个转换下
-</span><span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">cat_plt</span><span class="p">[::,::,::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250211152005377.png" alt="image-20250211152005377" style="zoom:50%;" /></p>
-
-<h1 id="4skimage读取图片">4.skimage读取图片</h1>
-
-<p>载入Lena图像，并使用灰度颜色表将其在子图中显示出来。</p>
+<p>1、给定一个4维矩阵，如何得到最后两维的和？（提示，指定axis进行计算）</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -635,30 +317,330 @@
 19
 20
 21
-</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">from</span> <span class="n">skimage</span> <span class="kn">import</span> <span class="n">io</span>
+22
+23
+24
+25
+26
+</pre></td><td class="rouge-code"><pre><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="sh">"""</span><span class="s">
+array([[[[9, 2, 6],
+         [3, 4, 9],
+         [7, 4, 4]],
 
-<span class="c1"># 从 URL 读取 Lena 图像
-</span><span class="n">image_url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">https://www.eecs.qmul.ac.uk/~phao/IP/Images/Lena.bmp</span><span class="sh">'</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">io</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+        [[1, 6, 4],
+         [3, 2, 7],
+         [6, 9, 7]]],
 
-<span class="c1"># 将图像转换为 np.float32
-</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">.</span><span class="nf">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">float32</span><span class="p">)</span>
 
-<span class="c1"># 创建子图
-</span><span class="n">plt</span><span class="p">.</span><span class="nf">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
-<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">Original Image</span><span class="sh">"</span><span class="p">)</span>
+       [[[0, 3, 4],
+         [2, 1, 6],
+         [9, 3, 8]],
 
-<span class="c1"># 显示图像（灰度图）
-</span><span class="n">img</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="n">gray</span><span class="p">)</span>
+        [[5, 4, 1],
+         [7, 5, 6],
+         [9, 7, 9]]]])
+</span><span class="sh">"""</span>
+<span class="n">sum_last_2_d</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">sum_last_2_d</span>
+<span class="sh">"""</span><span class="s">
+array([[48, 45],
+       [36, 53]])
+</span><span class="sh">"""</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
-<span class="c1"># 显示图像
-</span><span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+<p>2、给定数组<code class="language-plaintext highlighter-rouge">[1, 2, 3, 4, 5]</code>，如何得到在这个数组的每个元素之间插入3个0后的新数组？</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="mi">20</span><span class="p">,),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">zero</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">zero</span><span class="p">)</span>
+<span class="sh">"""</span><span class="s">
+array([1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 5, 0, 0, 0])
+</span><span class="sh">"""</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>3、给定一个二维矩阵（5行4列），如何交换其中两行的元素（提示：任意调整，花式索引）？</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="sh">"""</span><span class="s">
+array([[2, 2, 0, 0],
+       [1, 6, 4, 6],
+       [0, 3, 0, 2],
+       [1, 3, 8, 1],
+       [8, 0, 9, 0]])
+</span><span class="sh">"""</span>
+<span class="c1"># 交换第一行和第2行
+</span><span class="n">A</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+<span class="sh">"""</span><span class="s">
+array([[1, 6, 4, 6],
+       [2, 2, 0, 0],
+       [0, 3, 0, 2],
+       [1, 3, 8, 1],
+       [8, 0, 9, 0]])
+</span><span class="sh">"""</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如果要交换2列呢？</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="sh">"""</span><span class="s">
+array([[2, 2, 0, 0],
+       [1, 6, 4, 6],
+       [0, 3, 0, 2],
+       [1, 3, 8, 1],
+       [8, 0, 9, 0]])
+</span><span class="sh">"""</span>
+<span class="c1"># 也可以用   花式索引  完成
+</span><span class="n">A</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="n">A</span>
+<span class="sh">"""</span><span class="s">
+array([[2, 2, 0, 0],
+       [6, 1, 4, 6],
+       [3, 0, 0, 2],
+       [3, 1, 8, 1],
+       [0, 8, 9, 0]])
+</span><span class="sh">"""</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>4、创建一个100000长度的随机数组，使用两种方法对其求三次方（1、for循环；2、NumPy自带方法），并比较所用时间</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="p">))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">arr</span><span class="p">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
+
+<span class="o">%%</span><span class="n">time</span> 
+<span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">power</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">res</span>
+
+<span class="o">%%</span><span class="n">time</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">:</span>
+    <span class="n">i</span><span class="o">**</span><span class="mi">3</span>
 
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250214133352031.png" alt="image-20250214133352031" style="zoom:50%;" /></p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720151827637.png" alt="image-20250720151827637" style="zoom:50%;" /></p>
+
+<p>5、创建一个5行3列随机矩阵和一个3行2列随机矩阵，求矩阵积</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="c1"># 方法1:
+</span><span class="n">X</span><span class="nd">@Y</span>
+<span class="c1"># 方法2:
+</span><span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="c1"># 方法3:
+</span><span class="n">np</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="c1"># 方法4:
+</span><span class="n">np</span><span class="p">.</span><span class="nf">matmul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>6、矩阵的每一行的元素都减去该行的平均值（注意，平均值计算时指定axis，以及减法操作时形状改变）</p>
+
+<blockquote>
+  <p>其实不需要考虑形状改变。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="nf">array</span><span class="p">([[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="nf">array</span><span class="p">([[</span> <span class="mf">0.66666667</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.66666667</span><span class="p">,</span>  <span class="mf">3.33333333</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">2.66666667</span><span class="p">,</span>  <span class="mf">0.33333333</span><span class="p">,</span>  <span class="mf">1.33333333</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">3.66666667</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.66666667</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.66666667</span><span class="p">]])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>7、打印出以下函数（要求使用<code class="language-plaintext highlighter-rouge">np.zeros</code>创建<code class="language-plaintext highlighter-rouge">8*8</code>的矩阵）：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="p">[</span>
+  <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span> 
+  <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+  <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+  <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span> 
+  <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+  <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+  <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+  <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+<span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720152623601.png" alt="image-20250720152623601" style="zoom:50%;" /></p>
+
+<p>8、正则化一个5行5列的随机矩阵（数据统一变成0~1之间的数字，相当于进行缩小）</p>
+
+<p>正则的概念：矩阵A中的每一列减去这一列最小值，除以每一列的最大值减去每一列的最小值（提示：轴axis给合适的参数！！！）</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720145023821.png" alt="image-20250720145023821" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="n">col_min</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">min</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">col_max</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">max</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">arr</span> <span class="o">-</span> <span class="n">col_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">col_max</span> <span class="o">-</span> <span class="n">col_min</span><span class="p">)</span>
+<span class="n">A</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720153250781.png" alt="image-20250720153250781" style="zoom:50%;" /></p>
+
+<p>9、如何根据两个或多个条件过滤numpy数组。加载鸢尾花数据，根据第一列小于5.0并且第三列大于1.5作为条件，进行数据筛选。（提示，需要使用逻辑与运算：&amp;）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c1"># 加载数据
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">./iris.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">data_</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">5.0</span><span class="p">)</span>  <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">data_</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data_</span><span class="p">]</span>
+<span class="n">data_</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720153514468.png" alt="image-20250720153514468" style="zoom:50%;" /></p>
+
+<p>10、计算鸢尾花数据每一行的softmax得分（exp表示自然底数e的幂运算）</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720145040787.png" alt="image-20250720145040787" style="zoom:50%;" /></p>
+
+<p>首先如果不理解这幅图，可以先看下面代码及其输出：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720153850598.png" alt="image-20250720153850598" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))).</span><span class="nf">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))).</span><span class="nf">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))).</span><span class="nf">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<p>所以可以这么完成这道题：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">./iris.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">exp_data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="c1"># 注意：np.sum(exp_data, axis = 1)  是只有一行的数组，需要变成n*1的形状
+</span><span class="n">exp_data</span> <span class="o">/</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">exp_data</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720154514727.png" alt="image-20250720154514727" style="zoom:50%;" /></p>
 
 
 
@@ -666,17 +648,17 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/02/10/NumPy(7)%E4%B8%93%E7%94%A8%E5%87%BD%E6%95%B0/" data-toggle="tooltip" data-placement="top" title="numpy(7)专用函数">
+                        <a href="/2025/07/20/numpy%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" data-toggle="tooltip" data-placement="top" title="numpy-线性代数">
                         Previous<br>
-                        <span>numpy(7)专用函数</span>
+                        <span>numpy-线性代数</span>
                         </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2025/02/12/NumPy(8)%E8%B4%A8%E9%87%8F%E6%8E%A7%E5%88%B6/" data-toggle="tooltip" data-placement="top" title="numpy(8)质量控制">
+                        <a href="/2025/07/20/%E7%A8%8B%E5%BA%8F%E5%91%98%E6%95%B0%E5%AD%A6%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/" data-toggle="tooltip" data-placement="top" title="线性代数-奇异值分解SVD">
                         Next<br>
-                        <span>numpy(8)质量控制</span>
+                        <span>线性代数-奇异值分解SVD</span>
                         </a>
                     </li>
                     
