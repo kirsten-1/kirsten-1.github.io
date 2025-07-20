@@ -5,9 +5,189 @@
     <description>这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员</description>
     <link>https://kirsten-1.github.io/</link>
     <atom:link href="https://kirsten-1.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 18 Jul 2025 05:18:23 +0000</pubDate>
-    <lastBuildDate>Fri, 18 Jul 2025 05:18:23 +0000</lastBuildDate>
+    <pubDate>Sun, 20 Jul 2025 04:43:29 +0000</pubDate>
+    <lastBuildDate>Sun, 20 Jul 2025 04:43:29 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>线性代数-奇异值分解</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;特征值分解是一个提取矩阵特征很不错的方法，但是它只适用于方阵。而在现实的世界中，我们看到的大部分矩阵都不是方阵，比如说有 m 个学生，每个学生有 n 科成绩，这样形成的一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m * n &lt;/code&gt;的矩阵就可能不是方阵，怎样才能像描述特征值一样描述这样一般的矩阵的重要特征呢？奇异值分解就是用来干这个事的，奇异值分解是一个能适用于任意的矩阵的一种分解的方法。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719153433179.png&quot; alt=&quot;image-20250719153433179&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;1奇异值和特征值的关系&quot;&gt;1.奇异值和特征值的关系&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719153517206.png&quot; alt=&quot;image-20250719153517206&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;那么奇异值和特征值是怎么对应起来的呢？首先，我们将矩阵 A 的转置 和 A 做矩阵乘法，将会得到一个方阵，我们用这个方阵求特征值可以得到：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719153607763.png&quot; alt=&quot;image-20250719153607763&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719153632838.png&quot; alt=&quot;image-20250719153632838&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719153645302.png&quot; alt=&quot;image-20250719153645302&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719153700412.png&quot; alt=&quot;image-20250719153700412&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上面的\(\sum^{-1}\)求解也很简单，因为本身\(\sum\)是一个对角矩阵，所以求逆矩阵只需要将其对角线上的所有元素分别求倒数即可。&lt;/p&gt;
+
+&lt;h1 id=&quot;2求解奇异值分解&quot;&gt;2.求解奇异值分解&lt;/h1&gt;
+
+&lt;h2 id=&quot;1方法1np的方法&quot;&gt;(1)方法1:np的方法&lt;/h2&gt;
+
+&lt;p&gt;根据NumPy提供的方法，进行奇异值求解&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c1&quot;&gt;# 非方阵的矩阵
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;randint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;原矩阵(非方阵):&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# numpy官方的提供的SVD方法
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sigma1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;svd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sigma1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# 验证：
+# 但是要注意：u1是5*5 而sigma1是一个4维的列向量
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;concatenate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# (5,)的列向量
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 5 * 5
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sigma1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 5*5，但是最后一列都是0
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u1&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@sigma1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 5*4
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u1&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@sigma1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@v1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 这里v1不需要再转置，乘积结果就是原矩阵A
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719154005582.png&quot; alt=&quot;image-20250719154005582&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2自己求解奇异值分解&quot;&gt;(2)自己求解奇异值分解&lt;/h2&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c1&quot;&gt;# 自己实现奇异值分解
+# 求左奇异矩阵U   AA^T = U simgma sigma^T U^T
+# simgma sigma^T需要开方   
+# w：奇异值的平方，v:U
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;eig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@A.T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# 上面中,奇异值从大到小排列，我也这样处理
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg_w&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;argsort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[::&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg_w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg_w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sigma&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;奇异值:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;左奇异矩阵:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 计算右奇异矩阵
+# 奇异值的逆 U^T A
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma_inv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sigma&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;奇异值的逆:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma_inv&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sigma_inv&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@U.T@A&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;右奇异矩阵:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 5*4
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# 验证
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;验证:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@np.diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@V&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719154052596.png&quot; alt=&quot;image-20250719154052596&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;3奇异值分解的性质&quot;&gt;3.奇异值分解的性质&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720111458884.png&quot; alt=&quot;image-20250720111458884&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;奇异值 \(\sigma_i\)跟特征值类似，在矩阵\(\sum\)中也是从大到小排列，而且\(\sigma\)的减小特别的快，在很多情况下，前10%甚至1%的奇异值的和就占了全部的奇异值之和的99%以上了。也就是说，我们也可以用前 r 大的奇异值来近似描述矩阵，这里定义一下部分奇异值分解：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719154320727.png&quot; alt=&quot;image-20250719154320727&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250719154332622.png&quot; alt=&quot;image-20250719154332622&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;右边的三个矩阵相乘的结果将会是一个接近于 A 的矩阵，在这儿，r 越接近于 n，则相乘的结果越接近于A。&lt;/p&gt;
+
+&lt;p&gt;而这三个矩阵的面积之和（在存储观点来说，矩阵面积越小，存储量就越小）要远远小于原始的矩阵 A，我们如果想要压缩空间来表示原矩阵 A，我们存下这里的三个矩阵：\(U、Σ、V\)就好了。&lt;/p&gt;
+
+&lt;p&gt;说句大白话，称作「奇异值」可能无法顾名思义迅速理解其本质，那咱们换个说法，称作&lt;strong&gt;「主特征值」&lt;/strong&gt;，你可能就迅速了然了。
+对于非奇异（满秩）矩阵，对应着特征值；对于奇异矩阵，就需要进行奇异值分解，对应着奇异值。&lt;/p&gt;
+
+&lt;p&gt;对于奇异矩阵，将A与其转置相乘将会得到一个方阵\(AA^T\)，再求特征值。值得注意的是，对于非奇异矩阵进行奇异值分解（SVD），得到的奇异值，其实就是特征值。&lt;/p&gt;
+
+&lt;p&gt;下面代码可以修改r的值：&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;matrix1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;randint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 5行4列的矩阵
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;原矩阵:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matrix1&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sigma&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linalg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;svd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matrix1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;左奇异矩阵:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;奇异值:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;右奇异矩阵:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# 验证
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma2matrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;concatenate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# print(sigma2matrix)
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;还原验证：U@sigma@V:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@sigma2matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;@V&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 选择前r大的奇异值
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# 验证
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;verify_matrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;U&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sigma2matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))[:,:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,:])&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;还原验证(只取前r大):&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;verify_matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720113605119.png&quot; alt=&quot;image-20250720113605119&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 20 Jul 2025 00:00:00 +0000</pubDate>
+        <link>https://kirsten-1.github.io/2025/07/20/%E7%A8%8B%E5%BA%8F%E5%91%98%E6%95%B0%E5%AD%A6%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/</link>
+        <guid isPermaLink="true">https://kirsten-1.github.io/2025/07/20/%E7%A8%8B%E5%BA%8F%E5%91%98%E6%95%B0%E5%AD%A6%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/</guid>
+        
+        <category>程序员的数学</category>
+        
+        
+      </item>
     
       <item>
         <title>numpy-通用函数</title>
@@ -6723,198 +6903,6 @@ title:sunt aut facere repellat provident occaecati excepturi optio reprehenderit
         <pubDate>Sun, 13 Jul 2025 00:00:00 +0000</pubDate>
         <link>https://kirsten-1.github.io/2025/07/13/python%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%8002%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/</link>
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/07/13/python%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%8002%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/</guid>
-        
-        <category>python爬虫</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>python爬虫基础01-初识爬虫</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
-&lt;/script&gt;
-
-&lt;h1 id=&quot;1数据的来源及作用&quot;&gt;1.数据的来源及作用&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712210912746.png&quot; alt=&quot;image-20250712210912746&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在当今的数字化时代，数据无处不在，其来源非常广泛，主要可以分为以下几类：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;互联网公开数据：&lt;/strong&gt; 这是最常见的来源，包括网站上的文本、图片、视频、商品信息、新闻文章、社交媒体帖子、论坛讨论、公开API接口返回的数据等。这些数据通常可以通过网络爬虫直接获取。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712212019597.png&quot; alt=&quot;image-20250712212019597&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;图中是百度指数关于java和golang语言的对比，无论是其底层的数据收集方式（搜索引擎的爬取和用户搜索行为），还是其最终呈现的形式（聚合的搜索指数图表），都完美地诠释了“互联网公开数据”的来源、类型、处理和应用价值。它将散落在互联网上的海量用户行为数据，经过加工后，以一种结构化、可视化、易于理解的方式重新呈现出来，供大众进行分析和利用。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;企业内部数据：&lt;/strong&gt; 各个企业在日常运营中产生的数据，如销售记录、客户信息、库存数据、财务报表、员工数据等。这些数据通常存储在企业的数据库、数据仓库或内部系统中。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;传感器数据：&lt;/strong&gt; 物联网设备、智能设备、环境监测站等产生的实时数据，如温度、湿度、位置、运动轨迹、心率等。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;政府/公共机构数据：&lt;/strong&gt; 政府部门、研究机构、国际组织等发布的公开数据，如统计年鉴、人口普查数据、气象数据、科研论文等。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;第三方数据提供商：&lt;/strong&gt; 专门收集、整理和销售各种类型数据的公司，它们通常提供经过清洗和结构化的数据产品。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;数据在现代社会中扮演着极其重要的角色，其作用体现在各个方面：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;商业决策：&lt;/strong&gt; 企业通过分析市场数据、用户行为数据、竞争对手数据等，制定更精准的营销策略、产品开发方向和运营计划。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;科学研究：&lt;/strong&gt; 科学家利用大量实验数据、观测数据进行分析，发现规律，验证假设，推动科学进步。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;社会治理：&lt;/strong&gt; 政府部门利用人口数据、经济数据、环境数据等进行宏观调控、城市规划、公共服务优化。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;个性化服务：&lt;/strong&gt; 基于用户数据，提供定制化的推荐、广告和内容，提升用户体验。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;风险控制：&lt;/strong&gt; 金融机构通过分析交易数据、信用数据等，评估风险，防范欺诈。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;人工智能与机器学习：&lt;/strong&gt; 大量高质量的数据是训练机器学习模型的基础，数据决定了模型的性能上限。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;趋势预测：&lt;/strong&gt; 通过对历史数据的分析，预测未来的发展趋势，如股票价格、天气变化、疾病传播等。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;2什么是爬虫&quot;&gt;2.什么是爬虫&lt;/h1&gt;
-
-&lt;p&gt;&lt;strong&gt;网络爬虫（Web Crawler），也称为网络蜘蛛（Web Spider）或网络机器人（Web Robot）&lt;/strong&gt;，是一种按照一定规则，自动地抓取互联网信息的程序或脚本。&lt;/p&gt;
-
-&lt;p&gt;简单来说，爬虫就是模拟人类在浏览器中浏览网页的行为，通过发送HTTP请求（如GET、POST），接收服务器响应，然后解析响应内容（HTML、JSON等），从中提取出所需数据的自动化工具。&lt;/p&gt;
-
-&lt;h1 id=&quot;3爬虫的分类&quot;&gt;3.爬虫的分类&lt;/h1&gt;
-
-&lt;p&gt;网络爬虫可以根据其功能、抓取方式和应用领域进行多种分类：&lt;/p&gt;
-
-&lt;h2 id=&quot;31-根据抓取方式&quot;&gt;3.1 根据抓取方式：&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;通用爬虫 (General-Purpose Web Crawler)：&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;特点：&lt;/strong&gt; 抓取互联网上尽可能多的网页，构建一个庞大的网页库，供搜索引擎使用。它们通常从少量起始URL开始，通过解析网页中的链接不断扩展抓取范围。&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;代表：&lt;/strong&gt; 搜索引擎的爬虫（如Googlebot, Baidu Spider）。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;聚焦爬虫 (Focused Web Crawler / Topical Crawler)：&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;特点：&lt;/strong&gt; 针对特定主题或领域，只抓取与该主题相关的网页。它们会根据网页内容的相关性进行筛选，避免抓取无关信息，从而提高效率和数据质量。&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;应用：&lt;/strong&gt; 垂直搜索引擎、行业数据分析、特定领域信息收集。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;32-根据实现技术&quot;&gt;3.2 根据实现技术：&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712212819915.png&quot; alt=&quot;image-20250712212819915&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;批量式爬虫：&lt;/strong&gt; 一次性抓取大量数据，通常用于构建大型数据集。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;增量式爬虫：&lt;/strong&gt; 定期检查已抓取网页的更新情况，只抓取新增或修改的内容，保持数据的时效性。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;分布式爬虫：&lt;/strong&gt; 将爬取任务分解到多台机器上并行执行，以提高抓取效率和处理能力，适用于大规模数据抓取。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;33-根据数据来源&quot;&gt;3.3 根据数据来源：&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;网页爬虫：&lt;/strong&gt; 主要抓取HTML网页内容。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;API爬虫：&lt;/strong&gt; 通过调用网站或服务提供的API接口获取结构化数据。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;APP爬虫：&lt;/strong&gt; 模拟移动应用的行为，抓取APP内的数据。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;34-根据行为模式&quot;&gt;3.4 根据行为模式：&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;礼貌型爬虫：&lt;/strong&gt; 遵守网站的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;robots.txt&lt;/code&gt; 协议，不给网站服务器造成过大压力。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;非礼貌型爬虫：&lt;/strong&gt; 不遵守 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;robots.txt&lt;/code&gt; 协议，可能对网站服务器造成负担，甚至被封禁。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;4爬虫的原理&quot;&gt;4.爬虫的原理&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250712212908912.png&quot; alt=&quot;image-20250712212908912&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;网络爬虫的基本工作原理可以概括为以下几个步骤：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;URL管理器 (URL Manager)：&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;○ 负责管理待抓取的URL队列和已抓取的URL集合。&lt;/p&gt;
-
-&lt;p&gt;○ 确保URL不重复抓取，并可以根据优先级进行调度。&lt;/p&gt;
-
-&lt;p&gt;○ 起始时，会有一个或多个初始URL。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;网页下载器 (Downloader)：&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;○ 根据URL管理器提供的URL，发起HTTP/HTTPS请求（GET或POST）。&lt;/p&gt;
-
-&lt;p&gt;○ 接收服务器返回的响应（HTML、JSON、图片等）。&lt;/p&gt;
-
-&lt;p&gt;○ 处理HTTP状态码、重定向、Cookie等。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;网页解析器 (Parser)：&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;○ 对下载下来的网页内容进行解析，提取所需数据。&lt;/p&gt;
-
-&lt;p&gt;○ 常用的解析技术包括：&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;正则表达式 (Regular Expression)：&lt;/strong&gt; 适用于简单、有规律的文本匹配。&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;XPath：&lt;/strong&gt; 基于XML路径语言，用于在XML或HTML文档中查找信息。&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;CSS选择器 (CSS Selector)：&lt;/strong&gt; 类似于CSS样式表中的选择器，用于选择HTML元素。&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;BeautifulSoup：&lt;/strong&gt; 一个Python库，用于从HTML或XML文件中提取数据，非常灵活和易用。&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;PyQuery：&lt;/strong&gt; 类似jQuery的Python库，用于解析HTML。&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;Selenium/Playwright：&lt;/strong&gt; 模拟浏览器行为，处理JavaScript动态加载的内容。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;数据存储器 (Data Storage)：&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;○ 将解析器提取出的数据进行存储。&lt;/p&gt;
-
-&lt;p&gt;○ 存储方式可以是：&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;文件：&lt;/strong&gt; TXT、CSV、JSON、XML等。&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;数据库：&lt;/strong&gt; 关系型数据库（MySQL, PostgreSQL, SQLite）、非关系型数据库（MongoDB, Redis）。&lt;/p&gt;
-
-&lt;p&gt;■ &lt;strong&gt;内存：&lt;/strong&gt; 临时存储，程序结束后数据丢失。&lt;/p&gt;
-
-&lt;h1 id=&quot;5为什么用python语言写爬虫&quot;&gt;5.为什么用Python语言写爬虫&lt;/h1&gt;
-
-&lt;p&gt;Python之所以成为编写网络爬虫的首选语言，主要有以下几个原因：&lt;/p&gt;
-
-&lt;p&gt;● &lt;strong&gt;丰富的第三方库：&lt;/strong&gt; Python拥有极其丰富且功能强大的第三方库，为爬虫开发提供了极大的便利。&lt;/p&gt;
-
-&lt;p&gt;○ &lt;strong&gt;HTTP请求库：&lt;/strong&gt; requests (简单易用，功能强大)。&lt;/p&gt;
-
-&lt;p&gt;○ &lt;strong&gt;HTML/XML解析库：&lt;/strong&gt; BeautifulSoup4, lxml, PyQuery (解析效率高，语法简洁)。&lt;/p&gt;
-
-&lt;p&gt;○ &lt;strong&gt;动态网页抓取：&lt;/strong&gt; Selenium, Playwright (模拟浏览器行为，处理JavaScript渲染的页面)。&lt;/p&gt;
-
-&lt;p&gt;○ &lt;strong&gt;爬虫框架：&lt;/strong&gt; Scrapy (高性能、可扩展的专业爬虫框架)。&lt;/p&gt;
-
-&lt;p&gt;○ &lt;strong&gt;数据处理：&lt;/strong&gt; pandas, numpy (数据清洗、分析和存储)。&lt;/p&gt;
-
-&lt;p&gt;● &lt;strong&gt;语法简洁，开发效率高：&lt;/strong&gt; Python语言的语法非常简洁明了，代码可读性强，开发效率远高于Java、C++等语言。这使得开发者能够快速构建和迭代爬虫程序。&lt;/p&gt;
-
-&lt;p&gt;● &lt;strong&gt;跨平台性：&lt;/strong&gt; Python可以在Windows、macOS、Linux等多种操作系统上运行，保证了爬虫程序的通用性。&lt;/p&gt;
-
-&lt;p&gt;● &lt;strong&gt;社区活跃，资料丰富：&lt;/strong&gt; Python拥有庞大而活跃的开发者社区，遇到问题很容易找到解决方案和学习资料。&lt;/p&gt;
-
-&lt;p&gt;● &lt;strong&gt;胶水语言特性：&lt;/strong&gt; Python可以很方便地与其他语言（如C/C++编写的库）进行集成，利用其高性能部分。&lt;/p&gt;
-
-&lt;p&gt;● &lt;strong&gt;数据科学和机器学习的生态：&lt;/strong&gt; 爬取到的数据通常需要进行后续的分析和处理。Python在数据科学和机器学习领域拥有强大的生态系统（如pandas, scikit-learn, TensorFlow, PyTorch），使得数据从爬取到分析形成一个完整的闭环。&lt;/p&gt;
-
-&lt;p&gt;● &lt;strong&gt;异步IO支持：&lt;/strong&gt; Python 3.5+ 引入的 asyncio 模块，以及 aiohttp 等库，使得编写高并发、非阻塞的异步爬虫成为可能，大大提高了爬取效率。&lt;/p&gt;
-
-&lt;p&gt;综上所述，Python凭借其简洁的语法、丰富的库支持、高效的开发速度和强大的生态系统，成为了网络爬虫领域的“明星”语言。&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 12 Jul 2025 00:00:00 +0000</pubDate>
-        <link>https://kirsten-1.github.io/2025/07/12/python%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%8001%E5%88%9D%E5%A7%8B%E7%88%AC%E8%99%AB/</link>
-        <guid isPermaLink="true">https://kirsten-1.github.io/2025/07/12/python%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%8001%E5%88%9D%E5%A7%8B%E7%88%AC%E8%99%AB/</guid>
         
         <category>python爬虫</category>
         
