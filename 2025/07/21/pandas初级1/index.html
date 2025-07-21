@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="pandas-数据结构与数据查看 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-21T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="pandas">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/21/pandas%E5%88%9D%E7%BA%A71/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>pandas-数据结构与数据查看 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/21/pandas%E5%88%9D%E7%BA%A71/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=pandas" title="pandas">pandas</a>
+                        
+                    </div>
+                    <h1>pandas-数据结构与数据查看</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 21, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>在数据科学领域，Python 是最受欢迎的编程语言之一，但它在数据处理和分析方面的原生能力相对有限。<strong>pandas</strong> 是一个强大的库，它为 Python 补足了这一短板，能够在 Python 中完成从数据清洗、整理到分析、建模的整个工作流程，而无需切换到其他语言，如 R。</p>
+
+<p>pandas 提供了快速、灵活且直观的数据结构，旨在简单地处理各种关系型或标记型数据。它与 <strong>Jupyter</strong> 等工具以及 <strong>NumPy</strong>、<strong>Matplotlib</strong> 和 <strong>Scikit-learn</strong> 等库协同工作，共同构建了一个高效、强大的数据分析环境。</p>
+
+<blockquote>
+  <p>pandas非常强大，比numpy强大，或者说基于numpy才会有pandas。</p>
+</blockquote>
+
+<p>pandas 的核心理念是为数据分析提供“表格”状的数据结构，这比原生 Python 的列表或字典更适合处理大规模、异构的数据。这些数据结构在底层是基于高度优化的 <strong>NumPy</strong> 数组实现的，这意味着它们继承了 NumPy 的快速计算能力。同时，pandas 在 NumPy 的基础上增加了<strong>标签索引</strong>功能，使得数据操作不再依赖于简单的整数位置，而是可以通过有意义的标签进行，这极大地提高了代码的可读性和健壮性。</p>
+
+<p>在开始之前，确保已经安装了 pandas 库：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pip</span> <span class="n">install</span> <span class="n">pandas</span> <span class="o">-</span><span class="n">i</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="p">.</span><span class="n">tuna</span><span class="p">.</span><span class="n">tsinghua</span><span class="p">.</span><span class="n">edu</span><span class="p">.</span><span class="n">cn</span><span class="o">/</span><span class="n">simple</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720193328475.png" alt="image-20250720193328475" style="zoom:50%;" /></p>
+
+<h1 id="1数据结构">1.数据结构</h1>
+
+<h2 id="11-series">1.1 Series</h2>
+
+<p><strong>Series</strong> 是一种一维的、带标签的数据结构，可以看作是带有标签索引的 NumPy 数组。它由两个主要部分组成：<strong>数据（values）</strong> 和 <strong>索引（index）</strong>。</p>
+
+<ul>
+  <li><strong>数据（values）：</strong> 存储 Series 中的实际数据，可以是任何 NumPy 支持的数据类型。</li>
+  <li><strong>索引（index）：</strong> 为每个数据点提供标签，可以是整数、字符串或其他可哈希的 Python 对象。如果未指定索引，pandas 会自动生成从 <code class="language-plaintext highlighter-rouge">0</code> 开始的整数索引。</li>
+</ul>
+
+<p>一个重要的特性是，无论是 NumPy 中的 <code class="language-plaintext highlighter-rouge">np.nan</code> 还是原生 Python 的 <code class="language-plaintext highlighter-rouge">None</code>，在 pandas 中都会被视为缺失数据，并统一表示为 <code class="language-plaintext highlighter-rouge">NaN</code>（Not a Number）。</p>
+
+<blockquote>
+  <p>Series 的强大之处在于其<strong>索引</strong>。这个索引不仅提供了标签访问的便利，更重要的是，它在多个 Series 或 DataFrame 之间进行算术运算时，能够自动对齐数据。当对两个 Series 进行操作时，pandas 会根据它们的索引标签进行匹配，如果某个标签在其中一个 Series 中缺失，相应位置的计算结果将是 <code class="language-plaintext highlighter-rouge">NaN</code>。这种【自动对齐机制】避免了因数据顺序不一致而导致的错误。</p>
+</blockquote>
+
+<p>【1】使用列表生成Series，pandas自动添加整数索引。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">1026</span><span class="p">]</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">l</span><span class="p">)</span>   <span class="c1"># 或者s1 = pd.Series(l)
+</span><span class="n">s1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720193749392.png" alt="image-20250720193749392" style="zoom:50%;" /></p>
+
+<p>【2】指定行索引和数据类型</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">s2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHI</span><span class="sh">"</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="sh">"</span><span class="s">float32</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s2</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720193938602.png" alt="image-20250720193938602" style="zoom:50%;" /></p>
+
+<p>【3】从字典创建Series，字典的键作为索引</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">s3</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">:</span><span class="mi">99</span><span class="p">,</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">:</span><span class="mi">888</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">Python_score</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720194052177.png" alt="image-20250720194052177" style="zoom:50%;" /></p>
+
+<p>【4】索引和切片：</p>
+
+<p>整数索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">s2</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">s2</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>现在不推荐<code class="language-plaintext highlighter-rouge">s2[2]</code>，更推荐的是<code class="language-plaintext highlighter-rouge">s2.iloc[2]</code>写法。</p>
+</blockquote>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720194247347.png" alt="image-20250720194247347" style="zoom:50%;" /></p>
+
+<p>标签索引：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720194318569.png" alt="image-20250720194318569" style="zoom:50%;" /></p>
+
+<p>标签切片：(左边右边都包含)</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720194344244.png" alt="image-20250720194344244" style="zoom:50%;" /></p>
+
+<h3 id="选择题">选择题</h3>
+
+<ol>
+  <li>
+    <p>以下关于 pandas Series 和 NumPy 数组的说法，哪一项是错误的？</p>
+
+    <p>A. Series 支持带有标签的索引。 B. Series 只能包含同一种数据类型。 C. Series 可以由 NumPy 数组创建。 D. Series 支持自动数据对齐。</p>
+
+    <blockquote>
+      <p>答案：B，虽然 Series 通常是同一种类型，但如果包含不同类型的数据（例如整数和字符串），其 <code class="language-plaintext highlighter-rouge">dtype</code> 将变为 <code class="language-plaintext highlighter-rouge">object</code>。</p>
+
+      <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720194516122.png" alt="image-20250720194516122" style="zoom:50%;" /></p>
+    </blockquote>
+  </li>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">s = pd.Series([10, 20, 30], index=['a', 'b', 'c'])</code>，以下哪种方式会返回一个包含 <code class="language-plaintext highlighter-rouge">20</code> 和 <code class="language-plaintext highlighter-rouge">30</code> 的新 Series？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">s[1:3]</code> B. <code class="language-plaintext highlighter-rouge">s['b':'c']</code> C. A 和 B 都正确。 D. A 和 B 都错误。</p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">s[1:3]</code> 是整数位置切片，左闭右开，返回索引 1 和 2 的元素。</p>
+
+      <p><code class="language-plaintext highlighter-rouge">s['b':'c']</code> 是标签切片，左闭右闭，返回索引 <code class="language-plaintext highlighter-rouge">'b'</code> 和 <code class="language-plaintext highlighter-rouge">'c'</code> 的元素。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题">编程题</h3>
+
+<ol>
+  <li>创建一个名为 <code class="language-plaintext highlighter-rouge">product_prices</code> 的 Series，数据为 <code class="language-plaintext highlighter-rouge">[15.5, 20.0, 12.8, 18.2]</code>，索引分别为 <code class="language-plaintext highlighter-rouge">'Apple'</code>, <code class="language-plaintext highlighter-rouge">'Orange'</code>, <code class="language-plaintext highlighter-rouge">'Banana'</code>, <code class="language-plaintext highlighter-rouge">'Grape'</code>。</li>
+  <li>使用标签索引访问 <code class="language-plaintext highlighter-rouge">'Banana'</code> 的价格。</li>
+  <li>使用整数位置索引访问 <code class="language-plaintext highlighter-rouge">'Orange'</code> 的价格。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">product_prices</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mf">15.5</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">12.8</span><span class="p">,</span> <span class="mf">18.2</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Apple</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Orange</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Banana</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Grape</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">product_prices</span><span class="p">,</span> <span class="n">product_prices</span><span class="p">[</span><span class="sh">"</span><span class="s">Banana</span><span class="sh">"</span><span class="p">],</span> <span class="n">product_prices</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720194832047.png" alt="image-20250720194832047" style="zoom:50%;" /></p>
+
+<h2 id="12-dataframe">1.2 DataFrame</h2>
+
+<p><strong>DataFrame</strong> 是 pandas 的核心数据结构，它是一个二维的、带标签的数据结构，类似于 Excel 表格、SQL 数据库表，或者是 Series 对象的字典。DataFrame 具有行索引和列索引，这让它非常灵活。</p>
+
+<p>DataFrame 的数据可以由多种类型构成，每一列（column）都可以是不同的数据类型，但一列中的所有数据通常是同一种类型。</p>
+
+<blockquote>
+  <p>DataFrame 在内部可以被看作是一个共享相同行索引的 Series 对象的字典。它的<strong>行索引（index）</strong> 和 <strong>列索引（columns）</strong> 提供了双重的标签对齐能力。这种结构使得数据处理和分析变得非常直观：</p>
+
+  <ul>
+    <li><strong>列操作：</strong> 您可以像操作字典一样操作 DataFrame 的列，例如 <code class="language-plaintext highlighter-rouge">df['column_name']</code>。</li>
+    <li><strong>行操作：</strong> 您可以使用切片或标签索引来选择行。</li>
+    <li><strong>数据对齐：</strong> 当进行操作时，pandas 会同时根据行和列标签进行对齐，确保即使数据顺序或缺失值不同，计算结果也是正确的。</li>
+  </ul>
+</blockquote>
+
+<p>【1】从字典创建DataFrame</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">:[</span><span class="mi">99</span><span class="p">,</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">122</span><span class="p">],</span> <span class="sh">"</span><span class="s">Math</span><span class="sh">"</span><span class="p">:[</span><span class="mi">111</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">88</span><span class="p">],</span> <span class="sh">"</span><span class="s">En</span><span class="sh">"</span><span class="p">:[</span><span class="mi">89</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">67</span><span class="p">]},</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Adele</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Bob</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Cathy</span><span class="sh">"</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Math</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">En</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720195227232.png" alt="image-20250720195227232" style="zoom:50%;" /></p>
+
+<p>【2】从numpy数组创建DataFrame:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Adele</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Bob</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">David</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Zed</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">John</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Math</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">En</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720195431166.png" alt="image-20250720195431166" style="zoom:50%;" /></p>
+
+<p>【3】访问列：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250720195603296.png" alt="image-20250720195603296" style="zoom:50%;" /></p>
+
+<h3 id="选择题-1">选择题</h3>
+
+<ol>
+  <li>
+    <p>以下关于 DataFrame 的说法，哪一项是正确的？</p>
+
+    <p>A. DataFrame 只能包含一种数据类型。 B. DataFrame 类似于一维的 Series。 C. DataFrame 具有行索引和列索引。 D. DataFrame 总是从 NumPy 数组创建。</p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>如果一个 DataFrame 的行索引和列索引都是字符串，如何使用 <code class="language-plaintext highlighter-rouge">.loc</code> 访问名为 <code class="language-plaintext highlighter-rouge">'a'</code> 的行和名为 <code class="language-plaintext highlighter-rouge">'b'</code> 的列的交汇处的元素？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df['a']['b']</code> B. <code class="language-plaintext highlighter-rouge">df.loc['a', 'b']</code> C. <code class="language-plaintext highlighter-rouge">df.iloc['a', 'b']</code> D. <code class="language-plaintext highlighter-rouge">df['a', 'b']</code></p>
+
+    <blockquote>
+      <p>答案：B,<code class="language-plaintext highlighter-rouge">df.loc</code> 是基于标签的索引器，用于访问行和列。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-1">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame，包含两列 <code class="language-plaintext highlighter-rouge">'Name'</code> 和 <code class="language-plaintext highlighter-rouge">'Age'</code>，以及三行数据。</li>
+  <li>为这个 DataFrame 添加一列 <code class="language-plaintext highlighter-rouge">'City'</code>，并为每一行赋一个城市名。</li>
+  <li>打印出添加列后的 DataFrame。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">Name</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">Adele</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Bob</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">David</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Name</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Age</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">City</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">北京</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">上海</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">杭州</span><span class="sh">"</span><span class="p">]</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721130107498.png" alt="image-20250721130107498" style="zoom:50%;" /></p>
+
+<h1 id="2数据查看">2.数据查看</h1>
+
+<p>在数据分析的初期，<strong>数据探索</strong>是至关重要的。pandas 提供了多种方法和属性来快速查看 DataFrame 的基本信息、形状、数据类型和统计概览。</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">df.head(n)</code>: 查看 DataFrame 的前 <code class="language-plaintext highlighter-rouge">n</code> 行，默认显示前 5 行。</li>
+  <li><code class="language-plaintext highlighter-rouge">df.tail(n)</code>: 查看 DataFrame 的后 <code class="language-plaintext highlighter-rouge">n</code> 行，默认显示后 5 行。</li>
+  <li><code class="language-plaintext highlighter-rouge">df.shape</code>: 一个元组，表示 DataFrame 的维度（行数, 列数）。</li>
+  <li><code class="language-plaintext highlighter-rouge">df.dtypes</code>: 返回一个 Series，显示每列的数据类型。</li>
+  <li><code class="language-plaintext highlighter-rouge">df.index</code>: 返回行索引对象。</li>
+  <li><code class="language-plaintext highlighter-rouge">df.columns</code>: 返回列索引对象。</li>
+  <li><code class="language-plaintext highlighter-rouge">df.values</code>: 返回一个 NumPy <code class="language-plaintext highlighter-rouge">ndarray</code>，包含 DataFrame 的所有值。</li>
+  <li><code class="language-plaintext highlighter-rouge">df.describe()</code>: 生成数值型列的汇总统计信息，包括计数、均值、标准差、最小值、四分位数和最大值。</li>
+  <li><code class="language-plaintext highlighter-rouge">df.info()</code>: 打印出 DataFrame 的简明摘要，包括索引类型、列索引、数据类型、非空值的数量和内存使用情况。</li>
+</ul>
+
+<blockquote>
+  <p>这些查看方法是数据分析工作流的第一步，它们能够提供关于数据质量和分布的快速洞察。<code class="language-plaintext highlighter-rouge">df.info()</code> 在底层遍历 DataFrame 的所有列，并检查每个列的元数据和内存使用情况，这比手动检查每一列的 <code class="language-plaintext highlighter-rouge">isnull().sum()</code> 更快，尤其是在大型数据集中。<code class="language-plaintext highlighter-rouge">df.describe()</code> 则在底层对每一列的 NumPy 数组执行快速的聚合计算，生成汇总统计信息。这些方法之所以高效，是因为它们充分利用了 pandas 的 C 语言底层实现。</p>
+</blockquote>
+
+<hr />
+
+<p>【1】准备<code class="language-plaintext highlighter-rouge">150*3	</code>的数据：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Math</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">En</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721130523982.png" alt="image-20250721130523982" style="zoom:50%;" /></p>
+
+<p>【2】查看前10行：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721130608212.png" alt="image-20250721130608212" style="zoom:50%;" /></p>
+
+<p>【3】查看后10行</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721130642379.png" alt="image-20250721130642379" style="zoom:50%;" /></p>
+
+<p>【4】查看形状</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721140403906.png" alt="image-20250721140403906" style="zoom:50%;" /></p>
+
+<p>【5】数据类型：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721140444875.png" alt="image-20250721140444875" style="zoom:50%;" /></p>
+
+<p>【6】查看索引：</p>
+
+<p>行索引与列索引</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721140549261.png" alt="image-20250721140549261" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721140801849.png" alt="image-20250721140801849" style="zoom:50%;" /></p>
+
+<p>【7】查看对象值（底层是二维的numpy数组）</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721140848755.png" alt="image-20250721140848755" style="zoom:50%;" /></p>
+
+<p>【8】查看数值型列的汇总统计</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721140935533.png" alt="image-20250721140935533" style="zoom:50%;" /></p>
+
+<p>【9】概览和非空计数</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721141012821.png" alt="image-20250721141012821" style="zoom:50%;" /></p>
+
+<h3 id="选择题-2">选择题</h3>
+
+<ol>
+  <li>
+    <p>以下哪个方法主要用于快速了解 DataFrame 中是否存在缺失值、数据类型是否正确以及内存使用情况？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df.describe()</code> B. <code class="language-plaintext highlighter-rouge">df.head()</code> C. <code class="language-plaintext highlighter-rouge">df.info()</code> D. <code class="language-plaintext highlighter-rouge">df.shape</code></p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">info()</code> 提供了关于数据类型、非空计数和内存使用的摘要信息。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">df.describe()</code> 的输出结果中，哪一项通常不包含在内？</p>
+
+    <p>A. 均值（mean） B. 四分位数（25%, 50%, 75%） C. 非空计数（non-null count） D. 最大值（max）</p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">df.describe()</code> 只对数值型数据进行统计，不报告非空计数。非空计数由 <code class="language-plaintext highlighter-rouge">df.info()</code> 提供。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-2">编程题</h3>
+
+<ol>
+  <li>创建一个包含 3 列 (<code class="language-plaintext highlighter-rouge">A</code>, <code class="language-plaintext highlighter-rouge">B</code>, <code class="language-plaintext highlighter-rouge">C</code>) 和 5 行的 DataFrame，并用随机数填充。</li>
+  <li>为 <code class="language-plaintext highlighter-rouge">C</code> 列的第 2 和第 4 个元素手动赋值为 <code class="language-plaintext highlighter-rouge">np.nan</code>。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">df.info()</code> 打印 DataFrame 的摘要，并观察 <code class="language-plaintext highlighter-rouge">C</code> 列的非空计数变化。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">info</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721141547599.png" alt="image-20250721141547599" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/20/%E7%A8%8B%E5%BA%8F%E5%91%98%E6%95%B0%E5%AD%A6%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/" data-toggle="tooltip" data-placement="top" title="线性代数-奇异值分解SVD">
+                        Previous<br>
+                        <span>线性代数-奇异值分解SVD</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0096" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0102" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0103" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0107" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0108" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0110" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="3">pandas</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
