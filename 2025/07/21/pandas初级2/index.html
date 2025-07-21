@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="pandas-数据输入与输出 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-21T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="pandas">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/21/pandas%E5%88%9D%E7%BA%A72/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>pandas-数据输入与输出 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/21/pandas%E5%88%9D%E7%BA%A72/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=pandas" title="pandas">pandas</a>
+                        
+                    </div>
+                    <h1>pandas-数据输入与输出</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 21, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>pandas数据输入与输出。</p>
+
+<h1 id="1csv">1.CSV</h1>
+
+<p><strong>CSV</strong> (Comma-Separated Values) 是一种以纯文本形式存储表格数据的格式。它是数据交换最常用的格式之一。pandas 提供了强大的函数来读写 CSV 文件。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.to_csv(path_or_buf, sep, header, index)</code>：</strong> 将 DataFrame 保存为 CSV 文件。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sep</code>: 指定列之间的分隔符，默认为逗号。</li>
+      <li><code class="language-plaintext highlighter-rouge">header</code>: 布尔值，是否在文件中包含列索引（列名），默认为 <code class="language-plaintext highlighter-rouge">True</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">index</code>: 布尔值，是否在文件中包含行索引，默认为 <code class="language-plaintext highlighter-rouge">True</code>。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">pd.read_csv(path_or_buf, sep, header, index_col)</code>：</strong> 从 CSV 文件中读取数据并创建 DataFrame。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sep</code>: 指定分隔符。</li>
+      <li><code class="language-plaintext highlighter-rouge">header</code>: 指定哪一行作为列索引，例如 <code class="language-plaintext highlighter-rouge">header=0</code> 使用第一行。</li>
+      <li><code class="language-plaintext highlighter-rouge">index_col</code>: 指定哪一列作为行索引。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>当 pandas 读取 CSV 文件时，它会高效地解析每一行，并根据分隔符将数据分割成字段。然后，它会尝试<strong>推断</strong>每一列的数据类型。如果某些列包含非数值数据，pandas 会将其数据类型设置为 <code class="language-plaintext highlighter-rouge">object</code>。通过在读写时正确设置 <code class="language-plaintext highlighter-rouge">header</code> 和 <code class="language-plaintext highlighter-rouge">index</code> 参数，可以确保数据的结构和内容得到准确的保存和恢复。</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c1"># 创建一个50*5的df
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">IT</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">化学</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">生物</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">经济</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">土木</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="c1"># 保存，指定分隔符是;
+</span><span class="n">df</span><span class="p">.</span><span class="nf">to_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">salary.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sh">"</span><span class="s">;</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">已保存df到salary.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 加载数据
+# header=0使用第一行作为列索引
+# index_col=0  使用数据的第一列(之前保存的行索引)作为新的行索引
+</span><span class="n">df_load</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./salary.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sh">"</span><span class="s">;</span><span class="sh">"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df_load</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721160913377.png" alt="image-20250721160913377" style="zoom:50%;" /></p>
+
+<p>保存的csv:</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721160840107.png" alt="image-20250721160840107" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c1"># 创建一个50*5的df,但是指定存储的分隔符是制表符\t
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">IT</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">化学</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">生物</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">经济</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">土木</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">to_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">salary1.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sh">"</span><span class="se">\t</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># read_table默认的分隔符就是制表符，所以这里不指定参数sep
+</span><span class="n">data_load_table</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_table</span><span class="p">(</span><span class="sh">"</span><span class="s">salary1.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">data_load_table</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721161346944.png" alt="image-20250721161346944" style="zoom:50%;" /></p>
+
+<p>使用制表符存储的csv:</p>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20250721161410654.png" alt="image-20250721161410654" style="zoom:50%;" /></p>
+
+<h2 id="选择题">选择题</h2>
+
+<ol>
+  <li>
+    <p>如果一个 DataFrame 在保存到 CSV 时，设置了 <code class="language-plaintext highlighter-rouge">index=False</code>，但在读取时，没有指定 <code class="language-plaintext highlighter-rouge">index_col</code>，会发生什么？</p>
+
+    <p>A. 报错。 B. DataFrame 会自动生成一个默认的整数行索引。 C. DataFrame 会将文件的第一列作为行索引。 D. DataFrame 会将第一行作为列索引。</p>
+
+    <blockquote>
+      <p>答案：B ，<code class="language-plaintext highlighter-rouge">pd.read_csv</code> 默认不会将任何列作为索引。如果文件中没有索引列，它会自动分配一个 <code class="language-plaintext highlighter-rouge">0</code> 到 <code class="language-plaintext highlighter-rouge">n-1</code> 的整数索引。</p>
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c1"># 创建一个50*5的df
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">IT</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">化学</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">生物</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">经济</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">土木</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="c1"># 保存，指定分隔符是;
+</span><span class="n">df</span><span class="p">.</span><span class="nf">to_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">salary.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sh">"</span><span class="s">;</span><span class="sh">"</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">已保存df到salary.csv</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 加载数据
+# header=0使用第一行作为列索引
+# index_col=0  使用数据的第一列(之前保存的行索引)作为新的行索引
+</span><span class="n">df_load</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">./salary.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sh">"</span><span class="s">;</span><span class="sh">"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df_load</span>
+</pre></td></tr></tbody></table></code></pre></div>      </div>
+
+      <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721161607892.png" alt="image-20250721161607892" style="zoom:50%;" /></p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪项是 <code class="language-plaintext highlighter-rouge">pd.read_csv()</code> 函数的默认行为？</p>
+
+    <p>A. 使用分号 <code class="language-plaintext highlighter-rouge">;</code> 作为分隔符。 B. 将第一行作为列索引。 C. 不保留任何行索引。 D. 自动将第一列作为行索引。</p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h2 id="编程题">编程题</h2>
+
+<ol>
+  <li>创建一个 DataFrame，包含两列 <code class="language-plaintext highlighter-rouge">'Product'</code> 和 <code class="language-plaintext highlighter-rouge">'Price'</code>，以及三行数据。</li>
+  <li>将该 DataFrame 保存到名为 <code class="language-plaintext highlighter-rouge">'products.csv'</code> 的文件中，不包含行索引和列索引。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">pd.read_csv()</code> 重新加载该文件，并手动指定列名为 <code class="language-plaintext highlighter-rouge">'Product'</code> 和 <code class="language-plaintext highlighter-rouge">'Price'</code>。打印结果。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">Product</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">Apple</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Banana</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Orange</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mf">19.8</span><span class="p">,</span> <span class="mf">20.8</span><span class="p">,</span> <span class="mf">12.9</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Product</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">to_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">products.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">df_load</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">products.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df_load</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721162011680.png" alt="image-20250721162011680" style="zoom:50%;" /></p>
+
+<h1 id="2excel">2.Excel</h1>
+
+<p>与 CSV 相比，Excel 文件格式更加复杂，通常一个文件包含多个工作表。pandas 使用专门的库来读写 Excel 文件。在读写 Excel 文件之前，需要根据文件格式安装相应的库：</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">.xls</code> (旧格式)：</strong> <code class="language-plaintext highlighter-rouge">pip install xlrd</code> 和 <code class="language-plaintext highlighter-rouge">pip install xlwt</code></li>
+  <li><strong><code class="language-plaintext highlighter-rouge">.xlsx</code> (新格式)：</strong> <code class="language-plaintext highlighter-rouge">pip install openpyxl</code></li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.to_excel(excel_writer, sheet_name, header, index)</code>：</strong> 将 DataFrame 保存到 Excel 文件。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sheet_name</code>: 指定工作表的名称，默认为 <code class="language-plaintext highlighter-rouge">Sheet1</code>。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">pd.read_excel(io, sheet_name, header, names, index_col)</code>：</strong> 从 Excel 文件中读取数据。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sheet_name</code>: 指定要读取的工作表，可以按名称或索引（从 0 开始）指定。</li>
+      <li><code class="language-plaintext highlighter-rouge">names</code>: 用于替换列索引的列表。</li>
+      <li><code class="language-plaintext highlighter-rouge">header</code>: 指定哪一行作为列索引。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">pd.ExcelWriter()</code>：</strong> 一个上下文管理器，用于在同一个 Excel 文件中保存多个工作表。</li>
+</ul>
+
+<p>【特别注意】文件格式差异</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">.xls</code>:</p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">.xls </code>是较旧的 Microsoft Excel 文件格式（Excel 97-2003 格式），使用二进制格式（BIFF，Binary Interchange File Format）。</p>
+      </li>
+      <li>
+        <p>pandas 支持 <code class="language-plaintext highlighter-rouge">.xls </code>文件，但需要安装 xlwt 库（用于写入 .xls 文件）或 xlrd 库（用于读取 <code class="language-plaintext highlighter-rouge">.xls</code> 文件）。</p>
+      </li>
+      <li>
+        <p>如果系统中未安装 xlwt，调用 <code class="language-plaintext highlighter-rouge">df.to_excel("df.xls") </code>会抛出错误，例如：</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">ImportError</span><span class="p">:</span> <span class="n">No</span> <span class="n">module</span> <span class="n">named</span> <span class="sh">'</span><span class="s">xlwt</span><span class="sh">'</span>
+</pre></td></tr></tbody></table></code></pre></div>        </div>
+
+        <p>或类似错误，表示缺少必要的库来支持 <code class="language-plaintext highlighter-rouge">.xls </code>文件写入。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">.xlsx</code>:</p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">.xlsx </code>是较新的 Microsoft Excel 文件格式（Excel 2007 及以上，基于 Office Open XML 标准），使用 XML 格式。</li>
+      <li>pandas 默认使用 openpyxl 库（或 xlsxwriter 库）来处理<code class="language-plaintext highlighter-rouge"> .xlsx </code>文件的读写。</li>
+      <li>现代 Python 环境中，openpyxl 通常是默认安装的（或通过 pip install openpyxl 安装），因此<code class="language-plaintext highlighter-rouge"> df.to_excel("df.xlsx") </code>通常不会报错。</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>总结：如果环境中安装了 openpyxl 但未安装 xlwt，那么写 <code class="language-plaintext highlighter-rouge">.xlsx </code>文件会成功，而写<code class="language-plaintext highlighter-rouge"> .xls </code>文件会失败，因为缺少 xlwt 库。</strong></p>
+
+<blockquote>
+  <p>pandas 的 Excel 读写功能是一个重要的桥梁，连接了常见的数据分析工具和业务中广泛使用的 Excel 格式。<code class="language-plaintext highlighter-rouge">pd.ExcelWriter</code> 允许 pandas 像数据库一样管理 Excel 文件，将不同的 DataFrame 写入不同的工作表，这在组织复杂项目的数据时非常有用。它在底层处理 Excel 文件的复杂二进制结构，让用户可以像处理 CSV 一样方便地操作数据。</p>
+</blockquote>
+
+<hr />
+
+<p>安装必要的库：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721162302447.png" alt="image-20250721162302447" /></p>
+
+<p>重启内核。</p>
+
+<p>【1】存储读取单个工作表：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span> 
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">IT</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">生物</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">材料</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">化学</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">环境</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">df2</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="c1"># 保存单个工作表
+# header=True 将列名作为第一行写入（默认行为）
+# index=False 表示不写入索引列，生成的 Excel 文件只包含 DataFrame 的数据列
+</span><span class="n">df</span><span class="p">.</span><span class="nf">to_excel</span><span class="p">(</span><span class="sh">"</span><span class="s">df.xlsx</span><span class="sh">"</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="sh">"</span><span class="s">aaa</span><span class="sh">"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">已经保存到excel</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 加载数据
+# sheet_name=0 表示读取第一个工作表（基于 0 索引）。
+# 如果 Excel 文件有多个工作表，可以通过索引（整数）或工作表名称（字符串）指定。
+# header=0 表示将 Excel 文件的第一行（基于 0 索引，即实际的第一行）作为 DataFrame 的列名
+# index_col=0 表示将 Excel 文件的第一列（基于 0 索引，即实际的第1列）作为 DataFrame 的索引列。
+</span><span class="n">df_load_excel</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_excel</span><span class="p">(</span><span class="sh">"</span><span class="s">df.xlsx</span><span class="sh">"</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span> <span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_load_excel</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721164217366.png" alt="image-20250721164217366" style="zoom:50%;" /></p>
+
+<p>注意：存储时，因为指定了<code class="language-plaintext highlighter-rouge">index=False</code>，所以不会写入索引列，那么读取时<code class="language-plaintext highlighter-rouge">index_col=0</code>就会使得IT列作为了索引列。</p>
+
+<p>【2】保存多个工作表：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">df2</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="c1"># 保存到多个工作表
+# 使用上下文管理器
+</span><span class="k">with</span> <span class="n">pd</span><span class="p">.</span><span class="nc">ExcelWriter</span><span class="p">(</span><span class="sh">"</span><span class="s">data.xlsx</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+    <span class="c1"># 默认header和index都是True
+</span>    <span class="n">df</span><span class="p">.</span><span class="nf">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="sh">"</span><span class="s">111</span><span class="sh">"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">df2</span><span class="p">.</span><span class="nf">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="sh">"</span><span class="s">222</span><span class="sh">"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">两个df存储完毕</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 读取
+</span><span class="n">df_data_1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_excel</span><span class="p">(</span><span class="sh">"</span><span class="s">data.xlsx</span><span class="sh">"</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="sh">"</span><span class="s">111</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df_data_1</span><span class="p">.</span><span class="nf">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721164654161.png" alt="image-20250721164654161" style="zoom:50%;" /></p>
+
+<h2 id="选择题-1">选择题</h2>
+
+<ol>
+  <li>
+    <p>要将一个 DataFrame 写入一个名为 <code class="language-plaintext highlighter-rouge">'data.xlsx'</code> 的 Excel 文件，并确保其在第二个工作表中，以下哪个方法是正确的？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df.to_excel('data.xlsx', sheet_name=1)</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">df.to_excel('data.xlsx', sheet_name='Sheet2')</code></p>
+
+    <p>C. 以上皆可。</p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">df.to_excel('data.xlsx', sheet_index=1)</code></p>
+
+    <blockquote>
+      <p>答案：C。<code class="language-plaintext highlighter-rouge">sheet_name</code> 可以是索引或名称。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">pd.read_excel()</code> 函数中的 <code class="language-plaintext highlighter-rouge">names</code> 参数有什么作用？</p>
+
+    <p>A. 指定要读取的工作表名称。</p>
+
+    <p>B. 替换行索引。</p>
+
+    <p>C. 替换列索引。</p>
+
+    <p>D. 指定文件的名称。</p>
+
+    <blockquote>
+      <p>答案：C，看下面的例子：</p>
+
+      <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">ID</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="sh">"</span><span class="s">Name</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">Adele</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Bob</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">David</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">City</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">北京</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">上海</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">杭州</span><span class="sh">"</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1"># 存储至excel
+</span><span class="n">df</span><span class="p">.</span><span class="nf">to_excel</span><span class="p">(</span><span class="sh">"</span><span class="s">df_test.xlsx</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">df存储成功</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">data_read</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_excel</span><span class="p">(</span><span class="sh">"</span><span class="s">df_test.xlsx</span><span class="sh">"</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">列0</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">列1</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">列2</span><span class="sh">"</span><span class="p">],</span> <span class="n">sheet_name</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">data_read</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div>      </div>
+
+      <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721165810828.png" alt="image-20250721165810828" style="zoom:50%;" /></p>
+    </blockquote>
+  </li>
+</ol>
+
+<h2 id="编程题-1">编程题</h2>
+
+<ol>
+  <li>创建两个 DataFrame，<code class="language-plaintext highlighter-rouge">df_sales</code>（包含 <code class="language-plaintext highlighter-rouge">'Product'</code>, <code class="language-plaintext highlighter-rouge">'Quantity'</code>）和 <code class="language-plaintext highlighter-rouge">df_expenses</code>（包含 <code class="language-plaintext highlighter-rouge">'Category'</code>, <code class="language-plaintext highlighter-rouge">'Amount'</code>）。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">pd.ExcelWriter()</code> 将这两个 DataFrame 分别保存到 <code class="language-plaintext highlighter-rouge">'report.xlsx'</code> 文件的 <code class="language-plaintext highlighter-rouge">'Sales'</code> 和 <code class="language-plaintext highlighter-rouge">'Expenses'</code> 工作表中。</li>
+  <li>编写代码验证 <code class="language-plaintext highlighter-rouge">'Expenses'</code> 工作表是否成功保存。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">df_sales</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Product</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Quantity</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df_expenses</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Category</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Amount</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_sales</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">df_expenses</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">with</span> <span class="n">pd</span><span class="p">.</span><span class="nc">ExcelWriter</span><span class="p">(</span><span class="sh">"</span><span class="s">test.xlsx</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+    <span class="n">df_sales</span><span class="p">.</span><span class="nf">to_excel</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="sh">"</span><span class="s">Sales</span><span class="sh">"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">df_expenses</span><span class="p">.</span><span class="nf">to_excel</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="sh">"</span><span class="s">Expenses</span><span class="sh">"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="c1"># 读取Expenses
+</span><span class="n">load_enpenses</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_excel</span><span class="p">(</span><span class="sh">"</span><span class="s">test.xlsx</span><span class="sh">"</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="sh">"</span><span class="s">Expenses</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">load_enpenses</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721170345067.png" alt="image-20250721170345067" style="zoom:50%;" /></p>
+
+<h1 id="3sql">3.SQL</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721233839290.png" alt="image-20250721233839290" style="zoom:50%;" /></p>
+
+<p>pandas 可以通过 <strong>SQLAlchemy</strong> 和其他数据库驱动库，直接与各种 SQL 数据库进行交互。这使得从数据库中提取数据（ETL 过程中的 E）和将处理后的数据加载回数据库（L）变得非常方便。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">sqlalchemy.create_engine(connection_string)</code>：</strong> 创建一个数据库连接引擎。连接字符串的格式因数据库类型而异（例如，<code class="language-plaintext highlighter-rouge">'mysql+pymysql://user:pass@host/db_name'</code>）。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.to_sql(table_name, con, if_exists)</code>：</strong> 将 DataFrame 的内容作为新表或附加到现有表中写入数据库。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">table_name</code>: 数据库中的表名。</li>
+      <li><code class="language-plaintext highlighter-rouge">con</code>: 数据库连接引擎。</li>
+      <li><code class="language-plaintext highlighter-rouge">if_exists</code>: 字符串，指定如果表已存在时的行为，可以是 <code class="language-plaintext highlighter-rouge">'fail'</code>、<code class="language-plaintext highlighter-rouge">'replace'</code> 或 <code class="language-plaintext highlighter-rouge">'append'</code>。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">pd.read_sql(sql, con, index_col)</code>：</strong> 从数据库中读取数据并创建 DataFrame。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">sql</code>: SQL 查询语句。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>pandas 不直接与数据库通信，而是通过 <strong>SQLAlchemy</strong> 这个数据库抽象层。SQLAlchemy 负责处理各种数据库（如 MySQL、PostgreSQL、SQLite 等）之间的差异，为 pandas 提供统一的接口。<code class="language-plaintext highlighter-rouge">to_sql</code> 将 DataFrame 转换为 SQL 的 <code class="language-plaintext highlighter-rouge">INSERT</code> 语句并执行，而 <code class="language-plaintext highlighter-rouge">read_sql</code> 将 SQL 查询的结果集转换为 DataFrame。这让数据分析师可以高效地在数据库和内存中的 DataFrame 之间移动数据。</p>
+</blockquote>
+
+<hr />
+
+<p>首先需要安装库：<code class="language-plaintext highlighter-rouge">sqlalchemy</code> 和 <code class="language-plaintext highlighter-rouge">pymysql</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">sqlalchemy</span> <span class="n">pymysql</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721170610617.png" alt="image-20250721170610617" style="zoom:50%;" /></p>
+
+<p>然后重启内核.</p>
+
+<hr />
+
+<p>【1】数据库连接配置的格式：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">数据库类型</span><span class="o">+</span><span class="n">驱动</span><span class="p">:</span><span class="o">//</span><span class="n">用户名</span><span class="p">:</span><span class="n">密码</span><span class="nd">@主机</span><span class="o">/</span><span class="n">数据库名</span><span class="err">?</span><span class="n">charset</span><span class="o">=</span><span class="n">编码</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>比如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">mysql</span><span class="o">+</span><span class="n">pymysql</span><span class="p">:</span><span class="o">//</span><span class="n">root</span><span class="p">:</span><span class="n">root</span><span class="nd">@localhost</span><span class="o">/</span><span class="n">pandas_test_db_1</span><span class="err">?</span><span class="n">charset</span><span class="o">=</span><span class="n">UTF8MB4</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【2】写入数据库与读取：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">pymysql</span>
+<span class="kn">from</span> <span class="n">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># 数据库连接的配置
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="nf">create_engine</span><span class="p">(</span><span class="sh">"</span><span class="s">mysql+pymysql://root:root@localhost/test_pymysql_1?charset=UTF8MB4</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">数据库连接引擎创建成功!</span><span class="sh">"</span><span class="p">)</span>
+    <span class="c1"># df保存至数据库
+</span>    <span class="n">df</span><span class="p">.</span><span class="nf">to_sql</span><span class="p">(</span><span class="sh">"</span><span class="s">score</span><span class="sh">"</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="sh">'</span><span class="s">append</span><span class="sh">'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">已经保至数据库</span><span class="sh">"</span><span class="p">)</span>
+    <span class="c1"># 读取数据
+</span>    <span class="n">df_load_sql</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_sql</span><span class="p">(</span><span class="sh">"</span><span class="s">select * from score limit 10</span><span class="sh">"</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">display</span><span class="p">(</span><span class="n">df_load_sql</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">报错：</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721172753559.png" alt="image-20250721172753559" style="zoom:50%;" /></p>
+
+<p>数据库中也已经写入了：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721172812370.png" alt="image-20250721172812370" /></p>
+
+<h2 id="选择题-2">选择题</h2>
+
+<ol>
+  <li>
+    <p>在 <code class="language-plaintext highlighter-rouge">df.to_sql()</code> 中，<code class="language-plaintext highlighter-rouge">if_exists='replace'</code> 参数的作用是什么？</p>
+
+    <p>A. 如果表不存在，则创建新表。</p>
+
+    <p>B. 如果表已存在，则追加数据。</p>
+
+    <p>C. 如果表已存在，则删除旧表并创建新表。</p>
+
+    <p>D. 如果表已存在，则报错。</p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪项是 <code class="language-plaintext highlighter-rouge">pd.read_sql()</code> 中 <code class="language-plaintext highlighter-rouge">sql</code> 参数的正确格式？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">'table_name'</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">'select * from table_name'</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">table_name</code></p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">select * from table_name</code></p>
+
+    <blockquote>
+      <p>答案：B，<code class="language-plaintext highlighter-rouge">read_sql</code> 的 <code class="language-plaintext highlighter-rouge">sql</code> 参数需要一个字符串格式的 SQL 查询语句。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h1 id="4hdf5">4.HDF5</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721233900564.png" alt="image-20250721233900564" style="zoom:50%;" /></p>
+
+<p><strong>HDF5</strong> (Hierarchical Data Format 5) 是一种专门为存储和管理极大规模、复杂数据集而设计的格式。它的文件后缀通常是 <code class="language-plaintext highlighter-rouge">.h5</code> 或 <code class="language-plaintext highlighter-rouge">.hdf5</code>。HDF5 的核心优势在于其<strong>层次性</strong>结构和高效的 I/O 性能，这使得它特别适合处理那些无法一次性加载到内存中的大数据集。</p>
+
+<p>HDF5 文件可以看作是一个文件系统，其中有两个核心概念：</p>
+
+<ul>
+  <li><strong>Group（组）：</strong> 类似于文件系统中的目录，用于组织和管理数据集。</li>
+  <li><strong>Dataset（数据集）：</strong> 类似于文件系统中的文件，存储实际的数据。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.to_hdf(path_or_buf, key, mode)</code>：</strong> 将 DataFrame 保存到 HDF5 文件。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">key</code>: 一个字符串，用于标识存储在文件中的数据集，类似于文件路径。</li>
+      <li><code class="language-plaintext highlighter-rouge">mode</code>: 指定文件的打开模式，如 <code class="language-plaintext highlighter-rouge">'w'</code> (写入) 或 <code class="language-plaintext highlighter-rouge">'a'</code> (追加)。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">pd.read_hdf(path_or_buf, key)</code>：</strong> 从 HDF5 文件中读取数据。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">key</code>: 指定要读取的数据集的标识符。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>pandas 使用 <code class="language-plaintext highlighter-rouge">pytables</code> 库（需要安装 <code class="language-plaintext highlighter-rouge">tables</code>）作为后端来读写 HDF5 文件。HDF5 格式允许对数据集进行<strong>分块存储和压缩</strong>，并且支持只读取数据集的子集，这被称为“分块 I/O”。这种机制使得 pandas 能够高效地处理超出内存大小的数据集，因为它可以按需加载数据块，而不是一次性加载整个文件。<code class="language-plaintext highlighter-rouge">key</code> 参数则用于在文件的层次结构中定位不同的数据集</p>
+</blockquote>
+
+<p>【1】确保已安装必要的库<code class="language-plaintext highlighter-rouge">tables</code></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721212632423.png" alt="image-20250721212632423" style="zoom:50%;" /></p>
+
+<p>【2】存储与读取：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="n">data1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">IT</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">生物</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">化学</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">环境</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">材料</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Tensor flow</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Keras</span><span class="sh">"</span><span class="p">])</span>
+<span class="c1"># 保存为HDF5文件
+</span><span class="n">df1</span><span class="p">.</span><span class="nf">to_hdf</span><span class="p">(</span><span class="sh">"</span><span class="s">data.h5</span><span class="sh">"</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sh">"</span><span class="s">salary</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df2</span><span class="p">.</span><span class="nf">to_hdf</span><span class="p">(</span><span class="sh">"</span><span class="s">data.h5</span><span class="sh">"</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sh">"</span><span class="s">score</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 读取数据
+</span><span class="n">df_load_hdf5_salary</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_hdf</span><span class="p">(</span><span class="sh">"</span><span class="s">data.h5</span><span class="sh">"</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sh">"</span><span class="s">salary</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_load_hdf5_salary</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">df_load_hdf5_score</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_hdf</span><span class="p">(</span><span class="sh">"</span><span class="s">data.h5</span><span class="sh">"</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sh">"</span><span class="s">score</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_load_hdf5_score</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250721232851938.png" alt="image-20250721232851938" style="zoom:50%;" /></p>
+
+<h2 id="选择题-3">选择题</h2>
+
+<ol>
+  <li>
+    <p>HDF5 文件中的两个核心概念是？</p>
+
+    <p>A. 目录和文件。 B. 组（Group）和数据集（Dataset）。 C. 键（Key）和值（Value）。 D. 索引（Index）和列（Column）。</p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下关于 HDF5 格式的说法，哪一项是正确的？</p>
+
+    <p>A. HDF5 是一种纯文本格式。</p>
+
+    <p>B. HDF5 不支持在同一个文件中存储多个数据集。</p>
+
+    <p>C. HDF5 适合存储和管理无法完全加载到内存中的超大型数据集。</p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">pd.to_hdf()</code> 默认使用制表符作为分隔符。</p>
+
+    <blockquote>
+      <p>答案：C，HDF5 不是纯文本，它是二进制格式，这使其比文本格式更紧凑和高效。</p>
+
+      <p><code class="language-plaintext highlighter-rouge">pd.to_hdf() </code>是 pandas 用于将 DataFrame 写入 HDF5 文件的函数。HDF5 是二进制格式，不使用分隔符（如制表符或逗号）来组织数据。pd.to_hdf() 将 DataFrame 存储为 HDF5 的数据集，而不是基于文本的分隔格式（如 CSV）。制表符分隔符的概念适用于 pd.to_csv()，而不是 pd.to_hdf()。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h2 id="编程题-2">编程题</h2>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">df_large</code>，包含 1000 行和 10 列的随机整数。</li>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">df_small</code>，包含 10 行和 2 列的随机整数。</li>
+  <li>将 <code class="language-plaintext highlighter-rouge">df_large</code> 和 <code class="language-plaintext highlighter-rouge">df_small</code> 分别保存到 <code class="language-plaintext highlighter-rouge">'datasets.h5'</code> 文件中，使用 <code class="language-plaintext highlighter-rouge">'large_data'</code> 和 <code class="language-plaintext highlighter-rouge">'small_data'</code> 作为 <code class="language-plaintext highlighter-rouge">key</code>。</li>
+  <li>只读取 <code class="language-plaintext highlighter-rouge">key</code> 为 <code class="language-plaintext highlighter-rouge">'small_data'</code> 的数据集，并打印其形状。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">data1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">df_large</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">)</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">df_small</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data2</span><span class="p">)</span>
+<span class="n">df_large</span><span class="p">.</span><span class="nf">to_hdf</span><span class="p">(</span><span class="sh">"</span><span class="s">datasets.h5</span><span class="sh">"</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sh">"</span><span class="s">large_data</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df_small</span><span class="p">.</span><span class="nf">to_hdf</span><span class="p">(</span><span class="sh">"</span><span class="s">datasets.h5</span><span class="sh">"</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sh">"</span><span class="s">small_data</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df_load_small</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_hdf</span><span class="p">(</span><span class="sh">"</span><span class="s">datasets.h5</span><span class="sh">"</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sh">"</span><span class="s">small_data</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df_load_small</span><span class="p">.</span><span class="n">shape</span>   <span class="c1"># (10, 2)
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/21/pandas%E5%88%9D%E7%BA%A71/" data-toggle="tooltip" data-placement="top" title="pandas-数据结构与数据查看">
+                        Previous<br>
+                        <span>pandas-数据结构与数据查看</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0097" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0103" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0104" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0108" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0109" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0111" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="4">pandas</a>
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0119" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0119" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0119" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
