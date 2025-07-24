@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="pandas-数据转换和数据重塑 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-24T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="pandas">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/24/pandas%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2%E5%92%8C%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A1%91/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>pandas-数据转换和数据重塑 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/24/pandas%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2%E5%92%8C%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A1%91/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=pandas" title="pandas">pandas</a>
+                        
+                    </div>
+                    <h1>pandas-数据转换和数据重塑</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 24, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>在数据分析和机器学习的工作流程中，数据转换和重塑是至关重要的步骤。它们允许我们以不同的方式组织和修改数据，以适应特定的分析需求或模型输入格式。<code class="language-plaintext highlighter-rouge">pandas</code> 库提供了丰富而强大的功能来高效地完成这些任务。</p>
+
+<h1 id="1数据转换">1.数据转换</h1>
+
+<p>数据转换是指对数据进行修改，使其从一种形式变为另一种形式，通常是为了清洗、标准化或创建新特征。</p>
+
+<h2 id="11-轴和元素替换">1.1 轴和元素替换</h2>
+
+<p>在数据处理过程中，我们经常需要修改 DataFrame 的索引标签或替换数据中的特定值。<code class="language-plaintext highlighter-rouge">pandas</code> 提供了 <code class="language-plaintext highlighter-rouge">rename()</code> 方法用于重命名轴标签，以及 <code class="language-plaintext highlighter-rouge">replace()</code> 方法用于替换数据值。</p>
+
+<ol>
+  <li><strong>重命名轴索引 (<code class="language-plaintext highlighter-rouge">df.rename(mapper=None, index=None, columns=None, axis=None, inplace=False)</code>)</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">mapper</code>: 一个字典或函数，用于指定旧标签到新标签的映射。</li>
+      <li><code class="language-plaintext highlighter-rouge">index</code>: 字典或函数，用于重命名行索引。</li>
+      <li><code class="language-plaintext highlighter-rouge">columns</code>: 字典或函数，用于重命名列索引。</li>
+      <li><code class="language-plaintext highlighter-rouge">axis</code>: 可选参数，指定要重命名的轴（<code class="language-plaintext highlighter-rouge">0</code> 或 <code class="language-plaintext highlighter-rouge">'index'</code> 用于行，<code class="language-plaintext highlighter-rouge">1</code> 或 <code class="language-plaintext highlighter-rouge">'columns'</code> 用于列）。如果同时提供了 <code class="language-plaintext highlighter-rouge">index</code> 和 <code class="language-plaintext highlighter-rouge">columns</code> 参数，则无需指定 <code class="language-plaintext highlighter-rouge">axis</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">inplace</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code>，则直接修改原始 DataFrame；如果为 <code class="language-plaintext highlighter-rouge">False</code> (默认)，则返回一个新的 DataFrame。</li>
+    </ul>
+  </li>
+  <li><strong>替换值 (<code class="language-plaintext highlighter-rouge">df.replace(to_replace=None, value=None, inplace=False, limit=None, regex=False, method='pad')</code>)</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">to_replace</code>: 要被替换的值，可以是单个值、列表、字典、正则表达式或 Series。</li>
+      <li><code class="language-plaintext highlighter-rouge">value</code>: 替换后的值，可以是单个值、列表、字典或 Series。
+        <ul>
+          <li>如果 <code class="language-plaintext highlighter-rouge">to_replace</code> 是单个值、列表或 Series，<code class="language-plaintext highlighter-rouge">value</code> 可以是单个值或与 <code class="language-plaintext highlighter-rouge">to_replace</code> 长度相同的列表。</li>
+          <li>如果 <code class="language-plaintext highlighter-rouge">to_replace</code> 是字典，则字典的键是被替换的值，值是替换后的值。这允许进行多对多的替换。</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">inplace</code>: 布尔值，是否直接修改原始 DataFrame。</li>
+      <li><code class="language-plaintext highlighter-rouge">regex</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code>，则 <code class="language-plaintext highlighter-rouge">to_replace</code> 可以是正则表达式。</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong><code class="language-plaintext highlighter-rouge">rename()</code> 的原理：</strong> <code class="language-plaintext highlighter-rouge">rename()</code> 方法实际上是在不改变底层数据的情况下，创建了一个新的索引对象。如果 <code class="language-plaintext highlighter-rouge">inplace=False</code>，它会创建一个新的 DataFrame，并将旧索引替换为新索引。如果 <code class="language-plaintext highlighter-rouge">inplace=True</code>，它会直接修改 DataFrame 对象的索引属性。这个操作通常非常高效，因为它只涉及元数据的修改，而不涉及大量数据的复制。</p>
+
+  <p><strong><code class="language-plaintext highlighter-rouge">replace()</code> 的原理：</strong> <code class="language-plaintext highlighter-rouge">replace()</code> 方法的实现更为复杂，因为它涉及到遍历数据并根据条件进行替换。</p>
+
+  <ul>
+    <li>当替换单个值或列表时，<code class="language-plaintext highlighter-rouge">pandas</code> 会在底层对数据进行逐元素比较和替换。</li>
+    <li>当使用字典进行替换时，<code class="language-plaintext highlighter-rouge">pandas</code> 会构建一个查找表，然后遍历数据，如果元素在查找表中，则进行替换。</li>
+    <li><code class="language-plaintext highlighter-rouge">replace()</code> 总是返回一个新的 DataFrame（除非 <code class="language-plaintext highlighter-rouge">inplace=True</code>），因为数据内容发生了变化。</li>
+  </ul>
+</blockquote>
+
+<h3 id="拓展rename-和-replace-的使用场景">拓展：<code class="language-plaintext highlighter-rouge">rename()</code> 和 <code class="language-plaintext highlighter-rouge">replace()</code> 的使用场景</h3>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">rename()</code> 拓展：</strong>
+    <ul>
+      <li><strong>统一命名规范：</strong> 将不规范的列名（例如，包含空格或特殊字符）重命名为符合 Python 变量命名规范的名称。</li>
+      <li><strong>多语言支持：</strong> 将英文列名翻译成中文列名，方便本地化分析。</li>
+      <li><strong>函数映射重命名：</strong> 当重命名规则比较复杂时，可以传入一个函数，例如将所有列名转换为小写：<code class="language-plaintext highlighter-rouge">df.rename(columns=str.lower)</code>。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">replace()</code> 拓展：</strong>
+    <ul>
+      <li><strong>处理缺失值：</strong> 将特定的错误值（例如，<code class="language-plaintext highlighter-rouge">-999</code>）替换为 <code class="language-plaintext highlighter-rouge">np.nan</code>，以便后续进行缺失值处理。</li>
+      <li><strong>数据标准化：</strong> 将分类变量的文本值替换为数值编码（例如，<code class="language-plaintext highlighter-rouge">'Male'</code> 替换为 <code class="language-plaintext highlighter-rouge">0</code>，<code class="language-plaintext highlighter-rouge">'Female'</code> 替换为 <code class="language-plaintext highlighter-rouge">1</code>）。</li>
+      <li><strong>模糊匹配替换：</strong> 结合 <code class="language-plaintext highlighter-rouge">regex=True</code> 参数，可以根据正则表达式替换匹配的字符串。例如，<code class="language-plaintext highlighter-rouge">df['text_col'].replace(r'[^a-zA-Z\s]', '', regex=True)</code> 可以移除文本中的所有非字母和非空格字符。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>【1】重命名轴索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df_rename</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">rename</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">:</span><span class="sh">"</span><span class="s">AA</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">:</span><span class="sh">"</span><span class="s">BB</span><span class="sh">"</span><span class="p">},</span> <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">人工智能</span><span class="sh">"</span><span class="p">}</span> <span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_rename</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723173522730.png" alt="image-20250723173522730" style="zoom:50%;" /></p>
+
+<p>【2】使用函数重命名列</p>
+
+<p>比如：将所有的列名转换为大写：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df_upper</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="nb">str</span><span class="p">.</span><span class="n">upper</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_upper</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723173533928.png" alt="image-20250723173533928" style="zoom:50%;" /></p>
+
+<p>【3】单个值替换为其他值：</p>
+
+<p>无论有几个99，都把99变成9999</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df_9999</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_9999</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723173722971.png" alt="image-20250723173722971" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df_2048</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">replace</span><span class="p">([</span><span class="mi">99</span><span class="p">,</span> <span class="mi">8888</span><span class="p">],</span> <span class="mi">7777</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_2048</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723173943679.png" alt="image-20250723173943679" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df_mul</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">replace</span><span class="p">({</span><span class="mi">99</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">8888</span><span class="p">:</span> <span class="mi">6666</span><span class="p">})</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_mul</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>注意：下面这个写法也可以：<code class="language-plaintext highlighter-rouge">df.replace([0, 1], [np.nan, 100])</code>: 使用两个列表，分别指定要替换的值和替换后的值，0 替换为 <code class="language-plaintext highlighter-rouge">np.nan</code>，1 替换为 100</p>
+</blockquote>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723174049066.png" alt="image-20250723174049066" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df_</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">replace</span><span class="p">({</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">:</span> <span class="mi">99</span><span class="p">},</span> <span class="mi">4444</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723174145916.png" alt="image-20250723174145916" style="zoom:50%;" /></p>
+
+<p>【4】使用正则表达式替换：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">text</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">Hello world</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Python is great</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">123 Test</span><span class="sh">"</span><span class="p">]}</span>
+<span class="n">df_text</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_text</span><span class="p">)</span>
+<span class="c1"># 移除数字和特殊字符
+# [^a-zA-Z\s]：除了字母和空白字符之外的任意单个字符
+</span><span class="n">res</span> <span class="o">=</span> <span class="n">df_text</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sa">r</span><span class="sh">"</span><span class="s">[^a-zA-Z\s]</span><span class="sh">"</span><span class="p">,</span> <span class="sh">''</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723174617139.png" alt="image-20250723174617139" style="zoom:50%;" /></p>
+
+<h3 id="选择题">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">df = pd.DataFrame({'A': [1, 2], 'B': [3, 4]})</code>，执行 <code class="language-plaintext highlighter-rouge">df.rename(columns={'A': 'Col_A'}, inplace=True)</code> 后，<code class="language-plaintext highlighter-rouge">df.columns</code> 的结果是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">Index(['A', 'B'], dtype='object')</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">Index(['Col_A', 'B'], dtype='object')</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">Index(['Col_A', 'Col_B'], dtype='object')</code></p>
+
+    <p>D. 报错</p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>要将 DataFrame 中所有值为 <code class="language-plaintext highlighter-rouge">0</code> 的元素替换为 <code class="language-plaintext highlighter-rouge">np.nan</code>，并同时将所有值为 <code class="language-plaintext highlighter-rouge">1</code> 的元素替换为 <code class="language-plaintext highlighter-rouge">100</code>，以下哪个 <code class="language-plaintext highlighter-rouge">replace()</code> 调用是正确的？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df.replace(0, np.nan).replace(1, 100)</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">df.replace({0: np.nan, 1: 100})</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">df.replace([0, 1], [np.nan, 100])</code></p>
+
+    <p>D. B 和 C 都是正确的。</p>
+
+    <blockquote>
+      <p>答案：D</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">exam_results</code>，包含 <code class="language-plaintext highlighter-rouge">'Student_ID'</code>, <code class="language-plaintext highlighter-rouge">'Math_Score'</code>, <code class="language-plaintext highlighter-rouge">'English_Score'</code> 三列，以及 5 行数据。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Student_ID</code> 填充 <code class="language-plaintext highlighter-rouge">[101, 102, 103, 104, 105]</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">Math_Score</code> 和 <code class="language-plaintext highlighter-rouge">English_Score</code> 填充随机整数，其中 <code class="language-plaintext highlighter-rouge">Math_Score</code> 的 <code class="language-plaintext highlighter-rouge">103</code> 号学生分数为 <code class="language-plaintext highlighter-rouge">0</code>，<code class="language-plaintext highlighter-rouge">English_Score</code> 的 <code class="language-plaintext highlighter-rouge">105</code> 号学生分数为 <code class="language-plaintext highlighter-rouge">np.nan</code>。</li>
+    </ul>
+  </li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">rename()</code> 方法将 <code class="language-plaintext highlighter-rouge">'Math_Score'</code> 列重命名为 <code class="language-plaintext highlighter-rouge">'数学成绩'</code>，将 <code class="language-plaintext highlighter-rouge">'English_Score'</code> 列重命名为 <code class="language-plaintext highlighter-rouge">'英语成绩'</code>。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">replace()</code> 方法将所有 <code class="language-plaintext highlighter-rouge">0</code> 分替换为 <code class="language-plaintext highlighter-rouge">60</code> 分，并将所有 <code class="language-plaintext highlighter-rouge">np.nan</code> 替换为 <code class="language-plaintext highlighter-rouge">50</code> 分。</li>
+  <li>打印每一步操作后的 DataFrame。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="n">stu_id</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="mi">106</span><span class="p">)</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">))</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">))</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">Student_ID</span><span class="sh">"</span><span class="p">:</span> <span class="n">stu_id</span><span class="p">,</span> <span class="sh">"</span><span class="s">Math_Score</span><span class="sh">"</span><span class="p">:</span> <span class="n">s1</span><span class="p">,</span> <span class="sh">"</span><span class="s">English_Score</span><span class="sh">"</span><span class="p">:</span> <span class="n">s2</span><span class="p">}</span>
+<span class="n">exam_results</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="c1"># Math_Score 的 103 号学生分数为 0，English_Score 的 105 号学生分数为 np.nan。
+</span><span class="n">exam_results</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">exam_results</span><span class="p">[</span><span class="sh">"</span><span class="s">Student_ID</span><span class="sh">"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">103</span><span class="p">,</span> <span class="sh">"</span><span class="s">Math_Score</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">exam_results</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">exam_results</span><span class="p">[</span><span class="sh">"</span><span class="s">Student_ID</span><span class="sh">"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">105</span><span class="p">,</span> <span class="sh">"</span><span class="s">English_Score</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">exam_results</span><span class="p">)</span>
+<span class="c1"># 使用 rename() 方法将 'Math_Score' 列重命名为 '数学成绩'，将 'English_Score' 列重命名为 '英语成绩'。
+</span><span class="n">exam_results_rename</span> <span class="o">=</span> <span class="n">exam_results</span><span class="p">.</span><span class="nf">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">Math_Score</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">数学成绩</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">English_Score</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">英语成绩</span><span class="sh">"</span><span class="p">})</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">exam_results_rename</span><span class="p">)</span>
+<span class="c1"># 使用 replace() 方法将所有 0 分替换为 60 分，并将所有 np.nan 替换为 50 分。
+</span><span class="n">exam_results_rep</span> <span class="o">=</span> <span class="n">exam_results</span><span class="p">.</span><span class="nf">replace</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">:</span> <span class="mi">50</span><span class="p">})</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">exam_results_rep</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723175534357.png" alt="image-20250723175534357" style="zoom:50%;" /></p>
+
+<h2 id="12-map-series元素改变">1.2 map Series元素改变</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Series.map()</code> 方法是 Series 独有的，用于对 Series 中的每个元素应用一个映射函数或字典。它非常适合进行一对一的元素转换。</p>
+
+<ul>
+  <li><strong>基本语法：</strong> <code class="language-plaintext highlighter-rouge">Series.map(arg, na_action=None)</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">arg</code>: 可以是一个字典（用于值替换）、一个 Series（用于基于索引的对齐和替换）或一个函数（用于对每个元素进行转换）。</li>
+      <li><code class="language-plaintext highlighter-rouge">na_action</code>: 字符串，如果设置为 <code class="language-plaintext highlighter-rouge">'ignore'</code>，则在映射过程中跳过 <code class="language-plaintext highlighter-rouge">NaN</code> 值，否则 <code class="language-plaintext highlighter-rouge">NaN</code> 值也会被映射（如果 <code class="language-plaintext highlighter-rouge">arg</code> 是字典且 <code class="language-plaintext highlighter-rouge">NaN</code> 不在字典中，则结果仍为 <code class="language-plaintext highlighter-rouge">NaN</code>）</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">Series.map()</code> 的核心原理是<strong>逐元素应用</strong>和<strong>索引对齐（如果 <code class="language-plaintext highlighter-rouge">arg</code> 是 Series）</strong>。</p>
+
+  <ol>
+    <li><strong>字典映射：</strong> 当 <code class="language-plaintext highlighter-rouge">arg</code> 是字典时，<code class="language-plaintext highlighter-rouge">map()</code> 会遍历 Series 中的每个值。如果该值作为键存在于字典中，则将其替换为字典中对应的值；如果不存在，则替换为 <code class="language-plaintext highlighter-rouge">NaN</code>。</li>
+    <li><strong>函数映射：</strong> 当 <code class="language-plaintext highlighter-rouge">arg</code> 是函数时，<code class="language-plaintext highlighter-rouge">map()</code> 会将 Series 中的每个元素作为参数传递给该函数，并将函数的返回值作为新 Series 中对应位置的值。</li>
+    <li><strong>Series 映射：</strong> 当 <code class="language-plaintext highlighter-rouge">arg</code> 是另一个 Series 时，<code class="language-plaintext highlighter-rouge">map()</code> 会根据调用 Series 的值与 <code class="language-plaintext highlighter-rouge">arg</code> Series 的<strong>索引</strong>进行匹配。如果调用 Series 的某个值与 <code class="language-plaintext highlighter-rouge">arg</code> Series 的索引匹配，则使用 <code class="language-plaintext highlighter-rouge">arg</code> Series 中对应索引的值进行替换。</li>
+  </ol>
+
+  <p><code class="language-plaintext highlighter-rouge">map()</code> 总是返回一个新的 Series，因为它创建了一个转换后的数据副本。</p>
+</blockquote>
+
+<h3 id="拓展map-的使用场景">拓展：<code class="language-plaintext highlighter-rouge">map()</code> 的使用场景</h3>
+
+<ul>
+  <li><strong>分类变量编码：</strong> 将文本分类变量映射为数值编码。例如，将 <code class="language-plaintext highlighter-rouge">'Male'</code> 映射为 <code class="language-plaintext highlighter-rouge">0</code>，<code class="language-plaintext highlighter-rouge">'Female'</code> 映射为 <code class="language-plaintext highlighter-rouge">1</code>。</li>
+  <li><strong>数据清洗：</strong> 将特定编码（如错误代码）映射为更具可读性的描述。</li>
+  <li><strong>数据转换：</strong> 对数值数据应用数学函数（如取对数、平方根），或者根据条件进行转换（如将分数转换为等级）。</li>
+  <li><strong>基于字典的批量查找：</strong> 当需要根据 Series 中的值去查找另一个字典中的信息时，<code class="language-plaintext highlighter-rouge">map()</code> 比循环更高效。</li>
+</ul>
+
+<hr />
+
+<p>【1】字典映射,不改变原先的df</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">))</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="n">golang_map</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">].</span><span class="nf">map</span><span class="p">({</span><span class="mi">128</span><span class="p">:</span><span class="sh">"</span><span class="s">Hello</span><span class="sh">"</span><span class="p">,</span> <span class="mi">108</span><span class="p">:</span><span class="sh">"</span><span class="s">world</span><span class="sh">"</span><span class="p">,</span> <span class="mi">124</span><span class="p">:</span> <span class="sh">"</span><span class="s">AI</span><span class="sh">"</span><span class="p">})</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">golang_map</span><span class="p">)</span>  <span class="c1"># 其他值变为NaN
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723180129701.png" alt="image-20250723180129701" style="zoom:50%;" /></p>
+
+<p>【2】隐式函数映射（lambda函数）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># python分数大于等于100的映射成True,否则为False
+</span><span class="n">python_map</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">].</span><span class="nf">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">100</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">python_map</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">python_map</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723183304266.png" alt="image-20250723183304266" style="zoom:50%;" /></p>
+
+<p>【3】显式函数映射：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">convert_java</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># 处理NaN
+</span>    <span class="k">if</span> <span class="n">pd</span><span class="p">.</span><span class="nf">isna</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sh">"</span><span class="s">能被3整除</span><span class="sh">"</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sh">"</span><span class="s">余1</span><span class="sh">"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sh">"</span><span class="s">余2</span><span class="sh">"</span>
+    
+<span class="n">java_map</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="n">convert_java</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">java_map</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723183605911.png" alt="image-20250723183605911" style="zoom:50%;" /></p>
+
+<p>【4】使用Series进行映射：(基于索引对齐)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="n">python</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">))</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">E</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="n">python</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723184020391.png" alt="image-20250723184020391" style="zoom:50%;" /></p>
+
+<h3 id="选择题-1">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">s = pd.Series([1, 2, 3])</code>，执行 <code class="language-plaintext highlighter-rouge">s.map({1: 'one', 2: 'two'})</code> 后，<code class="language-plaintext highlighter-rouge">s</code> 的结果是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">Series([1, 2, 3])</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">Series(['one', 'two', 3])</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">Series(['one', 'two', np.nan])</code></p>
+
+    <p>D. 报错</p>
+
+    <blockquote>
+      <p>答案：C， map 对未匹配的值返回 NaN</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下关于 <code class="language-plaintext highlighter-rouge">Series.map()</code> 的说法，哪一项是错误的？</p>
+
+    <p>A. 它可以接受字典作为映射参数。</p>
+
+    <p>B. 它可以接受函数作为映射参数。</p>
+
+    <p>C. 它可以直接修改原始 Series。</p>
+
+    <p>D. 它可以用于将 Series 中的值映射到新的值。</p>
+
+    <blockquote>
+      <p>答案：C， <code class="language-plaintext highlighter-rouge">Series.map() </code>返回一个新的 Series，不会修改原始 Series（除非将结果赋值回原 Series，例如<code class="language-plaintext highlighter-rouge"> s = s.map(...)</code>）。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-1">编程题</h3>
+
+<ol>
+  <li>创建一个 Series <code class="language-plaintext highlighter-rouge">product_status</code>，包含 <code class="language-plaintext highlighter-rouge">'in_stock'</code>, <code class="language-plaintext highlighter-rouge">'out_of_stock'</code>, <code class="language-plaintext highlighter-rouge">'pre_order'</code>, <code class="language-plaintext highlighter-rouge">'in_stock'</code> 等字符串。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">map()</code> 方法将这些字符串状态映射为数值编码：
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">'in_stock'</code> 映射为 <code class="language-plaintext highlighter-rouge">1</code></li>
+      <li><code class="language-plaintext highlighter-rouge">'out_of_stock'</code> 映射为 <code class="language-plaintext highlighter-rouge">0</code></li>
+      <li><code class="language-plaintext highlighter-rouge">'pre_order'</code> 映射为 <code class="language-plaintext highlighter-rouge">2</code></li>
+    </ul>
+  </li>
+  <li>创建一个 Series <code class="language-plaintext highlighter-rouge">temperatures</code>，包含一些浮点数温度值。使用 <code class="language-plaintext highlighter-rouge">map()</code> 方法将温度值转换为其对应的摄氏度（假设原始是华氏度，公式 \(C=(F−32)*5/9\)）。</li>
+  <li>打印每一步操作后的 Series。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">product_status</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">"</span><span class="s">in_stock</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">out_of_stock</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">pre_order</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">in_stock</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">product_status</span><span class="p">)</span>
+<span class="c1"># 映射为数值编码
+</span><span class="n">res_pro_status</span> <span class="o">=</span> <span class="n">product_status</span><span class="p">.</span><span class="nf">map</span><span class="p">({</span><span class="sh">"</span><span class="s">in_stock</span><span class="sh">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sh">"</span><span class="s">out_of_stock</span><span class="sh">"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sh">"</span><span class="s">pre_order</span><span class="sh">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res_pro_status</span><span class="p">)</span>
+
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">)))</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="p">.</span><span class="nf">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
+<span class="n">res_t</span> <span class="o">=</span> <span class="n">temperature</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">32</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">9</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res_t</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723184742535.png" alt="image-20250723184742535" style="zoom:50%;" /></p>
+
+<h2 id="13-apply-元素改变">1.3 apply 元素改变</h2>
+
+<p><code class="language-plaintext highlighter-rouge">apply()</code> 方法是 <code class="language-plaintext highlighter-rouge">pandas</code> 中一个非常通用的函数，它既支持 Series 也支持 DataFrame。它允许您将一个函数应用到 Series 的每个元素，或 DataFrame 的每一行/每一列。</p>
+
+<ol>
+  <li><strong>Series 上的 <code class="language-plaintext highlighter-rouge">apply()</code>：</strong>
+    <ul>
+      <li>行为与 <code class="language-plaintext highlighter-rouge">Series.map()</code> 类似，都是逐元素应用函数。</li>
+      <li><code class="language-plaintext highlighter-rouge">Series.apply(func, args=(), **kwargs)</code></li>
+      <li><code class="language-plaintext highlighter-rouge">func</code>: 要应用的函数，它将接收 Series 中的每个元素作为输入。</li>
+    </ul>
+  </li>
+  <li><strong>DataFrame 上的 <code class="language-plaintext highlighter-rouge">apply()</code>：</strong>
+    <ul>
+      <li>这是 <code class="language-plaintext highlighter-rouge">apply()</code> 最强大的用法之一。它允许您将函数应用到 DataFrame 的每一行或每一列。</li>
+      <li><code class="language-plaintext highlighter-rouge">DataFrame.apply(func, axis=0, args=(), **kwargs)</code></li>
+      <li><code class="language-plaintext highlighter-rouge">func</code>: 要应用的函数。
+        <ul>
+          <li>如果 <code class="language-plaintext highlighter-rouge">axis=0</code> (默认，按列应用)，<code class="language-plaintext highlighter-rouge">func</code> 将接收 DataFrame 的每一列（一个 Series）作为输入。</li>
+          <li>如果 <code class="language-plaintext highlighter-rouge">axis=1</code> (按行应用)，<code class="language-plaintext highlighter-rouge">func</code> 将接收 DataFrame 的每一行（一个 Series）作为输入。</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">axis</code>: 指定应用函数的轴。</li>
+      <li>函数的返回值可以是标量、Series 或 DataFrame。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">applymap()</code> DataFrame 专有</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">DataFrame.applymap(func)</code>：这是一个 DataFrame 独有的方法，用于将函数<strong>逐元素</strong>地应用到 DataFrame 的所有元素上。</li>
+      <li>它类似于 Series 上的 <code class="language-plaintext highlighter-rouge">map()</code>，但作用于整个 DataFrame。</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <ul>
+    <li><strong><code class="language-plaintext highlighter-rouge">apply()</code> 的原理：</strong> <code class="language-plaintext highlighter-rouge">apply()</code> 方法在底层会迭代 Series 的每个元素或 DataFrame 的每一行/每一列，并将它们作为 Series 对象传递给用户定义的函数。虽然它比纯 Python 循环更高效，但它仍然在 Python 层面进行迭代，因此在处理非常大的数据集时，如果操作可以通过矢量化（如 NumPy 函数或 UFuncs）完成，那么矢量化操作通常会更快。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">applymap()</code> 的原理：</strong> <code class="language-plaintext highlighter-rouge">applymap()</code> 则是对 DataFrame 中的每个单独的标量元素进行操作。它在底层会遍历 DataFrame 的所有单元格，并将每个单元格的值传递给函数。它比 <code class="language-plaintext highlighter-rouge">apply(axis=0/1)</code> 更底层，因为它不处理 Series 对象，而是直接处理标量。</li>
+  </ul>
+
+  <p>这些方法通常返回一个新的 Series 或 DataFrame，因为它们创建了转换后的数据副本。</p>
+</blockquote>
+
+<h3 id="拓展apply-和-applymap-的使用场景">拓展：<code class="language-plaintext highlighter-rouge">apply()</code> 和 <code class="language-plaintext highlighter-rouge">applymap()</code> 的使用场景</h3>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">apply()</code> 拓展：</strong>
+    <ul>
+      <li><strong>行/列聚合计算：</strong> 计算每行或每列的复杂统计量（例如，中位数、众数、自定义加权平均）。</li>
+      <li><strong>条件转换：</strong> 根据行或列的整体属性进行复杂的数据转换。</li>
+      <li><strong>特征工程：</strong> 从多列数据中生成新的特征。例如，计算每行的总分，或根据多列的组合判断一个状态。</li>
+      <li><strong>文本处理：</strong> 对包含文本的列应用自定义的文本清洗函数。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">applymap()</code> 拓展：</strong>
+    <ul>
+      <li><strong>数值转换：</strong> 对 DataFrame 中所有数值元素进行统一的数学变换（如取对数、加常数）。</li>
+      <li><strong>格式化输出：</strong> 将 DataFrame 中的所有数值格式化为字符串（例如，保留两位小数）。</li>
+      <li><strong>条件着色：</strong> 在 Jupyter Notebook 中，可以结合 <code class="language-plaintext highlighter-rouge">style.applymap</code> 对 DataFrame 的每个单元格进行条件着色。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>【1】Series应用apply函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">golang_apply</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">Golang</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="bp">True</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">90</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">golang_apply</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723224737634.png" alt="image-20250723224737634" style="zoom:50%;" /></p>
+
+<p>【2】DataFrame应用apply：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 计算每一列的中位数
+</span><span class="n">median_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">median</span><span class="p">(),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">median_df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723224933029.png" alt="image-20250723224933029" style="zoom:50%;" /></p>
+
+<p>也可以自定义方法：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c1"># 求每行均值和非空计数
+</span><span class="k">def</span> <span class="nf">analyze_row</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="n">mean_val</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="nf">mean</span><span class="p">()</span>
+    <span class="n">count_val</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="nf">count</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="n">mean_val</span><span class="p">.</span><span class="nf">round</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">count_val</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Mean</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Count</span><span class="sh">"</span><span class="p">])</span>
+
+<span class="n">row_analyze</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="n">analyze_row</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">row_analyze</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723225224615.png" alt="image-20250723225224615" style="zoom:50%;" /></p>
+
+<p>【3】applymap：DataFrame专有的函数:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># df中每个元素做+10的处理（非空）
+</span><span class="n">df_</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">10</span> <span class="k">if</span> <span class="n">pd</span><span class="p">.</span><span class="nf">notna</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723225424935.png" alt="image-20250723225424935" style="zoom:50%;" /></p>
+
+<p>可以直接用map方法，作用在df上：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># df中每个元素做+10的处理（非空）
+</span><span class="n">df_</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">pd</span><span class="p">.</span><span class="nf">notna</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【4】格式化单元格的显示：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># 两位小数显示：
+</span><span class="n">df_formatted</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">'</span> <span class="k">if</span> <span class="n">pd</span><span class="p">.</span><span class="nf">notna</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="sh">'</span><span class="s">NaN</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_formatted</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723225704559.png" alt="image-20250723225704559" style="zoom:50%;" /></p>
+
+<h3 id="选择题-2">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">df = pd.DataFrame({'A': [1, 2], 'B': [3, 4]})</code>，执行 <code class="language-plaintext highlighter-rouge">df.apply(lambda x: x.sum(), axis=0)</code> 的结果是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">Series([4, 6], index=['A', 'B'])</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">Series([3, 7], index=["A", "B"])</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">DataFrame</code> 形状为 <code class="language-plaintext highlighter-rouge">(2, 2)</code>。</p>
+
+    <p>D. 报错。</p>
+
+    <blockquote>
+      <p>答案：B</p>
+
+      <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723230001532.png" alt="image-20250723230001532" style="zoom:50%;" /></p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪个方法是 DataFrame 独有的，用于将函数逐元素地应用到 DataFrame 的所有元素上？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">Series.map()</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">DataFrame.apply()</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">DataFrame.applymap()</code></p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">Series.apply()</code></p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-2">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">student_scores</code>，包含 <code class="language-plaintext highlighter-rouge">'Math'</code>, <code class="language-plaintext highlighter-rouge">'Science'</code>, <code class="language-plaintext highlighter-rouge">'English'</code> 三列，以及 5 行随机整数分数。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">apply()</code> 方法计算每名学生的总分（即每行的和），并将结果作为新列 <code class="language-plaintext highlighter-rouge">'Total_Score'</code> 添加到 DataFrame 中。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">apply()</code> 方法计算每门课程的平均分和标准差，并打印结果。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">applymap()</code> 方法将 DataFrame 中所有分数大于 90 的元素替换为 <code class="language-plaintext highlighter-rouge">'Excellent'</code>，否则保持原样。</li>
+  <li>打印每一步操作后的 DataFrame。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Math</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Science</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">English</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 使用 apply() 方法计算每名学生的总分（即每行的和），并将结果作为新列 'Total_Score' 添加到 DataFrame 中。
+</span><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">Total_Score</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">sum</span><span class="p">(),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 使用 apply() 方法计算每门课程的平均分和标准差，并打印结果
+</span><span class="n">course_info_mean</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">mean</span><span class="p">(),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">course_info_std</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">std</span><span class="p">(),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">course_info</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="n">course_info_mean</span><span class="p">,</span> <span class="n">course_info_std</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">course_info</span> <span class="o">=</span> <span class="n">course_info</span><span class="p">.</span><span class="nf">rename</span><span class="p">({</span><span class="sh">"</span><span class="s">0_x</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Mean</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">0_y</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Std</span><span class="sh">"</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">course_info</span> <span class="o">=</span> <span class="n">course_info</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">"</span><span class="s">Math</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">English</span><span class="sh">"</span><span class="p">]</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">course_info</span><span class="p">)</span>
+<span class="c1"># 使用 applymap() 方法将 DataFrame 中所有分数大于 90 的元素替换为 'Excellent'，否则保持原样
+</span><span class="n">df_</span>  <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sh">"</span><span class="s">Excellent</span><span class="sh">"</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">90</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723231244428.png" alt="image-20250723231244428" style="zoom:50%;" /></p>
+
+<h2 id="14-transform-变形金刚">1.4 transform 变形金刚</h2>
+
+<p>关于<code class="language-plaintext highlighter-rouge">transform</code> 函数可以参考博客：<a href="https://kirsten-1.github.io/2025/02/28/pandas%E9%87%8D%E8%A6%81%E5%87%BD%E6%95%B0transform/">pandas超级重要函数-transform函数</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">transform()</code> 方法是 <code class="language-plaintext highlighter-rouge">pandas</code> 中一个非常强大的数据转换工具，它与 <code class="language-plaintext highlighter-rouge">apply()</code> 类似，但有一个关键区别：<code class="language-plaintext highlighter-rouge">transform()</code> 返回的 Series 或 DataFrame 的形状<strong>必须与原始输入相同</strong>。这意味着 <code class="language-plaintext highlighter-rouge">transform()</code> 通常用于执行那些对每个组（或整个 Series/DataFrame）进行计算，并将结果广播回原始形状的操作。</p>
+
+<ul>
+  <li><strong>基本语法：</strong> <code class="language-plaintext highlighter-rouge">Series.transform(func, *args, **kwargs)</code> 或 <code class="language-plaintext highlighter-rouge">DataFrame.transform(func, axis=0, *args, **kwargs)</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">func</code>: 要应用的函数。可以是 NumPy UFuncs、Python 函数、函数列表或字典。</li>
+      <li>当 <code class="language-plaintext highlighter-rouge">func</code> 是一个函数时，它将被应用到 Series 或 DataFrame 的每个组（如果使用了 <code class="language-plaintext highlighter-rouge">groupby</code>）或整个 Series/DataFrame。</li>
+      <li>当 <code class="language-plaintext highlighter-rouge">func</code> 是一个函数列表时，会对每个函数执行计算，并返回一个 DataFrame，其中每个函数的结果作为一列。</li>
+      <li>当 <code class="language-plaintext highlighter-rouge">func</code> 是一个字典时，键是列名，值是函数或函数列表，表示对特定列应用特定的转换。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">transform()</code> 的核心原理是<strong>广播（Broadcasting）</strong>。当 <code class="language-plaintext highlighter-rouge">transform()</code> 应用一个函数时，它会：</p>
+
+  <ol>
+    <li><strong>执行计算：</strong> 对整个 Series/DataFrame 或每个分组执行 <code class="language-plaintext highlighter-rouge">func</code>。</li>
+    <li><strong>广播结果：</strong> 将计算结果（通常是聚合值或转换值）广播回原始 Series/DataFrame 的形状。</li>
+  </ol>
+
+  <p>例如，如果对一列数据计算均值，<code class="language-plaintext highlighter-rouge">transform(np.mean)</code> 会将该均值复制到该列的所有位置。如果对分组数据计算均值，则每个分组的均值会广播回该分组的所有行。这种广播机制使得 <code class="language-plaintext highlighter-rouge">transform()</code> 在进行特征工程（如用组均值填充缺失值、标准化数据）时非常有用。</p>
+</blockquote>
+
+<h3 id="transform-的使用场景"><code class="language-plaintext highlighter-rouge">transform()</code> 的使用场景</h3>
+
+<ul>
+  <li><strong>填充缺失值：</strong> 用组的均值/中位数填充缺失值：<code class="language-plaintext highlighter-rouge">df.groupby('category')['value'].transform(lambda x: x.fillna(x.mean()))</code>。</li>
+  <li><strong>特征标准化/归一化：</strong> 对每个组的数据进行标准化：<code class="language-plaintext highlighter-rouge">df.groupby('category')['value'].transform(lambda x: (x - x.mean()) / x.std())</code>。</li>
+  <li><strong>创建新特征：</strong> 例如，计算每个销售记录占其所在地区总销售额的比例：<code class="language-plaintext highlighter-rouge">df['sales_ratio'] = df.groupby('region')['sales'].transform(lambda x: x / x.sum())</code>。</li>
+  <li><strong>滑动窗口计算：</strong> 结合 <code class="language-plaintext highlighter-rouge">rolling()</code> 方法进行滑动窗口的均值、标准差等计算，并将结果广播回原始形状。</li>
+</ul>
+
+<hr />
+
+<p>【1】一列执行多个运算：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 对python列同时执行平方根和指数
+</span><span class="n">res1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">].</span><span class="nf">transform</span><span class="p">([</span><span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250723231840362.png" alt="image-20250723231840362" style="zoom:50%;" /></p>
+
+<p>【2】多列执行不同计算：</p>
+
+<p>自定义一个转换函数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+
+<span class="k">def</span> <span class="nf">costom_transform</span><span class="p">(</span><span class="n">col_series</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">col_series</span><span class="p">.</span><span class="nf">mean</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">col_series</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">col_series</span> <span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">df_trans</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">transform</span><span class="p">({</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">:</span> <span class="n">costom_transform</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">})</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_trans</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【3】结合groupby使用，非常常用：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">Group</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">Value</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">35</span><span class="p">]}</span>
+<span class="n">df_grouped</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="c1"># 假设有一些缺失值
+</span><span class="n">df_grouped</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="sh">"</span><span class="s">Value</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="n">df_grouped</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="sh">"</span><span class="s">Value</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_grouped</span><span class="p">)</span>
+<span class="c1"># 用组均值填充缺失值：
+</span><span class="n">df_new</span> <span class="o">=</span> <span class="n">df_grouped</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">Group</span><span class="sh">"</span><span class="p">)[</span><span class="sh">"</span><span class="s">Value</span><span class="sh">"</span><span class="p">].</span><span class="nf">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">mean</span><span class="p">()))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_new</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724002205826.png" alt="image-20250724002205826" style="zoom:50%;" /></p>
+
+<p>计算每组的Z-Score:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df_Z_Score</span> <span class="o">=</span> <span class="n">df_grouped</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">Group</span><span class="sh">"</span><span class="p">)[</span><span class="sh">"</span><span class="s">Value</span><span class="sh">"</span><span class="p">].</span><span class="nf">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="p">.</span><span class="nf">mean</span><span class="p">())</span><span class="o">/</span> <span class="n">x</span><span class="p">.</span><span class="nf">std</span><span class="p">())</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_Z_Score</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724002437668.png" alt="image-20250724002437668" style="zoom:50%;" /></p>
+
+<h3 id="选择题-3">选择题</h3>
+
+<ol>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">df.transform()</code> 方法返回的 DataFrame 的形状与原始 DataFrame 的形状：</p>
+
+    <p>A. 总是相同。 B. 总是不同。 C. 取决于应用的函数。 D. 取决于 <code class="language-plaintext highlighter-rouge">axis</code> 参数。</p>
+
+    <blockquote>
+      <p>答案：A</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪个场景最适合使用 <code class="language-plaintext highlighter-rouge">df.groupby('category')['value'].transform(lambda x: x.mean())</code>？</p>
+
+    <p>A. 计算每个类别的总和。</p>
+
+    <p>B. 将每个类别中的所有值替换为该类别的均值。</p>
+
+    <p>C. 计算整个 DataFrame 的均值。</p>
+
+    <p>D. 删除每个类别中的异常值。</p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-3">编程题</h3>
+
+<ol>
+  <li>
+    <p>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">sales_data</code>，包含 <code class="language-plaintext highlighter-rouge">'Region'</code>, <code class="language-plaintext highlighter-rouge">'Product'</code>, <code class="language-plaintext highlighter-rouge">'Price'</code> 三列，以及 8 行数据。</p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">Region</code> 包含 <code class="language-plaintext highlighter-rouge">'East'</code>, <code class="language-plaintext highlighter-rouge">'West'</code>。</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">Product</code> 包含 <code class="language-plaintext highlighter-rouge">'A'</code>, <code class="language-plaintext highlighter-rouge">'B'</code>, <code class="language-plaintext highlighter-rouge">'C'</code>。</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">Price</code> 填充随机整数。</p>
+      </li>
+      <li>
+        <blockquote>
+          <p>参考的data:</p>
+
+          <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">Region</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">choice</span><span class="p">([</span><span class="sh">'</span><span class="s">East</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">West</span><span class="sh">'</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
+    <span class="sh">'</span><span class="s">Product</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">choice</span><span class="p">([</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
+    <span class="sh">'</span><span class="s">Price</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div>          </div>
+
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>使用 <code class="language-plaintext highlighter-rouge">transform()</code> 方法计算每个区域的平均价格，并将该平均价格广播回原始 DataFrame 的 <code class="language-plaintext highlighter-rouge">'Avg_Region_Price'</code> 列。</p>
+  </li>
+  <li>
+    <p>使用 <code class="language-plaintext highlighter-rouge">transform()</code> 方法对 <code class="language-plaintext highlighter-rouge">'Price'</code> 列应用多个转换：计算其平方根和自然对数，并将结果作为新的 DataFrame 打印。</p>
+  </li>
+  <li>
+    <p>假设 <code class="language-plaintext highlighter-rouge">'Price'</code> 列有缺失值。使用 <code class="language-plaintext highlighter-rouge">transform()</code> 方法，用每个区域的 <code class="language-plaintext highlighter-rouge">'Price'</code> 中位数来填充该区域的缺失值。</p>
+  </li>
+  <li>
+    <p>打印每一步操作后的 DataFrame。</p>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">Region</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">choice</span><span class="p">([</span><span class="sh">'</span><span class="s">East</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">West</span><span class="sh">'</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
+    <span class="sh">'</span><span class="s">Product</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">choice</span><span class="p">([</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
+    <span class="sh">'</span><span class="s">Price</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">sales_data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">sales_data</span><span class="p">)</span>
+<span class="c1"># 使用 transform() 方法计算每个区域的平均价格，并将该平均价格广播回原始 DataFrame 的 'Avg_Region_Price' 列。
+</span><span class="n">sales_data</span><span class="p">[</span><span class="sh">"</span><span class="s">Avg_Region_Price</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales_data</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">Region</span><span class="sh">"</span><span class="p">)[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">mean</span><span class="p">())</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">sales_data</span><span class="p">)</span>
+<span class="c1"># 使用 transform() 方法对 'Price' 列应用多个转换：计算其平方根和自然对数，并将结果作为新的 DataFrame 打印。
+</span><span class="n">res</span> <span class="o">=</span> <span class="n">sales_data</span><span class="p">[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">transform</span><span class="p">([</span><span class="n">np</span><span class="p">.</span><span class="n">sqrt</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="c1"># 假设 'Price' 列有缺失值。使用 transform() 方法，用每个区域的 'Price' 中位数来填充该区域的缺失值。
+# 设置3个缺失值
+</span><span class="n">sales_data</span><span class="p">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="n">sales_data</span><span class="p">[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sales_data</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="sh">"</span><span class="s">Region</span><span class="sh">"</span><span class="p">)[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">median</span><span class="p">()))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">sales_data</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="15-重排随机抽样哑变量">1.5 重排随机抽样哑变量</h2>
+
+<p>本节涵盖了数据转换中几个重要的实用技巧：数据重排、随机抽样和哑变量（独热编码）的创建。</p>
+
+<ol>
+  <li><strong>数据重排 (<code class="language-plaintext highlighter-rouge">df.take(indices, axis=0)</code>)</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">df.take()</code> 方法根据提供的整数位置索引来选择行或列。它不是就地操作，而是返回一个副本。</li>
+      <li><code class="language-plaintext highlighter-rouge">indices</code>: 一个整数数组，包含要选择的行或列的索引。这些索引可以是重复的，也可以是乱序的。</li>
+      <li><code class="language-plaintext highlighter-rouge">axis</code>: 指定在哪个轴上进行选择（<code class="language-plaintext highlighter-rouge">0</code> 或 <code class="language-plaintext highlighter-rouge">'index'</code> 用于行，<code class="language-plaintext highlighter-rouge">1</code> 或 <code class="language-plaintext highlighter-rouge">'columns'</code> 用于列）。</li>
+      <li><strong><code class="language-plaintext highlighter-rouge">np.random.permutation(n)</code>：</strong> NumPy 函数，用于生成一个从 <code class="language-plaintext highlighter-rouge">0</code> 到 <code class="language-plaintext highlighter-rouge">n-1</code> 的随机排列数组。这在需要随机打乱 DataFrame 的行时非常有用。</li>
+    </ul>
+  </li>
+  <li><strong>随机抽样 (<code class="language-plaintext highlighter-rouge">df.sample(n=None, frac=None, replace=False, weights=None, random_state=None, axis=None)</code>)</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">df.sample()</code> 方法用于从 DataFrame 中随机抽取样本。</li>
+      <li><code class="language-plaintext highlighter-rouge">n</code>: 要抽取的样本数量。</li>
+      <li><code class="language-plaintext highlighter-rouge">frac</code>: 要抽取的样本比例（0 到 1 之间的浮点数）。<code class="language-plaintext highlighter-rouge">n</code> 和 <code class="language-plaintext highlighter-rouge">frac</code> 只能指定一个。</li>
+      <li><code class="language-plaintext highlighter-rouge">replace</code>: 布尔值，是否允许有放回抽样（即同一个样本可以被抽取多次）。默认为 <code class="language-plaintext highlighter-rouge">False</code>（无放回抽样）。</li>
+      <li><code class="language-plaintext highlighter-rouge">random_state</code>: 整数或 <code class="language-plaintext highlighter-rouge">np.random.RandomState</code> 对象，用于设置随机种子，确保结果可复现。</li>
+      <li><code class="language-plaintext highlighter-rouge">axis</code>: 指定在哪个轴上抽样（<code class="language-plaintext highlighter-rouge">0</code> 或 <code class="language-plaintext highlighter-rouge">'index'</code> 用于行，<code class="language-plaintext highlighter-rouge">1</code> 或 <code class="language-plaintext highlighter-rouge">'columns'</code> 用于列）。</li>
+    </ul>
+  </li>
+  <li><strong>哑变量 / 独热编码 (<code class="language-plaintext highlighter-rouge">pd.get_dummies(data, prefix=None, prefix_sep='_', dummy_na=False, columns=None, sparse=False, drop_first=False)</code>)</strong>
+    <ul>
+      <li><strong>定义：</strong> 哑变量（Dummy Variables）或独热编码（One-Hot Encoding）是一种将分类变量转换为数值格式的方法。对于一个有 k 个类别的分类变量，它会被转换为 k 个二进制（0 或 1）列。每个新列代表一个类别，如果原始数据属于该类别，则对应列为 1，否则为 0。</li>
+      <li><code class="language-plaintext highlighter-rouge">data</code>: 要进行独热编码的 Series 或 DataFrame。</li>
+      <li><code class="language-plaintext highlighter-rouge">prefix</code>: 字符串，为新创建的哑变量列添加前缀。</li>
+      <li><code class="language-plaintext highlighter-rouge">prefix_sep</code>: 字符串，前缀和原始列名之间的分隔符。</li>
+      <li><code class="language-plaintext highlighter-rouge">dummy_na</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code>，则为 <code class="language-plaintext highlighter-rouge">NaN</code> 值也创建一个哑变量列。</li>
+      <li><code class="language-plaintext highlighter-rouge">columns</code>: 列表，指定要进行独热编码的列名。如果为 <code class="language-plaintext highlighter-rouge">None</code>，则对所有 <code class="language-plaintext highlighter-rouge">object</code> 或 <code class="language-plaintext highlighter-rouge">category</code> 类型的列进行编码。</li>
+      <li><code class="language-plaintext highlighter-rouge">drop_first</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code>，则删除第一个哑变量列。这可以避免多重共线性问题（当一个分类变量的所有类别都可以通过其他类别线性组合表示时）。</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong><code class="language-plaintext highlighter-rouge">take()</code> 和 <code class="language-plaintext highlighter-rouge">permutation()</code>：</strong> <code class="language-plaintext highlighter-rouge">take()</code> 依赖于 NumPy 的底层索引机制，通过直接从内存中获取指定位置的数据来构建新的 DataFrame。<code class="language-plaintext highlighter-rouge">np.random.permutation()</code> 则是生成一个随机的整数序列，这个序列用于 <code class="language-plaintext highlighter-rouge">take()</code> 来实现数据的随机重排。</p>
+
+  <p><strong><code class="language-plaintext highlighter-rouge">sample()</code>：</strong> <code class="language-plaintext highlighter-rouge">sample()</code> 在底层会生成随机的整数索引，然后使用这些索引通过 <code class="language-plaintext highlighter-rouge">take()</code> 或类似的机制来抽取样本。<code class="language-plaintext highlighter-rouge">replace</code> 参数决定了抽样时是否将已抽取的样本放回池中，这会影响样本的独立性。</p>
+
+  <p><strong><code class="language-plaintext highlighter-rouge">get_dummies()</code>：</strong> 独热编码的原理是将一个分类特征的每个类别视为一个独立的二元特征。在底层，<code class="language-plaintext highlighter-rouge">pandas</code> 会遍历原始分类列的唯一值，为每个唯一值创建一个新列，然后遍历原始数据，根据每个元素的值在新列中标记 0 或 1。这个过程通常会增加 DataFrame 的列数。</p>
+</blockquote>
+
+<p>这些方法的使用场景</p>
+
+<ul>
+  <li><strong>数据重排：</strong>
+    <ul>
+      <li><strong>洗牌：</strong> 在机器学习中，在训练模型之前对数据集进行洗牌（Shuffle）是常见的操作，以消除数据中的顺序偏差。</li>
+      <li><strong>交叉验证：</strong> 创建随机的训练集和测试集。</li>
+    </ul>
+  </li>
+  <li><strong>随机抽样：</strong>
+    <ul>
+      <li><strong>创建训练集/测试集：</strong> 从大型数据集中抽取一部分作为训练集，一部分作为测试集。</li>
+      <li><strong>A/B 测试：</strong> 随机抽取用户进行实验。</li>
+      <li><strong>性能测试：</strong> 在大数据集上进行快速原型开发时，可以抽取小样本进行测试。</li>
+    </ul>
+  </li>
+  <li><strong>哑变量 / 独热编码：</strong>
+    <ul>
+      <li><strong>机器学习模型输入：</strong> 大多数机器学习模型（如线性回归、支持向量机、神经网络）不能直接处理文本分类变量，需要将其转换为数值格式。独热编码是常用的转换方法。</li>
+      <li><strong>避免序数关系：</strong> 当分类变量之间没有内在的顺序关系时（例如，颜色：红、绿、蓝），独热编码比简单的整数编码（例如，红=1，绿=2，蓝=3）更合适，因为它避免了模型错误地推断出类别之间的序数关系。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>【1】数据重排：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 数据重排
+</span><span class="n">ran_permutation</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">permutation</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">ran_permutation</span><span class="p">)</span>  <span class="c1"># 随机排列的索引
+# 根据随机排列的索引重排df
+</span><span class="n">df_ran</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">take</span><span class="p">(</span><span class="n">ran_permutation</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_ran</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724153357959.png" alt="image-20250724153357959" style="zoom:50%;" /></p>
+
+<p>一般生成随机排列索引传的参数和原df一致，否则数据重排索引就容易对不上：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">index_ran</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">permutation</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">take</span><span class="p">(</span><span class="n">index_ran</span><span class="p">)</span>  <span class="c1"># IndexError: indices are out-of-bounds
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【2】随机抽样</p>
+
+<p>随机抽取5行：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># random_state确保可复现，是随机种子
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724153808781.png" alt="image-20250724153808781" style="zoom:50%;" /></p>
+
+<p>随机抽取50%的数据：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724153906810.png" alt="image-20250724153906810" style="zoom:50%;" /></p>
+
+<p>有放回的抽样（replace=True）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># 随机抽取15个，且可以重复（有放回，replace=True）
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724154042608.png" alt="image-20250724154042608" style="zoom:50%;" /></p>
+
+<p>【3】哑变量/独热编码</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="n">data</span><span class="o">=</span><span class="p">{</span>
+    <span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">c</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">],</span>
+    <span class="sh">"</span><span class="s">city</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">LA</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">NY</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">NY</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">SF</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">LA</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">NY</span><span class="sh">"</span><span class="p">],</span>
+    <span class="sh">"</span><span class="s">value</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 对key,city进行独热编码
+# `prefix`: 字符串，为新创建的哑变量列添加前缀
+# `prefix_sep`: 字符串，前缀和原始列名之间的分隔符。
+</span><span class="n">get_dummies_df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">city</span><span class="sh">"</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">prefix_sep</span><span class="o">=</span><span class="sh">""</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">get_dummies_df</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724154535227.png" alt="image-20250724154535227" style="zoom:50%;" /></p>
+
+<p>【4】避免多重共线性：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># 删除第一个哑变量列。这可以避免多重共线性问题（当一个分类变量的所有类别都可以通过其他类别线性组合表示时）。
+</span><span class="n">get_dummies_df_first</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">key</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">city</span><span class="sh">"</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">get_dummies_df_first</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724154747046.png" alt="image-20250724154747046" style="zoom:50%;" /></p>
+
+<p>【5】为NaN值创建哑变量：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">df_na</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">"</span><span class="s">category</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">]})</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_na</span><span class="p">)</span>
+<span class="n">with_dum</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">get_dummies</span><span class="p">(</span><span class="n">df_na</span><span class="p">,</span> <span class="n">dummy_na</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">no_dum</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">get_dummies</span><span class="p">(</span><span class="n">df_na</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">with_dum</span><span class="p">,</span> <span class="n">no_dum</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724155017652.png" alt="image-20250724155017652" style="zoom:50%;" /></p>
+
+<h3 id="选择题-4">选择题</h3>
+
+<ol>
+  <li>
+    <p>要从一个 DataFrame <code class="language-plaintext highlighter-rouge">df</code> 中随机抽取 10% 的行，以下哪个方法是正确的？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df.sample(n=0.1)</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">df.sample(frac=0.1)</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">df.take(np.random.randint(0, len(df), size=int(len(df)*0.1)))</code></p>
+
+    <p>D. B 和 C 都是正确的。</p>
+
+    <blockquote>
+      <p>答案：D</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>独热编码（One-Hot Encoding）的主要目的是什么？</p>
+
+    <p>A. 减少数据集的维度。</p>
+
+    <p>B. 将数值型数据转换为分类数据。</p>
+
+    <p>C. 将分类变量转换为数值格式，以便机器学习模型处理。</p>
+
+    <p>D. 处理缺失值。</p>
+
+    <blockquote>
+      <p>C</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-4">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">customer_data</code>，包含 <code class="language-plaintext highlighter-rouge">'CustomerID'</code>, <code class="language-plaintext highlighter-rouge">'Gender'</code>, <code class="language-plaintext highlighter-rouge">'City'</code> 三列，以及 8 行数据。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Gender</code> 包含 <code class="language-plaintext highlighter-rouge">'Male'</code>, <code class="language-plaintext highlighter-rouge">'Female'</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">City</code> 包含 <code class="language-plaintext highlighter-rouge">'NY'</code>, <code class="language-plaintext highlighter-rouge">'LA'</code>, <code class="language-plaintext highlighter-rouge">'SF'</code>, <code class="language-plaintext highlighter-rouge">'NY'</code>, <code class="language-plaintext highlighter-rouge">'LA'</code>, <code class="language-plaintext highlighter-rouge">'SF'</code>, <code class="language-plaintext highlighter-rouge">'NY'</code>, <code class="language-plaintext highlighter-rouge">'LA'</code>。</li>
+    </ul>
+  </li>
+  <li>对 <code class="language-plaintext highlighter-rouge">customer_data</code> 进行随机重排。</li>
+  <li>从 <code class="language-plaintext highlighter-rouge">customer_data</code> 中随机抽取 3 行，要求有放回抽样。</li>
+  <li>对 <code class="language-plaintext highlighter-rouge">Gender</code> 和 <code class="language-plaintext highlighter-rouge">City</code> 列进行独热编码，并删除第一个哑变量列。</li>
+  <li>打印每一步操作后的 DataFrame。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">"</span><span class="s">CustomerID</span><span class="sh">"</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="sh">"</span><span class="s">Gender</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">Male</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Female</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Female</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Male</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Male</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Female</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Male</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Female</span><span class="sh">"</span><span class="p">],</span> 
+    <span class="sh">"</span><span class="s">City</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">NY</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">LA</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">SF</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">NY</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">LA</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">SF</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">NY</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">LA</span><span class="sh">"</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">customer_data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">customer_data</span><span class="p">)</span>
+<span class="c1"># 对 customer_data 进行随机重排。
+</span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">permutation</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">df_take</span> <span class="o">=</span> <span class="n">customer_data</span><span class="p">.</span><span class="nf">take</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_take</span><span class="p">)</span>
+<span class="c1"># 从 customer_data 中随机抽取 3 行，要求有放回抽样。
+</span><span class="n">customer_data_sample</span> <span class="o">=</span> <span class="n">customer_data</span><span class="p">.</span><span class="nf">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">customer_data_sample</span><span class="p">)</span>
+<span class="c1"># 对 Gender 和 City 列进行独热编码，并删除第一个哑变量列。
+</span><span class="n">dum</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">get_dummies</span><span class="p">(</span><span class="n">customer_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Gender</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">City</span><span class="sh">"</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">dum</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724160646794.png" alt="image-20250724160646794" style="zoom:50%;" /></p>
+
+<h1 id="2数据重塑">2.数据重塑</h1>
+
+<p>数据重塑（Reshaping）是指改变 DataFrame 的结构，通常是从“宽格式”转换为“长格式”，或从“长格式”转换为“宽格式”，以及处理多层索引。</p>
+
+<h2 id="21转置-t">2.1转置 (T)</h2>
+
+<p>转置是数据重塑中最简单的操作之一，它将 DataFrame 的行和列互换。</p>
+
+<ul>
+  <li><strong>基本语法：</strong> <code class="language-plaintext highlighter-rouge">df.T</code>
+    <ul>
+      <li>返回一个 DataFrame，其行是原始 DataFrame 的列，其列是原始 DataFrame 的行。</li>
+      <li>原始 DataFrame 的列索引将成为新 DataFrame 的行索引。</li>
+      <li>原始 DataFrame 的行索引将成为新 DataFrame 的列索引。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">df.T</code> 操作与 NumPy 数组的转置类似，通常<strong>不复制数据</strong>，而是返回原始 DataFrame 的一个<strong>视图</strong>。它通过改变 DataFrame 内部的元数据（如 <code class="language-plaintext highlighter-rouge">shape</code> 和 <code class="language-plaintext highlighter-rouge">strides</code>）来实现，使得数据在逻辑上被“旋转”了。这意味着对转置后的 DataFrame 进行修改会影响到原始 DataFrame。</p>
+</blockquote>
+
+<h3 id="拓展转置的使用场景">拓展：转置的使用场景</h3>
+
+<ul>
+  <li><strong>数据可视化：</strong> 有时，为了更好地绘制图表（例如，将时间序列作为 X 轴，不同指标作为 Y 轴），需要将数据进行转置。</li>
+  <li><strong>模型输入：</strong> 某些机器学习模型可能要求输入数据的特征在行或列中，转置可以帮助调整数据格式。</li>
+  <li><strong>方便的数据检查：</strong> 当 DataFrame 有很多列但只有几行时，转置可以使其更易于在控制台查看。</li>
+</ul>
+
+<h3 id="选择题-5">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">df = pd.DataFrame({'A': [1, 2], 'B': [3, 4]})</code>，执行 <code class="language-plaintext highlighter-rouge">df.T</code> 后，<code class="language-plaintext highlighter-rouge">df.T.iloc[0, 1]</code> 的值是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">1</code> B. <code class="language-plaintext highlighter-rouge">2</code> C. <code class="language-plaintext highlighter-rouge">3</code> D. <code class="language-plaintext highlighter-rouge">4</code></p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h2 id="22-堆叠非堆叠-stack--unstack">2.2 堆叠/非堆叠 (stack / unstack)</h2>
+
+<p><code class="language-plaintext highlighter-rouge">stack()</code> 和 <code class="language-plaintext highlighter-rouge">unstack()</code> 是 <code class="language-plaintext highlighter-rouge">pandas</code> 中处理多层索引（MultiIndex）和在“长格式”与“宽格式”之间转换数据的强大工具。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">Series.unstack(level=-1, fill_value=None)</code>：</strong>
+    <ul>
+      <li>将 Series 的<strong>最内层行索引</strong>（或指定 <code class="language-plaintext highlighter-rouge">level</code> 的索引）旋转（pivot）为新的列。</li>
+      <li>如果 Series 是多层索引，<code class="language-plaintext highlighter-rouge">unstack()</code> 会将指定 <code class="language-plaintext highlighter-rouge">level</code> 的索引从行索引转换为列索引。</li>
+      <li><code class="language-plaintext highlighter-rouge">level</code>: 整数或级别名称，指定要旋转的索引级别。默认是 <code class="language-plaintext highlighter-rouge">-1</code>（最内层）。</li>
+      <li><code class="language-plaintext highlighter-rouge">fill_value</code>: 当旋转后出现 <code class="language-plaintext highlighter-rouge">NaN</code> 值时，用于填充的值。</li>
+      <li>结果通常是 DataFrame。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">DataFrame.unstack(level=-1, fill_value=None)</code>：</strong>
+    <ul>
+      <li>将 DataFrame 的<strong>最内层行索引</strong>（或指定 <code class="language-plaintext highlighter-rouge">level</code> 的索引）旋转为新的列。</li>
+      <li>如果 DataFrame 的行索引是多层索引，<code class="language-plaintext highlighter-rouge">unstack()</code> 会将指定 <code class="language-plaintext highlighter-rouge">level</code> 的索引从行索引转换为列索引。</li>
+      <li>如果 DataFrame 的列索引是多层索引，<code class="language-plaintext highlighter-rouge">unstack()</code> 也可以通过指定 <code class="language-plaintext highlighter-rouge">level</code> 将列索引转换为行索引。</li>
+      <li>结果通常是 DataFrame。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">DataFrame.stack(level=-1, dropna=True)</code>：</strong>
+    <ul>
+      <li>将 DataFrame 的<strong>最内层列索引</strong>（或指定 <code class="language-plaintext highlighter-rouge">level</code> 的索引）旋转（pivot）为新的行（最内层行索引）。</li>
+      <li><code class="language-plaintext highlighter-rouge">level</code>: 整数或级别名称，指定要堆叠的列索引级别。默认是 <code class="language-plaintext highlighter-rouge">-1</code>（最内层）。</li>
+      <li><code class="language-plaintext highlighter-rouge">dropna</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code> (默认)，则删除所有 <code class="language-plaintext highlighter-rouge">NaN</code> 值。</li>
+      <li>结果通常是 Series（如果只有一列），或带有 MultiIndex 的 Series。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">stack()</code> 和 <code class="language-plaintext highlighter-rouge">unstack()</code> 的核心是<strong>索引的层次化操作</strong>。它们通过重新排列数据的索引级别来实现形状的转换。</p>
+
+  <ul>
+    <li><strong><code class="language-plaintext highlighter-rouge">unstack()</code>：</strong> 将一个索引级别从行索引移动到列索引。这通常会导致 DataFrame 变得“更宽”（更多列）。如果原始数据中没有对应的组合，就会出现 <code class="language-plaintext highlighter-rouge">NaN</code>。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">stack()</code>：</strong> 将一个列索引级别移动到行索引。这通常会导致 DataFrame 变得“更长”（更多行）。它将宽格式的数据转换为长格式，这在某些数据分析和可视化库（如 <code class="language-plaintext highlighter-rouge">seaborn</code>）中更受欢迎。</li>
+  </ul>
+
+  <p>这些操作通常会返回新的 DataFrame 或 Series，因为它们会改变数据的结构和内存布局。</p>
+</blockquote>
+
+<h3 id="多层索引-multiindex">多层索引 (<code class="language-plaintext highlighter-rouge">MultiIndex</code>)</h3>
+
+<p>在 <code class="language-plaintext highlighter-rouge">pandas</code> 中，多层索引允许您在 DataFrame 或 Series 的一个或两个轴上拥有多个索引级别。这在处理具有层次结构的数据时非常有用，例如时间序列数据（年-月-日）、实验数据（实验组-处理-重复）等。</p>
+
+<ul>
+  <li><strong>创建 MultiIndex：</strong> <code class="language-plaintext highlighter-rouge">pd.MultiIndex.from_product([list1, list2, ...])</code> 是创建 MultiIndex 的常用方法，它会生成所有可能的组合。</li>
+  <li><strong>多层索引的访问：</strong> 可以使用元组来访问多层索引的特定级别。例如，<code class="language-plaintext highlighter-rouge">df.loc[('A', '期中')]</code>。</li>
+</ul>
+
+<hr />
+
+<p>【1】最内层行索引变成列：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">.</span><span class="nf">from_product</span><span class="p">([</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">),</span> <span class="p">[</span><span class="sh">"</span><span class="s">期中</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">期末</span><span class="sh">"</span><span class="p">]])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">df_unstack</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_unstack</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724162403516.png" alt="image-20250724162403516" style="zoom:50%;" /></p>
+
+<p>【2】最内层列索引旋转成行：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">stack</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724162456497.png" alt="image-20250724162456497" style="zoom:50%;" /></p>
+
+<p>【3】<code class="language-plaintext highlighter-rouge">stack().unstack()</code>可以恢复原始形状：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">stack</span><span class="p">().</span><span class="nf">unstack</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724162557287.png" alt="image-20250724162557287" style="zoom:50%;" /></p>
+
+<p>【4】指定level进行stack/unstack</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">columns</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">.</span><span class="nf">from_product</span><span class="p">([[</span><span class="sh">"</span><span class="s">X</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Y</span><span class="sh">"</span><span class="p">],</span> <span class="p">[</span><span class="sh">"</span><span class="s">P</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Q</span><span class="sh">"</span><span class="p">]])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># X, Y堆叠到行
+</span><span class="n">df</span><span class="p">.</span><span class="nf">stack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724162851647.png" alt="image-20250724162851647" style="zoom:50%;" /></p>
+
+<h3 id="选择题-6">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定一个 DataFrame <code class="language-plaintext highlighter-rouge">df_multi</code>，其行索引是 <code class="language-plaintext highlighter-rouge">pd.MultiIndex.from_product([['A', 'B'], [1, 2]])</code>，列是 <code class="language-plaintext highlighter-rouge">'Value'</code>。执行 <code class="language-plaintext highlighter-rouge">df_multi.unstack(level=0)</code> 的结果是什么？</p>
+
+    <p>A. 将行索引 <code class="language-plaintext highlighter-rouge">1, 2</code> 旋转为列。</p>
+
+    <p>B. 将行索引 <code class="language-plaintext highlighter-rouge">A, B</code> 旋转为列。</p>
+
+    <p>C. 将列 <code class="language-plaintext highlighter-rouge">'Value'</code> 旋转为行。</p>
+
+    <p>D. 报错。</p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">df.stack()</code> 方法默认将哪个索引级别旋转为行？</p>
+
+    <p>A. 最外层行索引。 B. 最内层行索引。 C. 最外层列索引。 D. 最内层列索引。</p>
+
+    <blockquote>
+      <p>答案：D</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-5">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">sales_data_multi</code>，行索引包含两层：<code class="language-plaintext highlighter-rouge">'Region'</code> (例如 <code class="language-plaintext highlighter-rouge">'North'</code>, <code class="language-plaintext highlighter-rouge">'South'</code>) 和 <code class="language-plaintext highlighter-rouge">'Month'</code> (例如 <code class="language-plaintext highlighter-rouge">'Jan'</code>, <code class="language-plaintext highlighter-rouge">'Feb'</code>)，列为 <code class="language-plaintext highlighter-rouge">'Product_A'</code>, <code class="language-plaintext highlighter-rouge">'Product_B'</code>，并填充随机销售额。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">unstack()</code> 方法将 <code class="language-plaintext highlighter-rouge">'Month'</code> 索引从行旋转到列。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">stack()</code> 方法将 <code class="language-plaintext highlighter-rouge">'Product_A'</code> 和 <code class="language-plaintext highlighter-rouge">'Product_B'</code> 列旋转回行索引。</li>
+  <li>打印每一步操作后的 DataFrame 及其形状。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Product_A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Product_B</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">region</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">North</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">South</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">month</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Jan</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Feb</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">.</span><span class="nf">from_product</span><span class="p">([</span><span class="n">region</span><span class="p">,</span> <span class="n">month</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Region</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Month</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1001</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 使用 unstack() 方法将 'Month' 索引从行旋转到列。
+</span><span class="n">unstack</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">unstack</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">unstack</span><span class="p">)</span>
+<span class="c1"># 使用 stack() 方法将 'Product_A' 和 'Product_B' 列旋转回行索引。
+</span><span class="n">sta</span> <span class="o">=</span> <span class="n">unstack</span><span class="p">.</span><span class="nf">stack</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">sta</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724163635979.png" alt="image-20250724163635979" style="zoom:50%;" /></p>
+
+<h2 id="23-多层索引-dataframe-数学计算">2.3 多层索引 DataFrame 数学计算</h2>
+
+<p>当 DataFrame 具有多层索引时，<code class="language-plaintext highlighter-rouge">pandas</code> 的数学和统计函数可以利用这些层次结构进行更细粒度的计算。您可以使用 <code class="language-plaintext highlighter-rouge">level</code> 参数来指定在哪个索引级别上执行聚合操作。</p>
+
+<ul>
+  <li><strong>基本语法：</strong> <code class="language-plaintext highlighter-rouge">df.agg_func(level=None, axis=0)</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">agg_func</code>: 任何聚合函数，如 <code class="language-plaintext highlighter-rouge">mean()</code>, <code class="language-plaintext highlighter-rouge">sum()</code>, <code class="language-plaintext highlighter-rouge">max()</code>, <code class="language-plaintext highlighter-rouge">min()</code>, <code class="language-plaintext highlighter-rouge">std()</code>, <code class="language-plaintext highlighter-rouge">count()</code> 等。</li>
+      <li><code class="language-plaintext highlighter-rouge">level</code>: 整数或级别名称，指定要进行聚合的索引级别。
+        <ul>
+          <li>如果 <code class="language-plaintext highlighter-rouge">level</code> 未指定，则聚合将应用于整个 DataFrame（如果 <code class="language-plaintext highlighter-rouge">axis=None</code>）或沿着非聚合轴的每个完整标签组合。</li>
+          <li>如果指定了 <code class="language-plaintext highlighter-rouge">level</code>，则聚合将在该级别上进行，并返回一个包含该级别标签作为索引的 Series 或 DataFrame。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>当对多层索引 DataFrame 进行聚合并指定 <code class="language-plaintext highlighter-rouge">level</code> 参数时，<code class="language-plaintext highlighter-rouge">pandas</code> 会执行以下操作：</p>
+
+  <ol>
+    <li><strong>分组：</strong> 在内部，<code class="language-plaintext highlighter-rouge">pandas</code> 会根据指定 <code class="language-plaintext highlighter-rouge">level</code> 的所有唯一标签组合对数据进行分组。</li>
+    <li><strong>聚合：</strong> 对每个分组的数据执行聚合函数。</li>
+    <li><strong>结果构建：</strong> 返回一个新的 Series 或 DataFrame，其索引是聚合所依据的 <code class="language-plaintext highlighter-rouge">level</code> 标签。</li>
+  </ol>
+
+  <p>这类似于 <code class="language-plaintext highlighter-rouge">groupby()</code> 操作，但通常更简洁，尤其是在只需要对一个或几个级别进行聚合时。</p>
+</blockquote>
+
+<h3 id="多层索引计算的使用场景">多层索引计算的使用场景</h3>
+
+<ul>
+  <li><strong>分层统计：</strong> 计算不同层次的平均值、总和等。例如，计算每个学生在所有科目上的平均分，或每个科目在所有学生中的平均分。</li>
+  <li><strong>数据透视：</strong> 结合 <code class="language-plaintext highlighter-rouge">unstack()</code> 和聚合函数，可以实现复杂的数据透视表。</li>
+  <li><strong>时间序列分析：</strong> 对按年、月、日分层的时间序列数据进行聚合。</li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">.</span><span class="nf">from_product</span><span class="p">([</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">),</span> <span class="p">[</span><span class="sh">"</span><span class="s">期中</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">期末</span><span class="sh">"</span><span class="p">]])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 计算各个学科的均分
+</span><span class="n">res</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">mean</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="c1"># 每个人期中期末均分
+</span><span class="n">res1</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724164132782.png" alt="image-20250724164132782" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724164213185.png" alt="image-20250724164213185" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/23/pandas%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97/" data-toggle="tooltip" data-placement="top" title="pandas-数据清洗">
+                        Previous<br>
+                        <span>pandas-数据清洗</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0122" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0101" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0107" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0108" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0112" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0113" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0115" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="8">pandas</a>
+        
+                <a data-sort="0122" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0123" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0123" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0123" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
