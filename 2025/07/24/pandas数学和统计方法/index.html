@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="pandas-数学和统计方法 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-24T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="pandas">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/24/pandas%E6%95%B0%E5%AD%A6%E5%92%8C%E7%BB%9F%E8%AE%A1%E6%96%B9%E6%B3%95/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>pandas-数学和统计方法 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/24/pandas%E6%95%B0%E5%AD%A6%E5%92%8C%E7%BB%9F%E8%AE%A1%E6%96%B9%E6%B3%95/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=pandas" title="pandas">pandas</a>
+                        
+                    </div>
+                    <h1>pandas-数学和统计方法</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 24, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p><code class="language-plaintext highlighter-rouge">pandas</code> 库不仅提供了强大的数据结构，还内置了丰富的数学和统计方法，以及灵活的数据处理和分析工具。这些功能使得数据汇总、探索、清洗和特征工程变得高效且直观。</p>
+
+<p><code class="language-plaintext highlighter-rouge">pandas</code> 对象（Series 和 DataFrame）拥有一组常用的数学和统计方法，它们属于汇总统计（summary statistics）。这些方法可以对 Series 进行汇总计算（如求均值、最大值），或者对 DataFrame 的行或列进行汇总计算，并返回一个 Series 或 DataFrame。</p>
+
+<h1 id="1简单统计指标">1.简单统计指标</h1>
+
+<p>这些方法用于计算数据集中最基本的统计量，帮助我们快速了解数据的中心趋势、离散程度和范围。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.count(axis=0, level=None, numeric_only=False)</code></strong>:
+    <ul>
+      <li>计算非 <code class="language-plaintext highlighter-rouge">NA</code>（非缺失）值的数量。</li>
+      <li><code class="language-plaintext highlighter-rouge">axis</code>: 默认为 <code class="language-plaintext highlighter-rouge">0</code>（按列计算），也可以设置为 <code class="language-plaintext highlighter-rouge">1</code>（按行计算）。</li>
+      <li><code class="language-plaintext highlighter-rouge">numeric_only</code>: 仅计算数值列。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.max(axis=0, skipna=True, level=None)</code></strong>:
+    <ul>
+      <li>计算最大值。</li>
+      <li><code class="language-plaintext highlighter-rouge">skipna</code>: 默认为 <code class="language-plaintext highlighter-rouge">True</code>，表示在计算时跳过 <code class="language-plaintext highlighter-rouge">NA</code> 值。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.min(axis=0, skipna=True, level=None)</code></strong>:
+    <ul>
+      <li>计算最小值。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.median(axis=0, skipna=True, level=None)</code></strong>:
+    <ul>
+      <li>计算中位数（数据的中间值）。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.sum(axis=0, skipna=True, level=None)</code></strong>:
+    <ul>
+      <li>计算总和。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.mean(axis=0, skipna=True, level=None)</code></strong>:
+    <ul>
+      <li>计算算术平均值。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.quantile(q=0.5, axis=0, numeric_only=True)</code></strong>:
+    <ul>
+      <li>计算分位数。<code class="language-plaintext highlighter-rouge">q</code> 可以是单个浮点数（0到1之间）或浮点数列表。例如，<code class="language-plaintext highlighter-rouge">q=0.5</code> 是中位数，<code class="language-plaintext highlighter-rouge">q=[0.25, 0.75]</code> 是四分位数。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.describe(percentiles=None, include=None, exclude=None)</code></strong>:
+    <ul>
+      <li>生成数值型列的汇总统计信息，包括非 <code class="language-plaintext highlighter-rouge">NA</code> 计数、平均值、标准差、最小值、四分位数（25%、50%、75%）和最大值。</li>
+      <li>对于非数值型（如对象或分类）列，它会显示计数、唯一值数量和出现频率最高的项。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">pandas</code> 的这些统计方法在底层依赖于 <code class="language-plaintext highlighter-rouge">NumPy</code> 的高度优化实现。它们通过矢量化操作，直接在 C 语言层面执行计算，从而避免了 Python 循环的开销，确保了在大数据集上的高性能。</p>
+
+  <ul>
+    <li><strong><code class="language-plaintext highlighter-rouge">axis</code> 参数：</strong> 决定了计算是沿着行进行（<code class="language-plaintext highlighter-rouge">axis=1</code>，对每行求统计量）还是沿着列进行（<code class="language-plaintext highlighter-rouge">axis=0</code>，对每列求统计量）。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">skipna</code> 参数：</strong> 这些函数默认会跳过 <code class="language-plaintext highlighter-rouge">NaN</code> 值。这意味着在计算均值、总和等时，<code class="language-plaintext highlighter-rouge">NaN</code> 值不会被包含在计算中，也不会导致结果为 <code class="language-plaintext highlighter-rouge">NaN</code>（除非所有值都是 <code class="language-plaintext highlighter-rouge">NaN</code>）。</li>
+    <li><strong><code class="language-plaintext highlighter-rouge">describe()</code> 的原理：</strong> <code class="language-plaintext highlighter-rouge">describe()</code> 方法会根据列的数据类型，自动选择合适的统计量进行计算。对于数值列，它会调用 <code class="language-plaintext highlighter-rouge">count()</code>, <code class="language-plaintext highlighter-rouge">mean()</code>, <code class="language-plaintext highlighter-rouge">std()</code>, <code class="language-plaintext highlighter-rouge">min()</code>, <code class="language-plaintext highlighter-rouge">quantile()</code>, <code class="language-plaintext highlighter-rouge">max()</code> 等内部方法。</li>
+  </ul>
+</blockquote>
+
+<h3 id="level-参数与多层索引"><code class="language-plaintext highlighter-rouge">level</code> 参数与多层索引</h3>
+
+<p>当 DataFrame 具有多层索引（MultiIndex）时，这些统计方法还可以使用 <code class="language-plaintext highlighter-rouge">level</code> 参数，对指定索引级别的数据进行分组聚合。例如，<code class="language-plaintext highlighter-rouge">df.mean(level='Student_ID')</code> 可以计算每个学生的平均分，即使数据是按学生和科目分层的。</p>
+
+<hr />
+
+<p>【1】非NaN的数量:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">count</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724172352966.png" alt="image-20250724172352966" style="zoom:50%;" /></p>
+
+<p>【2】轴0 的最大值：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724172442555.png" alt="image-20250724172442555" style="zoom:50%;" /></p>
+
+<p>不加axis=0也可以，因为是默认的：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">max</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724172611066.png" alt="image-20250724172611066" style="zoom:50%;" /></p>
+
+<p>【3】中位数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">median</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724172646120.png" alt="image-20250724172646120" style="zoom:50%;" /></p>
+
+<p>【4】求和：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【5】每行的均值：（轴1的均值）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724172835722.png" alt="image-20250724172835722" style="zoom:50%;" /></p>
+
+<p>【6】分位数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">quantile</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724172952335.png" alt="image-20250724172952335" style="zoom:50%;" /></p>
+
+<p>【7】查看数值型列的汇总统计：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">describe</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724173029526.png" alt="image-20250724173029526" style="zoom:50%;" /></p>
+
+<p>【8】有MultiIndex时使用level参数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">.</span><span class="nf">from_product</span><span class="p">([[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">C</span><span class="sh">"</span><span class="p">],</span> <span class="p">[</span><span class="sh">"</span><span class="s">Q1</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Q2</span><span class="sh">"</span><span class="p">]])</span>
+<span class="n">df_multi</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Sales</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Profit</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df_multi</span><span class="p">)</span>
+<span class="n">df_multi</span><span class="p">[</span><span class="sh">"</span><span class="s">Sales</span><span class="sh">"</span><span class="p">].</span><span class="nf">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=-</span><span class="mi">1</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>  
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724175100364.png" alt="image-20250724175100364" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df_multi</span><span class="p">[</span><span class="sh">"</span><span class="s">Sales</span><span class="sh">"</span><span class="p">].</span><span class="nf">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>   
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724175135735.png" alt="image-20250724175135735" style="zoom:50%;" /></p>
+
+<h3 id="选择题">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">s = pd.Series([1, 2, np.nan, 4])</code>，执行 <code class="language-plaintext highlighter-rouge">s.count()</code> 的结果是什么？</p>
+
+    <p>A. 4</p>
+
+    <p>B. 3</p>
+
+    <p>C. 2</p>
+
+    <p>D. 1</p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪个方法会返回 DataFrame 中所有数值型列的均值、标准差、最小值、四分位数和最大值？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df.mean()</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">df.describe()</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">df.info()</code></p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">df.sum()</code></p>
+
+    <blockquote>
+      <p>答案：B，<code class="language-plaintext highlighter-rouge">df.info()</code>: 返回 DataFrame 的结构信息（如列名、数据类型、非空计数），不包含统计信息。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h1 id="2索引标签位置获取">2.索引标签、位置获取</h1>
+
+<p>除了获取统计值本身，我们还经常需要找出这些统计值在数组中的位置（索引或标签）。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">Series.argmin(axis=None, skipna=True)</code></strong>:
+    <ul>
+      <li>计算 Series 中最小值的<strong>整数位置</strong>（索引）。</li>
+      <li>如果 Series 中有多个最小值，返回第一个出现的最小值的位置。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">Series.argmax(axis=None, skipna=True)</code></strong>:
+    <ul>
+      <li>计算 Series 中最大值的<strong>整数位置</strong>（索引）。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.idxmax(axis=0, skipna=True)</code></strong>:
+    <ul>
+      <li>计算 DataFrame 中每个列（或行）的最大值对应的<strong>索引标签</strong>。</li>
+      <li>返回一个 Series，其索引是原始 DataFrame 的列名（或行索引），值是最大值所在的索引标签。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.idxmin(axis=0, skipna=True)</code></strong>:
+    <ul>
+      <li>计算 DataFrame 中每个列（或行）的最小值对应的<strong>索引标签</strong>。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>这些方法在底层会遍历 Series 或 DataFrame 的指定轴，比较元素值，并记录最大/最小值及其位置。</p>
+
+  <ul>
+    <li><code class="language-plaintext highlighter-rouge">argmin()</code> / <code class="language-plaintext highlighter-rouge">argmax()</code> 返回的是基于 0 的整数位置，这与 NumPy 的 <code class="language-plaintext highlighter-rouge">argmin()</code> / <code class="language-plaintext highlighter-rouge">argmax()</code> 行为一致。</li>
+    <li><code class="language-plaintext highlighter-rouge">idxmax()</code> / <code class="language-plaintext highlighter-rouge">idxmin()</code> 则更进一步，它们返回的是 <code class="language-plaintext highlighter-rouge">pandas</code> 索引对象中对应的标签。这在 DataFrame 具有非整数索引时特别有用，因为它直接提供了有意义的标签，而不是仅仅一个数字位置。</li>
+  </ul>
+</blockquote>
+
+<p>应用场景：</p>
+
+<ul>
+  <li><strong>找出最佳/最差表现：</strong> 在销售数据中找出销售额最高的月份，或利润最低的产品。</li>
+  <li><strong>时间序列分析：</strong> 找出历史数据中最高或最低点发生的时间戳。</li>
+  <li><strong>数据清洗：</strong> 结合这些方法找出异常值所在的具体位置。</li>
+</ul>
+
+<hr />
+
+<p>【1】某一列最小值的整数位置：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">].</span><span class="nf">argmin</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724184631849.png" alt="image-20250724184631849" style="zoom:50%;" /></p>
+
+<p>【2】每列最大值的索引标签：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">idxmax</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724184840529.png" alt="image-20250724184840529" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724184826182.png" alt="image-20250724184826182" style="zoom:50%;" /></p>
+
+<p>【3】行方向上查找最大值/最小值的标签</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724184931472.png" alt="image-20250724184931472" style="zoom:50%;" /></p>
+
+<h3 id="选择题-1">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">s = pd.Series([10, 5, 20], index=['a', 'b', 'c'])</code>，执行 <code class="language-plaintext highlighter-rouge">s.argmax()</code> 的结果是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">'c'</code> B. <code class="language-plaintext highlighter-rouge">2</code> C. <code class="language-plaintext highlighter-rouge">20</code> D. 报错</p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪个方法会返回 DataFrame 中每列最大值对应的<strong>索引标签</strong>？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df.max()</code> B. <code class="language-plaintext highlighter-rouge">df.argmax()</code> C. <code class="language-plaintext highlighter-rouge">df.idxmax()</code> D. <code class="language-plaintext highlighter-rouge">df.loc[df.max()]</code></p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">product_ratings</code>，包含 <code class="language-plaintext highlighter-rouge">'Product_ID'</code> 作为行索引，以及 <code class="language-plaintext highlighter-rouge">'Design_Score'</code>, <code class="language-plaintext highlighter-rouge">'Performance_Score'</code> 两列，填充随机整数评分（1到10）。</li>
+  <li>找出 <code class="language-plaintext highlighter-rouge">'Design_Score'</code> 列中最高评分对应的产品 ID。</li>
+  <li>找出 <code class="language-plaintext highlighter-rouge">'Performance_Score'</code> 列中最低评分对应的产品 ID。</li>
+  <li>找出每个产品（行）的最高评分是在哪个指标（列）上。</li>
+  <li>打印每一步操作后的结果。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="n">pro_id</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">des_s</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">))</span>
+<span class="n">per_s</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">))</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">Product_ID</span><span class="sh">"</span><span class="p">:</span> <span class="n">pro_id</span><span class="p">,</span> <span class="sh">"</span><span class="s">Design_Score</span><span class="sh">"</span><span class="p">:</span> <span class="n">des_s</span><span class="p">,</span> <span class="sh">"</span><span class="s">Performance_Score</span><span class="sh">"</span><span class="p">:</span> <span class="n">per_s</span><span class="p">}</span>
+<span class="n">product_ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">product_ratings</span><span class="p">)</span>
+<span class="c1"># 找出 'Design_Score' 列中最高评分对应的产品 ID
+</span><span class="n">des_max</span> <span class="o">=</span> <span class="n">product_ratings</span><span class="p">.</span><span class="n">Product_ID</span><span class="p">[</span><span class="n">product_ratings</span><span class="p">[</span><span class="sh">"</span><span class="s">Design_Score</span><span class="sh">"</span><span class="p">].</span><span class="nf">argmax</span><span class="p">()]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">des_max</span><span class="p">)</span>
+<span class="c1"># 找出 'Performance_Score' 列中最低评分对应的产品 ID
+</span><span class="n">per_min</span> <span class="o">=</span> <span class="n">product_ratings</span><span class="p">.</span><span class="n">Product_ID</span><span class="p">[</span><span class="n">product_ratings</span><span class="p">[</span><span class="sh">"</span><span class="s">Performance_Score</span><span class="sh">"</span><span class="p">].</span><span class="nf">argmin</span><span class="p">()]</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">per_min</span><span class="p">)</span>
+<span class="c1"># 找出每个产品（行）的最高评分是在哪个指标（列）上。
+</span><span class="n">max_</span> <span class="o">=</span> <span class="n">product_ratings</span><span class="p">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="sh">"</span><span class="s">Design_Score</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Performance_Score</span><span class="sh">"</span><span class="p">]].</span><span class="nf">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">max_</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724185726123.png" alt="image-20250724185726123" style="zoom:50%;" /></p>
+
+<h1 id="3更多统计指标">3.更多统计指标</h1>
+
+<p>除了简单的聚合统计，<code class="language-plaintext highlighter-rouge">pandas</code> 还提供了一些用于数据分布、变化和唯一性分析的统计方法。</p>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">Series.value_counts(normalize=False, sort=True, ascending=False, bins=None, dropna=True)</code></strong>:
+    <ul>
+      <li>统计 Series 中每个唯一值出现的次数。</li>
+      <li><code class="language-plaintext highlighter-rouge">normalize</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code>，则返回相对频率（百分比）。</li>
+      <li><code class="language-plaintext highlighter-rouge">sort</code>: 布尔值，是否按频率降序排序。</li>
+      <li><code class="language-plaintext highlighter-rouge">dropna</code>: 布尔值，是否包含 <code class="language-plaintext highlighter-rouge">NaN</code> 值的计数。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">Series.unique()</code></strong>:
+    <ul>
+      <li>返回 Series 中所有唯一值的 NumPy 数组（顺序与第一次出现时的顺序一致）。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.cumsum(axis=0, skipna=True)</code></strong>:
+    <ul>
+      <li>计算累积和。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.cumprod(axis=0, skipna=True)</code></strong>:
+    <ul>
+      <li>计算累积乘积。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.std(axis=0, skipna=True, ddof=1)</code></strong>:
+    <ul>
+      <li>计算标准差。<code class="language-plaintext highlighter-rouge">ddof</code> 是自由度，默认为 <code class="language-plaintext highlighter-rouge">1</code>（样本标准差）。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.var(axis=0, skipna=True, ddof=1)</code></strong>:
+    <ul>
+      <li>计算方差。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.cummin(axis=0, skipna=True)</code></strong>:
+    <ul>
+      <li>计算累积最小值。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.cummax(axis=0, skipna=True)</code></strong>:
+    <ul>
+      <li>计算累积最大值。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.diff(periods=1, axis=0)</code></strong>:
+    <ul>
+      <li>计算当前元素与前一个（或后一个）元素之间的差分。常用于时间序列分析。</li>
+      <li><code class="language-plaintext highlighter-rouge">periods</code>: 整数，指定要计算的滞后（lag）期数。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.pct_change(periods=1, axis=0)</code></strong>:
+    <ul>
+      <li>计算当前元素与前一个（或后一个）元素之间的百分比变化。常用于金融数据分析</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong><code class="language-plaintext highlighter-rouge">value_counts()</code> 和 <code class="language-plaintext highlighter-rouge">unique()</code>：</strong> 这些方法在底层使用哈希表来高效地识别和计数唯一元素。<code class="language-plaintext highlighter-rouge">value_counts()</code> 会构建一个频率分布表。</p>
+
+  <p><strong>累积函数 (<code class="language-plaintext highlighter-rouge">cumsum</code>, <code class="language-plaintext highlighter-rouge">cumprod</code>, <code class="language-plaintext highlighter-rouge">cummin</code>, <code class="language-plaintext highlighter-rouge">cummax</code>)：</strong> 这些函数通过迭代 Series 或 DataFrame 的元素，并维护一个累积状态来实现。它们在底层是高度优化的，避免了显式循环。</p>
+
+  <p><strong><code class="language-plaintext highlighter-rouge">std()</code> 和 <code class="language-plaintext highlighter-rouge">var()</code>：</strong> 这些是标准统计公式的实现，涉及到均值、平方差等计算。<code class="language-plaintext highlighter-rouge">ddof</code> 参数允许用户选择样本方差/标准差（<code class="language-plaintext highlighter-rouge">ddof=1</code>）或总体方差/标准差（<code class="language-plaintext highlighter-rouge">ddof=0</code>）。</p>
+
+  <p><strong><code class="language-plaintext highlighter-rouge">diff()</code> 和 <code class="language-plaintext highlighter-rouge">pct_change()</code>：</strong> 这些函数通过比较当前行/列与滞后 <code class="language-plaintext highlighter-rouge">periods</code> 的行/列来实现。它们在处理时间序列数据时非常有用，可以快速计算增长率、波动性等。</p>
+</blockquote>
+
+<p><strong><code class="language-plaintext highlighter-rouge">value_counts()</code>：</strong> 检查分类变量的分布、识别数据不平衡、发现数据输入错误（例如，拼写错误）。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">unique()</code>：</strong> 快速查看分类变量的所有可能类别。</p>
+
+<p><strong>累积函数：</strong> 计算总销售额的增长趋势、累计投资回报。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">diff()</code> 和 <code class="language-plaintext highlighter-rouge">pct_change()</code>：</strong> 分析股票价格的日涨跌幅、传感器读数的瞬时变化率。</p>
+
+<hr />
+
+<p>【1】统计某一列/整个df元素出现次数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">].</span><span class="nf">value_counts</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724190641388.png" alt="image-20250724190641388" style="zoom:50%;" /></p>
+
+<p>【2】去重：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># df.unique() # AttributeError: 'DataFrame' object has no attribute 'unique'
+</span><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">].</span><span class="nf">unique</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724190734233.png" alt="image-20250724190734233" style="zoom:50%;" /></p>
+
+<p>【3】累加：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">cumsum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724190809101.png" alt="image-20250724190809101" style="zoom:50%;" /></p>
+
+<p>【4】累乘：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">cumprod</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【5】标准差：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">std</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724190859641.png" alt="image-20250724190859641" style="zoom:50%;" /></p>
+
+<p>【6】方差：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">var</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724190932849.png" alt="image-20250724190932849" style="zoom:50%;" /></p>
+
+<p>【7】累计最小值/累计最大值：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">cummin</span><span class="p">()</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">cummax</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724191033163.png" alt="image-20250724191033163" style="zoom:50%;" /></p>
+
+<p>【8】差分：（当前值-前一个值）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">.</span><span class="nf">diff</span><span class="p">())</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724191123401.png" alt="image-20250724191123401" style="zoom:50%;" /></p>
+
+<p>计算滞后2期的差分：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>  <span class="n">df</span><span class="p">.</span><span class="nf">diff</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724191215493.png" alt="image-20250724191215493" style="zoom:50%;" /></p>
+
+<p>【9】计算百分比变化：<code class="language-plaintext highlighter-rouge">（（当前值-前一个值）/ 前一个值）</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df</span><span class="p">.</span><span class="nf">pct_change</span><span class="p">())</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724191325535.png" alt="image-20250724191325535" style="zoom:50%;" /></p>
+
+<h3 id="选择题-2">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">s = pd.Series([10, 20, 10, 30, 20])</code>，执行 <code class="language-plaintext highlighter-rouge">s.value_counts()</code> 的结果是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">Series([10, 20, 30], index=[2, 2, 1])</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">Series([10, 20, 30], index=[10, 20, 30])</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">Series([2, 2, 1], index=[10, 20, 30])</code></p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">Series([2, 2, 1], index=[20, 10, 30])</code></p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪个函数用于计算 Series 中所有唯一值的 NumPy 数组？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">s.value_counts()</code> B. <code class="language-plaintext highlighter-rouge">s.unique()</code> C. <code class="language-plaintext highlighter-rouge">s.nunique()</code> D. <code class="language-plaintext highlighter-rouge">s.drop_duplicates()</code></p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-1">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">stock_prices</code>，包含 <code class="language-plaintext highlighter-rouge">'Date'</code> (日期) 和 <code class="language-plaintext highlighter-rouge">'Price'</code> (价格) 两列，其中 <code class="language-plaintext highlighter-rouge">'Date'</code> 是按顺序排列的日期（例如，<code class="language-plaintext highlighter-rouge">pd.date_range</code>），<code class="language-plaintext highlighter-rouge">'Price'</code> 填充随机浮点数。</li>
+  <li>计算 <code class="language-plaintext highlighter-rouge">'Price'</code> 列的每日价格变化（<code class="language-plaintext highlighter-rouge">diff</code>）。</li>
+  <li>计算 <code class="language-plaintext highlighter-rouge">'Price'</code> 列的每日百分比变化（<code class="language-plaintext highlighter-rouge">pct_change</code>）。</li>
+  <li>计算 <code class="language-plaintext highlighter-rouge">'Price'</code> 列的累积最大值和累积最小值。</li>
+  <li>假设 <code class="language-plaintext highlighter-rouge">'Price'</code> 列中有一些重复的价格。统计每个价格出现的次数。</li>
+  <li>打印每一步操作后的结果。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="c1"># 准备 data
+</span><span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="sh">'</span><span class="s">2025-07-01</span><span class="sh">'</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">prices</span> <span class="o">=</span> <span class="p">[</span><span class="mf">150.5</span><span class="p">,</span> <span class="mf">160.2</span><span class="p">,</span> <span class="mf">150.5</span><span class="p">,</span> <span class="mf">170.1</span><span class="p">,</span> <span class="mf">165.3</span><span class="p">,</span> <span class="mf">180.7</span><span class="p">,</span> <span class="mf">150.5</span><span class="p">,</span> <span class="mf">175.4</span><span class="p">,</span> <span class="mf">160.2</span><span class="p">,</span> <span class="mf">190.8</span><span class="p">]</span>  <span class="c1"># 包含重复价格
+</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">Date</span><span class="sh">'</span><span class="p">:</span> <span class="n">dates</span><span class="p">,</span> <span class="sh">'</span><span class="s">Price</span><span class="sh">'</span><span class="p">:</span> <span class="n">prices</span><span class="p">}</span>
+<span class="c1"># 创建df
+</span><span class="n">stock_prices</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">stock_prices</span><span class="p">)</span>
+<span class="c1"># 计算 'Price' 列的每日价格变化（diff）。
+</span><span class="n">diff_</span> <span class="o">=</span> <span class="n">stock_prices</span><span class="p">[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">diff</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">diff_</span><span class="p">)</span>
+<span class="c1"># 计算 'Price' 列的每日百分比变化（pct_change）
+</span><span class="n">pct</span> <span class="o">=</span> <span class="n">stock_prices</span><span class="p">[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">pct_change</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">pct</span><span class="p">)</span>
+<span class="c1"># 计算 'Price' 列的累积最大值和累积最小值。
+</span><span class="n">cummax_</span> <span class="o">=</span> <span class="n">stock_prices</span><span class="p">[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">cummax</span><span class="p">()</span>
+<span class="n">cummin_</span> <span class="o">=</span> <span class="n">stock_prices</span><span class="p">[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">cummin</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">cummax_</span><span class="p">,</span> <span class="n">cummin_</span><span class="p">)</span>
+<span class="c1"># 假设 'Price' 列中有一些重复的价格。统计每个价格出现的次数
+</span><span class="n">uni</span> <span class="o">=</span> <span class="n">stock_prices</span><span class="p">[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">unique</span><span class="p">()</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">stock_prices</span><span class="p">[</span><span class="sh">"</span><span class="s">Price</span><span class="sh">"</span><span class="p">].</span><span class="nf">value_counts</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">uni</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="4高级统计指标">4.高级统计指标</h1>
+
+<p>协方差和相关性是衡量两个变量之间线性关系的重要统计指标。</p>
+
+<blockquote>
+  <p>协方差：协方差表示的是两个变量的总体的误差，这与只表示一个变量误差的方差不同。 如果两个变量的变化趋势一致，也就是说如果其中一个大于自身的期望值，另外一个也大于自身的期望值，那么两个变量之间的协方差就是正值。 如果两个变量的变化趋势相反，即其中一个大于自身的期望值，另外一个却小于自身的期望值，那么两个变量之间的协方差就是负值。</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724193415525.png" alt="image-20250724193415525" style="zoom:50%;" /></p>
+
+  <p>协方差只能研究两组数据之间的关系，当要研究多组数据之间的关系时就要用到协方差矩阵。</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724193444826.png" alt="image-20250724193444826" style="zoom:50%;" /></p>
+</blockquote>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.cov(min_periods=None, ddof=1)</code></strong>:
+    <ul>
+      <li>计算 DataFrame 中所有属性（列）之间的<strong>协方差矩阵</strong>。</li>
+      <li>协方差矩阵是一个对称矩阵，对角线元素是每个属性的方差，非对角线元素是每对属性之间的协方差。</li>
+      <li><code class="language-plaintext highlighter-rouge">min_periods</code>: 整数，计算协方差所需的最小非 <code class="language-plaintext highlighter-rouge">NA</code> 观测数。</li>
+      <li><code class="language-plaintext highlighter-rouge">ddof</code>: 自由度，默认为 <code class="language-plaintext highlighter-rouge">1</code>。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">Series.cov(other, min_periods=None, ddof=1)</code></strong>:
+    <ul>
+      <li>计算 Series 与另一个 Series 或 DataFrame 列之间的协方差。</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p>相关系数：相关系数是最早由统计学家卡尔·皮尔逊设计的统计指标，是研究变量之间线性相关程度的量，一般用字母 r 表示。由于研究对象的不同，相关系数有多种定义方式，较为常用的是皮尔逊相关系数。</p>
+
+  <p>相关系数是用以反映变量之间相关关系密切程度的统计指标。相关系数是按积差方法计算，同样以两变量与各自平均值的离差为基础，通过两个离差相乘来反映两变量之间相关程度；着重研究线性的单相关系数。</p>
+
+  <p>皮尔逊相关系数的值在<code class="language-plaintext highlighter-rouge">[-1,1]</code>之间，大于零是正相关，小于零则表示负相关，其值越接近于1或-1则表示关系越紧密，越接近于零则表示其相关性越小。</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724193628935.png" alt="image-20250724193628935" style="zoom:50%;" /></p>
+
+  <p>相关系数其实是在协方差的基础上进行计算的。</p>
+</blockquote>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.corr(method='pearson', min_periods=None)</code></strong>:
+    <ul>
+      <li>计算 DataFrame 中所有属性（列）之间的<strong>相关性系数矩阵</strong>。</li>
+      <li>相关性系数矩阵也是一个对称矩阵，对角线元素为 1，非对角线元素是每对属性之间的相关性系数。</li>
+      <li><strong>相关性系数公式：</strong> 皮尔逊相关系数 r(X,Y)=fractextCov(X,Y)sqrttextVar(X)textVar(Y)。取值范围在 [−1,1] 之间。</li>
+      <li><code class="language-plaintext highlighter-rouge">method</code>: 指定计算方法，默认为 <code class="language-plaintext highlighter-rouge">'pearson'</code>（皮尔逊相关系数）。其他选项包括 <code class="language-plaintext highlighter-rouge">'kendall'</code>（肯德尔秩相关）和 <code class="language-plaintext highlighter-rouge">'spearman'</code>（斯皮尔曼秩相关）。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.corrwith(other, axis=0, drop=False, method='pearson', numeric_only=False)</code></strong>:
+    <ul>
+      <li>计算 DataFrame 中每一列与另一个 Series 或 DataFrame 中每一列之间的<strong>相关性系数</strong>。</li>
+      <li>返回一个 Series，其索引是原始 DataFrame 的列名，值是与 <code class="language-plaintext highlighter-rouge">other</code> 对应的相关系数。</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">pandas</code> 在底层调用高度优化的 <code class="language-plaintext highlighter-rouge">NumPy</code> 函数，这些函数又依赖于 BLAS/LAPACK 等线性代数库，从而确保了协方差和相关性矩阵计算的高性能。</p>
+</blockquote>
+
+<p><strong>特征选择：</strong> 在机器学习中，高相关性的特征可能存在冗余。可以考虑移除其中一个，以减少模型复杂性、避免多重共线性。</p>
+
+<p><strong>理解数据关系：</strong> 帮助数据科学家理解数据集中不同特征之间的相互依赖关系。</p>
+
+<p><strong>主成分分析 (PCA)：</strong> PCA 的核心就是通过分析协方差矩阵（或相关系数矩阵）来找到数据的主要变化方向。</p>
+
+<p><strong>异常检测：</strong> 某些异常值可能会显著影响协方差和相关性，需要谨慎处理。</p>
+
+<hr />
+
+<p>【1】协方差矩阵：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">cov</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724194008695.png" alt="image-20250724194008695" style="zoom:50%;" /></p>
+
+<p>计算2列的协方差：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">].</span><span class="nf">cov</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724194054724.png" alt="image-20250724194054724" style="zoom:50%;" /></p>
+
+<p>【2】相关系数矩阵：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">corr</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724194124015.png" alt="image-20250724194124015" style="zoom:50%;" /></p>
+
+<p>单一属性和所有其他属性的相关性系数：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">corrwith</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724194213192.png" alt="image-20250724194213192" style="zoom:50%;" /></p>
+
+<p>【3】可视化相关性矩阵（通常是热力图）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">df_corr</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">corr</span><span class="p">()</span>
+<span class="n">sns</span><span class="p">.</span><span class="nf">heatmap</span><span class="p">(</span><span class="n">df_corr</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">coolwarm</span><span class="sh">'</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="sh">'</span><span class="s">.2f</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">相关性系数 矩阵</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 字体设置(配置可以参考：https://juejin.cn/post/7016243818647420958)
+# plt.rcParams['font.sans-serif'] = ['SimHei']
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250724213419244.png" alt="image-20250724213419244" style="zoom:50%;" /></p>
+
+<h3 id="选择题-3">选择题</h3>
+
+<ol>
+  <li>
+    <p>以下哪个函数用于计算 DataFrame 中所有属性之间的相关性系数矩阵？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df.cov()</code> B. <code class="language-plaintext highlighter-rouge">df.corr()</code> C. <code class="language-plaintext highlighter-rouge">df.corrwith()</code> D. <code class="language-plaintext highlighter-rouge">df.dot()</code></p>
+
+    <blockquote>
+      <p>答案：B，C选项用于计算 DataFrame 与另一个 Series 或 DataFrame 的列间相关系数</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>如果两个变量的皮尔逊相关系数为 −0.9，这意味着什么？</p>
+
+    <p>A. 它们之间没有线性关系。</p>
+
+    <p>B. 它们之间存在非常强的正线性关系。</p>
+
+    <p>C. 它们之间存在非常强的负线性关系。</p>
+
+    <p>D. 它们之间存在非线性关系。</p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-2">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">student_performance</code>，包含 <code class="language-plaintext highlighter-rouge">'Math_Score'</code>, <code class="language-plaintext highlighter-rouge">'Physics_Score'</code>, <code class="language-plaintext highlighter-rouge">'Chemistry_Score'</code> 三列，填充随机整数分数。</li>
+  <li>计算并打印所有科目之间的协方差矩阵。</li>
+  <li>计算并打印所有科目之间的相关性系数矩阵。</li>
+  <li>计算 <code class="language-plaintext highlighter-rouge">'Math_Score'</code> 与 <code class="language-plaintext highlighter-rouge">'Physics_Score'</code> 之间的协方差。</li>
+  <li>计算 <code class="language-plaintext highlighter-rouge">'Chemistry_Score'</code> 与所有其他科目之间的相关性系数。</li>
+  <li>解释协方差和相关性系数矩阵的结果。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">student_performance</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Math_Score</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Physics_Score</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Chemistry_Score</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">student_performance</span><span class="p">)</span>
+<span class="c1"># 计算并打印所有科目之间的协方差矩阵
+</span><span class="n">cov_matrix</span> <span class="o">=</span> <span class="n">student_performance</span><span class="p">.</span><span class="nf">cov</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">cov_matrix</span><span class="p">)</span>
+<span class="c1"># 计算并打印所有科目之间的相关性系数矩阵
+</span><span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">student_performance</span><span class="p">.</span><span class="nf">corr</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
+<span class="c1"># 计算 'Math_Score' 与 'Physics_Score' 之间的协方差
+</span><span class="nf">display</span><span class="p">(</span><span class="n">student_performance</span><span class="p">[</span><span class="sh">"</span><span class="s">Math_Score</span><span class="sh">"</span><span class="p">].</span><span class="nf">cov</span><span class="p">(</span><span class="n">student_performance</span><span class="p">[</span><span class="sh">"</span><span class="s">Physics_Score</span><span class="sh">"</span><span class="p">]))</span>
+<span class="c1"># 计算 'Chemistry_Score' 与所有其他科目之间的相关性系数
+</span><span class="nf">display</span><span class="p">(</span><span class="n">student_performance</span><span class="p">.</span><span class="nf">corrwith</span><span class="p">(</span><span class="n">student_performance</span><span class="p">[</span><span class="sh">"</span><span class="s">Chemistry_Score</span><span class="sh">"</span><span class="p">]))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/23/pandas%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97/" data-toggle="tooltip" data-placement="top" title="pandas-数据清洗">
+                        Previous<br>
+                        <span>pandas-数据清洗</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/07/24/pandas%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2%E5%92%8C%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A1%91/" data-toggle="tooltip" data-placement="top" title="pandas-数据转换和数据重塑">
+                        Next<br>
+                        <span>pandas-数据转换和数据重塑</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0123" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0102" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0108" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0109" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0113" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0114" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0116" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="9">pandas</a>
+        
+                <a data-sort="0123" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0124" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0124" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0124" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
