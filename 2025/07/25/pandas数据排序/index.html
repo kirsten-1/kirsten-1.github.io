@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="pandas-数据排序 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-25T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="pandas">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/25/pandas%E6%95%B0%E6%8D%AE%E6%8E%92%E5%BA%8F/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>pandas-数据排序 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/25/pandas%E6%95%B0%E6%8D%AE%E6%8E%92%E5%BA%8F/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=pandas" title="pandas">pandas</a>
+                        
+                    </div>
+                    <h1>pandas-数据排序</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 25, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1索引列名排序">1.索引列名排序</h1>
+
+<p><code class="language-plaintext highlighter-rouge">df.sort_index()</code> 方法用于根据 DataFrame 的行索引或列索引进行排序。</p>
+
+<ul>
+  <li><strong>基本语法：</strong> <code class="language-plaintext highlighter-rouge">df.sort_index(axis=0, level=None, ascending=True, inplace=False, kind='quicksort', na_position='last', sort_remaining=True)</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">axis</code>: 指定排序的轴。
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">0</code> (或 <code class="language-plaintext highlighter-rouge">'index'</code>)：按行索引排序。</li>
+          <li><code class="language-plaintext highlighter-rouge">1</code> (或 <code class="language-plaintext highlighter-rouge">'columns'</code>)：按列索引排序。</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">ascending</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code> (默认)，则按升序排序；如果为 <code class="language-plaintext highlighter-rouge">False</code>，则按降序排序。</li>
+      <li><code class="language-plaintext highlighter-rouge">inplace</code>: 布尔值，是否直接修改原始 DataFrame。</li>
+      <li><code class="language-plaintext highlighter-rouge">level</code>: 当索引是多层索引时，指定要排序的级别。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">sort_index()</code> 的底层实现是基于索引对象的排序。它会创建一个新的排序后的索引对象，然后根据这个新索引重新排列 DataFrame 的数据。</p>
+
+  <ul>
+    <li>对于单层索引，它直接对索引标签进行排序（字符串按字典序，数字按数值序）。</li>
+    <li>对于多层索引，它会根据指定的 <code class="language-plaintext highlighter-rouge">level</code> 进行排序，如果未指定 <code class="language-plaintext highlighter-rouge">level</code>，则按所有级别进行排序。</li>
+    <li><code class="language-plaintext highlighter-rouge">sort_index()</code> 总是返回一个新的 DataFrame（除非 <code class="language-plaintext highlighter-rouge">inplace=True</code>），因为排序会改变数据的排列顺序。</li>
+  </ul>
+</blockquote>
+
+<h3 id="多层索引排序">多层索引排序</h3>
+
+<p>当处理多层索引时，<code class="language-plaintext highlighter-rouge">level</code> 参数非常强大。您可以选择只对某个特定级别的索引进行排序，而保持其他级别的相对顺序不变。例如，在一个按地区和城市分层的索引中，可以只按城市名排序，而不改变地区的顺序。</p>
+
+<hr />
+
+<p>【1】按照行索引排序（默认升序）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 行索引排序
+</span><span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725002809382.png" alt="image-20250725002809382" style="zoom:50%;" /></p>
+
+<p>【2】按照列名排序：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># ascending=False降序排序
+</span><span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725002928172.png" alt="image-20250725002928172" style="zoom:50%;" /></p>
+
+<p>【3】多层索引的排序：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">.</span><span class="nf">from_product</span><span class="p">([[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">],</span> <span class="p">[</span><span class="sh">"</span><span class="s">X</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Y</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Z</span><span class="sh">"</span><span class="p">]])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">v1</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">v2</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 第二层索引（X， Y， Z）降序
+</span><span class="n">df</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725003233331.png" alt="image-20250725003233331" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725003249361.png" alt="image-20250725003249361" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># level=-1  最内层
+</span><span class="n">df</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">(</span><span class="n">level</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>   
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725003334784.png" alt="image-20250725003334784" style="zoom:50%;" /></p>
+
+<h3 id="选择题">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">df = pd.DataFrame({'A': [1], 'B': [2]}, index=['z', 'y'])</code>，执行 <code class="language-plaintext highlighter-rouge">df.sort_index(axis=0, ascending=False)</code> 后，<code class="language-plaintext highlighter-rouge">df.index</code> 的结果是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">Index(['z', 'y'], dtype='object')</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">Index(['y', 'z'], dtype='object')</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">Index([0, 1], dtype='int64')</code></p>
+
+    <p>D. 报错</p>
+
+    <blockquote>
+      <p>答案：A</p>
+
+      <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725003806023.png" alt="image-20250725003806023" style="zoom:50%;" /></p>
+    </blockquote>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">df.sort_index(axis=1)</code> 的作用是？</p>
+
+    <p>A. 按行索引排序。</p>
+
+    <p>B. 按列索引（列名）排序。</p>
+
+    <p>C. 按 DataFrame 的值排序。</p>
+
+    <p>D. 报错。</p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">product_data</code>，行索引为随机字符串，列索引为 <code class="language-plaintext highlighter-rouge">'Price'</code>, <code class="language-plaintext highlighter-rouge">'Rating'</code>, <code class="language-plaintext highlighter-rouge">'Stock'</code>。</li>
+  <li>对 <code class="language-plaintext highlighter-rouge">product_data</code> 按行索引进行降序排序。</li>
+  <li>对 <code class="language-plaintext highlighter-rouge">product_data</code> 按列索引（列名）进行升序排序。</li>
+  <li>打印每一步操作后的 DataFrame。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="c1"># 生成 5 个随机字符串作为行索引
+</span><span class="k">def</span> <span class="nf">random_string</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="n">string</span>
+    <span class="k">return</span> <span class="sh">''</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">choice</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="n">string</span><span class="p">.</span><span class="n">ascii_uppercase</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">))</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="nf">random_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+
+<span class="c1"># 创建 data
+</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">Price</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+    <span class="sh">'</span><span class="s">Rating</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+    <span class="sh">'</span><span class="s">Stock</span><span class="sh">'</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">product_data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">product_data</span><span class="p">)</span>
+<span class="c1"># 对 product_data 按行索引进行降序排序
+</span><span class="n">res1</span> <span class="o">=</span> <span class="n">product_data</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span>
+<span class="c1"># 对 product_data 按列索引（列名）进行升序排序
+</span><span class="n">res2</span> <span class="o">=</span> <span class="n">product_data</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">res2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725004139938.png" alt="image-20250725004139938" style="zoom:50%;" /></p>
+
+<h1 id="2属性值排序">2.属性值排序</h1>
+
+<p><code class="language-plaintext highlighter-rouge">df.sort_values()</code> 方法用于根据 DataFrame 中一个或多个列的值进行排序。</p>
+
+<ul>
+  <li><strong>基本语法：</strong> <code class="language-plaintext highlighter-rouge">df.sort_values(by, axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last', ignore_index=False)</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">by</code>: 字符串或字符串列表，指定用于排序的列名。</li>
+      <li><code class="language-plaintext highlighter-rouge">axis</code>: 默认为 <code class="language-plaintext highlighter-rouge">0</code>（按行排序，即根据列的值对行进行排序）。如果设置为 <code class="language-plaintext highlighter-rouge">1</code>，则按列排序（根据行的值对列进行排序）。</li>
+      <li><code class="language-plaintext highlighter-rouge">ascending</code>: 布尔值或布尔值列表。如果传入列表，则与 <code class="language-plaintext highlighter-rouge">by</code> 中的列一一对应，指定每列的排序方向。</li>
+      <li><code class="language-plaintext highlighter-rouge">na_position</code>: 字符串，指定 <code class="language-plaintext highlighter-rouge">NaN</code> 值的处理位置。
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">'last'</code> (默认)：将 <code class="language-plaintext highlighter-rouge">NaN</code> 值放在末尾。</li>
+          <li><code class="language-plaintext highlighter-rouge">'first'</code>：将 <code class="language-plaintext highlighter-rouge">NaN</code> 值放在开头。</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">ignore_index</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code>，则在排序后重置索引。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">sort_values()</code> 的底层实现是根据指定列的值进行排序。它会首先对 <code class="language-plaintext highlighter-rouge">by</code> 参数指定的列进行排序，然后根据排序结果重新排列 DataFrame 的所有行。</p>
+
+  <ul>
+    <li>当 <code class="language-plaintext highlighter-rouge">by</code> 是一个列表时，<code class="language-plaintext highlighter-rouge">pandas</code> 会按照列表中列的顺序进行多级排序：首先按第一个列排序，如果值相同，则按第二个列排序，以此类推。</li>
+    <li>与 <code class="language-plaintext highlighter-rouge">sort_index()</code> 类似，<code class="language-plaintext highlighter-rouge">sort_values()</code> 总是返回一个新的 DataFrame（除非 <code class="language-plaintext highlighter-rouge">inplace=True</code>），因为它会改变数据的排列顺序。</li>
+  </ul>
+</blockquote>
+
+<p><strong>多列排序：</strong> 在数据分析中，经常需要根据多个条件进行排序。例如，先按部门排序，再按薪资降序排序。</p>
+
+<p><strong>缺失值位置：</strong> <code class="language-plaintext highlighter-rouge">na_position</code> 参数在处理含有缺失值的排序时非常有用，可以控制缺失值是出现在排序结果的开头还是末尾。</p>
+
+<hr />
+
+<p>【1】按照某一列属性值排序：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="c1"># 为了测试，确保有多个重复的值用于多列排序
+</span><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[[</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">E</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">G</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">I</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 按照python列值排序（默认升序）
+</span><span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725004540607.png" alt="image-20250725004540607" style="zoom:50%;" /></p>
+
+<p>【2】多列排序，比如某一列升序，某一列降序：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># python这一列值一样，就按照java这一列进行降序排序
+</span><span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725004708388.png" alt="image-20250725004708388" style="zoom:50%;" /></p>
+
+<p>【3】处理缺失值位置：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c1"># 为了测试，插入一个测试值
+</span><span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="sh">"</span><span class="s">F</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">,</span> <span class="n">na_position</span><span class="o">=</span><span class="sh">"</span><span class="s">first</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df3</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725004859079.png" alt="image-20250725004859079" style="zoom:50%;" /></p>
+
+<p>可以看到缺失值在最前面了。</p>
+
+<h3 id="选择题-1">选择题</h3>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">df = pd.DataFrame({'A': [1, 3, 2], 'B': ['x', 'z', 'y']})</code>，执行 <code class="language-plaintext highlighter-rouge">df.sort_values(by='B')</code> 后，<code class="language-plaintext highlighter-rouge">df['B']</code> 列的顺序是什么？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">['x', 'y', 'z']</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">['z', 'y', 'x']</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">['x', 'z', 'y']</code></p>
+
+    <p>D. 报错</p>
+
+    <blockquote>
+      <p>答案：C，因为没有设定<code class="language-plaintext highlighter-rouge">replace=True</code></p>
+    </blockquote>
+  </li>
+  <li>
+    <p>要将 DataFrame 先按 <code class="language-plaintext highlighter-rouge">'Department'</code> 升序排序，然后按 <code class="language-plaintext highlighter-rouge">'Salary'</code> 降序排序，以下哪个 <code class="language-plaintext highlighter-rouge">sort_values()</code> 调用是正确的？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">df.sort_values(by=['Department', 'Salary'], ascending=True)</code></p>
+
+    <p>B. <code class="language-plaintext highlighter-rouge">df.sort_values(by=['Department', 'Salary'], ascending=[True, False])</code></p>
+
+    <p>C. <code class="language-plaintext highlighter-rouge">df.sort_values(by='Department', ascending=True).sort_values(by='Salary', ascending=False)</code></p>
+
+    <p>D. <code class="language-plaintext highlighter-rouge">df.sort_values(by='Department', by='Salary', ascending=[True, False])</code></p>
+
+    <blockquote>
+      <p>答案：B</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h3 id="编程题-1">编程题</h3>
+
+<ol>
+  <li>创建一个 DataFrame <code class="language-plaintext highlighter-rouge">employee_data</code>，包含 <code class="language-plaintext highlighter-rouge">'Name'</code>, <code class="language-plaintext highlighter-rouge">'Department'</code>, <code class="language-plaintext highlighter-rouge">'Salary'</code> 三列，以及 6 行数据。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Department</code> 包含 <code class="language-plaintext highlighter-rouge">'HR'</code>, <code class="language-plaintext highlighter-rouge">'IT'</code>, <code class="language-plaintext highlighter-rouge">'HR'</code>, <code class="language-plaintext highlighter-rouge">'Sales'</code>, <code class="language-plaintext highlighter-rouge">'IT'</code>, <code class="language-plaintext highlighter-rouge">'Sales'</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">Salary</code> 填充随机整数，其中一个 <code class="language-plaintext highlighter-rouge">Salary</code> 值为 <code class="language-plaintext highlighter-rouge">np.nan</code>。</li>
+    </ul>
+  </li>
+  <li>按 <code class="language-plaintext highlighter-rouge">'Salary'</code> 列降序排序，并将缺失值放在开头。</li>
+  <li>先按 <code class="language-plaintext highlighter-rouge">'Department'</code> 升序排序，再按 <code class="language-plaintext highlighter-rouge">'Salary'</code> 降序排序。</li>
+  <li>打印每一步操作后的 DataFrame。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">Name</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">Emp1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Emp2</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Emp3</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Emp4</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Emp5</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Emp6</span><span class="sh">'</span><span class="p">],</span>
+    <span class="sh">'</span><span class="s">Department</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">HR</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">IT</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">HR</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Sales</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">IT</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Sales</span><span class="sh">'</span><span class="p">],</span>
+    <span class="sh">'</span><span class="s">Salary</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">63727.0</span><span class="p">,</span> <span class="mf">97403.0</span><span class="p">,</span> <span class="mf">22055.0</span><span class="p">,</span> <span class="mf">83261.0</span><span class="p">,</span> <span class="mf">33659.0</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">employee_data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">employee_data</span><span class="p">)</span>
+<span class="c1"># 按 'Salary' 列降序排序，并将缺失值放在开头
+</span><span class="n">df1</span> <span class="o">=</span> <span class="n">employee_data</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="sh">"</span><span class="s">Salary</span><span class="sh">"</span><span class="p">,</span> <span class="n">na_position</span><span class="o">=</span><span class="sh">"</span><span class="s">first</span><span class="sh">"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span>
+<span class="c1"># 先按 'Department' 升序排序，再按 'Salary' 降序排序
+</span><span class="n">df2</span> <span class="o">=</span> <span class="n">employee_data</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">Department</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Salary</span><span class="sh">"</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725005802367.png" alt="image-20250725005802367" style="zoom:50%;" /></p>
+
+<h1 id="3返回属性-n-大或者-n-小的值">3.返回属性 n 大或者 n 小的值</h1>
+
+<p><code class="language-plaintext highlighter-rouge">nlargest()</code> 和 <code class="language-plaintext highlighter-rouge">nsmallest()</code> 方法用于高效地获取 DataFrame 或 Series 中最大或最小的 <code class="language-plaintext highlighter-rouge">n</code> 个值。它们比先排序再切片更高效，尤其是在只需要少数几个最大/最小值时。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.nlargest(n, columns, keep='first')</code></strong>:
+    <ul>
+      <li>根据指定列的值，返回 DataFrame 中最大的 <code class="language-plaintext highlighter-rouge">n</code> 行。</li>
+      <li><code class="language-plaintext highlighter-rouge">n</code>: 整数，要返回的行数。</li>
+      <li><code class="language-plaintext highlighter-rouge">columns</code>: 字符串或字符串列表，用于排序的列名。</li>
+      <li><code class="language-plaintext highlighter-rouge">keep</code>: 当存在重复值时如何处理。
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">'first'</code> (默认)：保留第一次出现的重复项。</li>
+          <li><code class="language-plaintext highlighter-rouge">'last'</code>：保留最后一次出现的重复项。</li>
+          <li><code class="language-plaintext highlighter-rouge">'all'</code>：保留所有重复项。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">df.nsmallest(n, columns, keep='first')</code></strong>:
+    <ul>
+      <li>根据指定列的值，返回 DataFrame 中最小的 <code class="language-plaintext highlighter-rouge">n</code> 行。</li>
+      <li>参数与 <code class="language-plaintext highlighter-rouge">nlargest()</code> 相同。</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">nlargest()</code> 和 <code class="language-plaintext highlighter-rouge">nsmallest()</code> 在底层使用了优化的选择算法（例如，部分排序或基于堆的选择算法），而不是对整个 DataFrame 进行完全排序。这使得它们在 <code class="language-plaintext highlighter-rouge">n</code> 远小于 DataFrame 总行数时，比 <code class="language-plaintext highlighter-rouge">sort_values().head(n)</code> 或 <code class="language-plaintext highlighter-rouge">sort_values().tail(n)</code> 更加高效。</p>
+</blockquote>
+
+<p><strong>排行榜：</strong> 找出销售额最高的 10 个产品，或评分最高的 5 名学生。</p>
+
+<p><strong>异常值初步检测：</strong> 快速查看数据集中最极端的大值或小值。</p>
+
+<p><strong>数据探索：</strong> 快速了解数据分布的尾部特征。</p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nf">list</span><span class="p">(</span><span class="sh">"</span><span class="s">ABCDEFGHIJ</span><span class="sh">"</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">python</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">])</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">nlargest</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725154407503.png" alt="image-20250725154407503" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">nsmallest</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">golang</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">java</span><span class="sh">"</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725154511403.png" alt="image-20250725154511403" style="zoom:50%;" /></p>
+
+<h3 id="选择题-2">选择题</h3>
+
+<ol>
+  <li>比 <code class="language-plaintext highlighter-rouge">df.sort_values(by='Price').head(3)</code> 更高效的场景是？</li>
+</ol>
+
+<p>A. 当 DataFrame 非常小的时候。</p>
+
+<p>B. 当需要获取所有行时。</p>
+
+<p>C. 当 <code class="language-plaintext highlighter-rouge">n</code>（要返回的行数）远小于 DataFrame 的总行数时。</p>
+
+<p>D. 当 DataFrame 包含大量缺失值时。</p>
+
+<blockquote>
+  <p>答案：C</p>
+</blockquote>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/24/pandas%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2%E5%92%8C%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A1%91/" data-toggle="tooltip" data-placement="top" title="pandas-数据转换和数据重塑">
+                        Previous<br>
+                        <span>pandas-数据转换和数据重塑</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0124" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0103" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0109" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0110" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0114" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0115" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="10">pandas</a>
+        
+                <a data-sort="0124" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0125" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0125" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0125" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
