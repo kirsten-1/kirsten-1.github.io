@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="pandas-时间序列 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-26T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="pandas">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/26/pandas%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>pandas-时间序列 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/26/pandas%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=pandas" title="pandas">pandas</a>
+                        
+                    </div>
+                    <h1>pandas-时间序列</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 26, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="预备">预备</h1>
+
+<h2 id="pandas获取当前时间">pandas获取当前时间</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="n">Timestamp</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726212309415.png" alt="image-20250726212309415" style="zoom:50%;" /></p>
+
+<p>时间序列数据在金融、经济、气象、物联网等众多领域中无处不在。Pandas 提供了强大而灵活的工具来处理、分析和操作时间序列数据。理解其核心概念对于任何数据科学家或分析师都至关重要。</p>
+
+<h1 id="1时间戳操作">1.时间戳操作</h1>
+
+<p>时间戳（Timestamp）是 Pandas 中表示单个特定时间点的数据类型，而时期（Period）表示一个时间段。理解它们的创建和转换是时间序列分析的基础。</p>
+
+<h2 id="11-创建方法">1.1 创建方法</h2>
+
+<p>Pandas 提供了多种创建时间戳和时期数据的方法，以及用于生成时间范围的函数。</p>
+
+<h3 id="创建单个时间戳">创建单个时间戳</h3>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">pd.Timestamp()</code>：创建单个时间戳</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">pd.Timestamp</code> 是 Pandas 中用于表示单个精确时间点的标量类型，它继承自 Python 的 <code class="language-plaintext highlighter-rouge">datetime.datetime</code> 对象，但提供了更丰富的功能和更好的性能，尤其是在与 Pandas 的时间序列结构（如 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code>）结合使用时。其内部存储通常是一个纳秒精度的时间戳。</li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>精度：</strong> <code class="language-plaintext highlighter-rouge">Timestamp</code> 默认支持纳秒级精度，远超 Python 内置 <code class="language-plaintext highlighter-rouge">datetime</code> 的微秒级。这对于高频交易数据或传感器数据等场景非常有用。</li>
+          <li><strong>时区：</strong> 可以直接在创建时指定时区，或之后进行时区本地化和转换。</li>
+          <li><strong>与 Python <code class="language-plaintext highlighter-rouge">datetime</code> 互操作：</strong> <code class="language-plaintext highlighter-rouge">Timestamp</code> 可以轻松地与 Python 内置的 <code class="language-plaintext highlighter-rouge">datetime</code> 对象进行转换。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>【1】创建一个精确到时分秒的时间戳：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">ts1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Timestamp</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07-25 23:00:00</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ts1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725233616782.png" alt="image-20250725233616782" style="zoom:50%;" /></p>
+
+<p>【2】创建一个带时区的时间戳：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">ts2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Timestamp</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07-25 23:00:00</span><span class="sh">"</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="sh">"</span><span class="s">Asia/Shanghai</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ts2</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725233727550.png" alt="image-20250725233727550" style="zoom:50%;" /></p>
+
+<p>【3】从Unix时间戳创建（默认单位是纳秒）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">ts3</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Timestamp</span><span class="p">(</span><span class="mi">1678886400000000000</span><span class="p">)</span>
+<span class="n">ts3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725233834048.png" alt="image-20250725233834048" style="zoom:50%;" /></p>
+
+<p>【4】从python datetime对象创建：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="n">dt_obj</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span>
+<span class="n">ts4</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Timestamp</span><span class="p">(</span><span class="n">dt_obj</span><span class="p">)</span>
+<span class="n">ts4</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250725233950489.png" alt="image-20250725233950489" style="zoom:50%;" /></p>
+
+<h3 id="创建单个时期">创建单个时期</h3>
+
+<ul>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">pd.Period()</code>：创建单个时期</strong></p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">pd.Period</code> 表示一个具有特定频率的时间段，而不是一个精确的时间点。例如，<code class="language-plaintext highlighter-rouge">Period('2020-08', freq='M')</code> 表示 2020 年 8 月这个月份。它的内部存储通常是一个整数，表示从某个基准点（如 1970-01-01）开始的特定频率的偏移量。<code class="language-plaintext highlighter-rouge">Period</code> 对于财务报告周期、季度数据等非常有用。</p>
+      </li>
+      <li>
+        <p><strong>拓展：</strong></p>
+        <ul>
+          <li><strong>频率推断：</strong> <code class="language-plaintext highlighter-rouge">Period</code> 可以根据输入字符串自动推断频率，但显式指定更安全。
+            <ul>
+              <li><strong>算术运算：</strong> <code class="language-plaintext highlighter-rouge">Period</code> 对象支持与整数的算术运算，表示时间段的移动。</li>
+              <li><strong>转换：</strong> 可以将 <code class="language-plaintext highlighter-rouge">Period</code> 转换为 <code class="language-plaintext highlighter-rouge">Timestamp</code>（通常是该时期的开始或结束）。</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>注：Q表示Quarterly,表示季度，M表示Monthly，表示月份。</p>
+</blockquote>
+
+<p>【1】创建一个表示月份的时期:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">p2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Period</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07-25</span><span class="sh">"</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">M</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">p2</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726003121656.png" alt="image-20250726003121656" style="zoom:50%;" /></p>
+
+<p>【2】创建一个表示季度的时期：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># freq="Q"  默认Q-DEC是指12月为季度末
+</span><span class="n">p1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Period</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07</span><span class="sh">"</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">Q</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">p1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726003042983.png" alt="image-20250726003042983" style="zoom:50%;" /></p>
+
+<p>【3】时期算术运算：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">p3</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Period</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07</span><span class="sh">"</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">M</span><span class="sh">"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span>
+<span class="n">p3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726003223726.png" alt="image-20250726003223726" style="zoom:50%;" /></p>
+
+<h3 id="创建批量时间戳索引">创建批量时间戳索引</h3>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pd.date_range()</code>：创建批量时间戳索引</strong></p>
+
+<ul>
+  <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">pd.date_range()</code> 是创建 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 的主要函数，它生成一系列等间隔的时间戳。<code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 是 Pandas 中用于时间序列数据的核心索引类型，它支持高效的时间点查找、切片和频率操作。其内部是一个 <code class="language-plaintext highlighter-rouge">Timestamp</code> 对象的数组，优化了存储和计算。</li>
+  <li><strong>参数：</strong>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">start</code>, <code class="language-plaintext highlighter-rouge">end</code>: 起始和结束日期（二选一与 <code class="language-plaintext highlighter-rouge">periods</code> 配合）。</li>
+      <li><code class="language-plaintext highlighter-rouge">periods</code>: 生成的时间戳数量。</li>
+      <li><code class="language-plaintext highlighter-rouge">freq</code>: 频率字符串（如 ‘D’ 表示天，’M’ 表示月末，’H’ 表示小时等）。</li>
+      <li><code class="language-plaintext highlighter-rouge">tz</code>: 时区。</li>
+      <li><code class="language-plaintext highlighter-rouge">normalize</code>: 将时间戳归一化到午夜（00:00:00）。</li>
+    </ul>
+  </li>
+  <li><strong>拓展：</strong>
+    <ul>
+      <li><strong>频率字符串：</strong> Pandas 支持丰富的频率字符串，包括别名（如 ‘B’ for business day, ‘W’ for weekly, ‘MS’ for month start, ‘QS’ for quarter start, ‘AS’ for annual start等）。还可以结合数字（如 ‘2H’ 表示每两小时）。</li>
+      <li><strong>自定义频率：</strong> 可以使用 <code class="language-plaintext highlighter-rouge">pd.tseries.offsets</code> 模块中的对象来创建更复杂的自定义频率。</li>
+      <li><strong>应用场景：</strong> 生成时间序列数据的索引、创建空的日历、填充缺失日期等</li>
+    </ul>
+  </li>
+</ul>
+
+<p>【1】创建一个以月为频率的批量时间的数据：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">index_ts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07-26</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">M</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">index_ts</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726171702991.png" alt="image-20250726171702991" style="zoom:50%;" /></p>
+
+<p>【2】创建一个以工作日为频率的时间戳索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">index_jobday</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="sh">"</span><span class="s">2025-07-26</span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">"</span><span class="s">2025-08-31</span><span class="sh">"</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">index_jobday</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726171835029.png" alt="image-20250726171835029" style="zoom:50%;" /></p>
+
+<p>【3】创建一个每2个小时的时间戳索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">index_2h</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07-26</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">2H</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">index_2h</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726171938960.png" alt="image-20250726171938960" style="zoom:50%;" /></p>
+
+<h3 id="创建批量时期索引">创建批量时期索引</h3>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pd.period_range()</code>：创建批量时期索引</strong></p>
+
+<ul>
+  <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">pd.period_range()</code> 用于创建 <code class="language-plaintext highlighter-rouge">PeriodIndex</code>，它生成一系列等间隔的时期。<code class="language-plaintext highlighter-rouge">PeriodIndex</code> 是 Pandas 中用于时期序列数据的索引类型，与 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 类似，但侧重于时间段而非时间点。</li>
+  <li><strong>参数：</strong> 与 <code class="language-plaintext highlighter-rouge">date_range</code> 类似，但 <code class="language-plaintext highlighter-rouge">freq</code> 字符串通常表示时间段的频率。</li>
+  <li><strong>拓展：</strong>
+    <ul>
+      <li><strong>与 <code class="language-plaintext highlighter-rouge">Period</code> 对象的对应：</strong> <code class="language-plaintext highlighter-rouge">PeriodIndex</code> 内部存储的是 <code class="language-plaintext highlighter-rouge">Period</code> 对象。</li>
+      <li><strong>应用场景：</strong> 处理财务报表（通常按季度或年度发布）、统计数据（按月或年汇总）等。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>【1】创建一个以月为频率的批量时期的数据：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">index_period</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">period_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2025.07.26</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">M</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">index_period</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726172138754.png" alt="image-20250726172138754" style="zoom:50%;" /></p>
+
+<p>【2】创建一个以季度为频率的时期的索引：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">index_q</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">period_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="sh">"</span><span class="s">2025Q3</span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">"</span><span class="s">2026Q1</span><span class="sh">"</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">Q</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">index_q</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726172247766.png" alt="image-20250726172247766" style="zoom:50%;" /></p>
+
+<h3 id="时间戳作为行索引的series">时间戳作为行索引的Series</h3>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pd.Series(..., index=...)</code>：时间戳索引 Series</strong></p>
+
+<ul>
+  <li><strong>原理：</strong> 当一个 <code class="language-plaintext highlighter-rouge">Series</code> 或 <code class="language-plaintext highlighter-rouge">DataFrame</code> 的索引是 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 或 <code class="language-plaintext highlighter-rouge">PeriodIndex</code> 时，它就成为一个时间序列对象。Pandas 为这些对象提供了专门的时间序列方法，使得时间相关的操作更加便捷和高效。索引的类型决定了时间序列的性质（时间点或时间段）。</li>
+  <li><strong>拓展：</strong>
+    <ul>
+      <li><strong>数据对齐：</strong> Pandas 在进行时间序列运算时会自动根据时间索引进行数据对齐，处理缺失值。</li>
+      <li><strong>时间序列特有方法：</strong> <code class="language-plaintext highlighter-rouge">resample</code>, <code class="language-plaintext highlighter-rouge">asfreq</code>, <code class="language-plaintext highlighter-rouge">shift</code>, <code class="language-plaintext highlighter-rouge">rolling</code> 等。</li>
+      <li><strong>在机器学习中的作用：</strong> 大多数时间序列模型（ARIMA, Prophet, LSTM等）都要求输入数据具有时间索引，以便进行特征工程（如提取日期特征）、数据分割（训练/测试集按时间顺序）和模型评估。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>【1】创建一个时间戳索引的Series</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07-26</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,)),</span> <span class="n">index</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+<span class="n">s</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726192352263.png" alt="image-20250726192352263" style="zoom:50%;" /></p>
+
+<p>【2】创建一个时期索引的Series</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">pe</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">period_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">M</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span> <span class="n">index</span><span class="o">=</span><span class="n">pe</span><span class="p">)</span>
+<span class="n">s1</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="12-转换方法">1.2 转换方法</h2>
+
+<p>Pandas 提供了强大的工具来将各种格式的数据转换为时间戳，以及对时间戳进行日期偏移操作。</p>
+
+<h3 id="转换为时间戳">转换为时间戳</h3>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">pd.to_datetime()</code>：将各种类型转换为时间戳</strong>
+    <ul>
+      <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">pd.to_datetime()</code> 是 Pandas 中最常用的时间数据解析函数。它能够智能地识别多种日期和时间字符串格式，并将其转换为 <code class="language-plaintext highlighter-rouge">Timestamp</code> 对象。其底层实现会尝试多种解析策略，包括 ISO 8601 格式、各种常见的日期分隔符等。对于无法识别的格式，可以通过 <code class="language-plaintext highlighter-rouge">format</code> 参数显式指定。</li>
+      <li><strong>参数：</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">arg</code>: 要转换的对象（字符串、列表、Series、DataFrame列等）。</li>
+          <li><code class="language-plaintext highlighter-rouge">unit</code>: 当输入是整数或浮点数时，指定其单位（’s’ for seconds, ‘ms’ for milliseconds, ‘us’ for microseconds, ‘ns’ for nanoseconds）。这对于 Unix 时间戳转换非常有用。</li>
+          <li><code class="language-plaintext highlighter-rouge">errors</code>: 错误处理方式 (‘ignore’ 返回原始输入，’coerce’ 将无法解析的转换为 <code class="language-plaintext highlighter-rouge">NaT</code> (Not a Time)，’raise’ 抛出错误)。</li>
+          <li><code class="language-plaintext highlighter-rouge">format</code>: 显式指定日期时间格式字符串，可以提高解析速度和准确性。</li>
+        </ul>
+      </li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>批量转换：</strong> <code class="language-plaintext highlighter-rouge">pd.to_datetime</code> 可以高效地处理整个 Series 或 DataFrame 列的转换。</li>
+          <li><strong>性能优化：</strong> 对于大量数据，如果日期时间格式一致，使用 <code class="language-plaintext highlighter-rouge">format</code> 参数可以显著提高性能。</li>
+          <li><strong><code class="language-plaintext highlighter-rouge">NaT</code> (Not a Time)：</strong> Pandas 中表示时间缺失值的特殊类型，类似于 <code class="language-plaintext highlighter-rouge">NaN</code>。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>【1】字符串：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">dates_str_list</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">2020.09.10</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">2025-09-08</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">2023/07/09</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">2022/02/27</span><span class="sh">"</span><span class="p">]</span>
+<span class="c1"># format="mixed"让 pandas 自动推断每个日期的格式
+</span><span class="n">datetimeIndex</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">dates_str_list</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="sh">"</span><span class="s">mixed</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">datetimeIndex</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726195956139.png" alt="image-20250726195956139" style="zoom:50%;" /></p>
+
+<p>【2】转换unix时间戳（秒）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">unix_time</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1598582232</span><span class="p">,</span> <span class="mi">1609459200</span><span class="p">]</span>
+<span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">unix_time</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="sh">"</span><span class="s">s</span><span class="sh">"</span><span class="p">)</span>  
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726200149257.png" alt="image-20250726200149257" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>注意参数：<code class="language-plaintext highlighter-rouge">unit="s"</code>，输入的时间戳是以秒为单位（而不是毫秒、微秒等）</p>
+</blockquote>
+
+<p>【3】转换unix时间戳（毫秒）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">unix_time2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1598582420401</span><span class="p">,</span> <span class="mi">1678886400000</span><span class="p">]</span>
+<span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">unix_time2</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="sh">"</span><span class="s">ms</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726200339231.png" alt="image-20250726200339231" style="zoom:50%;" /></p>
+
+<p>【4】使用format参数指定格式：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">str_list</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">2025-July-09</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">2025-June-21</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">str_list</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="sh">"</span><span class="s">%Y-%B-%d</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726200548561.png" alt="image-20250726200548561" style="zoom:50%;" /></p>
+
+<p>如果你不确定日期字符串的格式是否一致，或者想让 pandas 自动推断格式，可以使用<code class="language-plaintext highlighter-rouge"> format="mixed"</code></p>
+
+<h3 id="日期偏移">日期偏移</h3>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pd.DateOffset()</code>：日期偏移</strong></p>
+
+<ul>
+  <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">pd.DateOffset</code> 是 Pandas 中用于表示时间偏移量的对象。它允许您以各种时间单位（如年、月、日、小时、分钟、秒、工作日等）对时间戳进行加减运算。与 Python 内置的 <code class="language-plaintext highlighter-rouge">timedelta</code> 不同，<code class="language-plaintext highlighter-rouge">DateOffset</code> 能够处理日历效应，例如月份的长度不同、闰年等。其内部逻辑会根据日历规则进行调整，而不是简单地增加固定秒数。</li>
+  <li><strong>拓展：</strong>
+    <ul>
+      <li><strong>多种偏移量：</strong> <code class="language-plaintext highlighter-rouge">pd.DateOffset</code> 支持多种参数，如 <code class="language-plaintext highlighter-rouge">years</code>, <code class="language-plaintext highlighter-rouge">months</code>, <code class="language-plaintext highlighter-rouge">days</code>, <code class="language-plaintext highlighter-rouge">hours</code>, <code class="language-plaintext highlighter-rouge">minutes</code>, <code class="language-plaintext highlighter-rouge">seconds</code>, <code class="language-plaintext highlighter-rouge">microseconds</code>, <code class="language-plaintext highlighter-rouge">nanoseconds</code>。</li>
+      <li><strong>特定日历规则：</strong> Pandas 还提供了更专业的偏移量，如 <code class="language-plaintext highlighter-rouge">BusinessDay</code>, <code class="language-plaintext highlighter-rouge">MonthEnd</code>, <code class="language-plaintext highlighter-rouge">QuarterEnd</code>, <code class="language-plaintext highlighter-rouge">YearEnd</code> 等，这些在处理财务或商业数据时非常有用。</li>
+      <li><strong>应用场景：</strong> 计算未来/过去的日期、生成特定频率的日期序列、时间窗口的定义等。</li>
+    </ul>
+  </li>
+  <li>
+    <p>偏移别名</p>
+
+    <p>大量的字符串别名被赋予常用的时间序列频率。我们把这些别名称为偏移别名</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left">别名</th>
+          <th>描述说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">B</td>
+          <td>工作日频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">BQS</td>
+          <td>商务季度开始频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">D</td>
+          <td>日历/自然日频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">A</td>
+          <td>年度(年)结束频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">W</td>
+          <td>每周频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">BA</td>
+          <td>商务年底结束</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">M</td>
+          <td>月结束频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">BAS</td>
+          <td>商务年度开始频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">SM</td>
+          <td>半月结束频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">BH</td>
+          <td>商务时间频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">BM</td>
+          <td>商务月结束频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">H</td>
+          <td>小时频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">MS</td>
+          <td>月起始频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">T, min</td>
+          <td>分钟的频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">SMS</td>
+          <td>SMS半开始频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">S</td>
+          <td>秒频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">BMS</td>
+          <td>商务月开始频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">L, ms</td>
+          <td>毫秒</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Q</td>
+          <td>季度结束频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">U, us</td>
+          <td>微秒</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">BQ</td>
+          <td>商务季度结束频率</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">N</td>
+          <td>纳秒</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">QS</td>
+          <td>季度开始频率</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<hr />
+
+<p>【1】转换为某个时区：（比如下面的东八时区）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">dt</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">([</span><span class="mi">1598582420401</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="sh">"</span><span class="s">ms</span><span class="sh">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># Timestamp('2020-08-28 02:40:20.401000')
+</span><span class="n">dt_shanghai</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DateOffset</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">dt_shanghai</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726200946626.png" alt="image-20250726200946626" style="zoom:50%;" /></p>
+
+<p>【2】100天之后：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">df_plus_100</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DateOffset</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">df_plus_100</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726201033569.png" alt="image-20250726201033569" style="zoom:50%;" /></p>
+
+<p>【3】增加3个月：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">dt_plus_3_month</span> <span class="o">=</span> <span class="n">dt</span><span class="o">+</span><span class="n">pd</span><span class="p">.</span><span class="nc">DateOffset</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">dt_plus_3_month</span> <span class="c1"># Timestamp('2020-11-28 02:40:20.401000')
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【4】增加2个工作日</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">dt2</span> <span class="o">=</span> <span class="n">dt</span><span class="o">+</span><span class="n">pd</span><span class="p">.</span><span class="n">tseries</span><span class="p">.</span><span class="n">offsets</span><span class="p">.</span><span class="nc">BDay</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">dt2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726201432374.png" alt="image-20250726201432374" style="zoom:50%;" /></p>
+
+<p>【5】到下一个月末：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">dt3</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">pd</span><span class="p">.</span><span class="n">tseries</span><span class="p">.</span><span class="n">offsets</span><span class="p">.</span><span class="nc">MonthEnd</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">dt3</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726201439949.png" alt="image-20250726201439949" style="zoom:50%;" /></p>
+
+<h2 id="练习时间戳操作">练习:时间戳操作</h2>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>
+    <p>以下哪个函数最适合用于将一个包含多种日期字符串格式的 Pandas Series 转换为 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code>？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">pd.Timestamp()</code> B) <code class="language-plaintext highlighter-rouge">pd.Period()</code> C) <code class="language-plaintext highlighter-rouge">pd.to_datetime()</code> D) <code class="language-plaintext highlighter-rouge">pd.DateOffset()</code></p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>答案：C。<code class="language-plaintext highlighter-rouge">pd.to_datetime()</code> 专门设计用于解析各种日期时间格式并将其转换为 <code class="language-plaintext highlighter-rouge">Timestamp</code> 或 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code>。A 和 B 用于创建单个时间戳或时期，D 用于时间偏移。</p>
+</blockquote>
+
+<ol>
+  <li>
+    <p>如果 <code class="language-plaintext highlighter-rouge">ts = pd.Timestamp('2023-01-31')</code>，那么 <code class="language-plaintext highlighter-rouge">ts + pd.DateOffset(months=1)</code> 的结果是什么？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">Timestamp('2023-02-28 00:00:00')</code></p>
+
+    <p>B) <code class="language-plaintext highlighter-rouge">Timestamp('2023-03-01 00:00:00')</code></p>
+
+    <p>C) <code class="language-plaintext highlighter-rouge">Timestamp('2023-02-31 00:00:00')</code> (会报错)</p>
+
+    <p>D) <code class="language-plaintext highlighter-rouge">Timestamp('2023-02-28 00:00:00')</code> (如果2023年是闰年)</p>
+
+    <blockquote>
+      <p>答案：A。<code class="language-plaintext highlighter-rouge">pd.DateOffset</code> 会智能处理月份的长度。从 1 月 31 日加 1 个月，会得到 2 月的最后一天，即 2023 年 2 月 28 日（2023 年不是闰年）。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p><strong>编程题：</strong></p>
+
+<ol>
+  <li>创建一个从 ‘2024-01-01’ 开始，包含 10 个工作日（周一到周五）的 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code>。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2024-01-01</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>注意：使用 <code class="language-plaintext highlighter-rouge">freq='B'</code> (Business Day) 可以生成只包含工作日的时间序列。</p>
+</blockquote>
+
+<ol>
+  <li>给定一个包含以下字符串的列表：<code class="language-plaintext highlighter-rouge">['2022-05-10', '15/06/2023', 'July 4, 2024', '20250101']</code>。尝试使用 <code class="language-plaintext highlighter-rouge">pd.to_datetime</code> 将其转换为 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code>。如果遇到无法解析的日期，请将其转换为 <code class="language-plaintext highlighter-rouge">NaT</code>。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">str_l</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">2022-05-10</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">15/06/2023</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">July 4, 2024</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">20250101</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">str_l</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="sh">"</span><span class="s">mixed</span><span class="sh">"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="sh">"</span><span class="s">coerce</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="2时间戳索引">2.时间戳索引</h1>
+
+<p>时间戳索引是 Pandas 时间序列数据操作的核心。它允许我们使用直观的日期和时间字符串来选择、切片和过滤数据。</p>
+
+<h2 id="21-基于字符串的索引和切片">2.1 基于字符串的索引和切片</h2>
+
+<p>当 <code class="language-plaintext highlighter-rouge">Series</code> 或 <code class="language-plaintext highlighter-rouge">DataFrame</code> 的索引是 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 时，Pandas 提供了强大的基于字符串的索引和切片功能。其原理是 Pandas 会尝试将输入的字符串解析为时间戳，然后进行精确或范围匹配。这种方式大大简化了时间序列数据的选择。</p>
+
+<ul>
+  <li><strong>精确匹配：</strong> 当传入完整的日期字符串时，Pandas 会查找索引中匹配的精确时间戳。</li>
+  <li><strong>部分匹配（切片）：</strong> 当传入部分日期字符串（如年、年月）时，Pandas 会将其扩展为该时间段的起始和结束时间戳，然后进行范围切片。例如，<code class="language-plaintext highlighter-rouge">'2020-08'</code> 会被解释为从 <code class="language-plaintext highlighter-rouge">'2020-08-01 00:00:00'</code> 到 <code class="language-plaintext highlighter-rouge">'2020-08-31 23:59:59.999999999'</code> 的范围。</li>
+</ul>
+
+<p><strong>拓展：</strong></p>
+
+<ul>
+  <li><strong>效率：</strong> 对于大型时间序列，基于 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 的索引和切片非常高效，因为索引是排序的，Pandas 可以利用二分查找等优化技术。</li>
+  <li><strong>与 <code class="language-plaintext highlighter-rouge">loc</code> 结合：</strong> 也可以使用 <code class="language-plaintext highlighter-rouge">.loc</code> 访问器进行基于标签的索引，例如 <code class="language-plaintext highlighter-rouge">ts.loc['2020-08-30']</code>。</li>
+  <li><strong>不完整日期匹配：</strong> 这种特性在需要快速获取某个月份或年份的所有数据时非常方便。</li>
+</ul>
+
+<hr />
+
+<p>【1】精确匹配：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07-26</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 工作日B
+</span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="c1"># 2025-08-30
+</span><span class="n">s</span><span class="p">[</span><span class="sh">"</span><span class="s">2025-08-30</span><span class="sh">"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726203623407.png" alt="image-20250726203623407" style="zoom:50%;" /></p>
+
+<p>【2】日期切片（包含起始和结束）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">[</span><span class="sh">"</span><span class="s">2025-07-30</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">2026-02-21</span><span class="sh">"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726203726150.png" alt="image-20250726203726150" style="zoom:50%;" /></p>
+
+<p>【3】模糊匹配：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">[</span><span class="sh">"</span><span class="s">2025-09</span><span class="sh">"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726203803291.png" alt="image-20250726203803291" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">[</span><span class="sh">"</span><span class="s">2026</span><span class="sh">"</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726203831754.png" alt="image-20250726203831754" style="zoom:50%;" /></p>
+
+<h2 id="22-基于时间戳对象的索引和切片">2.2 基于时间戳对象的索引和切片</h2>
+
+<p>除了字符串，我们也可以直接使用 <code class="language-plaintext highlighter-rouge">pd.Timestamp</code> 对象作为索引或切片条件。这在需要程序化生成时间点进行访问时非常有用。其原理与字符串索引类似，但避免了字符串解析的开销。</p>
+
+<p><strong>拓展：</strong></p>
+
+<ul>
+  <li><strong>灵活性：</strong> 结合 <code class="language-plaintext highlighter-rouge">pd.date_range</code> 可以动态生成时间戳列表进行高级选择。</li>
+  <li><strong>混合索引：</strong> 可以在同一个操作中混合使用字符串和 <code class="language-plaintext highlighter-rouge">Timestamp</code> 对象。</li>
+</ul>
+
+<hr />
+
+<p>【1】基于<code class="language-plaintext highlighter-rouge">pd.Timestamp</code>进行精确访问：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">[</span><span class="n">pd</span><span class="p">.</span><span class="nc">Timestamp</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-08-23</span><span class="sh">"</span><span class="p">)]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726204023776.png" alt="image-20250726204023776" style="zoom:50%;" /></p>
+
+<p>也可以是切片：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">[</span><span class="n">pd</span><span class="p">.</span><span class="nc">Timestamp</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-08-23</span><span class="sh">"</span><span class="p">):</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Timestamp</span><span class="p">(</span><span class="sh">"</span><span class="s">2026-01-23</span><span class="sh">"</span><span class="p">)]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726204108876.png" alt="image-20250726204108876" style="zoom:50%;" /></p>
+
+<p>【2】结合 <code class="language-plaintext highlighter-rouge">pd.date_range</code> 可以动态生成时间戳列表进行高级选择</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">dr</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-08-01</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="n">dr</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726204218189.png" alt="image-20250726204218189" style="zoom:50%;" /></p>
+
+<h2 id="23-时间戳索引属性">2.3 时间戳索引属性</h2>
+
+<p><code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 对象提供了丰富的属性，可以直接从中提取年、月、日、星期几、季度等时间信息。这些属性是基于 <code class="language-plaintext highlighter-rouge">Timestamp</code> 对象的内部结构计算得出的，非常高效。它们是进行时间序列特征工程的关键。</p>
+
+<p><strong>拓展：</strong></p>
+
+<ul>
+  <li><strong>特征工程：</strong> 在机器学习/深度学习中，从时间戳中提取这些属性（如 <code class="language-plaintext highlighter-rouge">year</code>, <code class="language-plaintext highlighter-rouge">month</code>, <code class="language-plaintext highlighter-rouge">day</code>, <code class="language-plaintext highlighter-rouge">dayofweek</code>, <code class="language-plaintext highlighter-rouge">weekofyear</code>, <code class="language-plaintext highlighter-rouge">quarter</code>, <code class="language-plaintext highlighter-rouge">is_month_start</code>, <code class="language-plaintext highlighter-rouge">is_quarter_end</code> 等）是非常常见的特征工程方法。这些离散的、周期性的特征可以帮助模型捕捉时间序列中的季节性、周期性模式。</li>
+  <li><strong>可视化：</strong> 可以根据这些属性对数据进行分组或聚合，然后进行可视化分析。</li>
+  <li><strong>可用属性：</strong> 除了示例中的，还有 <code class="language-plaintext highlighter-rouge">month</code>, <code class="language-plaintext highlighter-rouge">day</code>, <code class="language-plaintext highlighter-rouge">hour</code>, <code class="language-plaintext highlighter-rouge">minute</code>, <code class="language-plaintext highlighter-rouge">second</code>, <code class="language-plaintext highlighter-rouge">microsecond</code>, <code class="language-plaintext highlighter-rouge">nanosecond</code>, <code class="language-plaintext highlighter-rouge">quarter</code>, <code class="language-plaintext highlighter-rouge">is_month_start</code>, <code class="language-plaintext highlighter-rouge">is_month_end</code>, <code class="language-plaintext highlighter-rouge">is_quarter_start</code>, <code class="language-plaintext highlighter-rouge">is_quarter_end</code>, <code class="language-plaintext highlighter-rouge">is_year_start</code>, <code class="language-plaintext highlighter-rouge">is_year_end</code>, <code class="language-plaintext highlighter-rouge">is_leap_year</code> 等。</li>
+</ul>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726204655268.png" alt="image-20250726204655268" style="zoom:50%;" /></p>
+
+<h2 id="练习--时间戳索引">练习  时间戳索引</h2>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>
+    <p>给定 <code class="language-plaintext highlighter-rouge">ts = pd.Series(range(10), index=pd.date_range('2023-01-01', periods=10, freq='D'))</code>。执行 <code class="language-plaintext highlighter-rouge">ts['2023-01-05':'2023-01-07']</code> 会返回多少个数据点？</p>
+
+    <p>A) 2 B) 3 C) 4 D) 5</p>
+
+    <blockquote>
+      <p>答案：B，时间序列切片是包含起始和结束的。所以会返回 2023-01-05, 2023-01-06, 2023-01-07 这三个数据点。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>要获取 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 中所有日期是周六或周日的数据，可以使用哪个属性？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">index.day</code> B) <code class="language-plaintext highlighter-rouge">index.dayofweek</code> C) <code class="language-plaintext highlighter-rouge">index.weekday</code> D) <code class="language-plaintext highlighter-rouge">index.is_weekend</code></p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>答案：B或者C，<code class="language-plaintext highlighter-rouge">dayofweek</code> (或 <code class="language-plaintext highlighter-rouge">weekday</code>) 返回星期几的整数表示，0 代表周一，6 代表周日。所以周六是 5，周日是 6。<code class="language-plaintext highlighter-rouge">is_weekend</code> 属性在 Pandas 中并不直接存在，但可以通过 <code class="language-plaintext highlighter-rouge">dayofweek</code> 派生。</p>
+</blockquote>
+
+<p><strong>编程题：</strong></p>
+
+<ol>
+  <li>创建一个从 ‘2023-01-01’ 到 ‘2023-12-31’ 的每日时间序列 <code class="language-plaintext highlighter-rouge">Series</code>，数据为随机整数。然后： a) 提取所有 2023 年 3 月的数据。 b) 提取所有每周一的数据。 c) 计算每个月的平均值。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="sh">"</span><span class="s">2023-01-01</span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">"</span><span class="s">2023-12-31</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="c1"># a) 提取所有 2023 年 3 月的数据。
+</span><span class="n">s1</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="sh">"</span><span class="s">2023-03</span><span class="sh">"</span><span class="p">]</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+<span class="c1"># b) 提取所有每周一的数据。
+</span><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="n">dayofweek</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+<span class="c1">#  c) 计算每个月的平均值。
+</span><span class="n">mean_</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="nf">groupby</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="n">month</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">mean_</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="3时间序列常用方法">3.时间序列常用方法</h1>
+
+<p>在时间序列分析中，经常需要对数据进行移动（滞后）、频率转换和重采样等操作。Pandas 提供了高效且功能丰富的内置方法来完成这些任务。</p>
+
+<h2 id="31-移动-shifting">3.1 移动 (Shifting)</h2>
+
+<h3 id="数据移动">数据移动</h3>
+
+<p><strong><code class="language-plaintext highlighter-rouge">Series.shift()</code>：数据移动</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">shift()</code> 方法用于将 Series 或 DataFrame 中的数据沿时间轴向前或向后移动（滞后或超前）。它会根据指定的 <code class="language-plaintext highlighter-rouge">periods</code> 参数移动数据，并在移动后产生的空白位置填充 <code class="language-plaintext highlighter-rouge">NaN</code>。
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">periods &gt; 0</code>：数据向后移动，即滞后。例如，<code class="language-plaintext highlighter-rouge">shift(1)</code> 会将当前行的数据移动到下一行，第一行变为 <code class="language-plaintext highlighter-rouge">NaN</code>。这在计算滞后特征（lagged features）时非常有用。</li>
+      <li><code class="language-plaintext highlighter-rouge">periods &lt; 0</code>：数据向前移动，即超前。例如，<code class="language-plaintext highlighter-rouge">shift(-1)</code> 会将当前行的数据移动到前一行，最后一行变为 <code class="language-plaintext highlighter-rouge">NaN</code>。这在计算超前特征（leading features）时很有用。</li>
+    </ul>
+  </li>
+  <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">shift</code> 操作本质上是改变了数据与索引的对应关系，数据值保持不变，但它们被关联到了不同的时间点上。</li>
+  <li><strong>拓展：</strong>
+    <ul>
+      <li><strong>计算变化量：</strong> 结合 <code class="language-plaintext highlighter-rouge">diff()</code> 方法可以计算时间序列的差分，例如 <code class="language-plaintext highlighter-rouge">ts.diff(periods=1)</code> 等同于 <code class="language-plaintext highlighter-rouge">ts - ts.shift(1)</code>。</li>
+      <li><strong>特征工程：</strong> 在机器学习中，滞后特征（如前一天的销售额、前一小时的温度）是时间序列预测模型中非常重要的特征。它们捕捉了数据在时间上的依赖性。</li>
+      <li><strong>填充值：</strong> 可以通过 <code class="language-plaintext highlighter-rouge">fill_value</code> 参数指定填充 <code class="language-plaintext highlighter-rouge">NaN</code> 的值。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>【1】数据后移2天（滞后）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">"</span><span class="s">2025-07-26</span><span class="sh">"</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">365</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">ts</span><span class="p">))),</span> <span class="n">index</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="c1"># 滞后2天
+</span><span class="n">s</span><span class="p">.</span><span class="nf">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726205735072.png" alt="image-20250726205735072" style="zoom:50%;" /></p>
+
+<p>【2】数据前移2天（超前）：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="nf">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726205832700.png" alt="image-20250726205832700" style="zoom:50%;" /></p>
+
+<p>【3】应用：diff()差分，计算日变化</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="nf">diff</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726205932358.png" alt="image-20250726205932358" style="zoom:50%;" /></p>
+
+<h3 id="日期移动">日期移动</h3>
+
+<p><strong><code class="language-plaintext highlighter-rouge">Series.shift(freq=...)</code>：日期移动 (不常用，推荐 <code class="language-plaintext highlighter-rouge">tshift</code> 或 <code class="language-plaintext highlighter-rouge">asfreq</code>)</strong></p>
+
+<p><strong>但是tshift 方法在现代版本的 pandas 中已被废弃（deprecated），并且在较新版本（如 pandas 1.x 及以上）中已移除。</strong></p>
+
+<ul>
+  <li><strong>讲解与原理：</strong> 这里的 <code class="language-plaintext highlighter-rouge">shift</code> 结合 <code class="language-plaintext highlighter-rouge">freq</code> 参数实际上是调整了索引的频率，而不是移动数据。它会将索引移动指定的频率，同时保持数据与新索引的对齐。这与 <code class="language-plaintext highlighter-rouge">tshift</code> 的行为类似，但 <code class="language-plaintext highlighter-rouge">tshift</code> 更直接地表示“时间索引移动”。</li>
+  <li><strong>注意：</strong> 官方文档推荐使用 <code class="language-plaintext highlighter-rouge">tshift</code> 或 <code class="language-plaintext highlighter-rouge">asfreq</code> 进行日期索引的移动或频率转换，而不是 <code class="language-plaintext highlighter-rouge">shift(freq=...)</code>。</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="nf">display</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="c1"># 日期移动2天
+</span><span class="n">s</span><span class="p">.</span><span class="nf">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="n">tseries</span><span class="p">.</span><span class="n">offsets</span><span class="p">.</span><span class="nc">Day</span><span class="p">())</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726210203664.png" alt="image-20250726210203664" style="zoom:50%;" /></p>
+
+<h2 id="32-频率转换-asfreq">3.2 频率转换 (asfreq)</h2>
+
+<p><code class="language-plaintext highlighter-rouge">asfreq()</code> 方法用于将时间序列的频率转换为新的频率。</p>
+
+<ul>
+  <li><strong>升采样 (Upsampling)：</strong> 当新频率比原频率更高（例如，从天到小时），即数据点变多时，<code class="language-plaintext highlighter-rouge">asfreq</code> 会在新的时间点上引入 <code class="language-plaintext highlighter-rouge">NaN</code>。可以通过 <code class="language-plaintext highlighter-rouge">fill_value</code> 或 <code class="language-plaintext highlighter-rouge">method</code> 参数（如 ‘ffill’ 前向填充，’bfill’ 后向填充）来处理这些缺失值。</li>
+  <li><strong>降采样 (Downsampling)：</strong> 当新频率比原频率更低（例如，从天到周），即数据点变少时，<code class="language-plaintext highlighter-rouge">asfreq</code> 会选择每个新频率周期内的第一个或最后一个数据点（取决于频率定义）。</li>
+  <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">asfreq</code> 是基于索引的重新采样，它会创建一个新的 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code>，然后尝试将原数据映射到新索引上。</li>
+</ul>
+
+<p><strong>拓展：</strong></p>
+
+<ul>
+  <li><strong>数据填充：</strong> <code class="language-plaintext highlighter-rouge">method</code> 参数在处理缺失值时非常重要，例如 <code class="language-plaintext highlighter-rouge">ffill</code> (forward fill) 适用于股票价格等数据，<code class="language-plaintext highlighter-rouge">bfill</code> (backward fill) 适用于某些事件数据。</li>
+  <li><strong>与 <code class="language-plaintext highlighter-rouge">resample</code> 的区别：</strong> <code class="language-plaintext highlighter-rouge">asfreq</code> 仅改变频率并进行简单的值选择或填充，不进行聚合运算。<code class="language-plaintext highlighter-rouge">resample</code> 则在改变频率的同时，可以对每个新频率周期内的数据进行聚合（如求和、平均值等）。</li>
+  <li><strong>机器学习/深度学习：</strong> 在时间序列预测中，有时需要将数据统一到某个频率（例如，将日数据转换为周数据），或者将低频数据升采样到高频以匹配其他特征。</li>
+  <li><strong>应用场景：</strong> 将每日销售数据转换为每周销售数据，将每分钟传感器读数转换为每小时平均值等。</li>
+</ul>
+
+<hr />
+
+<p>【1】天变周（降采样）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="sh">"</span><span class="s">2023-01-01</span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">"</span><span class="s">2023-12-31</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+<span class="c1"># display(s)
+# 天变周
+</span><span class="n">s</span><span class="p">.</span><span class="nf">asfreq</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">tseries</span><span class="p">.</span><span class="n">offsets</span><span class="p">.</span><span class="nc">Week</span><span class="p">())</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>【2】天变月（降采样）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="nf">asfreq</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">tseries</span><span class="p">.</span><span class="n">offsets</span><span class="p">.</span><span class="nc">MonthEnd</span><span class="p">())</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726213616555.png" alt="image-20250726213616555" style="zoom:50%;" /></p>
+
+<p>【3】天变小时（升采样，数据变多，需要填充）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="nf">asfreq</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">tseries</span><span class="p">.</span><span class="n">offsets</span><span class="p">.</span><span class="nc">Hour</span><span class="p">(),</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726213721448.png" alt="image-20250726213721448" style="zoom:50%;" /></p>
+
+<p>可以指定前向填充：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="nf">asfreq</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">tseries</span><span class="p">.</span><span class="n">offsets</span><span class="p">.</span><span class="nc">Hour</span><span class="p">(),</span> <span class="n">method</span><span class="o">=</span><span class="sh">"</span><span class="s">ffill</span><span class="sh">"</span><span class="p">).</span><span class="nf">head</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726213832393.png" alt="image-20250726213832393" style="zoom:50%;" /></p>
+
+<h2 id="33-重采样-resample">3.3 重采样 (resample)</h2>
+
+<p><code class="language-plaintext highlighter-rouge">resample()</code> 是 Pandas 中用于时间序列聚合的核心方法。它允许您根据日期维度对数据进行分组，然后对每个组执行聚合操作（如求和、平均值、计数等）。</p>
+
+<ul>
+  <li><strong>工作流程：</strong> <code class="language-plaintext highlighter-rouge">resample()</code> 返回一个 <code class="language-plaintext highlighter-rouge">Resampler</code> 对象，这个对象类似于 <code class="language-plaintext highlighter-rouge">groupby</code> 对象，需要链式调用一个聚合函数（如 <code class="language-plaintext highlighter-rouge">sum()</code>, <code class="language-plaintext highlighter-rouge">mean()</code>, <code class="language-plaintext highlighter-rouge">count()</code>, <code class="language-plaintext highlighter-rouge">ohlc()</code> 等）来执行实际的聚合。</li>
+  <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">resample</code> 会根据指定的频率创建一个新的时间段（bins），然后将原始时间序列中的数据点分配到对应的 bin 中，最后对每个 bin 中的数据执行聚合函数。</li>
+</ul>
+
+<p><strong>拓展：</strong></p>
+
+<ul>
+  <li><strong>聚合函数：</strong> 可以使用任何 NumPy 或 Pandas 的聚合函数，也可以使用自定义函数。</li>
+  <li><strong>OHLC：</strong> 对于金融数据，<code class="language-plaintext highlighter-rouge">ohlc()</code> 方法可以直接计算开盘价、最高价、最低价和收盘价。</li>
+  <li><strong>升采样与降采样：</strong> <code class="language-plaintext highlighter-rouge">resample</code> 既可以用于降采样（将高频数据聚合为低频数据，如日数据到月数据），也可以用于升采样（将低频数据插值为高频数据，但通常需要配合 <code class="language-plaintext highlighter-rouge">fillna</code> 和插值方法）。</li>
+  <li><strong>机器学习/深度学习：</strong> 在构建时间序列特征时，重采样是关键一步。例如，将每分钟的传感器读数重采样为每小时的平均值或最大值，以减少数据维度或提取更有意义的特征。</li>
+  <li><strong>应用场景：</strong> 计算每周、每月、每年的销售总额；计算每小时的平均温度；将高频交易数据聚合为 K 线图等。</li>
+</ul>
+
+<hr />
+
+<p>【1】以2周为单位进行汇总（比如求和）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="sh">"</span><span class="s">2023-01-01</span><span class="sh">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="sh">"</span><span class="s">2023-12-31</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+<span class="n">s</span><span class="p">.</span><span class="nf">resample</span><span class="p">(</span><span class="sh">"</span><span class="s">2W</span><span class="sh">"</span><span class="p">).</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726214057448.png" alt="image-20250726214057448" style="zoom:50%;" /></p>
+
+<p>【2】以3个月为单位进行汇总（求和，然后再求累积和）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="nf">resample</span><span class="p">(</span><span class="sh">"</span><span class="s">3M</span><span class="sh">"</span><span class="p">).</span><span class="nf">sum</span><span class="p">().</span><span class="nf">cumsum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726214158983.png" alt="image-20250726214158983" style="zoom:50%;" /></p>
+
+<p>【3】降采样+计算均值：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="nf">resample</span><span class="p">(</span><span class="sh">"</span><span class="s">ME</span><span class="sh">"</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726214242724.png" alt="image-20250726214242724" style="zoom:50%;" /></p>
+
+<p>【4】降采样+OHLC（开盘价，最高价，最低价，收盘价）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">s</span><span class="p">.</span><span class="nf">resample</span><span class="p">(</span><span class="sh">"</span><span class="s">W</span><span class="sh">"</span><span class="p">).</span><span class="nf">ohlc</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726214346217.png" alt="image-20250726214346217" style="zoom:50%;" /></p>
+
+<h2 id="34-dataframe-重采样">3.4 DataFrame 重采样</h2>
+
+<p><code class="language-plaintext highlighter-rouge">DataFrame</code> 的重采样与 <code class="language-plaintext highlighter-rouge">Series</code> 类似，但可以指定用于重采样的列，或者在多级索引中指定级别。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">on</code> 参数：</strong> 当 DataFrame 中存在多个日期时间列时，可以使用 <code class="language-plaintext highlighter-rouge">on</code> 参数指定哪个列作为重采样的基准。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">level</code> 参数：</strong> 当 DataFrame 具有多级索引，且其中一个级别是 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 时，可以使用 <code class="language-plaintext highlighter-rouge">level</code> 参数指定对哪个级别进行重采样。</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">agg()</code> 方法：</strong> <code class="language-plaintext highlighter-rouge">agg()</code> 方法允许您对不同的列应用不同的聚合函数，这在重采样时非常灵活。</li>
+</ul>
+
+<p><strong>拓展：</strong></p>
+
+<ul>
+  <li><strong>复杂聚合：</strong> <code class="language-plaintext highlighter-rouge">agg</code> 可以接受字典，列表或元组来定义复杂的聚合。</li>
+  <li><strong>多级索引处理：</strong> <code class="language-plaintext highlighter-rouge">level</code> 参数在处理复杂数据结构时非常有用。</li>
+  <li><strong>应用场景：</strong> 股票交易数据（价格、成交量），需要按周或月聚合时，价格可能需要求平均，而成交量需要求和。</li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">d</span> <span class="o">=</span> <span class="nf">dict</span><span class="p">({</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span>
+          <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+          <span class="sh">'</span><span class="s">week_starting</span><span class="sh">'</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">'</span><span class="s">24/08/2020</span><span class="sh">'</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">'</span><span class="s">W</span><span class="sh">'</span><span class="p">)})</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1"># 基于week_starting，按照月汇总求和
+# 也可以用  df.resample("ME", on="week_starting").apply("sum")
+</span><span class="n">df</span><span class="p">.</span><span class="nf">resample</span><span class="p">(</span><span class="sh">"</span><span class="s">ME</span><span class="sh">"</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="sh">"</span><span class="s">week_starting</span><span class="sh">"</span><span class="p">).</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726214610179.png" alt="image-20250726214610179" style="zoom:50%;" /></p>
+
+<p>也可以基于不同的列进行聚合：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">df</span><span class="p">.</span><span class="nf">resample</span><span class="p">(</span><span class="sh">"</span><span class="s">ME</span><span class="sh">"</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="sh">"</span><span class="s">week_starting</span><span class="sh">"</span><span class="p">).</span><span class="nf">agg</span><span class="p">({</span><span class="sh">"</span><span class="s">price</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">mean</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">volume</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">sum</span><span class="sh">"</span><span class="p">})</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>多级索引的重采样：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="n">days</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="sh">'</span><span class="s">1/8/2020</span><span class="sh">'</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="nf">dict</span><span class="p">({</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span>
+              <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data2</span><span class="p">,</span>
+                   <span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="n">MultiIndex</span><span class="p">.</span><span class="nf">from_product</span><span class="p">([</span><span class="n">days</span><span class="p">,</span> <span class="p">[</span><span class="sh">'</span><span class="s">morning</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">afternoon</span><span class="sh">'</span><span class="p">]],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">Date</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">TimeOfDay</span><span class="sh">'</span><span class="p">]))</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+<span class="c1"># 基于日期进行重采样+求和
+</span><span class="n">df2</span><span class="p">.</span><span class="nf">resample</span><span class="p">(</span><span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="sh">"</span><span class="s">Date</span><span class="sh">"</span><span class="p">).</span><span class="nf">sum</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250726214922491.png" alt="image-20250726214922491" style="zoom:50%;" /></p>
+
+<h1 id="4时区表示">4.时区表示</h1>
+
+<p>在处理全球化数据时，时区是一个非常重要的概念。Pandas 提供了完善的时区处理功能，包括时区本地化和时区转换。</p>
+
+<p><strong>时区感知 (Timezone-aware) vs. 朴素 (Naive) 时间戳：</strong></p>
+
+<ul>
+  <li><strong>朴素时间戳：</strong> 不带任何时区信息的时间戳（例如 <code class="language-plaintext highlighter-rouge">2023-01-01 10:00:00</code>）。它不知道自己属于哪个时区，通常被解释为本地时间或 UTC 时间，这可能导致歧义。</li>
+  <li><strong>时区感知时间戳：</strong> 包含明确时区信息的时间戳（例如 <code class="language-plaintext highlighter-rouge">2023-01-01 10:00:00+08:00</code>）。它明确知道自己属于哪个时区，并且可以正确地进行时区转换。</li>
+</ul>
+
+<p><strong>UTC (Coordinated Universal Time)：</strong> 协调世界时，是全球统一的时间标准。在数据存储和传输时，通常建议将时间戳转换为 UTC，以避免时区问题。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">pytz</code> 库：</strong> Pandas 内部使用 <code class="language-plaintext highlighter-rouge">pytz</code> 库来处理时区信息。<code class="language-plaintext highlighter-rouge">pytz.common_timezones</code> 列出了所有常用的时区名称。</p>
+
+<hr />
+
+<h2 id="41-时区本地化">4.1 时区本地化</h2>
+
+<p><strong><code class="language-plaintext highlighter-rouge">tz_localize()</code>：时区本地化</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">tz_localize()</code> 用于将一个朴素（不带时区信息）的 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 或 <code class="language-plaintext highlighter-rouge">Timestamp</code> 转换为时区感知（带时区信息）的对象。它告诉 Pandas 这些时间戳应该被解释为哪个时区的时间。</li>
+  <li><strong>重要：</strong> <code class="language-plaintext highlighter-rouge">tz_localize()</code> 只是给时间戳“打上标签”，并没有改变时间戳的实际 UTC 值。例如，将 <code class="language-plaintext highlighter-rouge">2020-08-01 00:00:00</code> 本地化为 ‘Asia/Shanghai’ (UTC+8)，它仍然是 <code class="language-plaintext highlighter-rouge">2020-08-01 00:00:00</code>，但现在被理解为上海时间。</li>
+</ul>
+
+<h2 id="42-时区转换">4.2 时区转换</h2>
+
+<p><strong><code class="language-plaintext highlighter-rouge">tz_convert()</code>：时区转换</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">tz_convert()</code> 用于将一个已经有时区信息的 <code class="language-plaintext highlighter-rouge">DatetimeIndex</code> 或 <code class="language-plaintext highlighter-rouge">Timestamp</code> 从一个时区转换为另一个时区。它会根据时区规则调整时间戳的实际 UTC 值，以确保时间点在全球范围内是相同的。</li>
+  <li><strong>重要：</strong> <code class="language-plaintext highlighter-rouge">tz_convert()</code> 改变了时间戳的实际显示值，但其表示的“绝对时间点”在 UTC 层面是不变的。例如，将 <code class="language-plaintext highlighter-rouge">2020-08-01 00:00:00+08:00</code> 转换为 ‘UTC’，会得到 <code class="language-plaintext highlighter-rouge">2020-07-31 16:00:00+00:00</code>。</li>
+</ul>
+
+<p><strong>拓展：</strong></p>
+
+<ul>
+  <li><strong>夏令时 (Daylight Saving Time)：</strong> <code class="language-plaintext highlighter-rouge">pytz</code> 库和 Pandas 会自动处理夏令时转换。在进行时区转换时，它们会考虑夏令时的开始和结束，确保时间的正确性。</li>
+  <li><strong>数据一致性：</strong> 在处理来自不同地理位置或系统的数据时，统一时区是确保数据一致性和正确分析的关键。通常的做法是将所有数据转换为 UTC 进行存储和处理，只在展示给用户时才转换为用户所在的时区。</li>
+  <li><strong>机器学习/深度学习：</strong> 在时间序列预测中，如果数据来源于不同时区，或者预测模型需要考虑全球时间，那么时区处理是必不可少的预处理步骤。不正确的时区处理可能导致模型学习到错误的模式。</li>
+</ul>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/25/pandas%E6%95%B0%E6%8D%AE%E6%8E%92%E5%BA%8F/" data-toggle="tooltip" data-placement="top" title="pandas-数据排序">
+                        Previous<br>
+                        <span>pandas-数据排序</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0127" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0106" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0112" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0113" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0117" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0120" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0127" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0128" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0128" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0128" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
