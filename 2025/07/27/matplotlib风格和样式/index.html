@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="matplotlib-风格和样式 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-27T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="matplotlib">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/27/matplotlib%E9%A3%8E%E6%A0%BC%E5%92%8C%E6%A0%B7%E5%BC%8F/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>matplotlib-风格和样式 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/27/matplotlib%E9%A3%8E%E6%A0%BC%E5%92%8C%E6%A0%B7%E5%BC%8F/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=matplotlib" title="matplotlib">matplotlib</a>
+                        
+                    </div>
+                    <h1>matplotlib-风格和样式</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 27, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>Matplotlib 提供了极其丰富的选项来控制图表中每一个元素的风格和样式，从而创建出美观且信息量大的可视化作品。</p>
+
+<h1 id="1颜色线形点形线宽透明度">1.颜色、线形、点形、线宽、透明度</h1>
+
+<p>这些是控制线形图外观最基本的参数，理解它们的用法是创建清晰图表的基础。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">plt.plot()</code> 参数详解：</strong>
+    <ul>
+      <li><strong><code class="language-plaintext highlighter-rouge">color</code> / <code class="language-plaintext highlighter-rouge">c</code>：颜色</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 可以使用颜色名称（如 ‘red’, ‘blue’, ‘green’, ‘black’/’k’ 等）、HTML 颜色代码（如 ‘#FF00EE’）、RGB 元组（如 <code class="language-plaintext highlighter-rouge">(0.2, 0.7, 0.2)</code>）。</li>
+          <li><strong>原理：</strong> Matplotlib 内部将这些颜色表示转换为 RGB 或 RGBA 值，然后用于渲染线条或标记。</li>
+          <li><strong>拓展：</strong>
+            <ul>
+              <li><strong>颜色映射 (Colormaps)：</strong> 对于表示连续数值的颜色，可以使用颜色映射（如 <code class="language-plaintext highlighter-rouge">cmap='viridis'</code>），通常与 <code class="language-plaintext highlighter-rouge">scatter</code> 或 <code class="language-plaintext highlighter-rouge">imshow</code> 结合使用。</li>
+              <li><strong>颜色循环：</strong> Matplotlib 有一个默认的颜色循环，当绘制多条线时不指定颜色时，会自动使用不同的颜色。</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong><code class="language-plaintext highlighter-rouge">linestyle</code> / <code class="language-plaintext highlighter-rouge">ls</code>：线型</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 控制线的样式，如实线、虚线、点线等。</li>
+          <li><strong>常用值：</strong> <code class="language-plaintext highlighter-rouge">'-'</code> (实线), <code class="language-plaintext highlighter-rouge">'--'</code> (虚线), <code class="language-plaintext highlighter-rouge">'-.'</code> (点划线), <code class="language-plaintext highlighter-rouge">':'</code> (点线), <code class="language-plaintext highlighter-rouge">'None'</code> (无线条)。</li>
+          <li><strong>原理：</strong> 通过在绘制时跳过或重复像素来模拟不同的线型。</li>
+        </ul>
+      </li>
+      <li><strong><code class="language-plaintext highlighter-rouge">marker</code>：点型</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 控制数据点上显示的标记样式。</li>
+          <li><strong>常用值：</strong> <code class="language-plaintext highlighter-rouge">'o'</code> (圆圈), <code class="language-plaintext highlighter-rouge">'s'</code> (正方形), <code class="language-plaintext highlighter-rouge">'^'</code> (三角形), <code class="language-plaintext highlighter-rouge">'*'</code> (星形), <code class="language-plaintext highlighter-rouge">'p'</code> (五边形), <code class="language-plaintext highlighter-rouge">'+'</code> (加号), <code class="language-plaintext highlighter-rouge">'x'</code> (叉号) 等。</li>
+          <li><strong>原理：</strong> 在每个数据点的位置绘制指定的形状。</li>
+        </ul>
+      </li>
+      <li><strong><code class="language-plaintext highlighter-rouge">linewidth</code> / <code class="language-plaintext highlighter-rouge">lw</code>：线宽</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 控制线的粗细。值越大，线越粗。</li>
+          <li><strong>原理：</strong> 增加绘制线条的像素宽度。</li>
+        </ul>
+      </li>
+      <li><strong><code class="language-plaintext highlighter-rouge">alpha</code>：透明度</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 控制绘图元素的透明度，值范围从 0.0（完全透明）到 1.0（完全不透明）。</li>
+          <li><strong>原理：</strong> 在渲染时，将绘图元素的颜色与背景颜色进行混合。</li>
+          <li><strong>拓展：</strong>
+            <ul>
+              <li>在绘制大量重叠数据点（如散点图）或多条曲线时，设置透明度可以帮助观察数据密度或区分重叠区域。</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>参数连用：</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> Matplotlib 允许将颜色、线型、点型组合成一个字符串作为 <code class="language-plaintext highlighter-rouge">plot</code> 函数的第三个参数（在 x, y 之后）。例如 <code class="language-plaintext highlighter-rouge">'bo--'</code> 表示蓝色圆点虚线。</li>
+          <li><strong>原理：</strong> 这是一个方便的快捷方式，内部会解析这个字符串并设置相应的参数。</li>
+          <li><strong>注意：</strong> 这种快捷方式只能设置颜色、线型、点型，其他参数（如 <code class="language-plaintext highlighter-rouge">linewidth</code>, <code class="language-plaintext highlighter-rouge">alpha</code>）仍需单独指定。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 精细控制图表外观，使图表更具表现力和可读性，例如区分不同类别的数据、突出重要趋势等。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">+</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="sh">"</span><span class="s">indigo</span><span class="sh">"</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="sh">"</span><span class="s">-.</span><span class="sh">"</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="sh">"</span><span class="s">p</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">正弦波(点划线，五边形)</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="sh">"</span><span class="s">#FF00EE</span><span class="sh">"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="sh">"</span><span class="s">--</span><span class="sh">"</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="sh">"</span><span class="s">o</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sh">"</span><span class="s">余弦波（虚线，圆形）</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="n">marker</span> <span class="o">=</span> <span class="sh">"</span><span class="s">*</span><span class="sh">"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">和（点线，星型）</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">orange</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">加倍余弦(粗线， 半透明)</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">,</span> <span class="sh">"</span><span class="s">bo--</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">2倍正弦减余弦(圆点虚线)</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727160230551.png" alt="image-20250727160230551" style="zoom:50%;" /></p>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>
+    <p>要将一条线的颜色设置为红色，线宽设置为 2，透明度设置为 0.5，以下哪个 <code class="language-plaintext highlighter-rouge">plt.plot()</code> 调用是正确的？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">plt.plot(x, y, 'r', lw=2, alpha=0.5)</code></p>
+
+    <p>B) <code class="language-plaintext highlighter-rouge">plt.plot(x, y, color='red', linewidth=2, alpha=0.5)</code></p>
+
+    <p>C) <code class="language-plaintext highlighter-rouge">plt.plot(x, y, 'r', linewidth=2, alpha=0.5)</code></p>
+
+    <p>D) 以上所有选项都正确</p>
+
+    <blockquote>
+      <p>答案：D，A, B, C 都是正确的用法。A 使用了快捷颜色参数，B 和 C 使用了完整的参数名。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪个选项能够使图表中的重叠数据点（例如在散点图中）更容易区分数据密度？</p>
+
+    <p>A) 增加 <code class="language-plaintext highlighter-rouge">linewidth</code> B) 改变 <code class="language-plaintext highlighter-rouge">marker</code> 样式 C) 调整 <code class="language-plaintext highlighter-rouge">alpha</code> 参数 D) 使用 <code class="language-plaintext highlighter-rouge">linestyle</code></p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">alpha</code> 参数控制透明度，当多个点重叠时，透明度较低的点会叠加颜色，从而显示出数据密度。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p><strong>编程题：</strong></p>
+
+<ol>
+  <li>绘制函数 y=cos(x) 在 x in <code class="language-plaintext highlighter-rouge">[0,4 pi] </code>范围内的线形图。
+    <ul>
+      <li>线的颜色设置为深绿色。</li>
+      <li>线型为点线。</li>
+      <li>点型为星形。</li>
+      <li>线宽为 1.5。</li>
+      <li>透明度为 0.8。</li>
+      <li>添加标题“余弦函数曲线图”。</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">+</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">darkgreen</span><span class="sh">"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="sh">"</span><span class="s">*</span><span class="sh">"</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">余弦函数曲线图</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727160758105.png" alt="image-20250727160758105" style="zoom:50%;" /></p>
+
+<h1 id="2更多属性设置">2.更多属性设置</h1>
+
+<p>除了基本的线和点属性，Matplotlib 还提供了更多精细的控制选项，特别是针对标记（marker）和刻度（ticks）的样式。</p>
+
+<ul>
+  <li><strong>标记 (Marker) 的更多属性：</strong>
+    <ul>
+      <li><strong><code class="language-plaintext highlighter-rouge">markerfacecolor</code>：点的填充颜色</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 当 <code class="language-plaintext highlighter-rouge">marker</code> 参数指定了点型时，<code class="language-plaintext highlighter-rouge">markerfacecolor</code> 用于设置标记内部的填充颜色。</li>
+        </ul>
+      </li>
+      <li><strong><code class="language-plaintext highlighter-rouge">markersize</code>：点的大小</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 控制标记的尺寸。</li>
+        </ul>
+      </li>
+      <li><strong><code class="language-plaintext highlighter-rouge">markeredgecolor</code>：点边缘颜色</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 控制标记边缘的颜色。</li>
+        </ul>
+      </li>
+      <li><strong><code class="language-plaintext highlighter-rouge">markeredgewidth</code>：点边缘宽度</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 控制标记边缘的宽度。</li>
+        </ul>
+      </li>
+      <li><strong>原理：</strong> 这些参数直接修改了 Matplotlib 内部用于绘制标记的图形对象的属性。</li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li>结合 <code class="language-plaintext highlighter-rouge">alpha</code> 可以创建半透明的标记，用于显示数据密度。</li>
+          <li>在散点图中，这些参数可以用于区分不同类别的数据点，或者通过大小、颜色等编码更多信息。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 突出图表中的关键数据点、创建自定义的散点图样式、在时间序列中标记特定事件点等。</li>
+    </ul>
+  </li>
+  <li><strong>刻度 (Ticks) 的大小设置：</strong>
+    <ul>
+      <li><strong><code class="language-plaintext highlighter-rouge">plt.xticks(size=...)</code> / <code class="language-plaintext highlighter-rouge">plt.yticks(size=...)</code>：设置刻度标签大小</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 除了在 <code class="language-plaintext highlighter-rouge">plt.xticks()</code> 和 <code class="language-plaintext highlighter-rouge">plt.yticks()</code> 中通过 <code class="language-plaintext highlighter-rouge">fontsize</code> 参数设置刻度标签的字体大小外，也可以使用 <code class="language-plaintext highlighter-rouge">size</code> 参数，两者效果相同。</li>
+          <li><strong>原理：</strong> 直接修改刻度标签文本对象的字体大小属性。</li>
+        </ul>
+      </li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li>可以进一步控制刻度线的长度、粗细、方向等，通过 <code class="language-plaintext highlighter-rouge">ax.tick_params()</code> 方法。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 确保刻度标签在不同分辨率的图表中清晰可读，或根据图表整体风格进行调整。</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span> <span class="o">+</span> <span class="mf">0.00001</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">purple</span><span class="sh">"</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="sh">"</span><span class="s">o</span><span class="sh">"</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="sh">"</span><span class="s">--</span><span class="sh">"</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> 
+         <span class="n">markerfacecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">red</span><span class="sh">"</span><span class="p">,</span> <span class="n">markersize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">衰减余弦波</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727161351473.png" alt="image-20250727161351473" style="zoom:50%;" /></p>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>
+    <p>要在 <code class="language-plaintext highlighter-rouge">plt.plot()</code> 中设置标记内部的填充颜色，应该使用哪个参数？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">color</code> B) <code class="language-plaintext highlighter-rouge">markercolor</code> C) <code class="language-plaintext highlighter-rouge">markerfacecolor</code> D) <code class="language-plaintext highlighter-rouge">edgecolor</code></p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">markerfacecolor</code> 用于设置标记的填充颜色。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪个参数用于设置 <code class="language-plaintext highlighter-rouge">plt.xticks()</code> 或 <code class="language-plaintext highlighter-rouge">plt.yticks()</code> 中刻度标签的字体大小？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">size</code> B) <code class="language-plaintext highlighter-rouge">fontsize</code> C) <code class="language-plaintext highlighter-rouge">font_size</code> D) A 和 B 都正确</p>
+
+    <blockquote>
+      <p>答案：D，<code class="language-plaintext highlighter-rouge">size</code> 和 <code class="language-plaintext highlighter-rouge">fontsize</code> 都可以用于设置刻度标签的字体大小，两者是等效的。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p><strong>编程题：</strong></p>
+
+<ol>
+  <li>绘制函数 \(y=x^3−3x\) 在 \(x \in [−3,3]\) 范围内的线形图。
+    <ul>
+      <li>线的颜色设置为蓝色。</li>
+      <li>线型为实线。</li>
+      <li>点型为菱形 (<code class="language-plaintext highlighter-rouge">'D'</code>)。</li>
+      <li>点的大小为 8。</li>
+      <li>点的填充颜色为黄色。</li>
+      <li>点的边缘颜色为黑色，边缘宽度为 1。</li>
+      <li>x 轴和 y 轴刻度标签字体大小设置为 12。</li>
+      <li>添加标题“函数 \(y=x^3−3x\)”。</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="sh">"</span><span class="s">-</span><span class="sh">"</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">yellow</span><span class="sh">"</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">k</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">yticks</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sa">r</span><span class="sh">"</span><span class="s">$y=x^3-3x$</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727161859083.png" alt="image-20250727161859083" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/27/matplotlib%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" data-toggle="tooltip" data-placement="top" title="matplotlib-基础知识">
+                        Previous<br>
+                        <span>matplotlib-基础知识</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0129" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0108" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0114" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0115" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0119" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0119" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0120" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0122" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0129" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0130" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0130" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="2">matplotlib</a>
+        
+                <a data-sort="0130" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0130" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
