@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="matplotlib-基础知识 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-07-27T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="matplotlib">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/27/matplotlib%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>matplotlib-基础知识 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/27/matplotlib%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=matplotlib" title="matplotlib">matplotlib</a>
+                        
+                    </div>
+                    <h1>matplotlib-基础知识</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on July 27, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>为了画图时正确显示中文以及负号：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">font.sans-serif</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">SimHei</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">axes.unicode_minus</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>   <span class="c1"># 解决负号显示的问题
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/8a5f6bbafc1248df9cdc95e79fc92520.png" alt="image.png" /></p>
+
+<p>在数据分析与机器学习中，数据可视化是理解数据、发现模式、验证假设和展示结果的强大工具。一张制作精美的数据图片，可以展示大量的信息，真正做到“一图顶千言”。</p>
+
+<p>Matplotlib 是 Python 最著名的绘图库，它提供了一整套 API，十分适合绘制各种图表，并允许用户精细地控制图表的每一个属性，如字体、标签、范围、颜色、线型等。</p>
+
+<p><strong>安装 Matplotlib：</strong></p>
+
+<p>您可以使用 <code class="language-plaintext highlighter-rouge">pip</code> 命令轻松安装 Matplotlib：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pip</span> <span class="n">install</span> <span class="n">matplotlib</span> <span class="o">-</span><span class="n">i</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="p">.</span><span class="n">tuna</span><span class="p">.</span><span class="n">tsinghua</span><span class="p">.</span><span class="n">edu</span><span class="p">.</span><span class="n">cn</span><span class="o">/</span><span class="n">simple</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Matplotlib 是一个 Python 的 2D 绘图库，它能够在交互式环境中生成出版质量级别的图形。通过 Matplotlib 这个标准类库，开发者只需要几行代码就可以实现生成绘图，如折线图、散点图、柱状图、饼图、直方图、组合图等数据分析可视化图表。它不仅功能强大，而且高度可定制，是数据科学家和研究人员的首选工具之一。</p>
+
+<hr />
+
+<p>本部分将介绍 Matplotlib 的基本绘图流程和核心组件，包括图形的创建、坐标轴的设置、网格线、刻度、标签和标题的控制。</p>
+
+<h1 id="1入门图形绘制">1.入门图形绘制</h1>
+
+<p>在 Matplotlib 中，所有的绘图都是在一个 <code class="language-plaintext highlighter-rouge">Figure</code>（图形）对象上进行的，而实际的绘图区域则位于 <code class="language-plaintext highlighter-rouge">Axes</code>（坐标系）对象中。理解 Figure 和 Axes 的概念是掌握 Matplotlib 的关键。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727002308533.png" alt="image-20250727002308533" style="zoom:30%;" /></p>
+
+<ul>
+  <li><strong>核心概念：Figure 和 Axes</strong>
+    <ul>
+      <li><strong>Figure (图形)</strong>：可以理解为一张白纸或一个窗口，它是所有绘图元素的顶层容器。一个 Figure 可以包含一个或多个 Axes。</li>
+      <li><strong>Axes (坐标系)</strong>：是实际进行数据绘图的区域。它包含 x 轴、y 轴、刻度、标签、标题等。通常，我们的大部分绘图操作都是在 Axes 对象上进行的。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">plt.figure()</code>：创建图形</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> <code class="language-plaintext highlighter-rouge">plt.figure()</code> 用于创建一个新的 Figure 对象。如果您不显式创建，Matplotlib 会在第一次调用绘图函数时自动创建一个默认的 Figure 和 Axes。</li>
+      <li><strong>参数：</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">figsize</code>: (width, height) 元组，指定图形的宽度和高度（单位为英寸）。</li>
+          <li><code class="language-plaintext highlighter-rouge">dpi</code>: 每英寸点数，用于控制图形的分辨率。</li>
+          <li><code class="language-plaintext highlighter-rouge">facecolor</code>, <code class="language-plaintext highlighter-rouge">edgecolor</code>: 背景颜色和边缘颜色。</li>
+        </ul>
+      </li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li>在 Jupyter Notebook 或其他交互式环境中，每次调用 <code class="language-plaintext highlighter-rouge">plt.figure()</code> 都会创建一个新的空白图。</li>
+          <li>通过获取 Figure 对象，可以对其进行更高级的操作，如保存、调整大小等。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 当需要在一个窗口中绘制多个独立的图表，或者需要精确控制图表尺寸和分辨率时。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">plt.plot()</code>：绘制线形图</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> <code class="language-plaintext highlighter-rouge">plt.plot()</code> 是 Matplotlib 中最基本的绘图函数之一，用于绘制 2D 线形图。它接受 x 坐标和 y 坐标作为输入，将这些点连接起来形成线。</li>
+      <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">plot</code> 函数将输入的 x, y 数据点转换为屏幕坐标，并根据指定的线型、颜色等属性绘制像素。</li>
+      <li><strong>参数：</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">x</code>, <code class="language-plaintext highlighter-rouge">y</code>: 数据点的 x 和 y 坐标。</li>
+          <li><code class="language-plaintext highlighter-rouge">color</code> / <code class="language-plaintext highlighter-rouge">c</code>: 线的颜色。</li>
+          <li><code class="language-plaintext highlighter-rouge">linestyle</code> / <code class="language-plaintext highlighter-rouge">ls</code>: 线的样式（如 ‘<code class="language-plaintext highlighter-rouge">-</code>’, ‘<code class="language-plaintext highlighter-rouge">--</code>’, ‘<code class="language-plaintext highlighter-rouge">:</code>’, ‘<code class="language-plaintext highlighter-rouge">-.</code>‘）。</li>
+          <li><code class="language-plaintext highlighter-rouge">linewidth</code> / <code class="language-plaintext highlighter-rouge">lw</code>: 线的宽度。</li>
+          <li><code class="language-plaintext highlighter-rouge">marker</code>: 数据点的标记样式（如 ‘<code class="language-plaintext highlighter-rouge">o</code>’, ‘<code class="language-plaintext highlighter-rouge">s</code>’, ‘<code class="language-plaintext highlighter-rouge">^</code>’, ‘<code class="language-plaintext highlighter-rouge">*</code>‘）。</li>
+          <li><code class="language-plaintext highlighter-rouge">alpha</code>: 线的透明度（0.0 到 1.0）。</li>
+        </ul>
+      </li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>绘制多条线：</strong> 可以多次调用 <code class="language-plaintext highlighter-rouge">plt.plot()</code> 在同一个 Axes 上绘制多条线。</li>
+          <li><strong>快捷参数：</strong> 可以将颜色、线型、点型组合成一个字符串参数，如 <code class="language-plaintext highlighter-rouge">'bo--'</code> 表示蓝色圆点虚线。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 展示时间序列数据趋势、函数曲线、数据点之间的关系等。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">plt.grid()</code>：设置网格线</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> 网格线可以帮助用户更精确地读取图表上的数值。<code class="language-plaintext highlighter-rouge">plt.grid()</code> 用于在坐标系中添加网格线。</li>
+      <li><strong>原理：</strong> Matplotlib 会根据当前的刻度位置自动生成网格线。</li>
+      <li><strong>参数：</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">b</code>: 布尔值，是否显示网格线（已废弃，推荐使用 <code class="language-plaintext highlighter-rouge">True</code>/<code class="language-plaintext highlighter-rouge">False</code>）。</li>
+          <li><code class="language-plaintext highlighter-rouge">linestyle</code> / <code class="language-plaintext highlighter-rouge">ls</code>: 网格线的样式。</li>
+          <li><code class="language-plaintext highlighter-rouge">color</code> / <code class="language-plaintext highlighter-rouge">c</code>: 网格线的颜色。</li>
+          <li><code class="language-plaintext highlighter-rouge">alpha</code>: 网格线的透明度。</li>
+          <li><code class="language-plaintext highlighter-rouge">axis</code>: 指定网格线应用于哪个轴 (‘x’, ‘y’, ‘both’)。</li>
+        </ul>
+      </li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li>可以单独控制 x 轴或 y 轴的网格线。</li>
+          <li>在数据密度较高或需要精确读数的图表中，网格线非常有用。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 科学绘图、数据分析报告等需要精确数值参考的场景。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">plt.axis()</code> / <code class="language-plaintext highlighter-rouge">plt.xlim()</code> / <code class="language-plaintext highlighter-rouge">plt.ylim()</code>：设置坐标轴范围</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> Matplotlib 会根据数据自动调整坐标轴的显示范围。但有时我们需要手动设置这些范围，以突出特定区域或保持多图之间的一致性。</li>
+      <li><strong><code class="language-plaintext highlighter-rouge">plt.axis([xmin, xmax, ymin, ymax])</code>：</strong> 同时设置 x 和 y 轴的范围。</li>
+      <li><strong><code class="language-plaintext highlighter-rouge">plt.xlim([xmin, xmax])</code>：</strong> 仅设置 x 轴的范围。</li>
+      <li><strong><code class="language-plaintext highlighter-rouge">plt.ylim([ymin, ymax])</code>：</strong> 仅设置 y 轴的范围。</li>
+      <li><strong>原理：</strong> 这些函数会修改当前 Axes 对象的 x 和 y 轴视图限制。</li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>自动调整：</strong> 如果不设置，Matplotlib 会自动选择合适的范围。</li>
+          <li><strong>反转轴：</strong> 可以通过设置 <code class="language-plaintext highlighter-rouge">xmax &lt; xmin</code> 或 <code class="language-plaintext highlighter-rouge">ymax &lt; ymin</code> 来反转坐标轴。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 放大图表中的特定区域、统一多个子图的坐标轴范围以便比较、排除异常值对视图的影响。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="c1"># 100个点
+</span><span class="n">y_sin</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_cos</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># 调整图形尺寸
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span> <span class="c1"># 单位：英寸
+</span>
+<span class="c1"># 绘制线形图
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_sin</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">-</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_cos</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">red</span><span class="sh">"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">--</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 网格线
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">--</span><span class="sh">"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">grey</span><span class="sh">"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="sh">"</span><span class="s">both</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 设置坐标轴
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+
+<span class="c1"># 添加图例
+# plt.legend()
+</span>
+<span class="c1"># 添加标题和轴标签
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">正弦波和余弦波</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">X轴</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Y轴</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1">#  自动调整子图参数，填充整个图像区域
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727123625261.png" alt="image-20250727123625261" style="zoom:50%;" /></p>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>在 Matplotlib 中，以下哪个是实际进行数据绘图的区域？ A) <code class="language-plaintext highlighter-rouge">Figure</code> B) <code class="language-plaintext highlighter-rouge">Canvas</code> C) <code class="language-plaintext highlighter-rouge">Axes</code> D) <code class="language-plaintext highlighter-rouge">Plot</code></li>
+</ol>
+
+<blockquote>
+  <p>答案：C，<code class="language-plaintext highlighter-rouge">Figure</code> 是顶层容器，<code class="language-plaintext highlighter-rouge">Axes</code> 是实际绘制数据（包含坐标轴、刻度等）的区域。</p>
+</blockquote>
+
+<ol>
+  <li>
+    <p>要在一个 <code class="language-plaintext highlighter-rouge">plt.plot()</code> 调用中同时设置线的颜色为红色、线型为虚线、点型为圆形，以下哪个参数组合是正确的？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">color='red', linestyle='--', marker='o'</code></p>
+
+    <p>B) <code class="language-plaintext highlighter-rouge">'ro--'</code></p>
+
+    <p>C) <code class="language-plaintext highlighter-rouge">color='red', ls='--', marker='circle'</code></p>
+
+    <p>D) A 和 B 都正确</p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>答案：D，A 是使用独立参数设置，B 是使用快捷字符串参数。两者都正确。</p>
+</blockquote>
+
+<p><strong>编程题：</strong></p>
+
+<ol>
+  <li>绘制函数 \(y=x^2 在\)x in <code class="language-plaintext highlighter-rouge">[−5,5]</code> 范围内的线形图。设置图表尺寸为 8x5 英寸，并添加绿色虚线网格线。将 x 轴范围设置为 <code class="language-plaintext highlighter-rouge">[−6,6]</code>，y 轴范围设置为 <code class="language-plaintext highlighter-rouge">[0,30]</code>。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c1"># np.set_printoptions(suppress=True)
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="nf">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="sh">"</span><span class="s">g--</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727124208685.png" alt="image-20250727124208685" style="zoom:50%;" /></p>
+
+<p>使用 <code class="language-plaintext highlighter-rouge">np.linspace</code> 生成 x 值，计算 y 值。<code class="language-plaintext highlighter-rouge">plt.figure</code> 设置尺寸，<code class="language-plaintext highlighter-rouge">plt.plot</code> 绘制曲线。<code class="language-plaintext highlighter-rouge">plt.grid</code> 添加网格线并设置样式。<code class="language-plaintext highlighter-rouge">plt.xlim</code> 和 <code class="language-plaintext highlighter-rouge">plt.ylim</code> 设置坐标轴范围(或者用<code class="language-plaintext highlighter-rouge">plt.axis([xmin, xmax, ymin, ymax])</code>)。</p>
+
+<h1 id="2坐标轴刻度标签标题">2.坐标轴刻度、标签、标题</h1>
+
+<p>图表的刻度、标签和标题是传达图表信息的重要组成部分。它们使得图表更具可读性和专业性。</p>
+
+<ul>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">plt.xticks()</code> / <code class="language-plaintext highlighter-rouge">plt.yticks()</code>：设置 x 轴和 y 轴刻度</strong></p>
+
+    <ul>
+      <li><strong>讲解与原理：</strong> 这些函数用于手动指定坐标轴上刻度线的位置。默认情况下，Matplotlib 会自动选择刻度位置，但有时我们需要在特定位置显示刻度，例如在数学函数图中显示 pi 的倍数。</li>
+      <li><strong>参数：</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">ticks</code>: 一个列表或数组，指定刻度线的位置。</li>
+          <li><code class="language-plaintext highlighter-rouge">labels</code>: 一个列表或数组，指定每个刻度线对应的标签文本。如果未提供，则使用 <code class="language-plaintext highlighter-rouge">ticks</code> 的值作为标签。</li>
+          <li><code class="language-plaintext highlighter-rouge">fontsize</code>: 标签的字体大小。</li>
+          <li><code class="language-plaintext highlighter-rouge">rotation</code>: 标签的旋转角度。</li>
+          <li><code class="language-plaintext highlighter-rouge">ha</code> / <code class="language-plaintext highlighter-rouge">horizontalalignment</code>: 标签的水平对齐方式。</li>
+          <li><code class="language-plaintext highlighter-rouge">color</code>, <code class="language-plaintext highlighter-rouge">fontweight</code>, <code class="language-plaintext highlighter-rouge">fontfamily</code> 等字体属性。</li>
+        </ul>
+      </li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>LaTeX 语法：</strong> 在标签中使用 <code class="language-plaintext highlighter-rouge">r'$\frac{\pi}{2}$'</code> 这样的原始字符串和 LaTeX 语法，可以渲染出漂亮的数学公式。需要确保 Matplotlib 配置支持 LaTeX（通常默认支持，但复杂公式可能需要安装 TeX 发行版）。</li>
+          <li><strong>刻度格式化：</strong> 可以使用 <code class="language-plaintext highlighter-rouge">matplotlib.ticker</code> 模块进行更复杂的刻度格式化，例如百分比、货币等。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 数学函数绘图、时间序列图中每年的开始、自定义分类轴等。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong><code class="language-plaintext highlighter-rouge">plt.xlabel()</code> / <code class="language-plaintext highlighter-rouge">plt.ylabel()</code> / <code class="language-plaintext highlighter-rouge">plt.title()</code>：设置坐标轴标签和标题</strong></p>
+
+    <ul>
+      <li>
+        <p><strong>讲解与原理：</strong> 这些函数用于为 x 轴、y 轴和整个图表添加描述性文本。</p>
+      </li>
+      <li>
+        <p><strong>参数：</strong></p>
+
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">label</code>: 标签文本。</li>
+          <li><code class="language-plaintext highlighter-rouge">fontsize</code>: 字体大小。</li>
+          <li><code class="language-plaintext highlighter-rouge">color</code>: 字体颜色。</li>
+          <li><code class="language-plaintext highlighter-rouge">fontweight</code>: 字体粗细。</li>
+          <li><code class="language-plaintext highlighter-rouge">rotation</code>: 标签旋转角度（<code class="language-plaintext highlighter-rouge">ylabel</code> 默认垂直）。</li>
+          <li><code class="language-plaintext highlighter-rouge">horizontalalignment</code> / <code class="language-plaintext highlighter-rouge">ha</code>: 水平对齐方式。</li>
+          <li><code class="language-plaintext highlighter-rouge">verticalalignment</code> / <code class="language-plaintext highlighter-rouge">va</code>: 垂直对齐方式。</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>拓展：</strong></p>
+
+        <ul>
+          <li>
+            <p><strong>中文显示：</strong> 默认情况下，Matplotlib 可能无法正确显示中文。需要通过 <code class="language-plaintext highlighter-rouge">plt.rcParams</code> 设置字体。</p>
+
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">matplotlib.font_manager</span> <span class="kn">import</span> <span class="n">FontManager</span>
+<span class="c1"># 获取电脑上的字体库 (可选，用于查看可用字体)
+# fm = FontManager()
+# mat_fonts = set(f.name for f in fm.ttflist)
+# print(mat_fonts)
+</span>          
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span> <span class="c1"># 设置中文字体，例如 'SimHei' (黑体) 或 'Songti SC' (宋体)
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span> <span class="c1"># 解决负号显示为方块的问题
+</span></pre></td></tr></tbody></table></code></pre></div>            </div>
+          </li>
+          <li>
+            <p><strong>子图标题：</strong> 对于子图，可以使用 <code class="language-plaintext highlighter-rouge">ax.set_title()</code> 来设置每个子图的标题。</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>应用场景：</strong> 任何需要清晰解释图表内容的场景，是图表自解释性的关键。</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">正弦函数</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 设置x轴y轴刻度
+# plt.xticks(np.arange(0, 7, (np.pi)/2))
+# plt.yticks([-1, 0, 1])
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="sa">r</span><span class="sh">"</span><span class="s">$\frac{\pi}{2}$</span><span class="sh">"</span><span class="p">,</span> <span class="sa">r</span><span class="sh">"</span><span class="s">${\pi}$</span><span class="sh">"</span><span class="p">,</span><span class="sa">r</span><span class="sh">"</span><span class="s">$\frac{3\pi}{2}$</span><span class="sh">"</span><span class="p">,</span><span class="sa">r</span><span class="sh">"</span><span class="s">${2\pi}$</span><span class="sh">"</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="sh">"</span><span class="s">normal</span><span class="sh">"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">darkgreen</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">yticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">最小值</span><span class="sh">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="sh">"</span><span class="s">最大值</span><span class="sh">"</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="sh">"</span><span class="s">right</span><span class="sh">"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 设置x轴y轴坐标轴标签的标题
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">角度(弧度)</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">purple</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">函数值</span><span class="sh">"</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="sh">"</span><span class="s">right</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontstyle</span><span class="o">=</span><span class="sh">"</span><span class="s">normal</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">orange</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">正弦波曲线图</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="sh">"</span><span class="s">bold</span><span class="sh">"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">darkblue</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">--</span><span class="sh">"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727130110792.png" alt="image-20250727130110792" style="zoom:50%;" /></p>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>
+    <p>要在 Matplotlib 图表中正确显示中文，通常需要修改哪个 <code class="language-plaintext highlighter-rouge">rcParams</code> 参数？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">plt.rcParams['figure.figsize']</code></p>
+
+    <p>B) <code class="language-plaintext highlighter-rouge">plt.rcParams['font.sans-serif']</code></p>
+
+    <p>C) <code class="language-plaintext highlighter-rouge">plt.rcParams['axes.grid']</code></p>
+
+    <p>D) <code class="language-plaintext highlighter-rouge">plt.rcParams['lines.linewidth']</code></p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>答案：B，<code class="language-plaintext highlighter-rouge">plt.rcParams['font.sans-serif']</code> 用于设置无衬线字体，通常用于显示中文。</p>
+</blockquote>
+
+<ol>
+  <li>以下哪个选项可以用于在 Matplotlib 刻度标签中显示数学公式，例如 alpha？</li>
+</ol>
+
+<p>A) <code class="language-plaintext highlighter-rouge">labels=['alpha']</code> B) <code class="language-plaintext highlighter-rouge">labels=['\alpha']</code> C) <code class="language-plaintext highlighter-rouge">labels=[r'$\alpha$']</code> D) <code class="language-plaintext highlighter-rouge">labels=['$\alpha$']</code></p>
+
+<blockquote>
+  <p>答案：C，需要使用原始字符串 <code class="language-plaintext highlighter-rouge">r''</code> 和美元符号 <code class="language-plaintext highlighter-rouge">$$</code> 来包裹 LaTeX 语法。</p>
+</blockquote>
+
+<p><strong>编程题：</strong></p>
+
+<ol>
+  <li>绘制函数 \(y=e^{−x}sin(2 \pi x)\) 在 x in <code class="language-plaintext highlighter-rouge">[0,4]</code> 范围内的线形图。
+    <ul>
+      <li>设置图表标题为“衰减正弦波”。</li>
+      <li>x 轴标签为“时间 (秒)”，y 轴标签为“振幅”。</li>
+      <li>x 轴刻度显示为 <code class="language-plaintext highlighter-rouge">0, 1, 2, 3, 4</code>。</li>
+      <li>y 轴刻度显示为 <code class="language-plaintext highlighter-rouge">-1, 0, 1</code>。</li>
+      <li>确保中文显示正常。</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">衰减正弦波</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">时间（秒）</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">振幅</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">yticks</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="c1"># 确保中文显示正常
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">font.sans-serif</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">SimHei</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727131100467.png" alt="image-20250727131100467" style="zoom:50%;" /></p>
+
+<h1 id="3图例">3.图例</h1>
+
+<p>当图表中包含多条曲线或多个数据系列时，图例（Legend）是必不可少的，它帮助读者区分和理解每个数据系列的含义。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">plt.legend()</code>：添加图例</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> <code class="language-plaintext highlighter-rouge">plt.legend()</code> 用于在图表中添加图例。它会根据 <code class="language-plaintext highlighter-rouge">plt.plot()</code> 或其他绘图函数中设置的 <code class="language-plaintext highlighter-rouge">label</code> 参数来生成图例项。</li>
+      <li><strong>原理：</strong> Matplotlib 会收集所有带有 <code class="language-plaintext highlighter-rouge">label</code> 参数的绘图对象，并在图例框中显示这些标签及其对应的颜色/线型/点型。</li>
+      <li><strong>参数：</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">labels</code>: 一个字符串列表，显式指定图例的标签。如果 <code class="language-plaintext highlighter-rouge">plot</code> 函数已经设置了 <code class="language-plaintext highlighter-rouge">label</code>，则无需再次指定。</li>
+          <li><code class="language-plaintext highlighter-rouge">loc</code>: 图例的位置。可以是字符串（如 ‘upper right’, ‘lower left’, ‘center’, ‘best’ 等）或整数（1-10）。’best’ 会自动选择最佳位置。</li>
+          <li><code class="language-plaintext highlighter-rouge">ncol</code>: 图例的列数。</li>
+          <li><code class="language-plaintext highlighter-rouge">fontsize</code>: 图例文本的字体大小。</li>
+          <li><code class="language-plaintext highlighter-rouge">bbox_to_anchor</code>: 一个元组 <code class="language-plaintext highlighter-rouge">(x, y, width, height)</code>，用于将图例放置在 Axes 外部的任意位置。这在图例会遮挡数据时非常有用。</li>
+        </ul>
+      </li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>自定义图例句柄：</strong> 对于更复杂的图例（例如，一个图例项代表多个绘图对象），可以使用 <code class="language-plaintext highlighter-rouge">matplotlib.patches</code> 创建自定义的图例句柄。</li>
+          <li><strong>图例标题：</strong> 可以通过 <code class="language-plaintext highlighter-rouge">title</code> 参数为图例添加标题。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 比较不同模型性能、展示不同类别数据分布、多变量时间序列图等。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y_sin</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_cos</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_sin</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">正弦波</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_cos</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">red</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">余弦波</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1">#  frameon=True显示图例边框
+#   ncol = 1图例显示为1列
+# facecolor="lightyellow" 图例背景颜色
+# edgecolor="gray" 图例边框颜色
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> 
+           <span class="n">loc</span><span class="o">=</span><span class="sh">"</span><span class="s">lower left</span><span class="sh">"</span><span class="p">,</span> 
+           <span class="n">ncol</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> 
+           <span class="n">title</span><span class="o">=</span><span class="sh">"</span><span class="s">函数类型</span><span class="sh">"</span><span class="p">,</span> 
+           <span class="n">frameon</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+           <span class="n">shadow</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+           <span class="n">facecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">lightyellow</span><span class="sh">"</span><span class="p">,</span>
+          <span class="n">edgecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">gray</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">正弦波与余弦波</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">X轴</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Y轴</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727132603483.png" alt="image-20250727132603483" style="zoom:50%;" /></p>
+
+<p>关于参数<code class="language-plaintext highlighter-rouge">bbox_to_anchor</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y_sin</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_cos</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_sin</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">正弦波</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_cos</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">red</span><span class="sh">"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">余弦波</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1">#  borderaxespad=0  轴与图例之间的间距
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> 
+           <span class="n">loc</span><span class="o">=</span><span class="sh">"</span><span class="s">lower left</span><span class="sh">"</span><span class="p">,</span> 
+           <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>  <span class="c1"># （x, y, width, height）相对figure的坐标
+</span>           <span class="n">mode</span><span class="o">=</span><span class="sh">"</span><span class="s">expand</span><span class="sh">"</span><span class="p">,</span> <span class="c1"># 展开图例以填充bbox_to_anchor定义的宽度
+</span>           <span class="n">ncol</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> 
+           <span class="n">title</span><span class="o">=</span><span class="sh">"</span><span class="s">函数类型</span><span class="sh">"</span><span class="p">,</span> 
+           <span class="n">borderaxespad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">正弦波与余弦波</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">X轴</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Y轴</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727132940486.png" alt="image-20250727132940486" style="zoom:50%;" /></p>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>
+    <p>要在 Matplotlib 图表中为多条曲线添加图例，以下哪个参数在 <code class="language-plaintext highlighter-rouge">plt.plot()</code> 中是必需的？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">color</code> B) <code class="language-plaintext highlighter-rouge">linestyle</code> C) <code class="language-plaintext highlighter-rouge">label</code> D) <code class="language-plaintext highlighter-rouge">legend</code></p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">label</code> 参数用于为每条曲线指定图例文本。<code class="language-plaintext highlighter-rouge">plt.legend()</code> 会收集这些 <code class="language-plaintext highlighter-rouge">label</code> 来生成图例。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>要将图例放置在图表的右侧中央，并且图例项横向排列成两列，应该如何设置 <code class="language-plaintext highlighter-rouge">plt.legend()</code> 的参数？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">loc='center right', ncol=2</code></p>
+
+    <p>B) <code class="language-plaintext highlighter-rouge">loc='right', ncol=2</code></p>
+
+    <p>C) <code class="language-plaintext highlighter-rouge">loc='center', bbox_to_anchor=(1.05, 0.5), ncol=2</code></p>
+
+    <p>D) <code class="language-plaintext highlighter-rouge">loc='right', mode='expand', ncol=2</code></p>
+
+    <blockquote>
+      <p>答案：A，其实B也对。</p>
+
+      <p>其他选项：</p>
+
+      <p>C：</p>
+
+      <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727133307925.png" alt="image-20250727133307925" style="zoom:50%;" /></p>
+
+      <p>D：</p>
+
+      <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727133337784.png" alt="image-20250727133337784" style="zoom:50%;" /></p>
+    </blockquote>
+
+    <p><strong>编程题：</strong></p>
+
+    <ol>
+      <li>绘制函数 \(y_1=sin(x)\)和\(y_2=cos(x)\)在\(x in [0,2 \pi]\) 范围内的线形图。
+        <ul>
+          <li>为 \(y_1\) 曲线添加标签“正弦函数”，为 \(y_2\) 曲线添加标签“余弦函数”。</li>
+          <li>将图例放置在图表的左上角。</li>
+          <li>图例字体大小设置为 12。</li>
+          <li>图例边框显示，并有轻微阴影。</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y_1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">正弦函数</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">余弦函数</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">"</span><span class="s">upper left</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">shadow</span><span class="o">=</span><span class="bp">True</span> <span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
+
+    <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727134354940.png" alt="image-20250727134354940" style="zoom:50%;" /></p>
+  </li>
+</ol>
+
+<h1 id="4脊柱移动">4.脊柱移动</h1>
+
+<p>在 Matplotlib 中，“脊柱”（Spines）指的是围绕数据区域的线，它们代表了坐标轴的边界。默认情况下，图表有四条脊柱（上、下、左、右）。通过移动或隐藏脊柱，可以创建更具艺术感或特定用途的图表。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">plt.gca()</code>：获取当前 Axes</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> <code class="language-plaintext highlighter-rouge">plt.gca()</code> 是 “Get Current Axes” 的缩写。它返回当前活动的 <code class="language-plaintext highlighter-rouge">Axes</code> 对象。在 Matplotlib 的状态机接口（<code class="language-plaintext highlighter-rouge">pyplot</code> 模块）中，很多函数（如 <code class="language-plaintext highlighter-rouge">plt.plot</code>, <code class="language-plaintext highlighter-rouge">plt.title</code>）都是对当前 Axes 进行操作。但如果需要对 Axes 对象进行更精细的控制（例如，移动脊柱），就需要先获取到这个 Axes 对象。</li>
+      <li><strong>原理：</strong> Matplotlib 维护一个当前的 Figure 和 Axes 栈。<code class="language-plaintext highlighter-rouge">plt.gca()</code> 返回栈顶的 Axes 对象。</li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>面向对象接口：</strong> 在更复杂的绘图中，通常直接创建 Figure 和 Axes 对象（例如 <code class="language-plaintext highlighter-rouge">fig, ax = plt.subplots()</code>），然后直接在 <code class="language-plaintext highlighter-rouge">ax</code> 对象上调用方法（如 <code class="language-plaintext highlighter-rouge">ax.plot()</code>, <code class="language-plaintext highlighter-rouge">ax.set_title()</code>），这样更清晰和可控。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 需要对 Axes 级别属性进行修改时。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">ax.spines</code>：访问脊柱对象</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> <code class="language-plaintext highlighter-rouge">ax.spines</code> 是一个字典状的对象，可以通过键（’left’, ‘right’, ‘top’, ‘bottom’）访问到对应的 <code class="language-plaintext highlighter-rouge">Spine</code> 对象。每个 <code class="language-plaintext highlighter-rouge">Spine</code> 对象都有自己的属性和方法来控制其外观和位置。</li>
+      <li><strong><code class="language-plaintext highlighter-rouge">set_color()</code>：设置脊柱颜色</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 用于改变脊柱的颜色。设置为 ‘none’ 或 ‘white’ 可以使其不可见。</li>
+        </ul>
+      </li>
+      <li><strong><code class="language-plaintext highlighter-rouge">set_position()</code>：设置脊柱位置</strong>
+        <ul>
+          <li><strong>讲解与原理：</strong> 用于改变脊柱相对于其默认位置的偏移。</li>
+          <li><strong>参数：</strong>
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">'outward'</code>: 将脊柱向外移动指定点数。</li>
+              <li><code class="language-plaintext highlighter-rouge">'axes'</code>: 将脊柱放置在 Axes 坐标系中的相对位置（0.0 到 1.0）。</li>
+              <li><code class="language-plaintext highlighter-rouge">'data'</code>: 将脊柱放置在数据坐标系中的特定值。这对于将坐标轴原点移动到 (0,0) 非常有用。</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>原理：</strong> <code class="language-plaintext highlighter-rouge">Spine</code> 对象是 <code class="language-plaintext highlighter-rouge">matplotlib.spines.Spine</code> 类的实例，它封装了对坐标轴边界线的操作逻辑。</li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>隐藏脊柱：</strong> 将 <code class="language-plaintext highlighter-rouge">set_color()</code> 设置为透明或背景色可以隐藏脊柱。</li>
+          <li><strong>自定义外观：</strong> 可以设置脊柱的线宽、线型等。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 绘制数学函数图（将坐标轴移到原点）、美化图表、创建无边框图表等。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">+</span><span class="mf">0.001</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span> <span class="c1"># 更多点，使得曲线更加平滑
+</span><span class="n">y_1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">正弦波</span><span class="sh">"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">余弦波</span><span class="sh">"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">red</span><span class="sh">"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">gca</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="p">.</span><span class="n">spines</span><span class="p">[</span><span class="sh">"</span><span class="s">right</span><span class="sh">"</span><span class="p">].</span><span class="nf">set_color</span><span class="p">(</span><span class="sh">"</span><span class="s">none</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">spines</span><span class="p">[</span><span class="sh">"</span><span class="s">top</span><span class="sh">"</span><span class="p">].</span><span class="nf">set_color</span><span class="p">(</span><span class="sh">"</span><span class="s">none</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">.</span><span class="n">spines</span><span class="p">[</span><span class="sh">"</span><span class="s">bottom</span><span class="sh">"</span><span class="p">].</span><span class="nf">set_position</span><span class="p">((</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  
+<span class="n">ax</span><span class="p">.</span><span class="n">spines</span><span class="p">[</span><span class="sh">"</span><span class="s">left</span><span class="sh">"</span><span class="p">].</span><span class="nf">set_position</span><span class="p">((</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  
+
+<span class="c1"># 刻度线调整，不仅可以用plt.xticks或者plt.yticks，也可以用ax.set_xticks
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">set_xticks</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">],</span> 
+              <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="sh">"</span><span class="s">$-\pi$</span><span class="sh">"</span><span class="p">,</span>  <span class="sa">r</span><span class="sh">"</span><span class="s">$\frac{-\pi}{2}$</span><span class="sh">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">r</span><span class="sh">"</span><span class="s">$\frac{\pi}{6}$</span><span class="sh">"</span><span class="p">,</span><span class="sa">r</span><span class="sh">"</span><span class="s">$\frac{\pi}{2}$</span><span class="sh">"</span><span class="p">,</span> <span class="sa">r</span><span class="sh">"</span><span class="s">$\pi$</span><span class="sh">"</span><span class="p">,</span> <span class="sa">r</span><span class="sh">"</span><span class="s">$\frac{2\pi}{2}$</span><span class="sh">"</span><span class="p">,</span> <span class="sa">r</span><span class="sh">"</span><span class="s">$2\pi$</span><span class="sh">"</span><span class="p">],</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_yticks</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727151716767.png" alt="image-20250727151716767" style="zoom:50%;" /></p>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>
+    <p>要获取当前 Matplotlib 图形中的 <code class="language-plaintext highlighter-rouge">Axes</code> 对象，以便对其进行更细粒度的控制，应该使用哪个函数？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">plt.figure()</code> B) <code class="language-plaintext highlighter-rouge">plt.plot()</code> C) <code class="language-plaintext highlighter-rouge">plt.gca()</code> D) <code class="language-plaintext highlighter-rouge">plt.show()</code></p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">plt.gca()</code> 用于获取当前活动的 <code class="language-plaintext highlighter-rouge">Axes</code> 对象</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>要将 x 轴的脊柱移动到 y 轴数据值为 0 的位置，以下哪个 <code class="language-plaintext highlighter-rouge">set_position</code> 参数设置是正确的？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">ax.spines['bottom'].set_position(('axes', 0))</code></p>
+
+    <p>B) <code class="language-plaintext highlighter-rouge">ax.spines['bottom'].set_position(('data', 0))</code></p>
+
+    <p>C) <code class="language-plaintext highlighter-rouge">ax.spines['left'].set_position(('data', 0))</code></p>
+
+    <p>D) <code class="language-plaintext highlighter-rouge">ax.spines['bottom'].set_position(0)</code></p>
+
+    <blockquote>
+      <p>答案：B， <code class="language-plaintext highlighter-rouge">('data', 0)</code> 表示将脊柱放置在数据坐标系中 y 值为 0 的位置。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p><strong>编程题：</strong></p>
+
+<ol>
+  <li>绘制一条从 (−2,−2) 到 (2,2) 的直线。
+    <ul>
+      <li>隐藏图表的顶部和右侧脊柱。</li>
+      <li>将底部和左侧脊柱移动到数据原点 (0,0)。</li>
+      <li>设置 x 轴和 y 轴的刻度为 <code class="language-plaintext highlighter-rouge">-2, 0, 2</code>。</li>
+      <li>添加标题“直线图 (脊柱在原点)”。</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="c1"># 隐藏图表的顶部和右侧脊柱。
+</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">spines</span><span class="p">[</span><span class="sh">"</span><span class="s">top</span><span class="sh">"</span><span class="p">].</span><span class="nf">set_color</span><span class="p">(</span><span class="sh">"</span><span class="s">white</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">spines</span><span class="p">[</span><span class="sh">"</span><span class="s">right</span><span class="sh">"</span><span class="p">].</span><span class="nf">set_color</span><span class="p">(</span><span class="sh">"</span><span class="s">white</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 将底部和左侧脊柱移动到数据原点 (0,0)
+</span><span class="n">ax</span><span class="p">.</span><span class="n">spines</span><span class="p">[</span><span class="sh">"</span><span class="s">bottom</span><span class="sh">"</span><span class="p">].</span><span class="nf">set_position</span><span class="p">((</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">spines</span><span class="p">[</span><span class="sh">"</span><span class="s">left</span><span class="sh">"</span><span class="p">].</span><span class="nf">set_position</span><span class="p">((</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="c1"># 设置 x 轴和 y 轴的刻度为 -2, 0, 2
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">set_xticks</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_yticks</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="c1"># 添加标题“直线图 (脊柱在原点)”
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">"</span><span class="s">直线图(脊柱在原点)</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727152301418.png" alt="image-20250727152301418" style="zoom:50%;" /></p>
+
+<h1 id="5图片保存">5.图片保存</h1>
+
+<p>生成高质量的图表后，通常需要将其保存为图片文件，以便在报告、演示文稿或论文中使用。Matplotlib 提供了灵活的保存功能。</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">plt.savefig()</code>：保存图形</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> <code class="language-plaintext highlighter-rouge">plt.savefig()</code> 用于将当前 Figure 保存到文件中。它支持多种文件格式（如 PNG, JPG, PDF, SVG 等），并提供了丰富的参数来控制输出质量和布局。</li>
+      <li><strong>原理：</strong> Matplotlib 会根据当前的 Figure 对象和其包含的 Axes 对象，将其渲染成像素或矢量图形，并写入指定的文件。</li>
+      <li><strong>参数：</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">fname</code>: 文件名或文件路径，包括文件扩展名（如 ‘my_plot.png’, ‘report/figure1.pdf’）。</li>
+          <li><code class="language-plaintext highlighter-rouge">dpi</code>: 每英寸点数，控制图像的分辨率。对于位图格式（如 PNG, JPG），更高的 DPI 意味着更清晰的图像。</li>
+          <li><code class="language-plaintext highlighter-rouge">facecolor</code>, <code class="language-plaintext highlighter-rouge">edgecolor</code>: 控制 Figure 的背景颜色和边框颜色。</li>
+          <li><code class="language-plaintext highlighter-rouge">bbox_inches</code>: 控制保存的区域。
+            <ul>
+              <li><code class="language-plaintext highlighter-rouge">'tight'</code>: 自动调整图表周围的空白区域，使其尽可能紧凑，防止标签或标题被裁剪。这是最常用的设置。</li>
+              <li><code class="language-plaintext highlighter-rouge">None</code>: 使用 Figure 的原始大小。</li>
+            </ul>
+          </li>
+          <li><code class="language-plaintext highlighter-rouge">pad_inches</code>: 当 <code class="language-plaintext highlighter-rouge">bbox_inches='tight'</code> 时，额外添加的边距（英寸）。</li>
+          <li><code class="language-plaintext highlighter-rouge">transparent</code>: 是否使 Figure 背景透明。</li>
+        </ul>
+      </li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li><strong>矢量图 vs. 位图：</strong>
+            <ul>
+              <li><strong>位图 (Raster Graphics)</strong>：如 PNG, JPG。由像素组成，放大后会失真。适合网页和屏幕显示。</li>
+              <li><strong>矢量图 (Vector Graphics)</strong>：如 PDF, SVG。由数学公式描述，放大后不会失真。适合出版物和需要高分辨率打印的场景。</li>
+            </ul>
+          </li>
+          <li><strong><code class="language-plaintext highlighter-rouge">plt.tight_layout()</code>：</strong> 在保存前调用 <code class="language-plaintext highlighter-rouge">plt.tight_layout()</code> 是一个好习惯，它会自动调整子图参数，使之填充整个图像区域，并避免标签重叠或被裁剪。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 将分析结果导出为图片用于报告、论文、网页展示等。</li>
+    </ul>
+  </li>
+  <li><strong><code class="language-plaintext highlighter-rouge">ax.set_facecolor()</code>：设置 Axes 背景颜色</strong>
+    <ul>
+      <li><strong>讲解与原理：</strong> <code class="language-plaintext highlighter-rouge">ax.set_facecolor()</code> 用于设置当前 Axes（绘图区域）的背景颜色。这与 <code class="language-plaintext highlighter-rouge">plt.figure(facecolor=...)</code> 不同，后者设置的是整个 Figure 的背景颜色。</li>
+      <li><strong>原理：</strong> 直接修改 Axes 对象的背景属性。</li>
+      <li><strong>拓展：</strong>
+        <ul>
+          <li>可以用于突出图表中的特定区域，或与数据颜色方案协调。</li>
+        </ul>
+      </li>
+      <li><strong>应用场景：</strong> 美化图表、强调数据区域。</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">+</span> <span class="mf">0.00001</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y_sin</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_cos</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">lightblue</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_sin</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sh">"</span><span class="s">正弦波</span><span class="sh">"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="sh">"</span><span class="s">red</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_cos</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="sh">"</span><span class="s">余弦波</span><span class="sh">"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="sh">"</span><span class="s">k</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 获取视图
+</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">gca</span><span class="p">()</span>
+<span class="c1"># 设置视图的背景颜色
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">set_facecolor</span><span class="p">(</span><span class="sh">"</span><span class="s">lightgreen</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 图例
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="sh">"</span><span class="s">lower left</span><span class="sh">"</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sh">"</span><span class="s">函数曲线</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">正弦波与余弦波曲线图</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">X轴</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Y轴</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">savefig</span><span class="p">(</span><span class="sh">"</span><span class="s">./基础练习.pdf</span><span class="sh">"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">violet</span><span class="sh">"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">navy</span><span class="sh">"</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="sh">"</span><span class="s">tight</span><span class="sh">"</span><span class="p">,</span> <span class="n">pad_inches</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>jupyter 中：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727154621903.png" alt="image-20250727154621903" style="zoom:50%;" /></p>
+
+<p>保存的PDF：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727154635878.png" alt="image-20250727154635878" style="zoom:50%;" /></p>
+
+<p><strong>选择题：</strong></p>
+
+<ol>
+  <li>
+    <p>要在保存 Matplotlib 图表时，确保所有标签和标题都不会被裁剪，应该将 <code class="language-plaintext highlighter-rouge">plt.savefig()</code> 的哪个参数设置为 <code class="language-plaintext highlighter-rouge">'tight'</code>？</p>
+
+    <p>A) <code class="language-plaintext highlighter-rouge">dpi</code> B) <code class="language-plaintext highlighter-rouge">facecolor</code> C) <code class="language-plaintext highlighter-rouge">bbox_inches</code> D) <code class="language-plaintext highlighter-rouge">transparent</code></p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">bbox_inches='tight'</code> 会自动调整保存区域，以包含所有图表元素。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>以下哪种文件格式在保存 Matplotlib 图表时，放大后不会失真？</p>
+
+    <p>A) JPEG B) PNG C) GIF D) PDF</p>
+
+    <blockquote>
+      <p>答案：D，PDF 是一种矢量图格式，放大后不会失真。JPEG, PNG, GIF 都是位图格式。</p>
+
+      <ul>
+        <li><strong>位图 (Raster Graphics)</strong>：如 PNG, JPG。由像素组成，放大后会失真。适合网页和屏幕显示。</li>
+        <li><strong>矢量图 (Vector Graphics)</strong>：如 PDF, SVG。由数学公式描述，放大后不会失真。适合出版物和需要高分辨率打印的场景。</li>
+      </ul>
+    </blockquote>
+  </li>
+</ol>
+
+<p><strong>编程题：</strong></p>
+
+<ol>
+  <li>绘制一个简单的散点图，包含 50 个随机点。
+    <ul>
+      <li>设置图表标题为“随机散点图”。</li>
+      <li>将 Axes 背景颜色设置为浅蓝色。</li>
+      <li>将图形保存为 <code class="language-plaintext highlighter-rouge">scatter_plot.pdf</code> 文件，DPI 设置为 300，并确保保存完整。</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="n">x_data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="n">y_data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">purple</span><span class="sh">"</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">black</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_facecolor</span><span class="p">(</span><span class="sh">"</span><span class="s">lightblue</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">"</span><span class="s">随机散点图</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">X值</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Y值</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="sh">"</span><span class="s">--</span><span class="sh">"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># 保存
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">savefig</span><span class="p">(</span><span class="sh">"</span><span class="s">./scatter_plot.pdf</span><span class="sh">"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="sh">"</span><span class="s">tight</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250727155234050.png" alt="image-20250727155234050" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/26/pandas%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/" data-toggle="tooltip" data-placement="top" title="pandas-时间序列">
+                        Previous<br>
+                        <span>pandas-时间序列</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0128" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0107" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0113" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0114" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0119" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0121" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0128" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0129" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0129" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0129" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
