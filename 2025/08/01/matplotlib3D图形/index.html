@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="matplotlib-3D图形 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-08-01T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="matplotlib">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/08/01/matplotlib3D%E5%9B%BE%E5%BD%A2/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>matplotlib-3D图形 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/08/01/matplotlib3D%E5%9B%BE%E5%BD%A2/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=matplotlib" title="matplotlib">matplotlib</a>
+                        
+                    </div>
+                    <h1>matplotlib-3D图形</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on August 1, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>Matplotlib 也可以绘制基本的三维图表，这对于可视化三维数据或函数非常有用。要绘制 3D 图形，需要导入 <code class="language-plaintext highlighter-rouge">mpl_toolkits.mplot3d</code>。</p>
+
+<p>要创建 3D 图形，首先需要导入 <code class="language-plaintext highlighter-rouge">mpl_toolkits.mplot3d.axes3d</code> 模块中的 <code class="language-plaintext highlighter-rouge">Axes3D</code>。</p>
+
+<p>创建 3D Axes 的两种常见方法：</p>
+
+<ol>
+  <li><strong>在 <code class="language-plaintext highlighter-rouge">Figure</code> 中添加 3D 子图</strong>: <code class="language-plaintext highlighter-rouge">fig = plt.figure()</code> <code class="language-plaintext highlighter-rouge">ax = fig.add_subplot(111, projection='3d')</code> 这是推荐的面向对象方式。</li>
+  <li><strong>从现有 <code class="language-plaintext highlighter-rouge">Figure</code> 获取 3D Axes</strong>: <code class="language-plaintext highlighter-rouge">fig = plt.figure()</code> <code class="language-plaintext highlighter-rouge">ax = Axes3D(fig)</code> 这种方式也可以创建 3D Axes，但 <code class="language-plaintext highlighter-rouge">fig.add_subplot(projection='3d')</code> 更常用，因为它直接将 Axes 添加到 Figure 的子图网格中。</li>
+</ol>
+
+<h1 id="1三维折线图散点图-3d-line-and-scatter-plot">1.三维折线图散点图 (3D Line and Scatter Plot)</h1>
+
+<p>在 3D Axes 上绘制折线图和散点图与 2D 类似，但需要提供 X, Y, Z 三个坐标。</p>
+
+<ul>
+  <li><strong>三维折线图</strong>: <code class="language-plaintext highlighter-rouge">ax.plot(xs, ys, zs, zdir='z', **kwargs)</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">xs</code>, <code class="language-plaintext highlighter-rouge">ys</code>, <code class="language-plaintext highlighter-rouge">zs</code>: 数据点的 X, Y, Z 坐标序列。</li>
+      <li><code class="language-plaintext highlighter-rouge">zdir</code>: 绘制方向，默认为 <code class="language-plaintext highlighter-rouge">'z'</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">**kwargs</code>: 与 2D 折线图类似的线条样式参数（如 <code class="language-plaintext highlighter-rouge">color</code>, <code class="language-plaintext highlighter-rouge">linewidth</code>, <code class="language-plaintext highlighter-rouge">linestyle</code>）。</li>
+    </ul>
+  </li>
+  <li><strong>三维散点图</strong>: <code class="language-plaintext highlighter-rouge">ax.scatter(xs, ys, zs, zdir='z', s=20, c=None, depthshade=True, **kwargs)</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">xs</code>, <code class="language-plaintext highlighter-rouge">ys</code>, <code class="language-plaintext highlighter-rouge">zs</code>: 数据点的 X, Y, Z 坐标序列。</li>
+      <li><code class="language-plaintext highlighter-rouge">zdir</code>: 绘制方向，默认为 <code class="language-plaintext highlighter-rouge">'z'</code>。</li>
+      <li><code class="language-plaintext highlighter-rouge">s</code>: 标记大小。</li>
+      <li><code class="language-plaintext highlighter-rouge">c</code>: 标记颜色。</li>
+      <li><code class="language-plaintext highlighter-rouge">depthshade</code>: 布尔值，如果为 <code class="language-plaintext highlighter-rouge">True</code> (默认)，则根据深度对标记进行着色，使其看起来有景深效果。</li>
+      <li><code class="language-plaintext highlighter-rouge">**kwargs</code>: 与 2D 散点图类似的参数（如 <code class="language-plaintext highlighter-rouge">marker</code>, <code class="language-plaintext highlighter-rouge">cmap</code>, <code class="language-plaintext highlighter-rouge">alpha</code>, <code class="language-plaintext highlighter-rouge">edgecolors</code>）。</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>设置 3D 轴标签</strong>: 使用 <code class="language-plaintext highlighter-rouge">ax.set_xlabel()</code>, <code class="language-plaintext highlighter-rouge">ax.set_ylabel()</code>, <code class="language-plaintext highlighter-rouge">ax.set_zlabel()</code> 来设置三维轴的标签。</p>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+</pre></td><td class="rouge-code"><pre><span class="c1"># 导包
+</span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="n">mpl_toolkits.mplot3d.axes3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>  <span class="c1"># 导入3D引擎
+</span>
+<span class="c1"># 1.准备数据
+# 三维折线图数据（螺旋线）
+</span><span class="n">t_line</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">+</span><span class="mf">0.00001</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">x_line</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">t_line</span><span class="p">)</span>
+<span class="n">y_line</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">t_line</span><span class="p">)</span>
+<span class="n">z_line</span> <span class="o">=</span> <span class="n">t_line</span>
+
+<span class="c1"># 三维散点图数据
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">num_scatter_points</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">x_scatter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">num_scatter_points</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">5</span>
+<span class="n">y_scatter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">num_scatter_points</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">5</span>
+<span class="n">z_scatter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">num_scatter_points</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">5</span>
+<span class="n">sizes_scatter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_scatter_points</span><span class="p">)</span>
+<span class="n">colors_scatter</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">num_scatter_points</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># 2.创建3D Axes
+</span><span class="n">ax3d</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="nf">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="sh">"</span><span class="s">3d</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 3.绘制三维折线图
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x_line</span><span class="p">,</span> <span class="n">y_line</span><span class="p">,</span> <span class="n">z_line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">3D折线图</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 4.绘制三维散点图
+</span><span class="n">scatter_3d</span> <span class="o">=</span> <span class="n">ax3d</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span>
+    <span class="n">x_scatter</span><span class="p">,</span> <span class="n">y_scatter</span><span class="p">,</span> <span class="n">z_scatter</span><span class="p">,</span> 
+    <span class="n">s</span> <span class="o">=</span> <span class="n">sizes_scatter</span><span class="p">,</span> 
+    <span class="n">c</span> <span class="o">=</span> <span class="n">colors_scatter</span><span class="p">,</span> 
+    <span class="n">cmap</span><span class="o">=</span><span class="sh">"</span><span class="s">viridis</span><span class="sh">"</span><span class="p">,</span> 
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> 
+    <span class="n">marker</span><span class="o">=</span><span class="sh">"</span><span class="s">o</span><span class="sh">"</span><span class="p">,</span> 
+    <span class="n">edgecolor</span><span class="o">=</span><span class="sh">"</span><span class="s">k</span><span class="sh">"</span><span class="p">,</span> 
+    <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">depthshade</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+
+<span class="c1"># 5.设置3D轴标签
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">X 轴</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">red</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Y 轴</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_zlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Z 轴</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 6.添加标题和图例
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">"</span><span class="s">3D折线图和散点图</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+
+<span class="c1"># 7.添加颜色条
+</span><span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="nf">colorbar</span><span class="p">(</span><span class="n">scatter_3d</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax3d</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">cbar</span><span class="p">.</span><span class="nf">set_label</span><span class="p">(</span><span class="sh">"</span><span class="s">颜色值</span><span class="sh">"</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="c1"># 8.设置初始视角（可选）
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">azim</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span><span class="c1"># 仰角和方位角
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250729151202926.png" alt="image-20250729151202926" style="zoom:50%;" /></p>
+
+<p><strong>选择题</strong></p>
+
+<ol>
+  <li>
+    <p>要在 Matplotlib 中绘制 3D 图形，首先需要导入哪个模块？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">matplotlib.pyplot</code> B. <code class="language-plaintext highlighter-rouge">numpy</code> C. <code class="language-plaintext highlighter-rouge">mpl_toolkits.mplot3d.axes3d</code> D. <code class="language-plaintext highlighter-rouge">scipy.stats</code></p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>在 <code class="language-plaintext highlighter-rouge">ax.scatter()</code> 绘制三维散点图时，哪个参数用于根据深度对标记进行着色，使其看起来有景深效果？</p>
+
+    <p>A. <code class="language-plaintext highlighter-rouge">s</code> B. <code class="language-plaintext highlighter-rouge">c</code> C. <code class="language-plaintext highlighter-rouge">depthshade</code> D. <code class="language-plaintext highlighter-rouge">marker</code></p>
+
+    <blockquote>
+      <p>答案：C，<code class="language-plaintext highlighter-rouge">depthshade=True</code> (默认) 会根据 Z 轴深度调整标记的亮度，模拟景深。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p><strong>编程题</strong></p>
+
+<ol>
+  <li>绘制一个三维折线图，表示一个螺旋线。
+    <ul>
+      <li>X 坐标: sin(t)</li>
+      <li>Y 坐标: cos(t)</li>
+      <li>Z 坐标: t</li>
+      <li>其中 t 从 −2pi 到 2pi，包含 100 个点。</li>
+      <li>曲线颜色为紫色，线条宽度为 2。</li>
+      <li>添加标题 “3D Helix Plot”。</li>
+      <li>添加 X, Y, Z 轴标签。</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></td><td class="rouge-code"><pre><span class="c1"># 导包
+</span><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="n">mpl_toolkits.mplot3d.axes3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>  <span class="c1"># 导入3D引擎
+</span>
+<span class="c1"># 1.准备数据
+# 三维折线图数据（螺旋线）
+</span><span class="n">t_line</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">+</span><span class="mf">0.00001</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">x_line</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">t_line</span><span class="p">)</span>
+<span class="n">y_line</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">t_line</span><span class="p">)</span>
+<span class="n">z_line</span> <span class="o">=</span> <span class="n">t_line</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># 2.创建3D Axes
+</span><span class="n">ax3d</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="nf">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="sh">"</span><span class="s">3d</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 3.绘制三维折线图
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x_line</span><span class="p">,</span> <span class="n">y_line</span><span class="p">,</span> <span class="n">z_line</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">purple</span><span class="sh">"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">螺旋线</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 5.设置3D轴标签
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">X 轴</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">red</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Y 轴</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_zlabel</span><span class="p">(</span><span class="sh">"</span><span class="s">Z 轴</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 6.添加标题和图例
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">"</span><span class="s">3D Helix Plot</span><span class="sh">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+
+
+
+<span class="c1"># 8.设置初始视角（可选）
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">azim</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span><span class="c1"># 仰角和方位角
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250729151549595.png" alt="image-20250729151549595" style="zoom:50%;" /></p>
+
+<h1 id="2三维柱状图-3d-bar-chart">2.三维柱状图 (3D Bar Chart)</h1>
+
+<p>三维柱状图用于在三维空间中表示离散数据，通常用于展示在二维平面上有多个类别，并且每个类别在第三个维度上有一个数值的情况。</p>
+
+<p>主要函数是 <code class="language-plaintext highlighter-rouge">ax.bar3d(x, y, z, dx, dy, dz, color=None, zsort='average', **kwargs)</code>。</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">x</code>, <code class="language-plaintext highlighter-rouge">y</code>, <code class="language-plaintext highlighter-rouge">z</code>: 每个柱子的基座 (底面) 的 X, Y, Z 坐标。<code class="language-plaintext highlighter-rouge">z</code> 通常为 0，表示柱子从 XY 平面开始。</li>
+  <li><code class="language-plaintext highlighter-rouge">dx</code>, <code class="language-plaintext highlighter-rouge">dy</code>, <code class="language-plaintext highlighter-rouge">dz</code>: 每个柱子在 X, Y, Z 方向上的宽度、深度和高度。</li>
+  <li><code class="language-plaintext highlighter-rouge">color</code>: 柱子的颜色。</li>
+  <li><code class="language-plaintext highlighter-rouge">zsort</code>: 决定绘制顺序，以正确处理重叠。<code class="language-plaintext highlighter-rouge">'average'</code> (默认) 根据柱子中心点的平均 Z 坐标排序。</li>
+  <li><code class="language-plaintext highlighter-rouge">**kwargs</code>: 其他可选参数，如 <code class="language-plaintext highlighter-rouge">alpha</code>, <code class="language-plaintext highlighter-rouge">edgecolor</code> 等。</li>
+</ul>
+
+<p>三维柱状图的难点在于正确设置 <code class="language-plaintext highlighter-rouge">x</code>, <code class="language-plaintext highlighter-rouge">y</code>, <code class="language-plaintext highlighter-rouge">z</code>, <code class="language-plaintext highlighter-rouge">dx</code>, <code class="language-plaintext highlighter-rouge">dy</code>, <code class="language-plaintext highlighter-rouge">dz</code> 参数来表示每个柱子的位置和尺寸。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">mpl_toolkits.mplot3d.axes3d</span> <span class="kn">import</span> <span class="n">Axes3D</span> <span class="c1"># 导入 3D 引擎
+</span>
+<span class="c1"># 1. 准备数据
+# 模拟每个月 4 周的销量数据
+</span><span class="n">months</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># 4个月
+</span><span class="n">weeks</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># 每月 4 周
+</span>
+<span class="c1"># 创建 X, Y 坐标网格 (每个柱子的基座位置)
+# np.meshgrid 创建两个二维数组，用于生成所有 (x, y) 组合
+</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">months</span><span class="p">,</span> <span class="n">weeks</span><span class="p">)</span>
+<span class="c1"># 将网格展平为一维数组，作为 bar3d 的 x, y 参数
+</span><span class="n">x_flat</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">flatten</span><span class="p">()</span>
+<span class="n">y_flat</span> <span class="o">=</span> <span class="n">Y</span><span class="p">.</span><span class="nf">flatten</span><span class="p">()</span>
+
+<span class="c1"># 模拟每个柱子的高度 (销量)
+# 这里生成 (4个月 * 4周) = 16 个随机销量
+</span><span class="n">z_heights</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nf">len</span><span class="p">(</span><span class="n">x_flat</span><span class="p">))</span>
+<span class="n">z_base</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">z_heights</span><span class="p">)</span> <span class="c1"># 柱子从 Z=0 开始
+</span>
+<span class="c1"># 柱子的宽度和深度
+</span><span class="n">dx</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+<span class="c1"># 随机生成颜色
+</span><span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="nf">viridis</span><span class="p">(</span><span class="n">z_heights</span> <span class="o">/</span> <span class="n">z_heights</span><span class="p">.</span><span class="nf">max</span><span class="p">())</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="c1"># 2. 创建 3D Axes
+</span><span class="n">ax3d</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="nf">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="sh">'</span><span class="s">3d</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 3. 绘制三维柱状图
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">bar3d</span><span class="p">(</span>
+    <span class="n">x_flat</span><span class="p">,</span> <span class="c1"># X 坐标
+</span>    <span class="n">y_flat</span><span class="p">,</span> <span class="c1"># Y 坐标
+</span>    <span class="n">z_base</span><span class="p">,</span> <span class="c1"># Z 坐标 (柱子底部)
+</span>    <span class="n">dx</span><span class="p">,</span> <span class="c1"># X 方向宽度
+</span>    <span class="n">dy</span><span class="p">,</span> <span class="c1"># Y 方向深度
+</span>    <span class="n">z_heights</span><span class="p">,</span> <span class="c1"># Z 方向高度
+</span>    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="c1"># 颜色
+</span>    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="c1"># 透明度
+</span>    <span class="n">edgecolor</span><span class="o">=</span><span class="sh">'</span><span class="s">black</span><span class="sh">'</span> <span class="c1"># 边缘颜色
+</span><span class="p">)</span>
+
+<span class="c1"># 4. 设置轴标签和标题
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Month</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Week</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">green</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_zlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Sales</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">'</span><span class="s">Monthly Sales by Week (3D Bar Chart)</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># 5. 设置 X, Y 轴刻度标签
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_xticks</span><span class="p">(</span><span class="n">months</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_yticks</span><span class="p">(</span><span class="n">weeks</span><span class="p">)</span>
+
+<span class="c1"># 6. 设置初始视角 (可选)
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">azim</span><span class="o">=-</span><span class="mi">45</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250729151905600.png" alt="image-20250729151905600" style="zoom:50%;" /></p>
+
+<p><strong>选择题</strong></p>
+
+<ol>
+  <li>
+    <p>在 <code class="language-plaintext highlighter-rouge">ax.bar3d(x, y, z, dx, dy, dz, ...)</code> 中，<code class="language-plaintext highlighter-rouge">dx</code>, <code class="language-plaintext highlighter-rouge">dy</code>, <code class="language-plaintext highlighter-rouge">dz</code> 分别表示什么？</p>
+
+    <p>A. 柱子的起点坐标。 B. 柱子的终点坐标。 C. 柱子在 X, Y, Z 方向上的宽度、深度和高度。 D. 柱子的颜色。</p>
+
+    <blockquote>
+      <p>答案：C</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ax.bar3d()</code> 的 <code class="language-plaintext highlighter-rouge">zsort</code> 参数主要用于解决什么问题？</p>
+
+    <p>A. 柱子的颜色选择。 B. 柱子的透明度设置。 C. 柱子的绘制顺序，以正确处理重叠和透视效果。 D. 柱子的标签显示。</p>
+
+    <blockquote>
+      <p>答案：C，在 3D 绘图中，<code class="language-plaintext highlighter-rouge">zsort</code> 确保了离观察者较远的物体被正确地绘制在较近的物体后面。</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p><strong>编程题</strong></p>
+
+<ol>
+  <li>模拟一个小型零售店在不同月份（”Jan”, “Feb”, “Mar”）和不同产品类别（”Electronics”, “Apparel”）的销售额。
+    <ul>
+      <li>销售额数据（假设为随机整数 100-500）：
+        <ul>
+          <li>Jan: Electronics (随机), Apparel (随机)</li>
+          <li>Feb: Electronics (随机), Apparel (随机)</li>
+          <li>Mar: Electronics (随机), Apparel (随机)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>绘制这些销售额的三维柱状图。
+    <ul>
+      <li>X 轴表示月份，Y 轴表示产品类别，Z 轴表示销售额。</li>
+      <li>柱子宽度和深度均为 0.5。</li>
+      <li>为柱子选择一个合适的颜色映射。</li>
+      <li>添加标题 “Monthly Sales by Product Category”。</li>
+      <li>添加 X, Y, Z 轴标签。</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">mpl_toolkits.mplot3d.axes3d</span> <span class="kn">import</span> <span class="n">Axes3D</span> <span class="c1"># 导入 3D 引擎
+</span>
+<span class="c1"># 1. 准备数据
+</span><span class="n">months</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Jan</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Feb</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Mar</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">type_</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Electronics</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Apparel</span><span class="sh">"</span><span class="p">]</span>
+
+<span class="c1"># 创建 X, Y 坐标网格 (每个柱子的基座位置)
+# np.meshgrid 创建两个二维数组，用于生成所有 (x, y) 组合
+</span><span class="n">x_pos</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">months</span><span class="p">))</span>
+<span class="n">y_pos</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">type_</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">)</span>
+<span class="c1"># 将网格展平为一维数组，作为 bar3d 的 x, y 参数
+</span>
+<span class="n">x_flat</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">flatten</span><span class="p">()</span>
+<span class="n">y_flat</span> <span class="o">=</span> <span class="n">Y</span><span class="p">.</span><span class="nf">flatten</span><span class="p">()</span>
+
+<span class="c1"># 模拟每个柱子的高度 (销量)
+# 这里生成 (4个月 * 4周) = 16 个随机销量
+</span><span class="n">z_heights</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">501</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nf">len</span><span class="p">(</span><span class="n">x_flat</span><span class="p">))</span>
+<span class="n">z_base</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros_like</span><span class="p">(</span><span class="n">z_heights</span><span class="p">)</span> <span class="c1"># 柱子从 Z=0 开始
+</span>
+<span class="c1"># 柱子的宽度和深度
+</span><span class="n">dx</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="c1"># 随机生成颜色
+</span><span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="nf">viridis</span><span class="p">(</span><span class="n">z_heights</span> <span class="o">/</span> <span class="n">z_heights</span><span class="p">.</span><span class="nf">max</span><span class="p">())</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="c1"># 2. 创建 3D Axes
+</span><span class="n">ax3d</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="nf">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="sh">'</span><span class="s">3d</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 3. 绘制三维柱状图
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">bar3d</span><span class="p">(</span>
+    <span class="n">x_flat</span><span class="p">,</span> <span class="c1"># X 坐标
+</span>    <span class="n">y_flat</span><span class="p">,</span> <span class="c1"># Y 坐标
+</span>    <span class="n">z_base</span><span class="p">,</span> <span class="c1"># Z 坐标 (柱子底部)
+</span>    <span class="n">dx</span><span class="p">,</span> <span class="c1"># X 方向宽度
+</span>    <span class="n">dy</span><span class="p">,</span> <span class="c1"># Y 方向深度
+</span>    <span class="n">z_heights</span><span class="p">,</span> <span class="c1"># Z 方向高度
+</span>    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="c1"># 颜色
+</span>    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="c1"># 透明度
+</span>    <span class="n">edgecolor</span><span class="o">=</span><span class="sh">'</span><span class="s">black</span><span class="sh">'</span> <span class="c1"># 边缘颜色
+</span><span class="p">)</span>
+
+<span class="c1"># 4. 设置轴标签和标题
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Month</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">产品类型</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">green</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_zlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Sales</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">'</span><span class="s">Monthly Sales by Product Category</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># 5. 设置 X, Y 轴刻度标签为实际名称
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_xticks</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">+</span> <span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># 刻度位置调整到柱子中心
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_xticklabels</span><span class="p">(</span><span class="n">months</span><span class="p">)</span>
+<span class="n">ax3d</span><span class="p">.</span><span class="nf">set_yticks</span><span class="p">(</span><span class="n">y_pos</span> <span class="o">+</span> <span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># 刻度位置调整到柱子中心
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">set_yticklabels</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span>
+
+<span class="c1"># 6. 设置初始视角 (可选)
+</span><span class="n">ax3d</span><span class="p">.</span><span class="nf">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">azim</span><span class="o">=-</span><span class="mi">45</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250801134945346.png" alt="image-20250801134945346" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/07/29/matplotlib%E5%B8%B8%E7%94%A810%E7%A7%8D%E8%A7%86%E5%9B%BE/" data-toggle="tooltip" data-placement="top" title="matplotlib-常见10种视图">
+                        Previous<br>
+                        <span>matplotlib-常见10种视图</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0133" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0112" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0118" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0119" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0123" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0123" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0124" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0126" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0130" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0133" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0134" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0134" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0134" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
