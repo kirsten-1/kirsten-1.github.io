@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="机器学习算法2-线性回归-原理 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-08-04T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="机器学习算法">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/08/04/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E5%8E%9F%E7%90%86/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>机器学习算法2-线性回归-原理 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/08/04/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E5%8E%9F%E7%90%86/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95" title="机器学习算法">机器学习算法</a>
+                        
+                    </div>
+                    <h1>机器学习算法2-线性回归-原理</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on August 4, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1简单线性回归概念">1.简单线性回归概念</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804002553169.png" alt="image-20250804002553169" style="zoom:50%;" /></p>
+
+<p>线性回归是一种用于预测连续值输出的监督学习算法。它的核心思想是找到一个线性函数，该函数能尽可能好地拟合输入特征与输出目标之间的关系。</p>
+
+<h1 id="2多元线性回归概念">2.多元线性回归概念</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804002754686.png" alt="image-20250804002754686" style="zoom:50%;" /></p>
+
+<p>例如：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250803221621211.png" alt="image-20250803221621211" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250803221610640.png" alt="image-20250803221610640" style="zoom:30%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250803221841038.png" alt="image-20250803221841038" style="zoom:40%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250803222216871.png" alt="image-20250803222216871" style="zoom:40%;" /></p>
+
+<p>线性回归模型可以看作是在二维空间中寻找一条直线，在三维空间中寻找一个平面，在更高维空间中寻找一个<strong>超平面</strong>，来最好地拟合数据点。</p>
+
+<p>线性回归模型的基本形式是一个线性方程：\(h_{\theta}(x)=\theta_0+\theta_1x_1+\theta_2x_2+...+\theta_nx_n=\sum_{i=0}^n\theta_ix_i=\theta^Tx\)</p>
+
+<p>其中，\(x=[x_0, x_1, x_2,..., x_n]^T\)是特征向量，通常令\(x_0=1\)</p>
+
+<p>\(\theta=[\theta_0, \theta_1, \theta_2,..., \theta_n]^T\)是模型参数（权重），\(\theta_0\)是偏置项（截距）。</p>
+
+<h1 id="3正规方程">3.正规方程</h1>
+
+<p>正规方程是一种在线性回归中用来直接求解模型参数 θ 的方法，而不需要使用迭代优化算法（如梯度下降）。</p>
+
+<p>简单来说，它的核心思想是利用微积分的知识，通过将损失函数 J(θ) 对参数 θ 的偏导数设为零，来找到使损失函数最小化的 θ 值。</p>
+
+<h2 id="31最小二乘法矩阵表示">3.1最小二乘法矩阵表示</h2>
+
+<p>最小二乘法可以将误差方程转化为有确定解的代数方程组（其方程式数目正好等于未知数的个数），从而可求解出这些未知参数。这个有确定解的代数方程组称为最小二乘法估计的正规方程。公式如下：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804150809043.png" alt="image-20250804150809043" style="zoom:50%;" /></p>
+
+<p>公式是如何推导的？最小二乘法公式如下：</p>
+
+<p>其中\(y_i\)是真实值，\(h_{\theta}(x_i)\)是预测值。\(\frac{1}{2}\)是一个常数，为了在求导时抵消掉平方的系数2，方便计算，不影响最终结果.这个公式的目的是找到一组参数 θ，使得预测值与真实值之间的平方误差之和最小。为了利用矩阵运算的优势（更简洁、更高效），我们可以求和公式改写为矩阵形式。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804150859883.png" alt="image-20250804150859883" style="zoom:50%;" /></p>
+
+<p>首先向量化表示：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804152520581.png" alt="image-20250804152520581" style="zoom:50%;" /></p>
+
+<p>损失函数 J(θ) 是所有误差平方的和。在向量代数中，一个向量的转置与其自身的乘积，即\(v^Tv\)，就等于其所有元素的平方和!!!!</p>
+
+<p>之所以要使用转置T，是因为，矩阵运算规律是：矩阵A的一行乘以矩阵B的一列！</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804152008274.png" alt="image-20250804152008274" style="zoom:50%;" /></p>
+
+<p>转置操作 <code class="language-plaintext highlighter-rouge">T</code> 是将列向量转换为行向量，使其能够与原始的列向量相乘，从而得到标量形式的误差平方和。</p>
+
+<h2 id="32正规方程应用求解多元一次方程">3.2正规方程应用求解多元一次方程</h2>
+
+<p>比如二元一次方程：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804152852221.png" alt="image-20250804152852221" style="zoom:50%;" /></p>
+
+<p>验证：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804153617767.png" alt="image-20250804153617767" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">inv_</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">inv</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">T</span><span class="nd">@X</span><span class="p">)</span>
+<span class="n">inv_</span><span class="o">@</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@y</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804153915287.png" alt="image-20250804153915287" style="zoom:50%;" /></p>
+
+<p>再例如下面的三元一次 方程：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804152926239.png" alt="image-20250804152926239" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">256</span><span class="p">])</span>
+<span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">solve</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804153053490.png" alt="image-20250804153053490" style="zoom:50%;" /></p>
+
+<p>同样也可以验证：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804153959334.png" alt="image-20250804153959334" style="zoom:50%;" /></p>
+
+<p>如果是恐怖的八元一次方程：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804153127212.png" alt="image-20250804153127212" style="zoom:50%;" /></p>
+
+<p>也是一样的道理。</p>
+
+<h2 id="33正规方程公式的推导">3.3正规方程公式的推导</h2>
+
+<p>首先回顾基础：<strong>矩阵的转置和求导</strong></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804154344570.png" alt="image-20250804154344570" style="zoom:80%;" /></p>
+
+<p>为了方便求导，我们先展开 \((Xθ−y)^T(Xθ−y)\)。根据矩阵转置的性质\((AB)^T=B^TA^T\)，我们有完整的推导过程</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804155501203.png" alt="image-20250804155501203" style="zoom:50%;" /></p>
+
+<p>以上展开了损失函数。最终得到：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804155632696.png" alt="image-20250804155632696" style="zoom:50%;" /></p>
+
+<p>接下来对\(\theta\)求偏导。</p>
+
+<p>为了找到使 J(θ) 最小的 θ，我们对 J(θ) 关于 θ 求偏导，并将其设为零，即：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804155656929.png" alt="image-20250804155656929" style="zoom:50%;" /></p>
+
+<p>分别对各项求导：</p>
+
+<p>对第一项求导：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804155934137.png" alt="image-20250804155934137" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804160244760.png" alt="image-20250804160244760" style="zoom:50%;" /></p>
+
+<p>对第二项求导：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804160322417.png" alt="image-20250804160322417" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804160639770.png" alt="image-20250804160639770" style="zoom:50%;" /></p>
+
+<p>对第三项求导：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804160706389.png" alt="image-20250804160706389" style="zoom:50%;" /></p>
+
+<p>这一项不包含 θ，因此求导结果为0。</p>
+
+<p>将这三项合并，得到最终的偏导数：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804160745773.png" alt="image-20250804160745773" style="zoom:50%;" /></p>
+
+<p>令偏导数等于零并求解 θ。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804160822335.png" alt="image-20250804160822335" style="zoom:50%;" /></p>
+
+<p>假设矩阵 \(X^TX\) 是可逆的，得到最终结果：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804160908371.png" alt="image-20250804160908371" style="zoom:50%;" /></p>
+
+<p>这就是正规方程的最终形式。</p>
+
+<p><strong>注意</strong>：这个推导过程假设了矩阵\(X^TX\)是可逆的。如果不可逆（例如，特征之间存在线性相关性），那么需要使用伪逆矩阵（pseudo-inverse）来解决。</p>
+
+<h2 id="34sklearn线性回归正规方程运算">3.4sklearn线性回归正规方程运算</h2>
+
+<p>如果每次都要求解方程的解，每次都需要用numpy运算</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">inv_</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">inv</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">T</span><span class="nd">@X</span><span class="p">)</span>
+<span class="n">inv_</span><span class="o">@</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">T</span><span class="p">)</span><span class="nd">@y</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>公式记不住是一方面，另一方面代码也需要被复用。所以可以用sklearn求解正规方程的解。</p>
+
+<p><code class="language-plaintext highlighter-rouge">sklearn</code>（Scikit-learn）是一个强大的机器学习库，它将这些复杂的数学运算封装在简洁易用的 API 中，大大提高了开发效率和代码的可读性。</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">sklearn.linear_model.LinearRegression</code></strong> 这个类就是用来实现线性回归的。它的背后，默认情况下，正是利用了<strong>正规方程</strong>来求解参数的！</p>
+
+<p>先看案例：</p>
+
+<p>对于刚才的方程组：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804161636430.png" alt="image-20250804161636430" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="c1"># 准备数据
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">256</span><span class="p">])</span>
+<span class="c1"># 实例化 
+</span><span class="n">model</span> <span class="o">=</span> <span class="nc">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="c1"># 训练/求解  注意X一定是二维的
+</span><span class="n">model</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="nf">display</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">intercept_</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804164059322.png" alt="image-20250804164059322" style="zoom:50%;" /></p>
+
+<p>当你调用 <code class="language-plaintext highlighter-rouge">model.fit(X, y)</code> 时，<code class="language-plaintext highlighter-rouge">sklearn</code> 在内部执行了以下操作：</p>
+
+<ul>
+  <li>构造特征矩阵 <code class="language-plaintext highlighter-rouge">X</code> 和目标向量 <code class="language-plaintext highlighter-rouge">y</code>。</li>
+  <li>如果没有设置 <code class="language-plaintext highlighter-rouge">fit_intercept=False</code>，它会为 <code class="language-plaintext highlighter-rouge">X</code> 自动添加一列全为 1 的列，以表示截距项。</li>
+  <li>接着，它会使用类似于 <code class="language-plaintext highlighter-rouge">(X.T @ X)^-1 @ X.T @ y</code> 的数学方法来直接计算出最优的参数 <code class="language-plaintext highlighter-rouge">coef_</code> 和 <code class="language-plaintext highlighter-rouge">intercept_</code>。</li>
+</ul>
+
+<p>所以，<code class="language-plaintext highlighter-rouge">sklearn</code> 的 <code class="language-plaintext highlighter-rouge">LinearRegression</code> 模型就是对正规方程的优雅封装，它帮你完成了所有繁琐的矩阵运算，你只需要调用几个简单的方法即可。</p>
+
+<h2 id="35凸函数判定">3.5凸函数判定</h2>
+
+<p>判定损失函数是凸函数的好处在于我们可能很肯定的知道我们求得的极值即最优解，一定是全局最优解。</p>
+
+<h3 id="1什么是凸函数">（1）什么是凸函数</h3>
+
+<p>从直观上看，一个函数是凸函数，意味着它的图像是一个“碗”状的形状，开口向上。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804164440284.png" alt="image-20250804164440284" style="zoom:50%;" /></p>
+
+<p>用数学语言来定义：如果一个函数 f(x) 满足，对于其定义域中的任意两点 x1 和 x2，以及任意一个在 <code class="language-plaintext highlighter-rouge">[0, 1]</code> 区间内的数 α，都有：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804164550543.png" alt="image-20250804164550543" style="zoom:50%;" /></p>
+
+<p>即上面右边的图绘制的情况。</p>
+
+<p>这表示函数曲线上任意两点之间的连线段，总是在函数曲线的上方或曲线上。</p>
+
+<p>与之相对的是<strong>非凸函数</strong>，它的图像可能有很多“波峰”和“波谷”，呈现出复杂的形状。</p>
+
+<h3 id="2凸函数的性质是什么">（2）凸函数的性质是什么？</h3>
+
+<p>如果是非凸函数，那就<strong>不一定可以获取全局最优解</strong></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804164514909.png" alt="image-20250804164514909" style="zoom:50%;" /></p>
+
+<p>凸函数最重要的性质是：<strong>局部极小值就是全局最小值。</strong></p>
+
+<ul>
+  <li><strong>局部极小值</strong>：在函数曲线的某个局部区域内，比它周围所有点的值都要小的点。</li>
+  <li><strong>全局最小值</strong>：在整个函数定义域内，比所有其他点的值都小的点。</li>
+</ul>
+
+<p>对于一个凸函数，它可能只有一个局部极小值，也可能在一段区域内都是平坦的（有无数个局部极小值），但所有这些局部极小值都具有相同的函数值，也就是全局最小值。</p>
+
+<h3 id="3机器学习中的实际意义">（3）机器学习中的实际意义？</h3>
+
+<p>在机器学习中，<strong>损失函数</strong>是用来衡量模型预测结果与真实值之间差异的函数。我们的目标就是通过调整模型的参数（如线性回归中的 θ），来<strong>最小化</strong>这个损失函数。</p>
+
+<ul>
+  <li><strong>如果损失函数是凸函数</strong>：
+    <ul>
+      <li>我们使用梯度下降等优化算法时，无论我们从哪个随机的参数值开始，算法都能够保证收敛到全局最优解。</li>
+      <li>这给了我们极大的信心：我们找到的解就是最好的解，没有更好的解被遗漏。</li>
+      <li><strong>线性回归的最小二乘法</strong>就是典型的凸损失函数，所以它的最优解是唯一的，且可以被轻松找到。</li>
+    </ul>
+  </li>
+  <li><strong>如果损失函数是非凸函数</strong>：
+    <ul>
+      <li>比如在<strong>神经网络</strong>中，损失函数通常是非凸的。</li>
+      <li>这时，梯度下降等算法可能会陷入<strong>局部最优解</strong>，而无法找到全局最优解。</li>
+      <li>这解释了为什么神经网络的训练结果会受到初始化参数、学习率等因素的影响。不同的随机初始化可能会让模型收敛到不同的局部最优解，从而导致模型性能的差异。</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804164938103.png" alt="image-20250804164938103" style="zoom:50%;" /></p>
+
+<h3 id="4二阶导数海森矩阵来判定一个损失函数是否为凸函数">（4）二阶导数（海森矩阵）来判定一个损失函数是否为凸函数</h3>
+
+<p>海森矩阵是由多元函数的所有二阶偏导数组成的方阵。对于一个函数 f(x)，其海森矩阵 H 的第 i 行第 j 列的元素是</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804165110457.png" alt="image-20250804165110457" style="zoom:50%;" /></p>
+
+<p>如果一个函数的海森矩阵在定义域内<strong>处处是半正定矩阵</strong>，那么这个函数就是凸函数。<strong>半正定矩阵</strong>意味着，对于任意非零向量 z，都有</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804165147569.png" alt="image-20250804165147569" style="zoom:50%;" /></p>
+
+<p>一阶导数以及推导得到了：（这与我们之前推导正规方程时得到的偏导数结果完全一致）</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804165226675.png" alt="image-20250804165226675" style="zoom:50%;" /></p>
+
+<p><strong>二阶导数 (海森矩阵)</strong>：对上面这个结果再对\(\theta\)求导，根据矩阵求导的公式：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804165417890.png" alt="image-20250804165417890" style="zoom:50%;" /></p>
+
+<p>得到了：二阶导数就是\((X^TX)^T = X^TX\)</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804165541181.png" alt="image-20250804165541181" style="zoom:50%;" /></p>
+
+<p>即：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804165603442.png" alt="image-20250804165603442" style="zoom:50%;" /></p>
+
+<p>为什么\(X^TX\) 是半正定的？即现在要证明下面命题：对于任意非零向量 z，我们来验证\(z^T(X^TX)z\) 的符号。</p>
+
+<p>由于：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804165744437.png" alt="image-20250804165744437" style="zoom:50%;" /></p>
+
+<p>\((Xz)^T(Xz)\) 实际上是向量 Xz 与其自身的内积（点积），其结果是向量 Xz 的模（长度）的平方。任何向量的模的平方都<strong>大于或等于零</strong>。</p>
+
+<p>因此，\(z^T(X^TX)z≥0\) 恒成立。</p>
+
+<p>这证明了<strong>线性回归的损失函数的海森矩阵 \(X^TX\) 是半正定的</strong>，从而证明了<strong>线性回归的损失函数是凸函数</strong>。论我们从哪个随机的参数值开始，算法都能够保证收敛到全局最优解,我们找到的解就是最好的解，没有更好的解被遗漏。</p>
+
+<blockquote>
+  <p>在机器学习中损失函数都是凸函数，到深度学习中损失函数往往是非凸函数，即找到的解未必是全局最优，只要模型堪用就好！机器学习特点是：不强调模型100%正确，只要是有价值的，堪用的，就Okay！</p>
+
+  <p><strong>线性模型</strong>：在线性回归、支持向量机等一些经典模型中，损失函数是凸函数。这使得我们可以确定性地找到全局最优解。</p>
+
+  <p><strong>深度学习</strong>：在深度学习中，损失函数通常是非凸的。这意味着存在多个局部最优解，优化算法（如梯度下降）很可能陷入其中一个局部最优解。</p>
+
+  <p><strong>实用主义</strong>：尽管深度学习无法保证找到全局最优，但在实践中，我们发现这些“局部最优解”通常已经足够好，能够使模型达到非常高的性能。因此，机器学习更注重模型的实际应用价值，而不是理论上的完美。</p>
+</blockquote>
+
+<h1 id="4线性回归算法推导">4.线性回归算法推导</h1>
+
+<h2 id="41如何理解回归">4.1如何理解回归？</h2>
+
+<p>英国生物统计学家<strong>弗朗西斯·高尔顿</strong>（Francis Galton）最初提出“回归平均值”(regression to the mean)</p>
+
+<p>他研究了遗传学，特别是父子身高之间的关系。他发现，尽管高个子的父亲倾向于生高个子的儿子，但儿子的身高往往会<strong>“回归”</strong>到人群的平均身高。同样，矮个子的父亲的儿子，其身高也倾向于比父亲高，向人群的平均身高回归。</p>
+
+<p>这种现象并非是神秘力量，而是统计学上的一个基本现象。在任何具有随机性的系统中，极端值在下一代或下一次测量时往往会变得不那么极端，向均值靠拢。</p>
+
+<p>高尔顿的发现激发了人们用数学模型来描述这种“回归”现象的兴趣。因此，回归分析（Regression Analysis）这一统计方法诞生了，它的核心目的就是找到一个函数，能够最好地描述一个或多个自变量（如父身高）与因变量（如子身高）之间的关系。</p>
+
+<h2 id="42误差分析与正态分布">4.2误差分析与正态分布</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804173457145.png" alt="image-20250804173457145" style="zoom:50%;" /></p>
+
+<p>提出一个核心假设，也是最小二乘法的理论基础之一：</p>
+
+<ul>
+  <li><strong>独立性</strong>：每个样本的误差都是独立的，互不影响。</li>
+  <li><strong>正态分布</strong>：误差服从均值为0、方差为某个定值的正态分布。</li>
+  <li><strong>中心极限定理</strong>：这个假设的理论依据之一是<strong>中心极限定理</strong>。该定理指出，在足够多的独立随机变量的和（或平均值）的分布，会趋近于正态分布。</li>
+  <li><strong>为什么均值是0？</strong>：这是因为我们假设模型能够捕获到数据的“平均”趋势，而误差则是围绕这个趋势的随机波动。如果均值不为0，意味着模型存在系统性偏差，可以通过调整截距项来消除。</li>
+</ul>
+
+<p>下图就展示了正态分布图（高斯分布）：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804173644413.png" alt="image-20250804173644413" style="zoom:50%;" /></p>
+
+<p>形状是钟形的，两头低中间高，代表了误差的分布。在均值（0）附近的误差出现的概率最高，而极端误差（离0很远）出现的概率非常低。</p>
+
+<p>方差(\(\sigma^2\))越大，曲线越扁平，表明数据的离散程度越高</p>
+
+<p>方差越小，曲线越尖峭，表明数据越集中在均值附近</p>
+
+<hr />
+
+<p><strong>【疑问】说了这么多，为什么要假设误差服从正态分布呢？这可是最小二乘法理论基础，不能说假设就随便假设吧，为什么不假设成其他分布？</strong></p>
+
+<ul>
+  <li>原因1:中心极限定理的强有力支持</li>
+</ul>
+
+<p><strong>中心极限定理</strong>是概率论中的一个核心定理。它指出，当足够多的相互独立的随机变量相加时，其总和的分布会趋近于正态分布，而与这些随机变量本身的分布无关。在现实世界的回归问题中，模型的误差 ϵ 可以被看作是许多我们未观测到或未包含在模型中的<strong>独立小因素</strong>的综合影响。一个人的薪资误差可能受到情绪、家庭状况、交通、市场微小波动等无数个微小、独立的随机因素影响。这些因素的累积效应，根据中心极限定理，自然会形成一个近似正态分布的误差。</p>
+
+<ul>
+  <li>原因2:数学上的便利性</li>
+</ul>
+
+<p>正态分布在数学上具有许多优良的性质，这使得它在推导和计算上非常方便。正态分布的均值、中位数和众数都相等，且分布关于均值对称。这使得我们可以假设误差的均值为0，即正误差和负误差出现的概率是相等的，没有系统性的偏差。后面会提到，在假设误差服从正态分布的前提下，最大似然估计（最大化观察到数据的概率）的求解过程正好等价于最小化误差的平方和。这种完美的数学巧合，使得最小二乘法的最优解具有强大的概率解释。如果没有正态分布这个假设，我们就无法得出这个结论。</p>
+
+<ul>
+  <li>原因3:正态分布的“最不偏”特性</li>
+</ul>
+
+<p>在所有具有相同方差的概率分布中，正态分布拥有<strong>最大的熵（entropy）</strong>。<strong>熵</strong>在信息论中可以理解为不确定性。最大的熵意味着，在给定均值和方差的情况下，正态分布是最“不偏”或最“随机”的。换句话说，正态分布对模型的误差做了最少的、最合理的假设。它不假设误差有任何奇特的形状，只是假设它围绕一个中心值随机波动，这符合我们对未知误差的一般直觉。</p>
+
+<ul>
+  <li>原因4:易于进行统计推断</li>
+</ul>
+
+<p>假设误差服从正态分布后，我们可以进行很多重要的统计推断，这些是线性回归分析的关键部分。我们可以对模型的参数（如 <code class="language-plaintext highlighter-rouge">coef_</code>）进行假设检验，判断它们是否显著不为零。我们可以计算出模型参数的置信区间，从而估计参数的取值范围。我们可以计算出对新样本的预测区间，而不是仅仅给出一个点预测值。</p>
+
+<ul>
+  <li>总结：尽管现实中的误差可能不会完美地服从正态分布，但<strong>正态分布的假设为最小二乘法提供了坚实的理论基础、极大的数学便利性以及丰富的统计推断能力</strong>。它是最小二乘法能够如此广泛应用的核心原因之一。在实践中，如果模型的残差（误差）确实不满足正态分布，我们可以通过一些方法（如对数据进行转换）来改进模型，或者选择一个不依赖于正态分布假设的非参数模型。</li>
+</ul>
+
+<h2 id="43最大似然估计maximum-likelihood-estimation-mle">4.3最大似然估计（Maximum Likelihood Estimation, MLE）</h2>
+
+<p>如果我们假设误差服从正态分布，那么我们就可以计算出在给定参数 θ 的情况下，观察到现有数据（即现有误差）的<strong>概率</strong>。</p>
+
+<p>最大似然估计的目标是找到一组参数 θ，使得观察到当前数据集的<strong>总概率最大化</strong>。</p>
+
+<p>这里有一个数学联系：正态分布的概率密度函数包含一个指数项</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804174051452.png" alt="image-20250804174051452" style="zoom:50%;" /></p>
+
+<p>要使总概率（所有样本概率的乘积）最大化，就需要使指数项中的负数部分最小化。</p>
+
+<p>而指数项中的负数部分正是</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804174123479.png" alt="image-20250804174123479" style="zoom:50%;" /></p>
+
+<p>因此，最大化概率（最大似然）等价于<strong>最小化所有误差平方的和</strong>。</p>
+
+<p>将“假设误差服从正态分布”的统计学思想，与“最小化误差平方和”的最小二乘法联系在了一起。这证明了在高斯分布的假设下，<strong>最小二乘法得到的解，就是概率上最有可能的解</strong>。</p>
+
+<hr />
+
+<p>【场景】有一个装有黑白两种球的罐子，我们不知道黑球和白球的比例。通过<strong>有放回</strong>的抽样，估计罐子里白球所占的比例。我们从罐子里随机取一个球，记录颜色，然后放回，重复这个过程。假设我们重复了100次，其中有70次是白球，30次是黑球。</p>
+
+<p><strong>最大似然估计的理念</strong>：在所有可能的白球比例 <code class="language-plaintext highlighter-rouge">p</code> 中，哪个比例 <code class="language-plaintext highlighter-rouge">p</code> 最有可能产生我们观察到的这个结果（70次白球，30次黑球）？</p>
+
+<p>我们的直觉会告诉我们，最有可能的比例就是70%。因为如果白球的比例是70%，那么我们抽到70次白球的概率最高。如果比例是50%或90%，那么抽到70次白球的概率反而会更低。</p>
+
+<p><strong>最大似然估计</strong>就是用数学方法来形式化这个直觉，找到使观察结果出现概率最大的那个参数值。</p>
+
+<p>下面从数学的角度解释上面这个有返回的取球问题。</p>
+
+<p>假设白球的比例是 p，黑球的比例是 1−p。抽一个球是白球的概率是 p。</p>
+
+<p>抽两个球都是白球的概率是\(p×p=p^2\)（因为是独立事件,有放回）。同理，五个球都是白球的概率是 \(p^5\)。</p>
+
+<p>现在考虑更复杂的情况：抽10个球，9个白球，1个黑球，概率是多少？这是一个<strong>二项分布</strong>问题。首先，抽到一个特定的序列（比如白白白白白白白白白黑）的概率是 \(p^9(1−p)^1\)。</p>
+
+<p>但9个白球1个黑球的组合方式有很多种（黑球可以在10个位置中的任意一个），所以我们需要乘以组合数\(C_{10}^9\)。</p>
+
+<p>最终概率是 \(P= C_{10}^9×p^9(1−p)^1\)。</p>
+
+<p>现在回到原先的命题：总共抽取了100个球 (m=100)，其中有70个白球 (k=70)，30个黑球 (m−k=30)。我们可以写出观察到这个结果的<strong>似然函数</strong>（Likelihood Function），用 P 来表示：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804175757655.png" alt="image-20250804175757655" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>补充回顾：似然函数：<strong>似然</strong>: 描述已经观察到事件 ( x )，而参数 ( \(\theta\) ) 是什么的可能性。</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804180906450.png" alt="image-20250804180906450" style="zoom:50%;" /></p>
+</blockquote>
+
+<p>我们的目标是找到一个 p 的值，使得这个 L(p) 最大。</p>
+
+<p>数学上来说就是对上面的L(p)求导，令：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804181052497.png" alt="image-20250804181052497" style="zoom:50%;" /></p>
+
+<p>L(p) 是关于 p 的函数，而 \(C_{100}^{70}\) 是一个常数，不影响函数极值点的位置，所以我们可以忽略它。所以我们只需最大化\(f(p)=p^{70}(1−p)^{30}\)。</p>
+
+<p>为了简化计算，我们通常对似然函数取对数，因为对数函数是单调递增的，所以最大化对数似然函数等价于最大化似然函数本身。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804181251987.png" alt="image-20250804181251987" style="zoom:50%;" /></p>
+
+<p>对 ln(L(p)) 关于 p 求导：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804181322562.png" alt="image-20250804181322562" style="zoom:50%;" /></p>
+
+<p>令导数等于0， 即：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804181347586.png" alt="image-20250804181347586" style="zoom:50%;" /></p>
+
+<p>最终求得：p=70%</p>
+
+<p>通过严格的数学推导，我们证明了直觉是正确的：在100次抽样中出现70次白球，那么白球比例最有可能是70%。</p>
+
+<hr />
+
+<p><strong>最大似然估计在机器学习中的意义</strong>：</p>
+
+<ul>
+  <li>它提供了一个通用的框架，用于估计模型参数。</li>
+  <li>在线性回归中，假设误差服从正态分布，那么最小化误差平方和（最小二乘法）就等价于最大化似然函数。</li>
+  <li>在逻辑回归中，我们假设数据服从伯努利分布，然后同样通过最大化似然函数来求解模型参数。</li>
+  <li>因此，最大似然估计是许多机器学习算法（尤其是概率模型）的理论基石。</li>
+</ul>
+
+<h2 id="44高斯分布-概率密度函数">4.4高斯分布-概率密度函数</h2>
+
+<p>正态分布（Normal Distribution），也被称为高斯分布（Gaussian Distribution），这个分布的概率密度函数 (PDF)如下：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804185044946.png" alt="image-20250804185044946" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804184838772.png" alt="image-20250804184838772" style="zoom:50%;" /></p>
+
+<p>这个公式描述了在给定均值 \(μ\) 和方差 \(σ^2\) 的情况下，随机变量 x 的概率密度。</p>
+
+<p>图中，\(\mu\)在曲线的中心位置。它代表了数据的平均值或期望值。在图中，曲线的最高点就位于 \(x=μ\) 处。</p>
+
+<p>方差用来衡量数据的离散程度。方差越大，曲线越扁平，数据越分散；方差越小，曲线越尖峭，数据越集中在均值附近。</p>
+
+<p>\(\frac{1}{\sqrt(2 \pi \sigma^2)}\)是曲线高度的缩放因子，被称为归一化常数。它的作用是确保整个曲线下的面积总和为1，因为所有可能的概率之和必须为1。</p>
+
+<p><strong>条件概率表示法</strong>：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804185316374.png" alt="image-20250804185316374" style="zoom:50%;" /></p>
+
+<p>这个表示法强调了 f(x) 是在已知参数均值 \(μ\) 和方差 \(σ^2\) 的条件下的概率密度函数。这在最大似然估计中尤为重要，因为我们试图找到一组最佳参数来使概率最大化。</p>
+
+<hr />
+
+<p>在最小二乘法中，我们假设误差 ϵ 服从正态分布。如果将正态分布的均值 \(μ\) 设置为0，即 \(f(ϵ∣μ=0,σ^2)\)。为什么可以置为0呢？这是因为我们认为线性回归模型已经很好地捕捉了数据的系统性趋势。剩下的误差 ϵ 应该是完全随机的，它围绕着0随机波动，正的误差和负的误差出现的可能性是相等的。如果误差的均值不为0，这意味着模型存在一个系统性偏差，我们可以通过调整模型的截距项来消除这个偏差，使其均值变为0。</p>
+
+<p>于是得到下面的公式：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804185814698.png" alt="image-20250804185814698" style="zoom:50%;" /></p>
+
+<p>这里的 ϵ 代表了误差，而 x 在之前代表的是一个通用的随机变量。只是把\(x=ϵ\)</p>
+
+<p>总结：将这个工具（高斯分布的概率密度函数）应用于误差 ϵ 上，并做出了关键的假设：<strong>误差服从均值为0的正态分布</strong>。</p>
+
+<p>有了这个公式，我们就可以通过<strong>最大似然估计</strong>来推导出最小二乘法。</p>
+
+<h2 id="45误差总似然">4.5误差总似然</h2>
+
+<p>和前面黑球白球问题类似，也是一个累乘问题。</p>
+
+<p>为了使观察到所有误差 \(ϵ_1,ϵ_2,…,ϵ_m\) 的总概率最大，我们需要最大化它们的概率密度函数的乘积：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804190149416.png" alt="image-20250804190149416" style="zoom:50%;" /></p>
+
+<p>最大化这个乘积，等价于最小化指数项中的\(\sum_{i=1}^mϵ_i^2\)，也就是<strong>最小化误差的平方和</strong>。</p>
+
+<p>直接对包含累乘的函数求导非常复杂，对数函数是解决累乘求导困难的关键。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804190513214.png" alt="image-20250804190513214" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804190534395.png" alt="image-20250804190534395" style="zoom:50%;" /></p>
+
+<h2 id="46最小二乘法mse">4.6最小二乘法MSE</h2>
+
+<p>现在已经将累乘形式的似然函数转化为累加形式的对数似然函数</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804190732362.png" alt="image-20250804190732362" style="zoom:50%;" /></p>
+
+<p>根据对数性质 \(ln(AB)=ln(A)+ln(B)\) 和\(ln(A^B)=Bln(A)\)，我们可以将公式展开：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804190823438.png" alt="image-20250804190823438" style="zoom:50%;" /></p>
+
+<p>所以 将最大化对数似然函数的问题，等价地转换成了最小化误差平方和的问题。</p>
+
+<p><strong>进一步简化对数似然函数</strong>：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804190920537.png" alt="image-20250804190920537" style="zoom:50%;" /></p>
+
+<p>在最大化这个对数似然函数时，我们关注的是与参数 W 相关的部分。</p>
+
+<p>我们的目标是<strong>最大化</strong> \(ln(P_W)\)。</p>
+
+<p>由于第一项是常数，第二项前面有一个负号，所以最大化\(ln(P_W)\)就等价于<strong>最小化</strong>第二项中带负号的部分，即：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804191043003.png" alt="image-20250804191043003" style="zoom:50%;" /></p>
+
+<p>忽略掉常数 \(\frac{1}{2σ^2}\) 和负号后，我们得到了：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804191141455.png" alt="image-20250804191141455" style="zoom:50%;" /></p>
+
+<p>这就是最小二乘法损失函数的形式。其中，\(\frac{1}{2}\) 这个常数是为了方便求导而添加的，不影响最小化结果。</p>
+
+<p><strong>最大似然估计</strong> <code class="language-plaintext highlighter-rouge">(MLE)</code> <strong>+ 误差独立同正态分布</strong> <strong>⇒</strong> <strong>最小二乘法</strong> <code class="language-plaintext highlighter-rouge">(MSE)</code></p>
+
+<p>这个过程是统计学与机器学习中一个非常重要的理论联系。</p>
+
+<hr />
+
+<p>总结：假定了误差服从正态分布，并且误差是独立的，使用最大似然估计思想，利用损失函数最小化 MSE 就能求出最优解！</p>
+
+<hr />
+
+<h1 id="5线性回归的评估方法">5.线性回归的评估方法</h1>
+
+<p>\(R^2\) 决定系数（Coefficient of Determination），是用来衡量回归模型对数据拟合优劣程度的一个指标。它的取值范围通常在0到1之间，但有时也可能为负。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804191623593.png" alt="image-20250804191623593" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804191649042.png" alt="image-20250804191649042" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804191704923.png" alt="image-20250804191704923" style="zoom:50%;" /></p>
+
+<p>可以这么理解：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250804191723920.png" alt="image-20250804191723920" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/08/03/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9501KNN%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/" data-toggle="tooltip" data-placement="top" title="机器学习算法1-KNN手写数字识别">
+                        Previous<br>
+                        <span>机器学习算法1-KNN手写数字识别</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0140" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0119" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0125" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0126" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0130" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0130" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0131" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0133" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0137" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0138" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"
+                    title="机器学习算法"
+                    rel="5">机器学习算法</a>
+        
+                <a data-sort="0140" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0141" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0141" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0141" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
