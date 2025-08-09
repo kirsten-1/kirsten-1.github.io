@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="机器学习算法2-线性回归-梯度下降原理 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-08-09T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="机器学习算法">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/08/09/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E5%8E%9F%E7%90%86/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>机器学习算法2-线性回归-梯度下降原理 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/08/09/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E5%8E%9F%E7%90%86/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95" title="机器学习算法">机器学习算法</a>
+                        
+                    </div>
+                    <h1>机器学习算法2-线性回归-梯度下降原理</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on August 9, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1无约束最优化问题-unconstrained-optimization-problem">1.无约束最优化问题 (Unconstrained Optimization Problem)</h1>
+
+<p>无约束最优化问题旨在从所有可能的解决方案中，找到一个在特定指标（如函数值）下达到最优（最小或最大）的方案。</p>
+
+<p>从数学角度看，这通常是寻找一个函数在给定集合 S 上的极小值或极大值。</p>
+
+<p>广义上的最优化包括数学规划、图与网络、组合最优化等多个领域。狭义上的最优化则特指数学规划。</p>
+
+<p>“无约束最优化问题”中的“无约束”体现在对<strong>变量取值范围没有限制</strong>。</p>
+
+<p>梯度下降法求解的许多机器学习模型（如线性回归、逻辑回归）的损失函数，其参数 θ 的取值可以是任意实数。我们没有任何先验知识或强制要求，比如“参数 \(θ_1\) 必须大于0”或“\(θ_2+θ_3\) 必须等于1”。这就是“无约束”的体现。</p>
+
+<p>这使得问题简化，但同时也限制了它在某些需要考虑现实约束的场景中的应用。</p>
+
+<p>梯度下降法就是用来解决这类无约束最优化问题的典型算法。</p>
+
+<h1 id="2梯度下降算法">2.梯度下降算法</h1>
+
+<p>梯度下降法是一种通用的优化算法，它被广泛应用于机器学习和深度学习中，用于求解无约束最优化问题的最优解。</p>
+
+<h2 id="21梯度下降法的核心思想">2.1梯度下降法的核心思想</h2>
+
+<p>为了找到模型参数 θ 使得损失函数（或成本函数 Cost）最小化，梯度下降法不是一次性找到最优解，而是通过多次迭代，逐步逼近最优解。每一次迭代都根据当前的“位置”信息调整下一步的方向和步长，直到收敛到最低点。</p>
+
+<p>可以将损失函数曲线比喻为山谷，梯度下降法就像一个“下山”的过程。从山上的某个随机位置出发，每一步都朝着最陡峭的方向（梯度的反方向）走，最终到达山谷的最低点。</p>
+
+<h2 id="22为什么使用梯度下降法">2.2为什么使用梯度下降法？</h2>
+
+<p>正规方程（Normal Equation）在损失函数是凸函数时可以得到解，即唯一的最优解。但很多机器学习模型的损失函数并非凸函数，可能存在多个极值点，无法通过正规方程确定唯一解。另外，正规方程求解涉及矩阵求逆运算，其时间复杂度为 \(O(n^3)\)，其中 n 是特征维度。当特征数量过多时，计算量会非常巨大，导致运行时间过长，因此不适用于大规模数据集。</p>
+
+<p>梯度下降法通过迭代方式逐步逼近最优解，没有矩阵求逆的计算负担，因此可以更好地应用于大规模数据集和高维特征空间。</p>
+
+<h2 id="23梯度下降法的公式">2.3梯度下降法的公式</h2>
+
+<p>梯度下降的核心在于其参数更新公式：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807133804945.png" alt="image-20250807133804945" style="zoom:50%;" /></p>
+
+<p>或者使用更常见的符号：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807133828946.png" alt="image-20250807133828946" style="zoom:50%;" /></p>
+
+<h1 id="3学习率">3.学习率</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807155510911.png" alt="image-20250807155510911" style="zoom:50%;" /></p>
+
+<p>学习率的设置是门一门学问，一般我们会把它设置成一个比较小的正整数，0.1、0.01、0.001、0.0001，都是常见的设定数值（然后根据情况调整）。一般情况下学习率在整体迭代过程中是不变，但是也可以设置成随着迭代次数增多学习率逐渐变小，因为越靠近山谷我们就可以步子迈小点，可以更精准的走入最低点，同时防止走过。还有一些深度学习的优化算法会自己控制调整学习率这个值</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807161101494.png" alt="image-20250807161101494" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807161209487.png" alt="image-20250807161209487" style="zoom:50%;" /></p>
+
+<p>上图显示了梯度下降的两个主要挑战：</p>
+
+<p>若随机初始化，算法从左侧起步，那么会收敛到一个局部最小值，而不是全局最小值；</p>
+
+<p>若随机初始化，算法从右侧起步，那么需要经过很长时间才能越过Plateau（函数停滞带，梯度很小），如果停下得太早，则永远达不到全局最小值；</p>
+
+<p>而线性回归的模型MSE损失函数恰好是个凸函数，凸函数保证了只有一个全局最小值，其次是个连续函数，斜率不会发生陡峭的变化，
+因此即便是乱走，梯度下降都可以趋近全局最小值。</p>
+
+<p>上图损失函数是非凸函数，梯度下降法是有可能落到局部最小值的，所以其实步长不能设置的太小太稳健，那样就很容易落入局部最优解，虽说局部最小值也没大问题， 因为模型只要是堪用的就好嘛，但是我们肯定还是尽量要奔着全局最优解去！</p>
+
+<h1 id="4检验梯度下降是否收敛">4.检验梯度下降是否收敛</h1>
+
+<p>可以绘制一个图，横轴是迭代次数，纵轴是损失函数的值。这种图也叫学习曲线。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807155815847.png" alt="image-20250807155815847" style="zoom:50%;" /></p>
+
+<p>或者设置一个阈值（比如\(10^{-3}\)），当损失函数的值小于这个阈值的时候，认为基本已经收敛了，</p>
+
+<h1 id="5梯度下降步骤与代码模拟">5.梯度下降步骤与代码模拟</h1>
+
+<ol>
+  <li><strong>初始化</strong>: 随机选取一个初始参数值 x（或者 \(\theta\)），并设置一个学习率 \(\eta\)。</li>
+  <li><strong>计算梯度</strong>: 在当前参数值 x 处，计算损失函数 f(x) 的梯度（导数）\(\frac {\partial f(x)}{ \partial x}\)。</li>
+  <li><strong>更新参数</strong>: 根据梯度下降公式更新参数：\(x \leftarrow x− \eta \cdot \frac {\partial f(x)}{ \partial x}\)。</li>
+  <li><strong>判断收敛</strong>: 检查新的参数值与上一步的参数值之间的变化是否小于某个预设的阈值（精度）。如果满足，则停止迭代；否则，返回第2步继续执行。</li>
+</ol>
+
+<p>代码模拟：通过梯度下降法求解函数\(f(x)=(x−3.5)^2−4.5x+10\) 的最小值</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 定义要优化的函数
+</span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="nf">return </span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">3.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">4.5</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">10</span>
+
+<span class="c1"># 定义函数的导数（梯度）
+</span><span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">3.5</span><span class="p">)</span> <span class="o">-</span> <span class="mf">4.5</span>
+
+<span class="k">def</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">initial_x</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">precision</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    使用梯度下降法寻找函数的最小值。
+    
+    Args:
+        func: 目标函数。
+        gradient: 目标函数的梯度（导数）。
+        initial_x: 初始参数值。
+        learning_rate: 学习率。
+        precision: 收敛精度。
+        max_iterations: 最大迭代次数，防止无限循环。
+        
+    Returns:
+        包含每次迭代参数值的列表。
+    </span><span class="sh">"""</span>
+    <span class="n">history_x</span> <span class="o">=</span> <span class="p">[</span><span class="n">initial_x</span><span class="p">]</span>
+    <span class="n">current_x</span> <span class="o">=</span> <span class="n">initial_x</span>
+    
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">开始梯度下降...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">):</span>
+        <span class="n">last_x</span> <span class="o">=</span> <span class="n">current_x</span>
+        <span class="c1"># 核心更新公式
+</span>        <span class="n">current_x</span> <span class="o">=</span> <span class="n">current_x</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">current_x</span><span class="p">)</span>
+        <span class="n">history_x</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">current_x</span><span class="p">)</span>
+        
+        <span class="c1"># 打印每次迭代的日志
+</span>        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">迭代 </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">: x = </span><span class="si">{</span><span class="n">current_x</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s">, f(x) = </span><span class="si">{</span><span class="nf">func</span><span class="p">(</span><span class="n">current_x</span><span class="p">)</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="c1"># 判断收敛
+</span>        <span class="k">if</span> <span class="n">np</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">current_x</span> <span class="o">-</span> <span class="n">last_x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">precision</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">收敛于 </span><span class="si">{</span><span class="n">current_x</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s">，共迭代 </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s"> 次。</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">break</span>
+            
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># 当for循环正常结束（即达到最大迭代次数）时执行
+</span>        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">达到最大迭代次数，可能未收敛。</span><span class="sh">"</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">history_x</span>
+
+<span class="c1"># ---- 参数设置和运行 ----
+</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">initial_x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">precision</span> <span class="o">=</span> <span class="mf">1e-4</span>
+
+<span class="n">history_x</span> <span class="o">=</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">initial_x</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+
+<span class="c1"># ---- 可视化部分 ----
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span>  <span class="c1"># 替换为支持中文的字体
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span> <span class="c1"># 解决负号显示问题
+</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># 绘制函数曲线
+</span><span class="n">plot_x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="nf">min</span><span class="p">(</span><span class="n">history_x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nf">max</span><span class="p">(</span><span class="n">history_x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">plot_y</span> <span class="o">=</span> <span class="nf">func</span><span class="p">(</span><span class="n">plot_x</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">plot_x</span><span class="p">,</span> <span class="n">plot_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">green</span><span class="sh">'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">函数曲线 $f(x)$</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 绘制下降轨迹
+</span><span class="n">history_x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">history_x</span><span class="p">)</span>
+<span class="n">history_y</span> <span class="o">=</span> <span class="nf">func</span><span class="p">(</span><span class="n">history_x</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">history_x</span><span class="p">,</span> <span class="n">history_y</span><span class="p">,</span> <span class="sh">'</span><span class="s">ro--</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">下降轨迹</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">梯度下降过程演示</span><span class="sh">'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">$x$</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">$f(x)$</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">savefig</span><span class="p">(</span><span class="sh">'</span><span class="s">./梯度下降优化演示.png</span><span class="sh">'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807172027214.png" alt="image-20250807172027214" style="zoom:50%;" /></p>
+
+<p>下面解释如何将梯度下降的通用公式应用于线性回归，推导出具体的参数更新规则。</p>
+
+<h1 id="6线性回归中的梯度下降更新公式">6.线性回归中的梯度下降更新公式</h1>
+
+<p>首先，我们从线性回归的<strong>损失函数</strong>（Cost Function）或<strong>代价函数</strong>开始，它通常采用<strong>均方误差（MSE）</strong>的形式。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807173450820.png" alt="image-20250807173450820" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807173656085.png" alt="image-20250807173656085" style="zoom:40%;" /></p>
+
+<p>梯度下降的通用更新公式为：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807173721770.png" alt="image-20250807173721770" style="zoom:50%;" /></p>
+
+<p>我们的目标就是推导出 \(\frac{∂J(θ)}{∂θ_j}\) 的具体表达式</p>
+
+<p>为了简化推导，我们只关注单个样本的损失函数\((h_θ(x)−y)^2\)，并在求导后再将其推广到所有样本的总和。</p>
+
+<p>求导对象为：<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807173908409.png" alt="image-20250807173908409" style="zoom:50%;" /></p>
+
+<p>根据链式法则，我们对最外层的平方函数求导，然后乘以内层函数的导数。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807174001604.png" alt="image-20250807174001604" style="zoom:50%;" /></p>
+
+<p>然后将 \(h_θ(x)\) 展开为 \(∑_{i=0}^{n}θ_ix_i\)，并对 \(θ_j\) 求偏导。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807174110486.png" alt="image-20250807174110486" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807174132767.png" alt="image-20250807174132767" style="zoom:50%;" /></p>
+
+<p>将上述推导结果代入到通用梯度下降公式中，并考虑所有 m 个样本，最终得到每个参数\(θ_j\) 的更新公式：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807174208954.png" alt="image-20250807174208954" style="zoom:50%;" /></p>
+
+<p>这个推导过程展示了如何从线性回归的损失函数出发，利用微积分推导出每个参数 θj 的梯度表达式。这个表达式告诉我们，每次更新 θj 的方向和大小，取决于<strong>当前预测值与真实值之间的误差</strong> \((h_θ(x)−y)\)，以及<strong>对应于该参数的特征值</strong> \(x_j\)。</p>
+
+<h1 id="7三种梯度下降算法">7.三种梯度下降算法</h1>
+
+<p>三种梯度下降算法核心区别在于每次更新参数时使用的数据量。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807174729284.png" alt="image-20250807174729284" style="zoom:50%;" /></p>
+
+<h2 id="71批量梯度下降-batch-gradient-descent-bgd">7.1批量梯度下降 (Batch Gradient Descent, BGD)</h2>
+
+<p>批量梯度下降是最原始的梯度下降形式。它的核心思想是<strong>在每次迭代时，都使用全部训练样本来计算梯度</strong>，然后更新模型参数。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807204312186.png" alt="image-20250807204312186" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250807205115726.png" alt="image-20250807205115726" style="zoom:35%;" /></p>
+
+<blockquote>
+  <p>上面写成\(X^T\)是为了做维度匹配。</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809135356136.png" alt="image-20250809135356136" style="zoom:50%;" /></p>
+</blockquote>
+
+<ul>
+  <li><strong>优点</strong>:
+    <ol>
+      <li><strong>方向准确</strong>: 每次更新的梯度方向都是基于整个数据集的平均值，因此能够更准确地代表整体数据的下降方向。</li>
+      <li><strong>收敛稳定</strong>: 损失函数会平滑地朝着全局最优解（线性回归中）收敛。对于凸函数，BGD 一定能收敛到全局最优。</li>
+      <li><strong>利用并行计算</strong>: 矩阵运算可以高效地在GPU上并行处理，加快计算速度。</li>
+    </ol>
+  </li>
+  <li><strong>缺点</strong>:
+    <ol>
+      <li><strong>计算量大</strong>: 当训练样本数量 n 非常大时，每次迭代都需要遍历所有样本，计算开销巨大，训练速度很慢。</li>
+      <li><strong>内存需求高</strong>: 需要将整个数据集加载到内存中进行计算，对于超大规模数据集不现实。</li>
+    </ol>
+  </li>
+</ul>
+
+<p>代码模拟：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 设置 Matplotlib 字体以支持中文和负号
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span>  <span class="c1"># 替换为支持中文的字体
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span> <span class="c1"># 解决负号显示问题
+</span>
+<span class="c1"># 1. 生成模拟数据
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># 生成100个样本的x值
+</span><span class="n">y</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">X</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># y = 4 + 3x + 噪声
+</span>
+<span class="c1"># 添加偏置项（bais），即 x0 = 1
+</span><span class="n">X_b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X</span><span class="p">]</span>
+
+<span class="c1"># 2. 定义损失函数和梯度
+</span><span class="k">def</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">((</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cost</span>
+
+<span class="k">def</span> <span class="nf">compute_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">X</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gradient</span>
+
+<span class="c1"># 3. 实现批量梯度下降（BGD）算法
+</span><span class="k">def</span> <span class="nf">batch_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 随机初始化参数 [theta0, theta1]
+</span>    <span class="n">cost_history</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">theta_history</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="nf">compute_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient</span>
+        <span class="n">cost_history</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nf">compute_cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+        <span class="n">theta_history</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">theta</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span> <span class="c1"># 记录参数历史，便于可视化
+</span>        
+    <span class="k">return</span> <span class="n">theta</span><span class="p">,</span> <span class="n">cost_history</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">theta_history</span><span class="p">)</span>
+
+<span class="c1"># 4. 运行BGD算法
+</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">n_iterations</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">theta_final</span><span class="p">,</span> <span class="n">cost_history</span><span class="p">,</span> <span class="n">theta_history</span> <span class="o">=</span> <span class="nf">batch_gradient_descent</span><span class="p">(</span><span class="n">X_b</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">BGD 最终收敛的参数 (theta0, theta1):</span><span class="sh">"</span><span class="p">,</span> <span class="n">theta_final</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">BGD 最终的损失值:</span><span class="sh">"</span><span class="p">,</span> <span class="n">cost_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># 5. 可视化 BGD 的收敛轨迹
+# 创建等高线图数据
+</span><span class="n">theta0_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">theta1_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">T0</span><span class="p">,</span> <span class="n">T1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">theta0_range</span><span class="p">,</span> <span class="n">theta1_range</span><span class="p">)</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="n">theta0_range</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">theta1_range</span><span class="p">.</span><span class="n">size</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t0</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">theta0_range</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">t1</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">theta1_range</span><span class="p">):</span>
+        <span class="n">theta_temp</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="n">t0</span><span class="p">],</span> <span class="p">[</span><span class="n">t1</span><span class="p">]])</span>
+        <span class="n">J</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">X_b</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta_temp</span><span class="p">)</span>
+
+<span class="c1"># 绘制等高线图和BGD轨迹
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="n">J</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nf">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">viridis</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">r-x</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">BGD 训练轨迹</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">ro</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">初始参数</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_final</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_final</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="sh">'</span><span class="s">r*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">最终参数</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_0$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">批量梯度下降（BGD）收敛轨迹</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">best</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809140116395.png" alt="image-20250809140116395" style="zoom:50%;" /></p>
+
+<p>从图中可以看出，曲线从一个点（初始参数）出发，平稳地、几乎是直线地向着中心（最优解）移动。虽然迭代次数相对较少，但每次迭代的计算量非常大。</p>
+
+<h2 id="72随机梯度下降-stochastic-gradient-descent-sgd">7.2随机梯度下降 (Stochastic Gradient Descent, SGD)</h2>
+
+<p>与BGD相反，SGD的特点是<strong>在每次迭代时，只使用一个随机选取的样本来计算梯度</strong>，然后立即更新参数。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809140556319.png" alt="image-20250809140556319" style="zoom:50%;" /></p>
+
+<p>与BGD的公式相比，SGD没有求和符号，因为它只计算单个样本的梯度。</p>
+
+<p><strong>优点</strong>:</p>
+
+<ol>
+  <li><strong>计算速度快</strong>: 每次迭代只处理一个样本，更新速度非常快，尤其是在处理大规模数据集时，每一轮的训练速度比BGD快得多。</li>
+  <li><strong>在线学习</strong>: 适用于流式数据，可以进行在线学习，无需存储所有数据。</li>
+  <li><strong>可能跳出局部最优</strong>: 在非凸函数中，梯度的随机性可能帮助算法跳出较浅的局部最优解，找到更好的全局最优解。</li>
+</ol>
+
+<p><strong>缺点</strong>:</p>
+
+<ol>
+  <li><strong>方向不稳定</strong>: 梯度的计算基于单个样本，这并不能代表全局下降方向，导致更新路径非常震荡。</li>
+  <li><strong>收敛不精确</strong>: 即使算法接近最优解，由于随机性，它也会在最优解周围持续震荡，难以精确收敛到最小值。</li>
+</ol>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 设置 Matplotlib 字体以支持中文和负号
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span>  <span class="c1"># 替换为支持中文的字体
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span> <span class="c1"># 解决负号显示问题
+</span>
+<span class="c1"># 1. 生成模拟数据（与BGD示例相同）
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># 生成100个样本的x值
+</span><span class="n">y</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">X</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># y = 4 + 3x + 噪声
+</span><span class="n">X_b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X</span><span class="p">]</span>
+
+<span class="c1"># 2. 定义损失函数（与BGD示例相同）
+</span><span class="k">def</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">((</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cost</span>
+
+<span class="c1"># 3. 实现随机梯度下降（SGD）算法
+</span><span class="k">def</span> <span class="nf">stochastic_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 随机初始化参数 [theta0, theta1]
+</span>    <span class="n">theta_history</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># 迭代次数通常以“epoch”为单位，一个epoch是遍历一次所有样本
+</span>    <span class="c1"># 这里我们简化为总更新次数
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+        <span class="c1"># 随机选取一个样本的索引
+</span>        <span class="n">random_index</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">xi</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">random_index</span><span class="p">:</span><span class="n">random_index</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">yi</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">random_index</span><span class="p">:</span><span class="n">random_index</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="c1"># 计算单个样本的梯度（无需除以样本数 m）
+</span>        <span class="n">errors</span> <span class="o">=</span> <span class="n">xi</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">yi</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">xi</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+        
+        <span class="c1"># 更新参数
+</span>        <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient</span>
+        <span class="n">theta_history</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">theta</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span> <span class="c1"># 记录参数历史
+</span>        
+    <span class="k">return</span> <span class="n">theta</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">theta_history</span><span class="p">)</span>
+
+<span class="c1"># 4. 运行SGD算法
+</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># SGD的学习率通常需要比BGD小
+</span><span class="n">n_iterations</span> <span class="o">=</span> <span class="mi">1000</span>   <span class="c1"># SGD需要更多次迭代才能接近最优解
+</span><span class="n">theta_final_sgd</span><span class="p">,</span> <span class="n">theta_history_sgd</span> <span class="o">=</span> <span class="nf">stochastic_gradient_descent</span><span class="p">(</span><span class="n">X_b</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">SGD 最终收敛的参数 (theta0, theta1):</span><span class="sh">"</span><span class="p">,</span> <span class="n">theta_final_sgd</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span>
+
+<span class="c1"># 5. 可视化 SGD 的收敛轨迹
+# 创建等高线图数据（与BGD示例相同）
+</span><span class="n">theta0_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">theta1_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">T0</span><span class="p">,</span> <span class="n">T1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">theta0_range</span><span class="p">,</span> <span class="n">theta1_range</span><span class="p">)</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="n">theta0_range</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">theta1_range</span><span class="p">.</span><span class="n">size</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t0</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">theta0_range</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">t1</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">theta1_range</span><span class="p">):</span>
+        <span class="n">theta_temp</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="n">t0</span><span class="p">],</span> <span class="p">[</span><span class="n">t1</span><span class="p">]])</span>
+        <span class="n">J</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">X_b</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta_temp</span><span class="p">)</span>
+
+<span class="c1"># 绘制等高线图和SGD轨迹
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="n">J</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nf">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">viridis</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_sgd</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_sgd</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">purple</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">SGD 训练轨迹</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_sgd</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_sgd</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">bo</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">初始参数</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_final_sgd</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_final_sgd</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="sh">'</span><span class="s">b*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">最终参数</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_0$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">随机梯度下降（SGD）收敛轨迹</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">best</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809140820957.png" alt="image-20250809140820957" style="zoom:50%;" /></p>
+
+<p>收敛速度快但路径震荡，最终在最优解附近徘徊.</p>
+
+<p>所以，SGD的学习率通常需要设置得更小，或者随着训练的进行逐渐减小（称为学习率衰减），以帮助算法更精确地收敛。</p>
+
+<h2 id="73小批量梯度下降-mini-batch-gradient-descent-mbgd">7.3小批量梯度下降 (Mini-Batch Gradient Descent, MBGD)</h2>
+
+<p>小批量梯度下降是BGD和SGD的折中方案。它在每次迭代时，不使用全部样本，也不只使用一个样本，而是使用<strong>一个预先设定大小的样本子集（称为 mini-batch）</strong>来计算梯度并更新参数。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809141051232.png" alt="image-20250809141051232" style="zoom:50%;" /></p>
+
+<p><strong>优点</strong>:</p>
+
+<ol>
+  <li><strong>速度与稳定的平衡</strong>: 结合了BGD和SGD的优点。相比BGD，它减少了每次迭代的计算量；相比SGD，它通过对小批量样本求平均，减少了梯度的随机性，使得收敛路径更加平滑和稳定。</li>
+  <li><strong>高效并行化</strong>: 现代计算架构（如GPU）非常擅长处理批量数据，这使得MBGD能够高效利用硬件加速。</li>
+</ol>
+
+<p><strong>缺点</strong>:</p>
+
+<ol>
+  <li><strong>超参数</strong>: 引入了一个新的超参数 <code class="language-plaintext highlighter-rouge">batch_size</code>，需要根据具体问题进行调整。</li>
+</ol>
+
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 设置 Matplotlib 字体以支持中文和负号
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c1"># 1. 生成模拟数据（与之前示例相同）
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">X</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">X_b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X</span><span class="p">]</span>
+
+<span class="c1"># 2. 定义损失函数（与之前示例相同）
+</span><span class="k">def</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">((</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cost</span>
+
+<span class="c1"># 3. 实现三种梯度下降算法（与之前示例相同）
+</span><span class="k">def</span> <span class="nf">batch_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">theta_history</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">X</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient</span>
+        <span class="n">theta_history</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">theta</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">theta_history</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">stochastic_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">theta_history</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+        <span class="n">random_index</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">xi</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">random_index</span><span class="p">:</span><span class="n">random_index</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">yi</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">random_index</span><span class="p">:</span><span class="n">random_index</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">xi</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">xi</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">yi</span><span class="p">)</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient</span>
+        <span class="n">theta_history</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">theta</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">theta_history</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">mini_batch_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">theta_history</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+        <span class="n">shuffled_indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">permutation</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">X_shuffled</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">shuffled_indices</span><span class="p">]</span>
+        <span class="n">y_shuffled</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">shuffled_indices</span><span class="p">]</span>
+        
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+            <span class="n">X_batch</span> <span class="o">=</span> <span class="n">X_shuffled</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="n">batch_size</span><span class="p">]</span>
+            <span class="n">y_batch</span> <span class="o">=</span> <span class="n">y_shuffled</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="n">batch_size</span><span class="p">]</span>
+            
+            <span class="n">errors</span> <span class="o">=</span> <span class="n">X_batch</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">y_batch</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">batch_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">X_batch</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+            
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient</span>
+            <span class="n">theta_history</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">theta</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span>
+            
+    <span class="k">return</span> <span class="n">theta</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">theta_history</span><span class="p">)</span>
+
+<span class="c1"># 4. 运行三种算法
+# BGD参数
+</span><span class="n">theta_history_bgd</span> <span class="o">=</span> <span class="nf">batch_gradient_descent</span><span class="p">(</span><span class="n">X_b</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># SGD参数
+</span><span class="n">theta_history_sgd</span> <span class="o">=</span> <span class="nf">stochastic_gradient_descent</span><span class="p">(</span><span class="n">X_b</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># MBGD参数，这里进行关键调整！
+</span><span class="n">learning_rate_mbgd</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="c1"># 保持不变，但增加迭代次数
+</span><span class="n">n_iterations_mbgd</span> <span class="o">=</span> <span class="mi">50</span>   <span class="c1"># 将epoch数从10增加到50
+</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">theta_final_mbgd</span><span class="p">,</span> <span class="n">theta_history_mbgd</span> <span class="o">=</span> <span class="nf">mini_batch_gradient_descent</span><span class="p">(</span>
+    <span class="n">X_b</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">learning_rate_mbgd</span><span class="p">,</span> <span class="n">n_iterations_mbgd</span><span class="p">,</span> <span class="n">batch_size</span>
+<span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">MBGD (batch_size=</span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s">, epochs=</span><span class="si">{</span><span class="n">n_iterations_mbgd</span><span class="si">}</span><span class="s">) 最终收敛的参数 (theta0, theta1):</span><span class="sh">"</span><span class="p">,</span> <span class="n">theta_final_mbgd</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span>
+
+<span class="c1"># 5. 可视化
+# 创建等高线图数据
+</span><span class="n">theta0_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">theta1_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">T0</span><span class="p">,</span> <span class="n">T1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">theta0_range</span><span class="p">,</span> <span class="n">theta1_range</span><span class="p">)</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="n">theta0_range</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">theta1_range</span><span class="p">.</span><span class="n">size</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t0</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">theta0_range</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">t1</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">theta1_range</span><span class="p">):</span>
+        <span class="n">theta_temp</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="n">t0</span><span class="p">],</span> <span class="p">[</span><span class="n">t1</span><span class="p">]])</span>
+        <span class="n">J</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nf">compute_cost</span><span class="p">(</span><span class="n">X_b</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta_temp</span><span class="p">)</span>
+
+<span class="c1"># 绘制等高线图和三种算法的轨迹
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="n">J</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nf">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">viridis</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 绘制BGD轨迹（蓝色）
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_bgd</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_bgd</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">b-</span><span class="sh">'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">BGD</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 绘制SGD轨迹（紫色）
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_sgd</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_sgd</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">m-</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">SGD</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 绘制MBGD轨迹（绿色）
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_mbgd</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_mbgd</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">g-</span><span class="sh">'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="sh">'</span><span class="s">MBGD (batch=</span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s">)</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 标记最终参数点
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_bgd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_bgd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">b*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">BGD最终参数</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_sgd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_sgd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">m*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">SGD最终参数</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_final_mbgd</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_final_mbgd</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="sh">'</span><span class="s">g*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">MBGD最终参数</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_0$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">三种梯度下降算法收敛轨迹对比 (优化后)</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">best</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809141456143.png" alt="image-20250809141456143" style="zoom:50%;" /></p>
+
+<p>MBGD的随机性主要体现在<strong>每次迭代时，从整个数据集中随机抽取一个小批量（mini-batch）样本</strong>。</p>
+
+<h1 id="8梯度下降优化方法">8.梯度下降优化方法</h1>
+
+<h2 id="81学习率的选择">8.1学习率的选择</h2>
+
+<p>学习率过小：参数更新的步幅很小，算法需要很多次迭代才能接近最优解，导致收敛速度非常慢。</p>
+
+<p>学习率过大：参数更新的步幅过大，导致算法在最优解附近来回“跳跃”，甚至可能跳过最优解，无法收敛。这被称为<strong>震荡收敛</strong>或<strong>发散</strong>。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809145533823.png" alt="image-20250809145533823" style="zoom:50%;" /></p>
+
+<h2 id="82不同学习率衰减的方法">8.2不同学习率衰减的方法</h2>
+
+<p>选择一个合适的学习率很困难，通常需要进行超参数搜索。一个更好的方法是<strong>学习率衰减（Learning Rate Decay）</strong>，即在训练过程中动态地减小学习率。在训练初期使用较大的学习率，以保证收敛速度。当接近最优解时，逐渐减小学习率，以避免震荡并更精确地收敛。这可以确保在训练初期快速收敛，在后期则以更小的步幅精细调整，避免震荡。</p>
+
+<p>对于非凸函数，随机梯度下降（SGD）或其变体（如Adam）的随机性可以在一定程度上帮助算法跳出浅的局部最优解。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809145758498.png" alt="image-20250809145758498" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 设置 Matplotlib 字体以支持中文和负号
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c1"># 初始学习率和总迭代次数
+</span><span class="n">initial_lr</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">total_iterations</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="n">total_iterations</span><span class="p">)</span>
+
+<span class="c1"># 1. 分段衰减 (Piecewise Constant Decay)
+</span><span class="n">piecewise_lr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">(</span><span class="n">total_iterations</span><span class="p">)</span>
+<span class="n">piecewise_lr</span><span class="p">[</span><span class="mi">20</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">piecewise_lr</span><span class="p">[</span><span class="mi">40</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">piecewise_lr</span><span class="p">[</span><span class="mi">60</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.125</span>
+<span class="n">piecewise_lr</span><span class="p">[</span><span class="mi">80</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+<span class="c1"># 2. 逆时衰减 (Inverse Time Decay)
+</span><span class="n">beta_inverse</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># 衰减率
+</span><span class="n">inverse_lr</span> <span class="o">=</span> <span class="n">initial_lr</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">beta_inverse</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+
+<span class="c1"># 3. 指数衰减 (Exponential Decay)
+</span><span class="n">beta_exp</span> <span class="o">=</span> <span class="mf">0.96</span>  <span class="c1"># 衰减率
+</span><span class="n">exponential_lr</span> <span class="o">=</span> <span class="n">initial_lr</span> <span class="o">*</span> <span class="p">(</span><span class="n">beta_exp</span> <span class="o">**</span> <span class="n">t</span><span class="p">)</span>
+
+<span class="c1"># 4. 自然指数衰减 (Natural Exponential Decay)
+</span><span class="n">beta_nat_exp</span> <span class="o">=</span> <span class="mf">0.04</span>
+<span class="n">natural_exp_lr</span> <span class="o">=</span> <span class="n">initial_lr</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta_nat_exp</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+
+<span class="c1"># 5. 余弦衰减 (Cosine Decay)
+# 余弦衰减的公式: η_t = η_0 / 2 * (1 + cos(pi * t / T))
+</span><span class="n">cosine_lr</span> <span class="o">=</span> <span class="n">initial_lr</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">total_iterations</span><span class="p">))</span>
+
+<span class="c1"># 绘制不同学习率衰减曲线
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">piecewise_lr</span><span class="p">,</span> <span class="sh">'</span><span class="s">k-</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">分段衰减</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">inverse_lr</span><span class="p">,</span> <span class="sh">'</span><span class="s">g-.</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">逆时衰减 (β = 0.01)</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">exponential_lr</span><span class="p">,</span> <span class="sh">'</span><span class="s">r--</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">指数衰减 (β = 0.96)</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">natural_exp_lr</span><span class="p">,</span> <span class="sh">'</span><span class="s">b:</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">自然指数衰减 (β = 0.04)</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">cosine_lr</span><span class="p">,</span> <span class="sh">'</span><span class="s">y-.</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">余弦衰减</span><span class="sh">'</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">迭代次数</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">学习率</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">不同学习率衰减方法的比较</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">upper right</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="83不同的参数使用不同的学习率">8.3不同的参数使用不同的学习率</h2>
+
+<p>如果数据特征是稀疏的，或者每个特征的统计特征和空间分布不同，那么为每个参数（对应于每个特征）使用相同的学习率可能不是最优的。</p>
+
+<p>为了解决这个问题，出现了许多自适应学习率算法，如 <strong>Adagrad</strong>、<strong>RMSprop</strong>、<strong>Adam</strong> 等。它们会根据每个参数的历史梯度信息，动态地调整该参数的学习率。例如，对于更新较少的参数，会分配一个较大的学习率来加速收敛；对于更新频繁的参数，则分配一个较小的学习率来避免震荡。</p>
+
+<h2 id="84非凸目标函数">8.4非凸目标函数</h2>
+
+<p>对于非凸目标函数，容易陷入那些次优的局部极值点中，如在神经网路中。那么如何避免呢?</p>
+
+<p>简单的问题，一般使用随机梯度下降即可解决。在深度学习里，对梯度下降进行了很多改进，比如：自适应梯度下降。</p>
+
+<h2 id="85epoch-和-batch">8.5Epoch 和 Batch</h2>
+
+<p><strong>Epoch</strong>: 循环一次意味着将所有训练数据学习一遍。</p>
+
+<p><strong>Batch</strong>: 批次是指将整个训练集分成若干个子集，每次只学习一个子集。</p>
+
+<p><strong>关系</strong>: 一个epoch包含若干个batch的训练。在机器学习训练中，我们通常需要训练多个epoch，在每个epoch中又会进行若干个batch的训练。</p>
+
+<h1 id="9代码封装实现梯度下降">9.代码封装实现梯度下降</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">run_linear_regression_gd</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">gd_type</span><span class="o">=</span><span class="sh">'</span><span class="s">BGD</span><span class="sh">'</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    一个通用的线性回归梯度下降实现。
+    Args:
+        n_features (int): 特征数量。
+        gd_type (str): 梯度下降类型 (</span><span class="sh">'</span><span class="s">BGD</span><span class="sh">'</span><span class="s">, </span><span class="sh">'</span><span class="s">SGD</span><span class="sh">'</span><span class="s">, </span><span class="sh">'</span><span class="s">MBGD</span><span class="sh">'</span><span class="s">)。
+        epochs (int): 训练轮次。
+        learning_rate (float): 固定学习率。
+        batch_size (int): 小批量大小 (仅对MBGD有效)。
+    </span><span class="sh">"""</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">--- 运行 </span><span class="si">{</span><span class="n">gd_type</span><span class="si">}</span><span class="s">，特征数=</span><span class="si">{</span><span class="n">n_features</span><span class="si">}</span><span class="s"> ---</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="c1"># 1. 创建数据集X，y
+</span>    <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
+    
+    <span class="c1"># 真实参数
+</span>    <span class="n">w_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">b_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">w_true</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_true</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># 2. 使用偏置项x_0 = 1，更新X
+</span>    <span class="n">X_with_bias</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">c_</span><span class="p">[</span><span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="mi">1</span><span class="p">))]</span>
+    
+    <span class="c1"># 5. 初始化 W0...Wn...
+</span>    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="n">n_features</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># 为了简化，我们使用固定学习率。如果需要衰减，可以修改这里
+</span>    <span class="c1"># def learning_rate_schedule(t):
+</span>    <span class="c1">#     return t0/(t+t1)
+</span>    <span class="c1"># 
+</span>    <span class="c1"># 或者使用更简单的固定学习率
+</span>    
+    <span class="k">if</span> <span class="n">gd_type</span> <span class="o">==</span> <span class="sh">'</span><span class="s">BGD</span><span class="sh">'</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="c1"># BGD使用所有样本
+</span>            <span class="n">predictions</span> <span class="o">=</span> <span class="n">X_with_bias</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="n">X_with_bias</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_samples</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient</span>
+    
+    <span class="k">elif</span> <span class="n">gd_type</span> <span class="o">==</span> <span class="sh">'</span><span class="s">SGD</span><span class="sh">'</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="c1"># SGD每次使用一个随机样本
+</span>            <span class="n">shuffled_indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">permutation</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">shuffled_indices</span><span class="p">:</span>
+                <span class="n">xi</span> <span class="o">=</span> <span class="n">X_with_bias</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="n">yi</span> <span class="o">=</span> <span class="n">y</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="n">predictions</span> <span class="o">=</span> <span class="n">xi</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+                <span class="n">errors</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">-</span> <span class="n">yi</span>
+                <span class="n">gradient</span> <span class="o">=</span> <span class="n">xi</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+                <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient</span>
+    
+    <span class="k">elif</span> <span class="n">gd_type</span> <span class="o">==</span> <span class="sh">'</span><span class="s">MBGD</span><span class="sh">'</span><span class="p">:</span>
+        <span class="n">num_batches</span> <span class="o">=</span> <span class="n">n_samples</span> <span class="o">//</span> <span class="n">batch_size</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="c1"># MBGD使用一个随机的小批量
+</span>            <span class="n">shuffled_indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">permutation</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">X_shuffled</span> <span class="o">=</span> <span class="n">X_with_bias</span><span class="p">[</span><span class="n">shuffled_indices</span><span class="p">]</span>
+            <span class="n">y_shuffled</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">shuffled_indices</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">num_batches</span><span class="p">):</span>
+                <span class="n">start_idx</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">batch_size</span>
+                <span class="n">end_idx</span> <span class="o">=</span> <span class="n">start_idx</span> <span class="o">+</span> <span class="n">batch_size</span>
+                <span class="n">X_batch</span> <span class="o">=</span> <span class="n">X_shuffled</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span>
+                <span class="n">y_batch</span> <span class="o">=</span> <span class="n">y_shuffled</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span><span class="n">end_idx</span><span class="p">]</span>
+                
+                <span class="n">predictions</span> <span class="o">=</span> <span class="n">X_batch</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+                <span class="n">errors</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">-</span> <span class="n">y_batch</span>
+                <span class="n">gradient</span> <span class="o">=</span> <span class="n">X_batch</span><span class="p">.</span><span class="n">T</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="o">/</span> <span class="n">batch_size</span>
+                <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">真实斜率是：</span><span class="sh">'</span><span class="p">,</span> <span class="n">w_true</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="sh">'</span><span class="s">截距是：</span><span class="sh">'</span><span class="p">,</span> <span class="n">b_true</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">梯度下降计算的参数是：</span><span class="sh">'</span><span class="p">,</span> <span class="n">theta</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">--- 运行结束 ---</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 调用函数进行验证
+</span><span class="nf">run_linear_regression_gd</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">gd_type</span><span class="o">=</span><span class="sh">'</span><span class="s">BGD</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">run_linear_regression_gd</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gd_type</span><span class="o">=</span><span class="sh">'</span><span class="s">BGD</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">run_linear_regression_gd</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">gd_type</span><span class="o">=</span><span class="sh">'</span><span class="s">SGD</span><span class="sh">'</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># SGD通常需要更多epochs，这里为了演示简化
+</span><span class="nf">run_linear_regression_gd</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">gd_type</span><span class="o">=</span><span class="sh">'</span><span class="s">SGD</span><span class="sh">'</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="nf">run_linear_regression_gd</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">gd_type</span><span class="o">=</span><span class="sh">'</span><span class="s">MBGD</span><span class="sh">'</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="nf">run_linear_regression_gd</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gd_type</span><span class="o">=</span><span class="sh">'</span><span class="s">MBGD</span><span class="sh">'</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809160147755.png" alt="image-20250809160147755" style="zoom:50%;" /></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/08/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E6%B3%A2%E5%A3%AB%E9%A1%BF%E6%88%BF%E4%BB%B7%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="机器学习算法2-线性回归-波士顿房价问题">
+                        Previous<br>
+                        <span>机器学习算法2-线性回归-波士顿房价问题</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0143" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0122" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0128" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0129" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0133" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0133" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0134" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0136" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0138" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"
+                    title="机器学习算法"
+                    rel="8">机器学习算法</a>
+        
+                <a data-sort="0140" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0143" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0144" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0144" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0144" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
