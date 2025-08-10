@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="机器学习算法2-线性回归-归一化与正则化 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-08-10T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="机器学习算法">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/08/10/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E5%BD%92%E4%B8%80%E5%8C%96%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>机器学习算法2-线性回归-归一化与正则化 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/08/10/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E5%BD%92%E4%B8%80%E5%8C%96%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95" title="机器学习算法">机器学习算法</a>
+                        
+                    </div>
+                    <h1>机器学习算法2-线性回归-归一化与正则化</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on August 10, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1归一化normalization">1.归一化（Normalization）</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809163256507.png" alt="image-20250809163256507" style="zoom:50%;" /></p>
+
+<p>梯度下降优化的效率受到不同特征维度（如\(x_1\) 和 \(x_2\)）数值大小差异的影响。</p>
+
+<p>在这种情况下，梯度下降的路径会非常曲折，需要在宽阔的维度上迈小步，在狭窄的维度上迈大步，导致收敛速度非常慢。</p>
+
+<p>当对特征进行归一化处理后，它们的取值范围变得相似，损失函数的等高线会变得接近圆形，梯度下降可以沿着更直线的路径，高效地向中心收敛，大大提高了收敛速度。</p>
+
+<p>归一化的目的是将不同特征的数值范围或数量级统一化，使得梯度下降在不同维度上的优化步伐能够协调一致，从而加快模型的收敛速度。</p>
+
+<p>比如下面的例子就是未归一化之前的情况：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809164605245.png" alt="image-20250809164605245" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 设置 Matplotlib 字体以支持中文和负号
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c1"># 1. 构造一个平缓、可控的非归一化损失函数
+# 这是一个拉长的二次函数，其等高线是又扁又长的椭圆
+# 我们用一个相对较小的 a 值和一个较大的 b 值来模拟
+</span><span class="k">def</span> <span class="nf">cost_function_unnormalized</span><span class="p">(</span><span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">theta1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">theta2</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c1"># 2. 绘制未归一化损失函数的等高线图
+# 调整 theta1 和 theta2 的范围，使等高线能够被完全捕捉
+# theta1 的范围较小，theta2 的范围较大，与损失函数系数相反，才能得到拉长的等高线
+</span><span class="n">theta1_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">theta2_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="n">T1</span><span class="p">,</span> <span class="n">T2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">theta1_range</span><span class="p">,</span> <span class="n">theta2_range</span><span class="p">)</span>
+<span class="n">J_unnormalized</span> <span class="o">=</span> <span class="nf">cost_function_unnormalized</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">)</span>
+
+<span class="c1"># 3. 绘制等高线图
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># levels参数设置得更直观，直接指定一系列值
+</span><span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">J_unnormalized</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">viridis</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 4. 绘制梯度下降轨迹
+# 模拟一个合适的初始点和学习率，以展示典型的“之”字形路径
+</span><span class="n">start_theta</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">])</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="c1"># 学习率要足够小，避免发散
+</span><span class="n">n_iterations</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">theta_history</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_theta</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+    <span class="c1"># 损失函数对 theta1 的导数：20 * theta1
+</span>    <span class="n">grad_theta1</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">theta_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># 损失函数对 theta2 的导数：2 * theta2
+</span>    <span class="n">grad_theta2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">theta_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">new_theta1</span> <span class="o">=</span> <span class="n">theta_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_theta1</span>
+    <span class="n">new_theta2</span> <span class="o">=</span> <span class="n">theta_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_theta2</span>
+    <span class="n">theta_history</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="n">new_theta1</span><span class="p">,</span> <span class="n">new_theta2</span><span class="p">]))</span>
+
+<span class="n">theta_history</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">theta_history</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">r-o</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">梯度下降轨迹</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">go</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">初始点</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="sh">'</span><span class="s">y*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">最优解</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 5. 添加标题、标签和图例
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">未归一化数据的损失函数等高线</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_2$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">axis</span><span class="p">(</span><span class="sh">'</span><span class="s">equal</span><span class="sh">'</span><span class="p">)</span> <span class="c1"># 保证x,y轴比例一致，让椭圆看起来更真实
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>特别注意：通常不需要对标签（y）进行归一化，但是也不是绝对的，取决于你的模型和任务。</p>
+
+<p>标签值通常具有明确的物理意义。例如，预测房价（万元）、预测气温（摄氏度）或预测销售额（元）。对这些值进行归一化，会使其失去原有的意义，预测结果也需要<strong>反归一化</strong>才能被理解和使用。</p>
+
+<p>在大多数线性回归、深度学习等任务中，我们<strong>只对特征（<code class="language-plaintext highlighter-rouge">X</code>）进行归一化</strong>。</p>
+
+<h2 id="11归一化的两种方法">1.1归一化的两种方法</h2>
+
+<h3 id="最大最小值归一化-min-max-normalization">最大最小值归一化 (Min-Max Normalization)</h3>
+
+<p>将原始数据线性变换，使其结果映射到 \([0,1]\) 之间。可以使用 <code class="language-plaintext highlighter-rouge">sklearn.preprocessing.MinMaxScaler</code> 完成</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809163345076.png" alt="image-20250809163345076" style="zoom:50%;" /></p>
+
+<ul>
+  <li><strong>优点</strong>: 保证所有特征的数值都落在 \([0,1]\) 的固定区间内，非常直观。</li>
+  <li><strong>缺点</strong>: 对<strong>异常值</strong>（离群点）非常敏感。如果数据中有一个异常值，比如“马云的财富”，会导致 \(X_{max}\) 变得非常大，使得其他正常的数值归一化后都非常接近0，失去了数据的区分度。</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span><span class="p">,</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="n">joblib</span> <span class="kn">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">load</span>
+
+<span class="c1"># 1. 创建一个具有不同数量级特征的模拟数据集
+# 特征1: 面积，取值范围 0-2000
+</span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="c1"># 特征2: 卧室数，取值范围 1-5
+</span><span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="c1"># 合并成一个数据集
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">hstack</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">])</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">--- 原始数据 ---</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># 2. 最大最小值归一化 (Min-Max Normalization)
+</span>
+<span class="c1"># 自定义实现
+</span><span class="n">x_minmax_custom</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="p">.</span><span class="nf">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="p">.</span><span class="nf">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="s">--- 最大最小值归一化后的数据 (自定义实现) ---</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">x_minmax_custom</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">各特征的最小值:</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">min</span><span class="p">(</span><span class="n">x_minmax_custom</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">各特征的最大值:</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">max</span><span class="p">(</span><span class="n">x_minmax_custom</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="c1"># 使用sklearn实现
+</span><span class="n">minmax_scaler</span> <span class="o">=</span> <span class="nc">MinMaxScaler</span><span class="p">()</span>
+<span class="n">x_minmax_sklearn</span> <span class="o">=</span> <span class="n">minmax_scaler</span><span class="p">.</span><span class="nf">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="s">--- 最大最小值归一化后的数据 (sklearn实现) ---</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">x_minmax_sklearn</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">各特征的最小值:</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">min</span><span class="p">(</span><span class="n">x_minmax_sklearn</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">各特征的最大值:</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">max</span><span class="p">(</span><span class="n">x_minmax_sklearn</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809164746018.png" alt="image-20250809164746018" style="zoom:50%;" /></p>
+
+<h3 id="0-1均值标准化-z-score-normalization">0-1均值标准化 (Z-score Normalization)</h3>
+
+<p>对原始数据进行标准化，使其均值为0，标准差为1。处理后的数据符合标准正态分布。可以使用 <code class="language-plaintext highlighter-rouge">sklearn.preprocessing.StandardScaler</code> 完成</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809163459480.png" alt="image-20250809163459480" style="zoom:50%;" /></p>
+
+<ul>
+  <li><strong>优点</strong>:
+    <ul>
+      <li>不受异常值影响。因为标准差和均值的计算考虑了所有样本，异常值的影响被稀释了。</li>
+      <li>在梯度下降中，标准化的处理使得梯度更容易沿正确的路径收敛。</li>
+    </ul>
+  </li>
+  <li><strong>缺点</strong>: 标准化后的数据不一定落在 \([0,1]\) 的固定区间内。</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="c1"># 3. 0-1均值标准化 (Z-score Normalization)
+</span>
+<span class="c1"># 自定义实现
+</span><span class="n">x_zscore_custom</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">x</span><span class="p">.</span><span class="nf">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="s">--- 0-1均值标准化后的数据 (自定义实现) ---</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">x_zscore_custom</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">各特征的均值:</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">x_zscore_custom</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">各特征的标准差:</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">std</span><span class="p">(</span><span class="n">x_zscore_custom</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="c1"># 使用sklearn实现
+</span><span class="n">standard_scaler</span> <span class="o">=</span> <span class="nc">StandardScaler</span><span class="p">()</span>
+<span class="n">x_zscore_sklearn</span> <span class="o">=</span> <span class="n">standard_scaler</span><span class="p">.</span><span class="nf">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="s">--- 0-1均值标准化后的数据 (sklearn实现) ---</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">x_zscore_sklearn</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">各特征的均值:</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">x_zscore_sklearn</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">各特征的标准差:</span><span class="sh">'</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">std</span><span class="p">(</span><span class="n">x_zscore_sklearn</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="12技巧scaler的持久化">1.2技巧：Scaler的持久化</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre><span class="c1"># 4. 演示Scaler的持久化和使用
+# 在实际项目中，StandardScaler对象需要被保存，以便对新数据进行相同的处理
+# 以StandardScaler为例，进行持久化
+</span><span class="nf">dump</span><span class="p">(</span><span class="n">standard_scaler</span><span class="p">,</span> <span class="sh">'</span><span class="s">standard_scaler.joblib</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="s">已将StandardScaler对象持久化到文件：standard_scaler.joblib</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 模拟加载模型并处理新数据
+</span><span class="n">loaded_scaler</span> <span class="o">=</span> <span class="nf">load</span><span class="p">(</span><span class="sh">'</span><span class="s">standard_scaler.joblib</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 模拟一个新到来的数据
+</span><span class="n">new_data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([[</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="s">--- 新到来的数据 ---</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span>
+
+<span class="c1"># 使用加载的scaler对新数据进行转换
+</span><span class="n">new_data_transformed</span> <span class="o">=</span> <span class="n">loaded_scaler</span><span class="p">.</span><span class="nf">transform</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="s">--- 经过StandardScaler处理后的新数据 ---</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">new_data_transformed</span><span class="p">)</span>
+
+<span class="c1"># 观察：转换后的数据均值接近0，标准差接近1，与之前训练集处理后的结果一致
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809164931425.png" alt="image-20250809164931425" style="zoom:50%;" /></p>
+
+<hr />
+
+<h2 id="13总结">1.3总结</h2>
+
+<ul>
+  <li>在应用归一化时，应使用<strong>训练集的统计量</strong>（均值、标准差、最大值、最小值）来处理<strong>训练集、验证集和测试集</strong>。</li>
+  <li>为了在模型上线后处理新数据，需要将训练集计算得到的 <code class="language-plaintext highlighter-rouge">scaler</code> 对象<strong>持久化保存</strong>。</li>
+  <li><code class="language-plaintext highlighter-rouge">MinMaxScaler</code> 和 <code class="language-plaintext highlighter-rouge">StandardScaler</code> 的 <code class="language-plaintext highlighter-rouge">fit</code> 方法用于计算统计量，<code class="language-plaintext highlighter-rouge">transform</code> 方法用于应用转换，<code class="language-plaintext highlighter-rouge">fit_transform</code> 则是两者的结合。</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>归一化方法</th>
+      <th>适用场景</th>
+      <th>不适用场景</th>
+      <th>备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Min-Max归一化</strong></td>
+      <td>1. 数据范围已知且固定 (如图像像素)<br />2. 数据稀疏</td>
+      <td>1. <strong>存在异常值</strong><br />2. 数据分布范围不确定</td>
+      <td><strong>对异常值敏感</strong>，是其最大的局限性。</td>
+    </tr>
+    <tr>
+      <td><strong>Z-score标准化</strong></td>
+      <td>1. <strong>大多数机器学习算法</strong><br />2. 数据近似正态分布<br />3. <strong>存在异常值</strong></td>
+      <td>数据需要保持在固定区间时 (如 [0, 1])</td>
+      <td><strong>更通用、更稳健</strong>，是机器学习中的<strong>首选</strong>。</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250809165219356.png" alt="image-20250809165219356" style="zoom:50%;" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 设置 Matplotlib 字体以支持中文和负号
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c1"># 1. 定义未归一化和归一化后的损失函数
+# 这是一个二次函数，其等高线是椭圆，我们通过调整系数来模拟归一化前后的情况
+</span><span class="k">def</span> <span class="nf">cost_function_unnormalized</span><span class="p">(</span><span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">theta1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">theta2</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">cost_function_normalized</span><span class="p">(</span><span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">):</span>
+    <span class="c1"># 假设归一化后，两个特征的尺度相近，所以系数也相近
+</span>    <span class="k">return</span> <span class="n">theta1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">theta2</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c1"># 2. 模拟梯度下降过程
+</span><span class="k">def</span> <span class="nf">run_gradient_descent</span><span class="p">(</span><span class="n">cost_func</span><span class="p">,</span> <span class="n">start_theta</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    运行梯度下降并返回参数轨迹。
+    </span><span class="sh">"""</span>
+    <span class="n">theta_history</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_theta</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
+        <span class="c1"># 梯度计算（根据不同的损失函数）
+</span>        <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span> <span class="o">=</span> <span class="n">theta_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">cost_func</span> <span class="o">==</span> <span class="n">cost_function_unnormalized</span><span class="p">:</span>
+            <span class="n">grad_theta1</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">theta1</span>
+            <span class="n">grad_theta2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">theta2</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># cost_func == cost_function_normalized
+</span>            <span class="n">grad_theta1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">theta1</span>
+            <span class="n">grad_theta2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">theta2</span>
+            
+        <span class="n">new_theta1</span> <span class="o">=</span> <span class="n">theta1</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_theta1</span>
+        <span class="n">new_theta2</span> <span class="o">=</span> <span class="n">theta2</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_theta2</span>
+        
+        <span class="n">theta_history</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="n">new_theta1</span><span class="p">,</span> <span class="n">new_theta2</span><span class="p">]))</span>
+        
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">theta_history</span><span class="p">)</span>
+
+<span class="c1"># --- 参数设置 ---
+# 未归一化
+</span><span class="n">start_theta_unnorm</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">])</span>
+<span class="n">learning_rate_unnorm</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">n_iterations_unnorm</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">theta_history_unnorm</span> <span class="o">=</span> <span class="nf">run_gradient_descent</span><span class="p">(</span><span class="n">cost_function_unnormalized</span><span class="p">,</span> <span class="n">start_theta_unnorm</span><span class="p">,</span> <span class="n">learning_rate_unnorm</span><span class="p">,</span> <span class="n">n_iterations_unnorm</span><span class="p">)</span>
+
+<span class="c1"># 归一化
+# 注意：归一化后，由于等高线更圆，我们可以使用更大的学习率来加快收敛
+</span><span class="n">start_theta_norm</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">])</span>
+<span class="n">learning_rate_norm</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">n_iterations_norm</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">theta_history_norm</span> <span class="o">=</span> <span class="nf">run_gradient_descent</span><span class="p">(</span><span class="n">cost_function_normalized</span><span class="p">,</span> <span class="n">start_theta_norm</span><span class="p">,</span> <span class="n">learning_rate_norm</span><span class="p">,</span> <span class="n">n_iterations_norm</span><span class="p">)</span>
+
+
+<span class="c1"># 3. 可视化对比
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># --- 绘制未归一化等高线和轨迹 ---
+</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">theta1_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">theta2_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">T1</span><span class="p">,</span> <span class="n">T2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">theta1_range</span><span class="p">,</span> <span class="n">theta2_range</span><span class="p">)</span>
+<span class="n">J_unnorm</span> <span class="o">=</span> <span class="nf">cost_function_unnormalized</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">)</span>
+
+<span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">J_unnorm</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">viridis</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_unnorm</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_unnorm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">r-o</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">梯度下降轨迹</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_unnorm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_unnorm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">go</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">初始点</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="sh">'</span><span class="s">y*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">最优解</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">未归一化：之字形收敛</span><span class="se">\n</span><span class="s">学习率=</span><span class="si">{</span><span class="n">learning_rate_unnorm</span><span class="si">}</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_2$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">axis</span><span class="p">(</span><span class="sh">'</span><span class="s">equal</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+
+
+<span class="c1"># --- 绘制归一化后等高线和轨迹 ---
+</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">theta1_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">theta2_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">T1</span><span class="p">,</span> <span class="n">T2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">theta1_range</span><span class="p">,</span> <span class="n">theta2_range</span><span class="p">)</span>
+<span class="n">J_norm</span> <span class="o">=</span> <span class="nf">cost_function_normalized</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">)</span>
+
+<span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">J_norm</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">viridis</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_norm</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_norm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">r-o</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">梯度下降轨迹</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">theta_history_norm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">theta_history_norm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sh">'</span><span class="s">go</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">初始点</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="sh">'</span><span class="s">y*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">最优解</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">归一化后：直线收敛</span><span class="se">\n</span><span class="s">学习率=</span><span class="si">{</span><span class="n">learning_rate_norm</span><span class="si">}</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$\theta_2$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">axis</span><span class="p">(</span><span class="sh">'</span><span class="s">equal</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="2正则化-regularization">2.正则化 (Regularization)</h1>
+
+<h2 id="21过拟合与欠拟合-underfit--overfit">2.1过拟合与欠拟合 (Underfit &amp; Overfit)</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810135103765.png" alt="image-20250810135103765" style="zoom:50%;" /></p>
+
+<p><strong>欠拟合 (Underfit)</strong>：模型过于简单，无法捕捉数据中的基本规律。（学习不足，没学好）</p>
+
+<ul>
+  <li><strong>效果</strong>: 训练集和测试集的准确率都很低，都没有达到理想水平。</li>
+</ul>
+
+<p><strong>过拟合 (Overfit)</strong>：模型过于复杂，过度学习了训练数据中的噪声和细节。</p>
+
+<ul>
+  <li><strong>效果</strong>: 训练集的准确率很高，但测试集的准确率反而降低。</li>
+</ul>
+
+<p><strong>刚好拟合 (Just Right)</strong>：模型复杂度适中，既能捕捉数据中的主要规律，又不会过度学习噪声。</p>
+
+<ul>
+  <li><strong>效果</strong>: 训练集和测试集的准确率都达到较高水平。</li>
+</ul>
+
+<p>机器学习的目标就是找到一个<strong>刚好拟合</strong>的模型。正则化是解决过拟合问题的关键技术之一。</p>
+
+<h2 id="22正则化">2.2正则化</h2>
+
+<p>正则化的目的是通过在损失函数中添加一个惩罚项，来<strong>限制模型参数的复杂度</strong>，从而避免过拟合。</p>
+
+<p><strong>损失函数</strong>: \(J=J_0+正则化项\)</p>
+
+<ul>
+  <li>\(J_0\) 是原始的损失函数（如均方误差MSE）。</li>
+  <li><strong>正则化项</strong>是用来惩罚模型复杂度的项。模型参数（权重 <code class="language-plaintext highlighter-rouge">w</code>）越大，惩罚项的值就越大，总损失 J 也就越大。</li>
+</ul>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810155900617.png" alt="image-20250810155900617" style="zoom:50%;" /></p>
+
+<p><strong>L1正则化</strong>（也称为 <strong>Lasso 回归</strong>）：</p>
+
+<ul>
+  <li><strong>正则化项</strong>: \(L_1=\alpha \sum_{i=1}^n∣w_i∣\)。</li>
+  <li><code class="language-plaintext highlighter-rouge">L1</code> 项是所有参数绝对值之和，\(\alpha\) 是正则化系数，控制惩罚项的强度。</li>
+</ul>
+
+<p><strong>L2正则化</strong>（也称为 <strong>Ridge 回归</strong>）：</p>
+
+<ul>
+  <li><strong>正则化项</strong>: \(L_2=\alpha \sum_{i=1}^n w_i^2\)。</li>
+  <li><code class="language-plaintext highlighter-rouge">L2</code> 项是所有参数平方和。</li>
+</ul>
+
+<p>L1和L2正则化通过调节模型参数来增加模型的<strong>鲁棒性</strong>（Robustness），使模型在面对未见过的数据时，也能有更好的泛化能力。</p>
+
+<p><strong>L1正则化 (Lasso)</strong>: 惩罚项为参数绝对值之和，其几何等高线是<strong>菱形</strong>。它倾向于将不重要的参数权重压缩为0，因此具有<strong>稀疏性</strong>，可用于<strong>特征选择</strong>。</p>
+
+<p><strong>L2正则化 (Ridge)</strong>: 惩罚项为参数平方和，其几何等高线是<strong>圆形</strong>。它将参数压缩到接近0，但通常不会完全变为0。</p>
+
+<p>L1 和 L2 正则项惩罚项可以加到任何算法的损失函数上面去提高计算出来模型的泛化能力</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810143213042.png" alt="image-20250810143213042" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 设置 Matplotlib 字体以支持中文和负号
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">axes.unicode_minus</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c1"># 1. 定义数据和损失函数
+# 模拟两个参数 w1 和 w2
+</span><span class="n">w1_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">w2_range</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">W1</span><span class="p">,</span> <span class="n">W2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">w1_range</span><span class="p">,</span> <span class="n">w2_range</span><span class="p">)</span>
+
+<span class="c1"># 原始损失函数 (J0)，其等高线是椭圆形
+</span><span class="n">J0</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="p">(</span><span class="n">W1</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="p">(</span><span class="n">W2</span> <span class="o">-</span> <span class="mf">1.2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> 
+<span class="c1"># 最优解在 (w1=0.5, w2=1.2)
+</span>
+<span class="c1"># L1和L2正则化项
+</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">L1_norm</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">W1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">W2</span><span class="p">))</span>
+<span class="n">L2_norm</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">W1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">W2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 2. 可视化 L1 正则化
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># --- L1 可视化 ---
+</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">'</span><span class="s">L1正则化 (Lasso)</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$w_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$w_2$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_aspect</span><span class="p">(</span><span class="sh">'</span><span class="s">equal</span><span class="sh">'</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="sh">'</span><span class="s">box</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">--</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># 绘制原始损失函数的等高线 (椭圆)
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">J0</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">viridis</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># 绘制L1惩罚项的等高线 (菱形)
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">L1_norm</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="sh">'</span><span class="s">dashed</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 标记最优解
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="sh">'</span><span class="s">y*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">无正则化最优解</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># 模拟L1正则化最优解（在角点）
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="sh">'</span><span class="s">g*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">L1正则化最优解</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+
+
+<span class="c1"># --- L2 可视化 ---
+</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">'</span><span class="s">L2正则化 (Ridge)</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$w_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="sh">'</span><span class="s">$w_2$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">set_aspect</span><span class="p">(</span><span class="sh">'</span><span class="s">equal</span><span class="sh">'</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="sh">'</span><span class="s">box</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">--</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># 绘制原始损失函数的等高线 (椭圆)
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">J0</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">viridis</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># 绘制L2惩罚项的等高线 (圆形)
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">L2_norm</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="sh">'</span><span class="s">dashed</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 标记最优解
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="sh">'</span><span class="s">y*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">无正则化最优解</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># 模拟L2正则化最优解（在非坐标轴位置）
+</span><span class="n">ax</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="sh">'</span><span class="s">g*</span><span class="sh">'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">L2正则化最优解</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="23lasso回归">2.3Lasso回归</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810160234113.png" alt="image-20250810160234113" style="zoom:50%;" /></p>
+
+<p>α 是L1正则化项前面的系数，它的作用是控制正则化惩罚的强度。</p>
+
+<p>因为 惩罚项公式是 \(L1=α∑∣w_i∣\)，所以L1等高线的方程是 \(∑∣w_i∣=\frac{C}{\alpha}\)（其中 C 是常数）。</p>
+
+<p><strong>当 α 越小</strong>，分母 α 变小，\(\frac{C}{\alpha}\)变大，因此等高线的半径（菱形的大小）会变大。表示对参数 <code class="language-plaintext highlighter-rouge">w</code> 的惩罚越弱，模型更倾向于拟合训练数据，参数可以取较大的值。</p>
+
+<p><strong>当 α 越大</strong>，分母 α 变大，\(\frac{C}{\alpha}\) 变小，因此等高线的半径（菱形的大小）会变小。表示对参数 <code class="language-plaintext highlighter-rouge">w</code> 的惩罚越强，模型越倾向于将参数压缩到0。</p>
+
+<ul>
+  <li><strong>α 越小</strong>，L1的等高线（菱形）越大。这时，L1的菱形等高线与原始损失函数（椭圆形）等高线相交的位置离原点更远，最优解的参数值会比较大，类似于没有正则化的情况，容易导致<strong>过拟合</strong>。</li>
+  <li><strong>α 越大</strong>，L1的等高线（菱形）越小。这时，L1的等高线被压缩得非常小，甚至小到只在原点附近与损失函数的等高线相交。</li>
+</ul>
+
+<p>当 \(\alpha\)大到一定程度时，相交点就会位于L1等高线的“角”上，从而导致其中一个参数为0。这正是L1正则化实现特征选择的机制。</p>
+
+<p>当 \(\alpha\) 很大时，L1的等高线非常小，与损失函数等高线相交的点会非常接近原点，导致非零参数的值也变得很小，模型参数的整体大小都被有效地控制住了,从而避免过拟合。</p>
+
+<p>【更新规则】</p>
+
+<p>回顾梯度下降法的通用参数更新规则：<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810161941029.png" alt="image-20250810161941029" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810162003497.png" alt="image-20250810162003497" style="zoom:50%;" /></p>
+
+<p>现在计算L1正则化后的损失函数 J 的梯度。</p>
+
+<p>L1正则化后的总损失函数 J 被分解为两部分：原始的线性回归损失函数\(J_0\)，即均方误差（MSE）；L1正则化项，即参数绝对值之和 \(α∑∣w_i∣\)。</p>
+
+<p>根据导数的线性性质，总损失 J 的梯度也等于两部分梯度的和：\(\frac{∂J}{∂θ_j}=\frac{∂J_0}{∂θ_j}+\frac{∂L_1}{∂θ_j}\)</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810162414196.png" alt="image-20250810162414196" style="zoom:50%;" /></p>
+
+<p>其中\(sgn(w_j)\)是一个符号函数：<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810162516686.png" alt="image-20250810162516686" style="zoom:50%;" /></p>
+
+<p>最终得到了L1正则化参数更新的最终公式：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810162550344.png" alt="image-20250810162550344" style="zoom:50%;" /></p>
+
+<p>这个公式与标准线性回归的更新公式相比，多了一个惩罚项：\(−ηα∗sgn(w_j)\)。</p>
+
+<p>这个额外的惩罚项是L1正则化的核心，它的作用是将参数向0拉近</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810163215583.png" alt="image-20250810163215583" style="zoom:50%;" /></p>
+
+<p>这种“每次都强制减去或加上一个固定值 \(ηα\)”的特性，使得L1正则化能够将不重要的参数值直接变为0，从而实现<strong>特征选择</strong>。</p>
+
+<blockquote>
+  <p>有些书本将L1正则化系数用 \(λ\) 表示，这只是符号上的不同，其含义和作用与 \(α\) 完全相同。</p>
+</blockquote>
+
+<p>注：下面公式是sklearn官方给出的公式（矩阵形式）</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810192214745.png" alt="image-20250810192214745" style="zoom:50%;" /></p>
+
+<h2 id="24ridge回归">2.4Ridge回归</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810185922540.png" alt="image-20250810185922540" style="zoom:50%;" /></p>
+
+<p>\(J_0\)是原始的线性回归损失函数，通常采用均方误差（MSE）。我们的目标是最小化这个损失，以使模型的预测值 \(h_θ(x^{(i)})\) 尽可能接近真实值 \(y^{(i)}\)。</p>
+
+<p>\(L_2\)是L2正则化项，也称为L2范数。它等于所有模型参数 \(w_i\) 的<strong>平方和</strong>，再乘以一个正则化系数\(α\)。</p>
+
+<p>\(J\)这是最终的、带有L2正则化的总损失函数。通过最小化 \(J\)，我们不仅要使模型拟合数据（最小化 \(J_0\)），还要让模型参数尽可能小（最小化 \(L_2\)）。</p>
+
+<p>推导L2正则化下的参数更新公式:</p>
+
+<p>总损失 \(J\) 的梯度被分解为两部分：原始损失的梯度\(\frac{∂J_0}{∂θ_j}\) 和L2正则化项的梯度\(\frac{∂L_2}{∂θ_j}\)。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810190310160.png" alt="image-20250810190310160" style="zoom:50%;" /></p>
+
+<p>将这两个梯度项代入通用梯度下降公式 \(θ_j^{n+1}=θ_j^n−η\frac{∂J}{∂θ_j}\)，得到最终的更新公式：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810191331455.png" alt="image-20250810191331455" style="zoom:50%;" /></p>
+
+<p>也可以提取公因式：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810191455200.png" alt="image-20250810191455200" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>注：这里的 α 实际上包含了原来的 2α。（系数2吸收进 α了，应该本来是乘以1−2ηα）</p>
+</blockquote>
+
+<p>每次更新时，参数 \(θ_j^n\) 都会<strong>先乘以一个小于1的因子 (\(1−ηα\))</strong>。</p>
+
+<p>这个因子会使参数  \(θ_j^n\)  绝对值减小，因此L2正则化被称为<strong>权重衰减（weight decay）</strong>。</p>
+
+<p>然后再减去原始梯度项，继续拟合数据。</p>
+
+<p>L2正则化在每次迭代中，都强制性地减小了参数的绝对值，从而防止参数变得过大，实现了防止过拟合的效果，增加了模型的鲁棒性。</p>
+
+<p>由于L2惩罚项的等高线是平滑的圆形，它与椭圆形等高线相切相交时，相交点<strong>极少</strong>会正好落在坐标轴上。因此，L2正则化不具备将参数直接压缩为0的<strong>稀疏性</strong>，无法用于特征选择。</p>
+
+<p>注：下面公式是sklearn官方给出的公式（矩阵形式）</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810192142660.png" alt="image-20250810192142660" style="zoom:50%;" /></p>
+
+<h2 id="25sklearn的岭回归与lasso回归">2.5sklearn的岭回归与Lasso回归</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span><span class="p">,</span> <span class="n">SGDRegressor</span>
+<span class="kn">from</span> <span class="n">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="n">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="k">def</span> <span class="nf">run_ridge_regression</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">alpha_list</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    运行Ridge回归，并对比不同alpha值的影响。
+    </span><span class="sh">"""</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">--- 运行 Ridge 回归，特征数=</span><span class="si">{</span><span class="n">n_features</span><span class="si">}</span><span class="s"> ---</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># 1. 创建数据集X，y
+</span>    <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">w_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">b_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">w_true</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_true</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">真实系数是:</span><span class="sh">'</span><span class="p">,</span> <span class="n">w_true</span><span class="p">.</span><span class="nf">ravel</span><span class="p">())</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">真实截距是:</span><span class="sh">'</span><span class="p">,</span> <span class="n">b_true</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alpha_list</span><span class="p">:</span>
+        <span class="c1"># 使用Pipeline先标准化再训练，更规范
+</span>        <span class="n">ridge_pipeline</span> <span class="o">=</span> <span class="nc">Pipeline</span><span class="p">([</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">scaler</span><span class="sh">'</span><span class="p">,</span> <span class="nc">StandardScaler</span><span class="p">()),</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">ridge</span><span class="sh">'</span><span class="p">,</span> <span class="nc">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="sh">'</span><span class="s">sag</span><span class="sh">'</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">))</span>
+        <span class="p">])</span>
+        <span class="n">ridge_pipeline</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        
+        <span class="c1"># 从Pipeline中获取模型参数
+</span>        <span class="n">ridge_model</span> <span class="o">=</span> <span class="n">ridge_pipeline</span><span class="p">.</span><span class="n">named_steps</span><span class="p">[</span><span class="sh">'</span><span class="s">ridge</span><span class="sh">'</span><span class="p">]</span>
+        <span class="n">coef</span> <span class="o">=</span> <span class="n">ridge_model</span><span class="p">.</span><span class="n">coef_</span><span class="p">.</span><span class="nf">ravel</span><span class="p">()</span>
+        <span class="n">intercept</span> <span class="o">=</span> <span class="n">ridge_model</span><span class="p">.</span><span class="n">intercept_</span>
+        
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">--- Ridge (alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s">) ---</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">求解得到的系数是:</span><span class="sh">'</span><span class="p">,</span> <span class="n">coef</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">求解得到的截距是:</span><span class="sh">'</span><span class="p">,</span> <span class="n">intercept</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">系数L2范数之和: </span><span class="si">{</span><span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">coef</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">'</span><span class="p">)</span>
+    
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">--- Ridge 回归结束 ---</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">run_lasso_regression</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">alpha_list</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    运行Lasso回归，并对比不同alpha值的影响。
+    </span><span class="sh">"""</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">--- 运行 Lasso 回归，特征数=</span><span class="si">{</span><span class="n">n_features</span><span class="si">}</span><span class="s"> ---</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># 1. 创建数据集X，y
+</span>    <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">w_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">b_true</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">w_true</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_true</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">真实系数是:</span><span class="sh">'</span><span class="p">,</span> <span class="n">w_true</span><span class="p">.</span><span class="nf">ravel</span><span class="p">())</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">真实截距是:</span><span class="sh">'</span><span class="p">,</span> <span class="n">b_true</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alpha_list</span><span class="p">:</span>
+        <span class="n">lasso_pipeline</span> <span class="o">=</span> <span class="nc">Pipeline</span><span class="p">([</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">scaler</span><span class="sh">'</span><span class="p">,</span> <span class="nc">StandardScaler</span><span class="p">()),</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">lasso</span><span class="sh">'</span><span class="p">,</span> <span class="nc">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">))</span>
+        <span class="p">])</span>
+        <span class="n">lasso_pipeline</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        
+        <span class="n">lasso_model</span> <span class="o">=</span> <span class="n">lasso_pipeline</span><span class="p">.</span><span class="n">named_steps</span><span class="p">[</span><span class="sh">'</span><span class="s">lasso</span><span class="sh">'</span><span class="p">]</span>
+        <span class="n">coef</span> <span class="o">=</span> <span class="n">lasso_model</span><span class="p">.</span><span class="n">coef_</span><span class="p">.</span><span class="nf">ravel</span><span class="p">()</span>
+        <span class="n">intercept</span> <span class="o">=</span> <span class="n">lasso_model</span><span class="p">.</span><span class="n">intercept_</span>
+        
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">--- Lasso (alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s">) ---</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">求解得到的系数是:</span><span class="sh">'</span><span class="p">,</span> <span class="n">coef</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">求解得到的截距是:</span><span class="sh">'</span><span class="p">,</span> <span class="n">intercept</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">非零系数数量: </span><span class="si">{</span><span class="n">np</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">coef</span> <span class="err">!</span><span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="sh">'</span><span class="p">)</span>
+        
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">--- Lasso 回归结束 ---</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="c1"># 运行示例
+</span><span class="nf">run_ridge_regression</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">alpha_list</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">])</span>
+<span class="nf">run_lasso_regression</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha_list</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre></td><td class="rouge-code"><pre><span class="o">---</span> <span class="n">运行</span> <span class="n">Ridge</span> <span class="n">回归</span><span class="err">，</span><span class="n">特征数</span><span class="o">=</span><span class="mi">5</span> <span class="o">---</span>
+<span class="n">真实系数是</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span> <span class="mi">1</span> <span class="mi">4</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">真实截距是</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+
+<span class="o">---</span> <span class="nc">Ridge </span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">---</span>
+<span class="n">求解得到的系数是</span><span class="p">:</span> <span class="p">[</span><span class="mf">3.88325326</span> <span class="mf">0.485939</span>   <span class="mf">2.2188067</span>  <span class="mf">2.15102884</span> <span class="mf">2.95363648</span><span class="p">]</span>
+<span class="n">求解得到的截距是</span><span class="p">:</span> <span class="p">[</span><span class="mf">28.36730483</span><span class="p">]</span>
+<span class="n">系数L2范数之和</span><span class="p">:</span> <span class="mf">33.59</span>
+
+<span class="o">---</span> <span class="nc">Ridge </span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">---</span>
+<span class="n">求解得到的系数是</span><span class="p">:</span> <span class="p">[</span><span class="mf">3.84864021</span> <span class="mf">0.48524549</span> <span class="mf">2.19999549</span> <span class="mf">2.13536089</span> <span class="mf">2.92595118</span><span class="p">]</span>
+<span class="n">求解得到的截距是</span><span class="p">:</span> <span class="p">[</span><span class="mf">28.36730483</span><span class="p">]</span>
+<span class="n">系数L2范数之和</span><span class="p">:</span> <span class="mf">33.01</span>
+
+<span class="o">---</span> <span class="nc">Ridge </span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span> <span class="o">---</span>
+<span class="n">求解得到的系数是</span><span class="p">:</span> <span class="p">[</span><span class="mf">3.53466527</span> <span class="mf">0.47483545</span> <span class="mf">2.02865551</span> <span class="mf">1.99106369</span> <span class="mf">2.67527307</span><span class="p">]</span>
+<span class="n">求解得到的截距是</span><span class="p">:</span> <span class="p">[</span><span class="mf">28.36730483</span><span class="p">]</span>
+<span class="n">系数L2范数之和</span><span class="p">:</span> <span class="mf">27.96</span>
+<span class="o">---</span> <span class="n">Ridge</span> <span class="n">回归结束</span> <span class="o">---</span>
+
+<span class="o">---</span> <span class="n">运行</span> <span class="n">Lasso</span> <span class="n">回归</span><span class="err">，</span><span class="n">特征数</span><span class="o">=</span><span class="mi">20</span> <span class="o">---</span>
+<span class="n">真实系数是</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span> <span class="mi">6</span> <span class="mi">1</span> <span class="mi">7</span> <span class="mi">1</span> <span class="mi">9</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">7</span> <span class="mi">2</span> <span class="mi">5</span> <span class="mi">8</span> <span class="mi">8</span> <span class="mi">3</span> <span class="mi">7</span> <span class="mi">3</span> <span class="mi">6</span> <span class="mi">6</span> <span class="mi">3</span> <span class="mi">7</span><span class="p">]</span>
+<span class="n">真实截距是</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="o">---</span> <span class="nc">Lasso </span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span> <span class="o">---</span>
+<span class="n">求解得到的系数是</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.71805221</span> <span class="mf">3.62045461</span> <span class="mf">0.61881976</span> <span class="mf">3.79011797</span> <span class="mf">0.58778622</span> <span class="mf">5.50322165</span>
+ <span class="mf">0.64129722</span> <span class="mf">0.70482784</span> <span class="mf">3.9746928</span>  <span class="mf">1.25201778</span> <span class="mf">2.83025796</span> <span class="mf">4.78596247</span>
+ <span class="mf">4.53422295</span> <span class="mf">1.73996259</span> <span class="mf">3.80902682</span> <span class="mf">1.7225133</span>  <span class="mf">3.46246065</span> <span class="mf">3.39341479</span>
+ <span class="mf">1.78950567</span> <span class="mf">3.95358098</span><span class="p">]</span>
+<span class="n">求解得到的截距是</span><span class="p">:</span> <span class="p">[</span><span class="mf">96.45147968</span><span class="p">]</span>
+<span class="n">非零系数数量</span><span class="p">:</span> <span class="mi">20</span>
+
+<span class="o">---</span> <span class="nc">Lasso </span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">---</span>
+<span class="n">求解得到的系数是</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.60734194</span> <span class="mf">3.44013429</span> <span class="mf">0.47984614</span> <span class="mf">3.6577235</span>  <span class="mf">0.51285813</span> <span class="mf">5.37722892</span>
+ <span class="mf">0.61678585</span> <span class="mf">0.55192351</span> <span class="mf">3.70265358</span> <span class="mf">1.08265346</span> <span class="mf">2.85744022</span> <span class="mf">4.69986216</span>
+ <span class="mf">4.40579606</span> <span class="mf">1.57520922</span> <span class="mf">3.62848919</span> <span class="mf">1.53596559</span> <span class="mf">3.35472812</span> <span class="mf">3.10676125</span>
+ <span class="mf">1.65924678</span> <span class="mf">3.80519759</span><span class="p">]</span>
+<span class="n">求解得到的截距是</span><span class="p">:</span> <span class="p">[</span><span class="mf">96.45147968</span><span class="p">]</span>
+<span class="n">非零系数数量</span><span class="p">:</span> <span class="mi">20</span>
+
+<span class="o">---</span> <span class="nc">Lasso </span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">---</span>
+<span class="n">求解得到的系数是</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.60863589</span> <span class="mf">1.77887291</span> <span class="mf">0.</span>         <span class="mf">2.35838296</span> <span class="mf">0.</span>         <span class="mf">4.14171351</span>
+ <span class="mf">0.50245925</span> <span class="mf">0.</span>         <span class="mf">1.37531228</span> <span class="mf">0.</span>         <span class="mf">2.93709894</span> <span class="mf">3.75374493</span>
+ <span class="mf">3.13428597</span> <span class="mf">0.04363814</span> <span class="mf">1.85255855</span> <span class="mf">0.</span>         <span class="mf">2.37450251</span> <span class="mf">0.51110751</span>
+ <span class="mf">0.72201241</span> <span class="mf">2.41528787</span><span class="p">]</span>
+<span class="n">求解得到的截距是</span><span class="p">:</span> <span class="p">[</span><span class="mf">96.45147968</span><span class="p">]</span>
+<span class="n">非零系数数量</span><span class="p">:</span> <span class="mi">15</span>
+<span class="o">---</span> <span class="n">Lasso</span> <span class="n">回归结束</span> <span class="o">---</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/08/09/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E5%8E%9F%E7%90%86/" data-toggle="tooltip" data-placement="top" title="机器学习算法2-线性回归-梯度下降原理">
+                        Previous<br>
+                        <span>机器学习算法2-线性回归-梯度下降原理</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0144" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0123" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0129" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0130" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0134" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0134" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0135" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0137" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0138" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"
+                    title="机器学习算法"
+                    rel="9">机器学习算法</a>
+        
+                <a data-sort="0141" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0144" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0145" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0145" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0145" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
