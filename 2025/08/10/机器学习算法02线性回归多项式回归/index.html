@@ -430,6 +430,112 @@
 
 <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250810224241062.png" alt="image-20250810224241062" style="zoom:50%;" /></p>
 
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="n">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PolynomialFeatures</span><span class="p">,</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="n">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDRegressor</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">Ridge</span>
+<span class="kn">from</span> <span class="n">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="c1"># 1、创建数据，并进行可视化
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">X</span> <span class="o">-</span> <span class="mi">12</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="nf">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 2、创建预测数据
+</span><span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">).</span><span class="nf">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 3、定义需要对比的模型和管道
+</span><span class="n">models_to_compare</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="sh">'</span><span class="s">Linear Regression (Baseline)</span><span class="sh">'</span><span class="p">,</span> <span class="nc">LinearRegression</span><span class="p">(),</span> <span class="bp">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="sh">'</span><span class="s">PolynomialFeatures (d=2) with SGD</span><span class="sh">'</span><span class="p">,</span> <span class="nc">SGDRegressor</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="sh">'</span><span class="s">l2</span><span class="sh">'</span><span class="p">,</span> <span class="n">eta0</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">early_stopping</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="nc">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">)),</span>
+    <span class="p">(</span><span class="sh">'</span><span class="s">PolynomialFeatures (d=3) with SGD</span><span class="sh">'</span><span class="p">,</span> <span class="nc">SGDRegressor</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="sh">'</span><span class="s">l2</span><span class="sh">'</span><span class="p">,</span> <span class="n">eta0</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">early_stopping</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="nc">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">)),</span>
+    <span class="p">(</span><span class="sh">'</span><span class="s">PolynomialFeatures (d=2) with Ridge</span><span class="sh">'</span><span class="p">,</span> <span class="nc">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="nc">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="p">]</span>
+
+<span class="c1"># 4、绘制原始数据
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Original Data</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 5、循环训练和预测
+</span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">feature_transformer</span> <span class="ow">in</span> <span class="n">models_to_compare</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feature_transformer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="nc">Pipeline</span><span class="p">([</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">features</span><span class="sh">'</span><span class="p">,</span> <span class="n">feature_transformer</span><span class="p">),</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">scaler</span><span class="sh">'</span><span class="p">,</span> <span class="nc">StandardScaler</span><span class="p">()),</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">regressor</span><span class="sh">'</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+        <span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="nc">Pipeline</span><span class="p">([</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">scaler</span><span class="sh">'</span><span class="p">,</span> <span class="nc">StandardScaler</span><span class="p">()),</span>
+            <span class="p">(</span><span class="sh">'</span><span class="s">regressor</span><span class="sh">'</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+        <span class="p">])</span>
+    
+    <span class="n">pipeline</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">y_test</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># 6、添加图例和标题
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">Comparison of Different Learning Models</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">X</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">savefig</span><span class="p">(</span><span class="sh">'</span><span class="s">model_comparison.png</span><span class="sh">'</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250812162516859.png" alt="image-20250812162516859" style="zoom:50%;" /></p>
+
 
 
                 <hr style="visibility: hidden;">
