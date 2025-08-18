@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="Ollama-CLI - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-08-18T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="Ollama">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/08/18/Ollama01CLI/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>Ollama-CLI - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/08/18/Ollama01CLI/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=Ollama" title="Ollama">Ollama</a>
+                        
+                    </div>
+                    <h1>Ollama-CLI</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on August 18, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1什么是ollama">1.什么是Ollama?</h1>
+
+<p>Ollama 是一个开源的大型语言模型（LLM）平台，Ollama 提供了简洁易用的<strong>命令行界面</strong>和服务器，使用户能够轻松下载、运行和管理各种开源 LLM，通过 Ollama，用户可以方便地加载和使用各种预训练的语言模型，支持文本生成、翻译、代码编写、问答等多种自然语言处理任务。</p>
+
+<p>【ollama官网】：https://ollama.com</p>
+
+<blockquote>
+  <p>任何私人的一些使用问题，建议不要在ollama的github issues中提出，建议在Discord上提：</p>
+
+  <p>https://discord.com/invite/ollama</p>
+</blockquote>
+
+<p>Ollama特点:</p>
+
+<ul>
+  <li>开源免费：Ollama 是一个开源的本地大型语言模型运行框架，用户可以自由使用、修改和分发，无需支付费用。</li>
+  <li>跨平台支持：Ollama 支持 macOS、Windows、Linux 以及 Docker多种操作系统环境下顺</li>
+  <li>利部署和使用。</li>
+  <li>简单易用：通过命令行方式下载、运行、管理各种开源LLM，使非专业用户也能方便的管理</li>
+  <li>运行各种复杂模型。</li>
+  <li>性能强大：充分利用本地资源，既可以使用GPU也可以使用CPU。</li>
+  <li>易于集成：Ollama 提供了命令行工具和 API，简化了与其他项目和服务的集成。</li>
+</ul>
+
+<hr />
+
+<h1 id="2ollama下载与安装">2.Ollama下载与安装</h1>
+
+<p>Ollama下载地址:</p>
+
+<p>https://github.com/ollama/ollama</p>
+
+<p>无脑下一步安装就可以。推荐安装位置预留出至少10G的磁盘空间（因为后期下载的模型会用到一定的磁盘空间）。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250812202516912.png" alt="image-20250812202516912" style="zoom:50%;" /></p>
+
+<p>在安装 Ollama 应用后，服务会自动在后台运行（以后一般开机会自己后台启动）。如果你想手动启动，可以使用以下命令：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">serve</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>通常不应该手动在终端运行这个命令。</p>
+
+<p>Ollama 在安装时，会在 Windows/Linux 上自动设置一个后台服务，在 macOS 上也会有类似的机制。这个后台服务是所有模型生成任务的实际执行者。当用户运行 <code class="language-plaintext highlighter-rouge">ollama run</code> 或使用第三方 UI 时，它们都是通过这个后台服务来与模型进行通信。</p>
+
+<p>手动在终端运行 <code class="language-plaintext highlighter-rouge">ollama serve</code> 的弊端：</p>
+
+<ol>
+  <li><strong>模型文件路径差异：</strong> 在 Windows 和 Linux 上，后台服务通常以不同的用户身份运行，导致手动运行的服务会把模型文件存放在不同的位置。这会造成“模型消失”的假象。</li>
+  <li><strong>独占终端：</strong> 手动运行会独占当前的终端窗口，这会阻止用户在同一个终端中执行其他命令，也可能影响第三方工具的正常使用。</li>
+</ol>
+
+<p>唯一推荐手动运行 <code class="language-plaintext highlighter-rouge">ollama serve</code> 的情况是进行<strong>实验性设置</strong>，比如临时测试不同的环境变量。</p>
+
+<h1 id="3ollama支持模型">3.Ollama支持模型</h1>
+
+<h2 id="31ollama中有哪些模型">3.1ollama中有哪些模型</h2>
+
+<p>Ollama支持很多模型，可以通过“https://ollama.com/library”查看可用的模型列表。</p>
+
+<p>可以看到一开始所有模型是按照流行程度Popular排序的：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250813163916523.png" alt="image-20250813163916523" style="zoom:50%;" /></p>
+
+<p><strong>在本机Ollama运行7B模型至少需要8GB内存；运行13B模型至少需要16G内存；运行33B模型至少需要32G内存。</strong></p>
+
+<p>注意：”7B”、”13B” 和 “33B” 分别表示模型中参数的数量级，分别为 70 亿、130 亿和 330 亿个参数。模型的参数数量直接影响其对内存的需求，参数越多，模型越复杂，所需的内存也就越大，运行这些模型时，确保系统具有足够的内存。</p>
+
+<ul>
+  <li>Query successful</li>
+</ul>
+
+<p>好的，这是将图片内容转换成 Markdown 表格后的结果：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Parameters</th>
+      <th>Size</th>
+      <th>Download</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Gemma 3</td>
+      <td>1B</td>
+      <td>815MB</td>
+      <td>ollama run gemma3:1b</td>
+    </tr>
+    <tr>
+      <td>Gemma 3</td>
+      <td>4B</td>
+      <td>3.3GB</td>
+      <td>ollama run gemma3</td>
+    </tr>
+    <tr>
+      <td>Gemma 3</td>
+      <td>12B</td>
+      <td>8.1GB</td>
+      <td>ollama run gemma3:12b</td>
+    </tr>
+    <tr>
+      <td>Gemma 3</td>
+      <td>27B</td>
+      <td>17GB</td>
+      <td>ollama run gemma3:27b</td>
+    </tr>
+    <tr>
+      <td>QwQ</td>
+      <td>32B</td>
+      <td>20GB</td>
+      <td>ollama run qwq</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-R1</td>
+      <td>7B</td>
+      <td>4.7GB</td>
+      <td>ollama run deepseek-r1</td>
+    </tr>
+    <tr>
+      <td>DeepSeek-R1</td>
+      <td>671B</td>
+      <td>404GB</td>
+      <td>ollama run deepseek-r1:671b</td>
+    </tr>
+    <tr>
+      <td>Llama 3.3</td>
+      <td>70B</td>
+      <td>43GB</td>
+      <td>ollama run llama3.3</td>
+    </tr>
+    <tr>
+      <td>Llama 3.2</td>
+      <td>1B</td>
+      <td>1.3GB</td>
+      <td>ollama run llama3.2:1b</td>
+    </tr>
+    <tr>
+      <td>Llama 3.2 Vision</td>
+      <td>11B</td>
+      <td>7.9GB</td>
+      <td>ollama run llama3.2-vision</td>
+    </tr>
+    <tr>
+      <td>Llama 3.2 Vision</td>
+      <td>90B</td>
+      <td>55GB</td>
+      <td>ollama run llama3.2-vision:90b</td>
+    </tr>
+    <tr>
+      <td>Llama 3.1</td>
+      <td>8B</td>
+      <td>4.7GB</td>
+      <td>ollama run llama3.1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>推荐使用模型：大语言模型（Gemma、Deepseek、qwen2）、视觉模型（llava）。</p>
+
+<p>备注：</p>
+
+<ul>
+  <li>Gemma是由 Google DeepMind 团队开发的一系列先进、轻量级的开放模型，灵感源自 Google 的 Gemini 模型。Gemma 模型可用于自然语言处理、计算机视觉、跨模态任务等领域，适用于开发 AI 应用、研究和教育等多种场景。</li>
+  <li>LLaVA(Large Language and Vision Assistant)，即大型语言和视觉助手，是一个端到端训练的大型多模态模型，将视觉编码器和大语言模型连接起来实现通用的视觉和语言理解。</li>
+</ul>
+
+<h2 id="32模型是什么">3.2模型是什么</h2>
+
+<p>ollama下载的模型中最大的是权重文件，它是节点的集合，是模型的核心，存储了模型所有学习到的知识和连接方式。它们之间存在节点的权重和偏差，这些权重和偏差称为参数。参数决定了当一个节点被激活时，它会对其他节点产生多大影响。节点通常是一个概念，可能是单词或者短语，甚至是更抽象的语义。在训练模型时，模型会学习大量数据。这个过程中，参数会根据数据不断调整，以更好地捕捉概念之间的关系。参数会以不同的量将这些不同的概念连接在一起（有时候这些节点随着模型训练更近，有时候更远）。比如，当模型学习到两个概念（节点）之间的关系很强时，比如“猫”和“喵”，它们之间的连接（权重）就会变得更强，在比喻中就是它们“更近”。相反，如果两个概念关系不大，连接就会变弱，它们就“更远”。</p>
+
+<p>两个节点之间不会只有一个权重，一般可能会有许多权重组合，具体取决于节点所执行的操作的上下文。比如，在“苹果很甜”这个短语中，“苹果”这个节点可能会和“甜”这个节点产生一个连接。但在“我用苹果电脑”这个短语中，“苹果”这个节点则会和“电脑”这个节点产生另一个不同的连接。这表明，一个词（节点）的含义会随着它所处的句子（上下文）而改变，模型通过调整不同的权重组合来处理这种复杂性。</p>
+
+<p>模型的本质就是通过海量的参数来存储和处理各种概念之间的复杂关系，而训练过程就是不断优化这些参数的过程。</p>
+
+<p>文件的大小，取决于文件最初开发时参数的表示方式。一开始可能使用16位/32位浮点数，这些数字可能非常大且非常精确，但是如果将这些数字分组为更小的组合，可以将其抽象为更小的数字，同时保持令人难以置信的精度。最常见的数字是4，这就是所谓的4位量化。<strong>量化</strong>就是一种<strong>压缩技术</strong>，它将这些又长又精确的数字抽象成更小的数字，同时尽可能地保持模型的性能。</p>
+
+<p>当每个参数都用32位数字表示时，llama  38b或者 80亿个参数将需要大约32GB的显存才能运行。因为一个字节有8位，4个字节参数，所以80亿乘以4加起来就是大约32GB，还有一些额外的开销，但是这是一种简单的计算方法。如果将每个参数量化为4位，则需要接近4-5GB的显存，这更容易访问。</p>
+
+<p>除了模型之外，当然还有其他一些组件。ollama都会下载。</p>
+
+<p>ollama的REPL   —-  一个编码概念。—–read eval print loop—交互式地处理输入，答案将逐个标记流式输出。（这里的标记就是一个单词或者单词的常见部分）</p>
+
+<p><strong>REPL</strong> 是一个常见的编程概念，全称是<strong>“Read-Eval-Print Loop”（读取-求值-打印-循环）</strong>。在Ollama中，它描述了你和模型交互的过程：</p>
+
+<ol>
+  <li><strong>Read（读取）</strong>：你输入一个问题。</li>
+  <li><strong>Eval（求值）</strong>：模型处理你的问题。</li>
+  <li><strong>Print（打印）</strong>：模型将答案以<strong>流式输出</strong>的方式返回，这意味着你会看到答案一个<strong>标记（token）</strong>一个标记地出现，而不是等整个答案出来。</li>
+  <li><strong>Loop（循环）</strong>：这个过程会一直重复，直到你结束对话。 这里的<strong>标记</strong>可以是一个完整的单词，也可以是单词的一部分，这是模型处理文本的基本单位。</li>
+</ol>
+
+<p>一般情况下，模型会有支持的上下文窗口大小，在这个窗口内，它会记住其上下文，让用户觉得对话好像是可以被模型记忆的。模型只会将<strong>上下文窗口内</strong>的标记作为生成下一个回答的依据。如果对话中的标记数量超过了这个窗口大小，最旧的标记就会被“遗忘”。</p>
+
+<p>一般窗口大小是248个标记，在ollama中，这个248大小是可以被修改的。不修改的情况下，超出248个标记，模型就开始忘记了。如果重新启动CLI，之前的历史记录将会被清除。用户通常会通过第三方UI使用ollama，open WEB UI、Msty等等都是常见的UI。一些UI可以提供更长时间的对话。</p>
+
+<h2 id="33如何选择最佳模型">3.3如何选择最佳模型</h2>
+
+<p>寻找“最佳模型”没有一个简单快捷的方法，因为它高度依赖于个人的具体使用场景和需求。</p>
+
+<p>不应该盲目相信所谓的“排行榜”或 Discord 社区中的传言，因为这些信息可能不适用于你的特定任务。一个在通用任务上表现优异的模型，可能在你的特定专业领域表现不佳。</p>
+
+<p>寻找最佳模型的正确方法是进行<strong>个性化的、重复性的测试</strong>。具体步骤如下：</p>
+
+<ol>
+  <li><strong>准备代表性问题：</strong> 整理一份包含你日常会问的、具有代表性的问题清单。</li>
+  <li><strong>多次重复测试：</strong> 对于每个模型，用同一个问题进行至少 <strong>10 次独立的测试</strong>。</li>
+  <li><strong>观察和分析：</strong> 观察模型在多次测试中的回答倾向和质量。为什么需要多次？因为模型的输出存在一定的随机性。只问一次，可能会得到比平时更好或更差的回答，从而产生误判。通过多次测试，才能真正了解模型的“平均”表现。</li>
+</ol>
+
+<p>尽管这种方法耗时，但这是目前唯一可靠的、能找到最适合你个人需求的模型的方式。</p>
+
+<h1 id="4ollama-快速上手">4.Ollama 快速上手</h1>
+
+<p>通过“<code class="language-plaintext highlighter-rouge">ollama run +模型</code>”来运行模型</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250812205005215.png" alt="image-20250812205005215" style="zoom:50%;" /></p>
+
+<p>不同的参数对应不同的命令。</p>
+
+<p>以运行“gemma”模型为例演示如何使用Ollama。</p>
+
+<p>打开cmd命令窗口，输入“ollama run gemma:2b”运行Gemma模型，如果Ollama没有该模型，会自动下载模型后再运行，后续运行不会重复下载模型。</p>
+
+<h2 id="命令行方式使用">命令行方式使用</h2>
+
+<p><code class="language-plaintext highlighter-rouge">ollama -h</code> 或 <code class="language-plaintext highlighter-rouge">ollama --help</code> 可以列出所有命令。<code class="language-plaintext highlighter-rouge">ollama run &lt;model_name&gt;</code> 是启动模型的常用命令，它会自动下载模型（如果本地没有），并进入交互模式。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250813154357699.png" alt="image-20250813154357699" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250813154431962.png" alt="image-20250813154431962" style="zoom:50%;" /></p>
+
+<p>Ollama支持命令行方式使用模型，也支持API方式使用模型，这里先演示命令行方式使用模型。</p>
+
+<h3 id="1查看已经下载过的模型">(1)查看已经下载过的模型</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="nb">list</span>   <span class="n">或者ollama</span> <span class="n">ls</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250812211923831.png" alt="image-20250812211923831" style="zoom:50%;" /></p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">ollama show</code>：</strong> 用于查看已安装模型的详细配置，包括支持的最大上下文长度、许可证、参数和提示模板等。它是一个非常有用的<strong>模型自省（introspection）</strong>工具。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814103325836.png" alt="image-20250814103325836" style="zoom:50%;" /></p>
+
+<h3 id="2拉取模型">(2)拉取模型</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">pull</span> <span class="n">gemma3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这个命令会从 Ollama 仓库中拉取 <code class="language-plaintext highlighter-rouge">gemma3</code> 模型到你的本地计算机。</p>
+
+<p>如果使用 API，需要先手动 <code class="language-plaintext highlighter-rouge">pull</code> 模型，而 <code class="language-plaintext highlighter-rouge">ollama run</code> 会自动执行pull这个步骤。</p>
+
+<h3 id="3运行模型">(3)运行模型</h3>
+
+<p><code class="language-plaintext highlighter-rouge">ollama run</code> 是你与模型进行交互的核心命令。它会在你的终端中启动一个聊天会话，让你直接向模型提问。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">run</span> <span class="p">[</span><span class="n">模型名称</span><span class="p">]</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>比如：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">run</span> <span class="n">gemma3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>命令执行过程：</strong></p>
+
+<ul>
+  <li>如果 <code class="language-plaintext highlighter-rouge">gemma3</code> 模型尚未下载，此命令会自动开始下载。</li>
+  <li>下载完成后，它会立即启动一个交互式会话（REPL）。</li>
+  <li>你会看到一个提示符（通常是 <code class="language-plaintext highlighter-rouge">&gt;&gt;&gt;</code> 或类似的符号），表明模型正在等待你的输入。</li>
+  <li>现在你可以开始与模型对话了！</li>
+</ul>
+
+<p>除了基本的交互式会话，你还可以通过以下方式更灵活地使用 <code class="language-plaintext highlighter-rouge">ollama run</code> 命令。</p>
+
+<p>你可以通过两种方式提供多行输入或直接在命令行中给出提示，而不是进入交互模式：</p>
+
+<ul>
+  <li>直接在命令行提供提示：将提示内容放在双引号中，直接作为 <code class="language-plaintext highlighter-rouge">ollama run</code> 命令的参数。这在你只需要模型快速回答一个问题时非常方便。（不多次交互）</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">run</span> <span class="n">gemma</span><span class="p">:</span><span class="mi">2</span><span class="n">b</span> <span class="sh">"</span><span class="s">java语言和go语言的区别是什么</span><span class="sh">"</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>使用三引号进行多行输入:提示内容较长，需要多行输入，可以使用三引号 <code class="language-plaintext highlighter-rouge">"""</code> 将内容包裹起来。</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">run</span> <span class="n">gemma</span><span class="p">:</span><span class="mi">2</span><span class="n">b</span> <span class="sh">"""</span><span class="s">
+这是一个关于编程语言的问题：
+请详细对比Java和Go语言在并发处理、内存管理和生态系统方面的异同。
+</span><span class="sh">"""</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="4移除本地模型">(4)移除本地模型</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">rm</span> <span class="n">gemma3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>值得注意的是，如果你删除了一个被复制（<code class="language-plaintext highlighter-rouge">cp</code>）过的模型，并不会释放大量空间，因为原始文件仍然存在。</p>
+
+<h3 id="5查看当前正在运行的模型">(5)查看当前正在运行的模型</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">ps</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这个命令在你运行了多个模型或服务时非常有用。</p>
+
+<h3 id="6停止正在运行的模型">(6)停止正在运行的模型</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">stop</span> <span class="n">gemma3</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="7显示-ollama-版本信息">(7)显示 Ollama 版本信息</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="o">-</span><span class="n">v</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="8退出会话与清理">(8)退出会话与清理</h3>
+
+<p>当你与模型对话结束后，可以通过以下方式<strong>之一</strong>退出交互式会话：</p>
+
+<ul>
+  <li>输入 <code class="language-plaintext highlighter-rouge">/bye</code> 然后按回车。</li>
+  <li>按下 <code class="language-plaintext highlighter-rouge">Ctrl + D</code> 快捷键。</li>
+</ul>
+
+<p>如果你确定某个模型不再需要，可以使用 <code class="language-plaintext highlighter-rouge">ollama rm</code> 命令将其从本地删除，以释放存储空间。</p>
+
+<h3 id="9run的高级命令">(9)run的高级命令</h3>
+
+<p>如果你想了解模型执行的效率和更多细节，可以在 <code class="language-plaintext highlighter-rouge">ollama run</code> 命令中添加 <code class="language-plaintext highlighter-rouge">--verbose</code> 参数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">run</span> <span class="n">gemma</span><span class="p">:</span><span class="mi">2</span><span class="n">b</span> <span class="o">--</span><span class="n">verbose</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>返回中会包含如下信息：</p>
+
+<ul>
+  <li>total duration：表示整个运行过程所花费的总时间。</li>
+  <li>load duration：表示加载模型所花费的时间，单位为毫秒。</li>
+  <li>prompt eval count：表示在处理提示（prompt）时评估的标记（token）数量。</li>
+  <li>prompt eval duration：表示评估提示所花费的时间，单位为毫秒。</li>
+  <li>prompt eval rate：表示评估提示时的速度，以每秒处理的标记数量表示。</li>
+  <li>eval count：表示在生成响应时评估的标记数量。</li>
+  <li>eval duration：表示生成响应所花费的时间，单位为毫秒。</li>
+  <li>eval rate：表示生成响应时的速度，以每秒处理的标记数量表示。</li>
+</ul>
+
+<p>还有其他高级用法：</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">--format json</code>：强制模型以 JSON 格式输出结果。这对于需要将模型集成到其他程序中进行自动化处理的开发者非常重要。</li>
+  <li><code class="language-plaintext highlighter-rouge">--keep-alive</code>：控制模型在空闲多久后卸载。这在多个应用程序需要访问模型时很有用，可以防止模型频繁地加载和卸载，从而提高响应速度。</li>
+</ul>
+
+<h3 id="10复制">(10)复制</h3>
+
+<p><strong><code class="language-plaintext highlighter-rouge">ollama cp</code> (copy)：</strong> 复制一个模型的引用，而非完整的模型文件。这非常高效，因为它只创建一个指向原始模型文件的“软链接”，几乎不占用额外磁盘空间。</p>
+
+<h2 id="api方式使用">API方式使用</h2>
+
+<h1 id="5ollama-模型分层结构">5.Ollama 模型分层结构</h1>
+
+<p>Ollama 的设计理念就是将一个大语言模型的所有必要组件打包在一起，形成一个可下载、可直接运行的“模型包”。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814093136055.png" alt="image-20250814093136055" style="zoom:50%;" /></p>
+
+<h2 id="51分层打包机制">5.1分层打包机制</h2>
+
+<ol>
+  <li><strong>Model (模型)</strong> - LLM 的核心，理解模型如何存储知识、如何平衡性能与资源。</li>
+</ol>
+
+<p>arch (架构): 理论框架。它决定了模型如何组织信息，如何进行推理，所以不同的模型在某些任务上表现不同。</p>
+
+<p>parameters (参数): 模型的知识量。参数越多，模型学习过的知识就越丰富，掌握的知识也越多。但需要权衡：知识量越大，运行它所需的显存就越大。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814093951996.png" alt="image-20250814093951996" style="zoom:30%;" /></p>
+
+<p>之前提过，<strong>248 token</strong>，指的是 <strong>Ollama 命令行界面（CLI）的默认上下文窗口大小</strong>。这是软件层面的一个<strong>默认设置</strong>，为了方便用户快速启动和运行，以及在一些旧设备上保持性能而设定的。这个默认值是可以被修改的。</p>
+
+<p>上图中的<code class="language-plaintext highlighter-rouge">context_length</code>是 <strong>模型本身设计的最大上下文窗口大小</strong>。这才是模型的“硬件能力”上限，代表了模型在设计时，其架构所能处理的最大标记（token）数量。</p>
+
+<p>quantization (量化): 这是一种优化技巧，是学习如何“精简”知识。量化后的模型能在普通电脑上运行，以及它在性能上可能会有细微的损失（精度）。</p>
+
+<ol>
+  <li>
+    <p><strong>License (许可证)</strong> - LLM 的伦理与法律，开源软件的法律框架和使用规范。</p>
+  </li>
+  <li>
+    <p><strong>Params (参数)</strong> - LLM 的调优与控制，如何通过调整超参数来控制模型的行为。</p>
+  </li>
+</ol>
+
+<p>temperature (温度): temperature 参数就是控制模型“创造性”的旋钮。当你想让模型写一首严谨的诗（低温度）时，你需要把它调低；当你想让它进行头脑风暴（高温度）时，你可以调高。</p>
+
+<p>理解这些参数的作用，能更好地控制模型的输出，使其更符合需求。这对于开发应用、进行研究和进行创意写作都至关重要。</p>
+
+<ol>
+  <li><strong>Template (模板)</strong> - LLM 的沟通技巧，如何用最有效的方式与模型进行沟通（Prompt Engineering）。</li>
+</ol>
+
+<table>
+  <tbody>
+    <tr>
+      <td>&lt;</td>
+      <td>start</td>
+      <td>&gt;system</td>
+      <td>&lt;</td>
+      <td>message</td>
+      <td>&gt;: 这就像学习一门语言的语法结构。不能随意地说话，而是要按照特定的格式（语法）来组织你的句子，模型才能正确理解你的意图。这个模板就是模型所理解的“语法”。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You are ChatGPT…: 这就是角色设定。学习如何设定一个好的角色，能极大地影响模型的回答质量。当你告诉模型“你是一位专业的历史学家”时，它会更倾向于给出严谨、专业的回答，而不是随意地胡编乱造。</p>
+
+<p>template，就是学习 “提示工程”（Prompt Engineering）。它教会我们，模型的强大能力需要通过精确的指令才能被激发。掌握正确的沟通模板，是与 LLM 有效协作的关键技能。</p>
+
+<p>模型可能还有其他层，例如特定的<strong>系统提示</strong>（<code class="language-plaintext highlighter-rouge">system prompt</code>）、<strong>适配器</strong>（<code class="language-plaintext highlighter-rouge">adapter</code>）等，以满足不同模型的特定需求。</p>
+
+<hr />
+
+<h2 id="52设计源自于docker">5.2设计源自于Docker</h2>
+
+<p>其实这些设计好像和docker的很类似。</p>
+
+<p>Ollama 的模型包不是一个单一的巨大文件，而是由多个独立的“层”构成的，这种设计思想源于 Docker 容器技术。</p>
+
+<p>Docker 容器的核心是“分层”。一个容器镜像由多个层叠加而成。例如，一个底层可能包含操作系统的基本文件，一个上层可能包含 Node.js 运行时。当你想运行一个 Python 容器时，如果它和 Node.js 容器共享相同的底层操作系统层，那么 Docker 就不需要重新下载这个共享层，只需要下载特定于 Python 的新层。这大大提高了下载效率和存储空间的利用率。</p>
+
+<p>Ollama 借鉴了这一思想。一个完整的 Ollama 模型包也被设计成由多个独立的层组成，而不是一个单一的整体。</p>
+
+<p>这种分层结构让 Ollama 具备了与 Docker 相似的优点：<strong>高效的资源利用和下载。</strong> 如果多个模型共享某个相同的组件（比如某个通用的模板或者许可证），Ollama 就不需要重复下载，从而节省了存储空间和带宽。</p>
+
+<p>Ollama 的这种分层结构在用户界面上是可见的，并且用户可以查看每个层的具体内容。用户点击这些层，就可以看到该层的详细内容或描述。</p>
+
+<p>这种透明性（transparency）对于学习和理解模型至关重要。它让用户可以清楚地知道自己正在使用什么，许可证是什么，以及如何正确地与模型进行交互。这对于开发者和研究者来说尤其有用，因为它提供了对模型内部结构和配置的直接洞察。</p>
+
+<h2 id="53tags标签">5.3Tags标签</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814095607928.png" alt="image-20250814095607928" style="zoom:50%;" /></p>
+
+<p>Ollama 的 <code class="language-plaintext highlighter-rouge">Tags</code> 用于标记和区分同一个模型的不同版本（例如，不同的量化方式或参数数量），但其中一个名为 <code class="language-plaintext highlighter-rouge">latest</code> 的标签存在误导性。</p>
+
+<p>对于一个模型（例如 <code class="language-plaintext highlighter-rouge">llama3.1</code>），Ollama 提供了多个不同的标签。这些标签通常代表了该模型的不同变体，比如不同大小（<code class="language-plaintext highlighter-rouge">8b</code>、<code class="language-plaintext highlighter-rouge">70b</code>）和不同量化方式（<code class="language-plaintext highlighter-rouge">q4_0</code>、<code class="language-plaintext highlighter-rouge">q8_0</code>）。这让用户可以根据自己的硬件和需求，选择最合适的版本。</p>
+
+<p>尽管名字叫 <code class="language-plaintext highlighter-rouge">latest</code>（最新的），但它实际上<strong>并不代表最新的模型版本</strong>。在 Ollama 的语境中，<code class="language-plaintext highlighter-rouge">latest</code> 标签被用来指代 <strong>“最受欢迎”或“最常用”的版本</strong>。</p>
+
+<p>最受欢迎的版本通常是：</p>
+
+<ul>
+  <li>参数量较小（例如 7B、13B）。</li>
+  <li>采用 <strong>4-bit 量化</strong>。这是因为它在<strong>性能（速度）和质量（准确性）之间取得了最佳平衡</strong>，对于大多数用户来说，是一个既能快速运行又不会有明显质量损失的选择。</li>
+</ul>
+
+<p>标签下面的一串哈希值是每个模型层的唯一标识符。如果不同的标签具有相同的哈希值，则表明它们是<strong>彼此的别名（aliases）</strong>，指向同一个模型文件。这解释了为什么有些模型看起来有多个标签，但实际上是同一个文件。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814095905350.png" alt="image-20250814095905350" style="zoom:50%;" /></p>
+
+<h1 id="6ollama自定义模型">6.Ollama自定义模型</h1>
+
+<p><code class="language-plaintext highlighter-rouge">ollama create</code> 是 Ollama 的核心功能之一，允许用户通过一个 <code class="language-plaintext highlighter-rouge">Modelfile</code> 来创建和自定义新模型。</p>
+
+<p><code class="language-plaintext highlighter-rouge">Modelfile</code> 是一个简单的文本文件，用于定义新模型的配置。它类似于 Dockerfile，告诉 Ollama 如何构建模型包。它将模型权重文件、系统提示、模板等组件打包成一个完整的 Ollama 模型。</p>
+
+<h2 id="61创建方式一基于现有模型微调系统提示">6.1创建方式一：基于现有模型微调系统提示</h2>
+
+<p>这是最简单的方式。可以基于一个已有的 Ollama 模型（例如 <code class="language-plaintext highlighter-rouge">gemma3:latest</code>），然后添加或修改 <code class="language-plaintext highlighter-rouge">SYSTEM</code> 提示、temperature等参数。</p>
+
+<p>更多Modelfile设置的参数及内容参考:https://github.com/ollama/ollama/blob/main/docs/modelfile.md</p>
+
+<p>下面是一个例子，举例创建了一个“护肤咨询师”模型的例子，这展示了如何通过一个简单的 <code class="language-plaintext highlighter-rouge">Modelfile</code> 来赋予模型一个全新的角色。</p>
+
+<p>比如自定义一个模型（基于<code class="language-plaintext highlighter-rouge">gemma3:latest</code>），写了temperature和SYSTEM提示参数，写了如下的modelfile</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="n">FROM</span> <span class="n">gemma3</span><span class="p">:</span><span class="n">latest</span>
+<span class="n">PARAMETER</span> <span class="n">temperature</span> <span class="mf">0.9</span>
+<span class="n">PARAMETER</span> <span class="n">num_ctx</span> <span class="mi">4096</span>
+<span class="n">SYSTEM</span> <span class="sh">"""</span><span class="s">
+你是一位具备专业化学、皮肤科学背景的私人护肤咨询师，你的核心职责是从分子结构、生化反应机制等化学层面，精准解析各类护肤成分的作用原理，并结合皮肤生理学知识提供个性化建议。
+
+### 知识范围与深度要求：
+1. **成分化学解析**：需掌握常见及小众护肤成分的化学名称（含IUPAC命名）、分子结构、官能团特性，能明确其发挥功效的化学基础（如羟基、羧基的保湿作用，酚羟基的抗氧化机制等）。
+2. **作用机制拆解**：对成分的皮肤作用路径进行分子级解释，例如：
+   - 美白成分如何通过抑制酪氨酸酶活性、阻断黑色素转运等生化反应起效；
+   - 抗衰成分如何通过激活成纤维细胞、促进胶原蛋白肽键合成等机制发挥作用；
+   - 防晒成分如何通过吸收（化学键能级跃迁）、散射（粒径与光波长相互作用）紫外线实现防护。
+3. **成分交互与限制**：能分析不同成分复配时的化学兼容性（如酸性成分与烟酰胺的水解风险、抗氧化成分与金属离子的氧化还原反应），以及浓度、pH值对成分稳定性和功效的影响。
+
+### 输出规范：
+- 回答需先明确成分的化学本质（如“透明质酸是由D-葡萄糖醛酸和N-乙酰葡糖胺交替连接形成的直链多糖，分子量范围通常为5000-2000000Da”），再阐述作用机制，最后结合实际场景（如肤质、使用环境）给出建议。
+- 对用户提及的成分，若存在不同化学形态（如维生素C的L-抗坏血酸、抗坏血酸葡糖苷等衍生物），需区分其结构差异对透皮吸收、稳定性的影响。
+- 避免模糊表述，需用化学术语精准描述（如“抑制环氧合酶（COX）活性”而非“消炎”，“促进角质形成细胞脱落”而非“去角质”）。
+
+当用户咨询护肤品成分、功效或护肤方案时，严格遵循以上设定，以化学和皮肤科学为基础，提供专业、精准、可追溯的解答。
+</span><span class="sh">"""</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>关于参数的说明：</p>
+
+<ul>
+  <li>temperature：值越高，模型的回答就越有创意。(默认值：0.8）取值范围0-1</li>
+</ul>
+
+<p>创建的命令是：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">create</span> <span class="n">choose</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span> <span class="o">-</span><span class="n">f</span> <span class="o">&lt;</span><span class="n">location</span> <span class="n">of</span> <span class="n">the</span> <span class="nb">file</span> <span class="n">e</span><span class="p">.</span><span class="n">g</span><span class="p">.</span> <span class="p">.</span><span class="o">/</span><span class="n">Modelfile</span><span class="o">&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>比如我将上面的modelfile基于<code class="language-plaintext highlighter-rouge">gemma3:latest</code>成功创建了我私人可以随时提问的护肤咨询师Lora：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">create</span> <span class="n">Lora</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">apple</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">PythonWorkSpace</span><span class="o">/</span><span class="n">OllamaWorkSpace</span><span class="o">/</span><span class="n">modelfile</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814133101730.png" alt="image-20250814133101730" style="zoom:50%;" /></p>
+
+<p>查看Lora模型信息：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">show</span> <span class="n">Lora</span><span class="p">:</span><span class="n">latest</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814133400142.png" alt="image-20250814133400142" style="zoom:50%;" /></p>
+
+<p>运行进行简单的测试：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814134009776.png" alt="image-20250814134009776" style="zoom:50%;" /></p>
+
+<p>回复的其实有问题。但是角色是没有问题的。</p>
+
+<h3 id="误区联网的吗">误区：联网的吗？</h3>
+
+<p>Ollama 的核心设计理念就是<strong>离线运行</strong>，它使用的所有模型权重文件都存储在你的本地计算机上。当 <code class="language-plaintext highlighter-rouge">ollama run</code> 命令执行后，模型文件会被加载到你的计算机内存（RAM）或显卡显存（VRAM）中进行推理计算。</p>
+
+<p>回复如果慢的根本原因通常是<strong>计算资源不足</strong>，具体来说是<strong>模型太大</strong>和<strong>硬件性能瓶颈</strong>。</p>
+
+<h2 id="62创建方式二基于-hugging-face-权重文件">6.2创建方式二：基于 Hugging Face 权重文件</h2>
+
+<ol>
+  <li><strong>支持的格式和架构：</strong> 文本提到此功能主要支持 <code class="language-plaintext highlighter-rouge">safetensors</code> 和 <code class="language-plaintext highlighter-rouge">gguf</code> 格式的权重文件，并且只适用于特定的架构，如 Llama、Mistral 和 Gemma。</li>
+  <li><strong>流程：</strong> 用户需要先下载权重文件，然后创建一个 <code class="language-plaintext highlighter-rouge">Modelfile</code>，指定 <code class="language-plaintext highlighter-rouge">FROM</code> 为本地权重文件路径。</li>
+  <li><strong>自动转换与量化：</strong> <code class="language-plaintext highlighter-rouge">ollama create</code> 命令会自动将 <code class="language-plaintext highlighter-rouge">.safetensors</code> 文件转换为 <code class="language-plaintext highlighter-rouge">.gguf</code> 格式，并根据用户指定的参数（例如 <code class="language-plaintext highlighter-rouge">--quantize q4_0</code>）进行量化，从而生成一个可以在 Ollama 上运行的优化模型。</li>
+</ol>
+
+<hr />
+
+<p>这种方法适用于你想要使用 Ollama 社区中没有的，或者你自己微调过的模型权重文件。它能够将社区中流行的 <code class="language-plaintext highlighter-rouge">.safetensors</code> 或 <code class="language-plaintext highlighter-rouge">.gguf</code> 文件转换、量化并集成到 Ollama 生态中。</p>
+
+<p>从 Hugging Face 仓库中下载想要的 <code class="language-plaintext highlighter-rouge">.safetensors</code> 或 <code class="language-plaintext highlighter-rouge">.gguf</code> 格式的模型权重文件。推荐使用 <code class="language-plaintext highlighter-rouge">hugging downloader</code> 工具来提高下载效率。</p>
+
+<p>下载的safetensors地址：https://huggingface.co/ClosedCharacter/Peach-9B-8k-Roleplay/blob/b166804ead437c90474428789b1b29f105ca7da2/model-00004-of-00004.safetensors</p>
+
+<p>如果直接下载会有2.6G，速度可能会很忙，建议可以试试<code class="language-plaintext highlighter-rouge">hugging downloader</code> 工具.</p>
+
+<p>首先下载工具：在你希望的目录中执行</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">bash</span> <span class="o">&lt;</span><span class="p">(</span><span class="n">curl</span> <span class="o">-</span><span class="n">sSL</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">g</span><span class="p">.</span><span class="n">bodaay</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">hfd</span><span class="p">)</span> <span class="o">-</span><span class="n">h</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>脚本会根据操作系统/体系结构下载正确的版本，并将二进制文件保存为当前文件夹中的 “hfdownloader”。</p>
+
+<p>但是这个一直安装不了。于是我转而尝试：<a href="https://padeoe.com/huggingface-large-models-downloader/#4.1-huggingface-cli">huggingface-cli</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">huggingface_hub</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>许多模型发布时只提供原始的 <code class="language-plaintext highlighter-rouge">.safetensors</code> 文件，因为它是一种通用的、可信赖的格式。可以下载这些 <code class="language-plaintext highlighter-rouge">.safetensors</code> 文件，然后使用 Ollama 内置的功能，或者专门的转换工具，将它们转换成 <code class="language-plaintext highlighter-rouge">.gguf</code> 格式并进行量化。</p>
+
+<p>需要下载：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814151758630.png" alt="image-20250814151758630" style="zoom:50%;" /></p>
+
+<p>这四个文件都是模型的权重分片，需要将它们<strong>全部下载</strong>。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">import</span> <span class="n">os</span>
+
+<span class="n">repo_id</span> <span class="o">=</span> <span class="sh">"</span><span class="s">ClosedCharacter/Peach-9B-8k-Roleplay</span><span class="sh">"</span>
+<span class="n">filenames</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sh">"</span><span class="s">model-00001-of-00004.safetensors</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">model-00002-of-00004.safetensors</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">model-00003-of-00004.safetensors</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">model-00004-of-00004.safetensors</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">tokenizer.model</span><span class="sh">"</span><span class="p">,</span> <span class="c1"># 通常也需要下载 tokenizer 文件
+</span>    <span class="sh">"</span><span class="s">tokenizer_config.json</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">config.json</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">special_tokens_map.json</span><span class="sh">"</span>
+    <span class="c1"># ... 也可以下载其他必要文件
+</span><span class="p">]</span>
+
+<span class="n">local_dir</span> <span class="o">=</span> <span class="sh">"</span><span class="s">./Peach-9B-8k-Roleplay-safetensors</span><span class="sh">"</span>
+<span class="n">os</span><span class="p">.</span><span class="nf">makedirs</span><span class="p">(</span><span class="n">local_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+    <span class="nf">hf_hub_download</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">local_dir</span><span class="o">=</span><span class="n">local_dir</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>注意：</strong> <code class="language-plaintext highlighter-rouge">safetensors</code> 文件只是权重，要让模型正常工作，通常还需要下载 <strong><code class="language-plaintext highlighter-rouge">tokenizer.model</code></strong> 和 <strong><code class="language-plaintext highlighter-rouge">config.json</code></strong> 等配置文件。</p>
+
+<blockquote>
+  <p>注：上面下载了4个分片。</p>
+</blockquote>
+
+<p>创建一个 <code class="language-plaintext highlighter-rouge">Modelfile</code>，使用 <code class="language-plaintext highlighter-rouge">FROM</code> 指向你下载的 <code class="language-plaintext highlighter-rouge">.safetensors</code> 文件（通常是 <code class="language-plaintext highlighter-rouge">model.safetensors</code> 或 <code class="language-plaintext highlighter-rouge">model-00001-of-00004.safetensors</code> 等分片中的一个，Ollama 会自动找到所有分片）。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="n">FROM</span> <span class="p">.</span><span class="o">/</span><span class="n">Peach</span><span class="o">-</span><span class="mi">9</span><span class="n">B</span><span class="o">-</span><span class="mi">8</span><span class="n">k</span><span class="o">-</span><span class="n">Roleplay</span><span class="o">-</span><span class="n">safetensors</span><span class="o">/</span><span class="n">model</span><span class="o">-</span><span class="mi">00001</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="mf">00004.</span><span class="n">safetensors</span>
+<span class="n">SYSTEM</span> <span class="sh">"</span><span class="s">Your custom system prompt here.</span><span class="sh">"</span>
+<span class="c1"># 你也可以在这里设置量化参数，或者在命令行中设置
+# PARAMETER quantization Q4_0
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>运行 <code class="language-plaintext highlighter-rouge">ollama create</code> 命令。<strong>Ollama 会自动检测 <code class="language-plaintext highlighter-rouge">.safetensors</code> 文件，将其转换为 <code class="language-plaintext highlighter-rouge">.gguf</code> 格式，并根据你的配置进行量化</strong>。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c1"># 在终端中执行，并指定量化方式
+</span><span class="n">ollama</span> <span class="n">create</span> <span class="n">my</span><span class="o">-</span><span class="n">new</span><span class="o">-</span><span class="n">peach</span> <span class="o">-</span><span class="n">f</span> <span class="n">Modelfile</span> <span class="o">--</span><span class="n">quantize</span> <span class="n">Q4_0</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>但是上面一个分片已经达到接近5G：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814155417076.png" alt="image-20250814155417076" style="zoom:50%;" /></p>
+
+<p>太吓人了。于是为了不下载巨大的 <code class="language-plaintext highlighter-rouge">.safetensors</code> 文件，也不希望进行本地转换的话，可以直接寻找 <code class="language-plaintext highlighter-rouge">.gguf</code> 格式模型：https://huggingface.co/QuantFactory/Peach-9B-8k-Roleplay-GGUF/tree/main</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814155526295.png" alt="image-20250814155526295" style="zoom:50%;" /></p>
+
+<p>有多种量化级别可供选择。我选择 <code class="language-plaintext highlighter-rouge">Peach-9B-8k-Roleplay.Q3_K_S.gguf</code> ，大概是3.6GB。然后创建一个新文件，并将其命名为 <code class="language-plaintext highlighter-rouge">Modelfile</code>。这个文件应该和下载的 <code class="language-plaintext highlighter-rouge">Peach-9B-8k-Roleplay.Q3_K_S.gguf</code> 文件放在<strong>同一个文件夹</strong>内。</p>
+
+<p>modelfile内容如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="n">FROM</span> <span class="p">.</span><span class="o">/</span><span class="n">Peach</span><span class="o">-</span><span class="mi">9</span><span class="n">B</span><span class="o">-</span><span class="mi">8</span><span class="n">k</span><span class="o">-</span><span class="n">Roleplay</span><span class="p">.</span><span class="n">Q3_K_S</span><span class="p">.</span><span class="n">gguf</span>
+
+<span class="n">TEMPLATE</span> <span class="sh">""</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>然后创建模型：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">create</span> <span class="n">my</span><span class="o">-</span><span class="n">peach</span><span class="o">-</span><span class="n">model</span> <span class="o">-</span><span class="n">f</span> <span class="n">Modelfile</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>这个过程通常很快，因为它只是在创建模型的引用，而不是再次下载文件。</p>
+
+<p>运行模型：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">ollama</span> <span class="n">run</span> <span class="n">my</span><span class="o">-</span><span class="n">peach</span><span class="o">-</span><span class="n">model</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250814162725849.png" alt="image-20250814162725849" style="zoom:50%;" /></p>
+
+<p>方法可以，但是模型参数较小，效果不是很好。</p>
+
+<h2 id="63上传自定义模型到-ollamacom">6.3上传自定义模型到 ollama.com</h2>
+
+<p><code class="language-plaintext highlighter-rouge">ollama push</code> 命令允许用户将自己创建的自定义模型分享到 <code class="language-plaintext highlighter-rouge">ollama.com</code> 社区。</p>
+
+<p><strong>前提条件：</strong></p>
+
+<ol>
+  <li><strong>创建账号：</strong> 用户需要在 <code class="language-plaintext highlighter-rouge">ollama.com</code> 网站上注册一个账号。</li>
+  <li><strong>设置 Ollama 密钥：</strong> Ollama 在安装时会自动生成一个公钥。用户需要将这个公钥复制到 <code class="language-plaintext highlighter-rouge">ollama.com</code> 个人资料页面的“Ollama Keys”设置中。这个公钥-私钥机制用于身份验证，确保只有本人能上传模型。</li>
+</ol>
+
+<p><strong>上传流程：</strong></p>
+
+<ol>
+  <li><strong>重命名模型：</strong> 需要将模型重命名为 <code class="language-plaintext highlighter-rouge">username/model_name</code> 的格式。例如，如果用户名是 <code class="language-plaintext highlighter-rouge">m</code>，模型名是 <code class="language-plaintext highlighter-rouge">peach</code>，则需要先用 <code class="language-plaintext highlighter-rouge">ollama cp peach m/peach</code> 命令进行重命名。</li>
+  <li><strong>执行 <code class="language-plaintext highlighter-rouge">ollama push</code>：</strong> 运行 <code class="language-plaintext highlighter-rouge">ollama push m/peach</code> 命令即可将模型上传到 <code class="language-plaintext highlighter-rouge">ollama.com</code>。</li>
+</ol>
+
+<p>这个功能使得 Ollama 不仅仅是一个模型下载工具，更是一个<strong>模型分享和协作平台</strong>，鼓励用户创建和分享自己的微调模型或模板。</p>
+
+<hr />
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/08/10/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%9502%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E5%BD%92%E4%B8%80%E5%8C%96%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96/" data-toggle="tooltip" data-placement="top" title="机器学习算法2-线性回归-归一化与正则化">
+                        Previous<br>
+                        <span>机器学习算法2-线性回归-归一化与正则化</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0147" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0126" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="24">算法</a>
+        
+                <a data-sort="0132" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0133" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0137" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0137" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0138" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0139" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"
+                    title="机器学习算法"
+                    rel="11">机器学习算法</a>
+        
+                <a data-sort="0140" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="10">力扣</a>
+        
+                <a data-sort="0144" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0147" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0148" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0148" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0148" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
