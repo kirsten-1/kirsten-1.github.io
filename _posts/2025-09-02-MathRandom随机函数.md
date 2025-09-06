@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Math.random()随机函数"
+title: "【新手002】Math.random()随机函数"
 date: 2025-09-02
 author: "Hilda"
 header-img: "img/post-bg-2015.jpg"
