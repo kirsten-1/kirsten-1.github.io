@@ -5,8 +5,8 @@
     <description>这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员</description>
     <link>https://kirsten-1.github.io/</link>
     <atom:link href="https://kirsten-1.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 13 Sep 2025 05:33:43 +0000</pubDate>
-    <lastBuildDate>Sat, 13 Sep 2025 05:33:43 +0000</lastBuildDate>
+    <pubDate>Sat, 13 Sep 2025 09:22:43 +0000</pubDate>
+    <lastBuildDate>Sat, 13 Sep 2025 09:22:43 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
     
       <item>
@@ -46,6 +46,65 @@
         <pubDate>Sat, 13 Sep 2025 00:00:00 +0000</pubDate>
         <link>https://kirsten-1.github.io/2025/09/13/%E5%8A%9B%E6%89%A3LCR181%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/</link>
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/09/13/%E5%8A%9B%E6%89%A3LCR181%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%8D%95%E8%AF%8D%E5%8F%8D%E8%BD%AC/</guid>
+        
+        <category>力扣</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>【力扣7】搜索二维矩阵</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://leetcode.cn/problems/search-a-2d-matrix/&quot;&gt;74. 搜索二维矩阵&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;searchMatrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[][]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// 行最大索引&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 列最大索引&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 13 Sep 2025 00:00:00 +0000</pubDate>
+        <link>https://kirsten-1.github.io/2025/09/13/%E5%8A%9B%E6%89%A37%E6%90%9C%E7%B4%A2%E4%BA%8C%E7%BB%B4%E7%9F%A9%E9%98%B5/</link>
+        <guid isPermaLink="true">https://kirsten-1.github.io/2025/09/13/%E5%8A%9B%E6%89%A37%E6%90%9C%E7%B4%A2%E4%BA%8C%E7%BB%B4%E7%9F%A9%E9%98%B5/</guid>
         
         <category>力扣</category>
         
@@ -5311,129 +5370,6 @@ nums 的和减小了 31 - 14.5 = 16.5 ，减小的部分超过了初始数组和
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/09/06/%E7%AE%97%E6%B3%95%E6%96%B0%E6%89%8B-%E9%93%BE%E8%A1%A8%E5%8F%8A%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%A2%98/</guid>
         
         <category>算法</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>【java集合】02.Collection接口</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
-&lt;/script&gt;
-
-&lt;p&gt;Collection 接口是 Java 集合框架的根接口之一，它定义了所有单值集合（如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Set&lt;/code&gt;）的通用行为。了解它的常用方法是学习集合的第一步。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;1collection常用方法&quot;&gt;1.Collection常用方法&lt;/h1&gt;
-
-&lt;p&gt;以下是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collection&lt;/code&gt; 接口中一些最常用且重要的方法，可以帮助你进行基本的集合操作：&lt;/p&gt;
-
-&lt;h2 id=&quot;1-添加元素&quot;&gt;1. 添加元素&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean add(E e)&lt;/code&gt; 用于向集合中添加一个元素。如果集合因调用此方法而发生改变，则返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;。需要注意的是，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Set&lt;/code&gt; 集合会忽略重复的添加请求，并返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean addAll(Collection&amp;lt;? extends E&amp;gt; c)&lt;/code&gt; 将指定集合中的所有元素都添加到当前集合中。如果集合因此调用而发生改变，则返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;【特别注意】集合有一个特点：只能存放引用数据类型的数据，不能是基本数据类型&lt;/p&gt;
-
-&lt;p&gt;所以在集合中存储的元素往往会自动装箱（Autoboxing）。&lt;/p&gt;
-
-&lt;h2 id=&quot;2-删除元素&quot;&gt;2. 删除元素&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean remove(Object o)&lt;/code&gt; 从集合中移除指定元素的单个实例（如果存在）。如果成功移除，则返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean removeAll(Collection&amp;lt;?&amp;gt; c)&lt;/code&gt; 从集合中移除与指定集合中所有元素都相同的元素。简单来说，就是取两个集合的差集。如果集合因此调用而发生改变，则返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean retainAll(Collection&amp;lt;?&amp;gt; c)&lt;/code&gt; 仅保留此集合中那些也包含在指定集合中的元素。这是一种取 &lt;strong&gt;交集&lt;/strong&gt; 的操作。如果集合因此调用而发生改变，则返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;void clear()&lt;/code&gt; 移除集合中的所有元素，使其变为空集合。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;3-查询和判断&quot;&gt;3. 查询和判断&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int size()&lt;/code&gt; 返回集合中元素的数量。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean isEmpty()&lt;/code&gt; 如果集合不包含任何元素，则返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean contains(Object o)&lt;/code&gt; 如果集合包含指定的元素，则返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean containsAll(Collection&amp;lt;?&amp;gt; c)&lt;/code&gt; 如果集合包含指定集合中的所有元素，则返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;4-转换&quot;&gt;4. 转换&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object[] toArray()&lt;/code&gt; 返回一个包含集合中所有元素的数组。返回的数组类型是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object[]&lt;/code&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;E[] toArray(T[] a)&lt;/code&gt; 返回一个包含集合中所有元素的数组，并指定返回数组的类型。这是一个泛型方法，提供了更好的类型安全性。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;5-遍历&quot;&gt;5. 遍历&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Iterator&amp;lt;E&amp;gt; iterator()&lt;/code&gt; 返回一个在此集合的元素上进行迭代的迭代器（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Iterator&lt;/code&gt;）。这是遍历集合最基础、最安全的方式。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;迭代器模式&quot;&gt;迭代器模式&lt;/h3&gt;
-
-&lt;p&gt;迭代器（Iterator）模式，也叫做&lt;strong&gt;游标（Cursor）模式&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;在Java 容器中，为了提高容器遍历的方便性，利用迭代器把遍历逻辑从不同类型的集合类中抽取出来，从而避免向外部暴露集合容器的内部结构。&lt;/p&gt;
-
-&lt;p&gt;Java 提供了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Iterator&lt;/code&gt; 接口作为迭代器的基础接口。该接口定义了一组用于访问集合元素的方法，包括 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hasNext&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;next&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;remove&lt;/code&gt; 等。&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c1&quot;&gt;// 迭代器&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;Iterator&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iterator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;iterator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iterator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hasNext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iterator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-
-&lt;span class=&quot;c1&quot;&gt;// 遍历：增强for循环&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250904152750890.png&quot; alt=&quot;image-20250904152750890&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;2使用上的注意点&quot;&gt;2.使用上的注意点&lt;/h1&gt;
-
-&lt;h2 id=&quot;21集合判空的推荐方法-isempty&quot;&gt;2.1集合判空的推荐方法-isEmpty&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;判断所有集合内部的元素是否为空，使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isEmpty()&lt;/code&gt; 方法，而不是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;size()==0&lt;/code&gt; 的方式。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;这是因为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isEmpty()&lt;/code&gt; 方法的可读性更好，并且效率更高。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isEmpty()&lt;/code&gt;时间复杂度为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(1)&lt;/code&gt;。集合的底层实现通常会维护一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;size&lt;/code&gt; 变量来记录元素的数量。每当添加或移除元素时，这个变量就会被更新。因此，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;size()&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isEmpty()&lt;/code&gt; 方法都只需要直接返回这个变量的值，&lt;strong&gt;时间复杂度都是 O(1)&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;size()&lt;/code&gt; 方法需要遍历整个链表，时间复杂度为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;。（尽管在现代 Java 中，大多数集合的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;size()&lt;/code&gt; 方法时间复杂度也为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;O(1)&lt;/code&gt;，但依然强烈建议使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isEmpty()&lt;/code&gt;）&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;isEmpty()&lt;/code&gt; 方法的设计初衷就是为了这个特定的目的，它的语义比 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;size() == 0&lt;/code&gt; 更加精确和直接。&lt;/p&gt;
-
-&lt;h1 id=&quot;3为什么集合只能存放引用数据类型&quot;&gt;3.为什么集合只能存放引用数据类型？&lt;/h1&gt;
-
-&lt;p&gt;这个限制源于 Java 集合框架的设计。集合框架（如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ArrayList&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HashSet&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HashMap&lt;/code&gt; 等）是为 &lt;strong&gt;面向对象编程&lt;/strong&gt; 设计的。所有集合类都继承或实现了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collection&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;List&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Set&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Map&lt;/code&gt; 等接口，这些接口的方法都接受或返回 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Object&lt;/code&gt; 类型，或者在泛型中使用类型参数（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;E&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;K&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;V&lt;/code&gt; 等）。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;内存存储方式&lt;/strong&gt;：Java 集合存储的是对象的 &lt;strong&gt;引用&lt;/strong&gt;（内存地址），而不是对象本身。这意味着集合内部维护的是一个指向对象的指针列表。基本数据类型（如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;int&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;double&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;boolean&lt;/code&gt;）不是对象，它们直接存储在栈上或特定的内存区域，没有引用的概念。因此，集合不能直接存储它们。&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Thu, 04 Sep 2025 00:00:00 +0000</pubDate>
-        <link>https://kirsten-1.github.io/2025/09/04/java%E9%9B%86%E5%90%8802Collection%E6%8E%A5%E5%8F%A3/</link>
-        <guid isPermaLink="true">https://kirsten-1.github.io/2025/09/04/java%E9%9B%86%E5%90%8802Collection%E6%8E%A5%E5%8F%A3/</guid>
-        
-        <category>java集合</category>
         
         
       </item>
