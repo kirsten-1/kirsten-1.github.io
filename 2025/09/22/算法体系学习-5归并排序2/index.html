@@ -12,14 +12,14 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="010 链表入门题-力扣21-合并两个升序链表 - Hilda的博客 | Your genius girlfriend's blog">
+        content="【体系学习005】归并排序2-力扣327 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-03-20T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-09-22T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
@@ -29,10 +29,10 @@
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/03/20/%E7%AE%97%E6%B3%95010/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/09/22/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-5%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F2/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>010 链表入门题-力扣21-合并两个升序链表 - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>【体系学习005】归并排序2-力扣327 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/03/20/%E7%AE%97%E6%B3%95010/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/09/22/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-5%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F2/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -271,10 +271,10 @@
                         <a class="tag" href="/archive/?tag=%E7%AE%97%E6%B3%95" title="算法">算法</a>
                         
                     </div>
-                    <h1>010 链表入门题-力扣21-合并两个升序链表</h1>
+                    <h1>【体系学习005】归并排序2-力扣327</h1>
                     
-                    <h2 class="subheading">这篇博客讲解了如何合并两个升序链表（LeetCode 21）。提供了递归和非递归两种解法。递归解法简洁，通过比较头节点大小，递归合并剩余部分。非递归解法则通过迭代，使用 pre 指针连接较小节点，最终合并两个链表。链表题能有效考察编码能力。</h2>
-                    <span class="meta">Posted by Hilda on March 20, 2025</span>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on September 22, 2025</span>
                 </div>
             </div>
         </div>
@@ -304,31 +304,25 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<p>概览：</p>
+<h1 id="5力扣327区间和的个数">5.力扣327区间和的个数</h1>
 
-<p>前置知识：理解链表及其基本调整</p>
+<p>https://leetcode.cn/problems/count-of-range-sum/description/</p>
 
-<p>建议：做过这个题的同学跳过</p>
+<ul>
+  <li>这道题最暴利的解法就是\(O(n^3)\)</li>
+  <li><strong>第一层循环 (i)</strong>: 遍历数组，以确定区间的起始位置 <code class="language-plaintext highlighter-rouge">i</code>。<code class="language-plaintext highlighter-rouge">i</code> 从 <code class="language-plaintext highlighter-rouge">0</code> 遍历到 <code class="language-plaintext highlighter-rouge">n-1</code>。</li>
+  <li><strong>第二层循环 (j)</strong>: 遍历数组，以确定区间的结束位置 <code class="language-plaintext highlighter-rouge">j</code>。<code class="language-plaintext highlighter-rouge">j</code> 从 <code class="language-plaintext highlighter-rouge">i</code> 遍历到 <code class="language-plaintext highlighter-rouge">n-1</code>。这样 <code class="language-plaintext highlighter-rouge">[i, j]</code> 就形成了一个有效的区间。</li>
+  <li><strong>第三层循环 (k)</strong>: 计算区间 <code class="language-plaintext highlighter-rouge">[i, j]</code> 的和。<code class="language-plaintext highlighter-rouge">k</code> 从 <code class="language-plaintext highlighter-rouge">i</code> 遍历到 <code class="language-plaintext highlighter-rouge">j</code>，将 <code class="language-plaintext highlighter-rouge">nums[k]</code> 累加起来。</li>
+  <li><strong>判断</strong>: 每次计算出区间和 <code class="language-plaintext highlighter-rouge">sum</code> 后，检查 <code class="language-plaintext highlighter-rouge">sum</code> 是否满足 <code class="language-plaintext highlighter-rouge">lower &lt;= sum &lt;= upper</code>。如果满足，就将计数器加一。</li>
+</ul>
 
-<p>将两个升序链表合并为一个新的 升序 链表并返回</p>
+<p>【下面介绍其他解法，用归并排序完成】。</p>
 
-<p>新链表是通过拼接给定的两个链表的所有节点组成的</p>
+<p>首先，第一个前置知识就是<strong>累加和的数组</strong>。参考力扣有道题就是设计这个累加和数组数据结构的（力扣1480）：https://leetcode.cn/problems/running-sum-of-1d-array/description/</p>
 
-<p>链表题目在笔试、面试中的意义就是检验coding能力如何</p>
+<h2 id="前置-前缀和-力扣1480累加和数组">前置-前缀和-力扣1480累加和数组</h2>
 
-<p>更难的题目会在【必备】课程里讲述</p>
-
-<hr />
-
-<p>测试链接 : https://leetcode.cn/problems/merge-two-sorted-lists/</p>
-
-<h1 id="21-合并两个有序链表">21. 合并两个有序链表</h1>
-
-<p><a href="https://leetcode.cn/problems/merge-two-sorted-lists/">21. 合并两个有序链表</a></p>
-
-<h1 id="解法1递归">解法1:递归</h1>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250320215822828.png" alt="image-20250320215822828" style="zoom:50%;" /></p>
+<p>题解：</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -338,49 +332,45 @@
 6
 7
 8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-</pre></td><td class="rouge-code"><pre><span class="cm">/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */</span>
-<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">mergeTwoLists</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">list1</span><span class="o">,</span> <span class="nc">ListNode</span> <span class="n">list2</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">list1</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">list2</span><span class="o">;</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">list2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">list1</span><span class="o">;</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">list1</span><span class="o">.</span><span class="na">val</span> <span class="o">&lt;</span> <span class="n">list2</span><span class="o">.</span><span class="na">val</span><span class="o">){</span>
-            <span class="n">list1</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">mergeTwoLists</span><span class="o">(</span><span class="n">list1</span><span class="o">.</span><span class="na">next</span><span class="o">,</span> <span class="n">list2</span><span class="o">);</span>
-            <span class="k">return</span> <span class="n">list1</span><span class="o">;</span>
-        <span class="o">}</span><span class="k">else</span> <span class="o">{</span>
-            <span class="n">list2</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">mergeTwoLists</span><span class="o">(</span><span class="n">list1</span><span class="o">,</span> <span class="n">list2</span><span class="o">.</span><span class="na">next</span><span class="o">);</span>
-            <span class="k">return</span> <span class="n">list2</span><span class="o">;</span>
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span><span class="o">[]</span> <span class="nf">runningSum</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span> <span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]</span> <span class="o">+</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
         <span class="o">}</span>
+        <span class="k">return</span> <span class="n">nums</span><span class="o">;</span>
     <span class="o">}</span>
 <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<h1 id="解法2非递归">解法2:非递归</h1>
+<p>有了这个累加和的数组，就可以把前面的暴力解法优化为\(O(n^2)\)</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250320215938166.png" alt="image-20250320215938166" style="zoom:50%;" /></p>
+<p>归并排序可以把这道题优化到\(O(NlogN)\)的时间复杂度。</p>
+
+<h2 id="归并排序解法">归并排序解法</h2>
+
+<p>求必须以下标i位置结尾的子数组，</p>
+
+<p>目标有多少个在<code class="language-plaintext highlighter-rouge">[low,up]</code>的范围上，</p>
+
+<p>等同于去求，</p>
+
+<p><strong>i之前的所有前缀和中有多少个前缀和在<code class="language-plaintext highlighter-rouge">[x-up, x- low]</code>上</strong></p>
+
+<p><strong>所以使用归并排序的改写，对前缀和数组进行归并改写，求出范围</strong></p>
+
+<hr />
+
+<p>在前缀和数组左右两组合并之前，右组中的每一个数表示的前缀和，都是在左组中任何一个数表示的前缀和的右边的，其实只要保证这个顺序就可以，至于左组内的数是什么顺序，对于【计算右组中一个数x，左组中有几个数在<code class="language-plaintext highlighter-rouge">[x-U,x-L]</code>上】这件事情来说，没有影响，只是当左组有序的时候，计算起来能达到指针不回退，效率更高。</p>
+
+<p>当左右两组合并在一起的时候，这时候合并后的这个大组，会继续作为某一个左组，去和另一个右组合并，</p>
+
+<p><strong>计算结果都是在合并之前进行的，所以是对的</strong></p>
+
+<p>合并以后组内不会进行任何比较，因为组内顺序已经被打乱，再次比较就没有意义。</p>
+
+<hr />
+
+<p>下面解法尤其注意sum数组（前缀和）的类型最好是long,因为力扣测试用例中会有Integer最小值这种数出现，求和（两个最小值求和）会越界。</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -415,37 +405,67 @@
 31
 32
 33
-</pre></td><td class="rouge-code"><pre><span class="cm">/**
- * Definition for singly-linked list.
- * public class ListNode {
- * int val;
- * ListNode next;
- * ListNode() {}
- * ListNode(int val) { this.val = val; }
- * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */</span>
-<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">ListNode</span> <span class="nf">mergeTwoLists</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head1</span><span class="o">,</span> <span class="nc">ListNode</span> <span class="n">head2</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">head1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">return</span> <span class="n">head1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">head2</span> <span class="o">:</span> <span class="n">head1</span><span class="o">;</span>
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kt">long</span><span class="o">[]</span> <span class="n">help</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">countRangeSum</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">lower</span><span class="o">,</span> <span class="kt">int</span> <span class="n">upper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="no">N</span> <span class="o">=</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+        <span class="kt">long</span><span class="o">[]</span> <span class="n">sum</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">long</span><span class="o">[</span><span class="no">N</span><span class="o">];</span>
+        <span class="n">help</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">long</span><span class="o">[</span><span class="no">N</span><span class="o">];</span>
+        <span class="n">sum</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">nums</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span> <span class="no">N</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">sum</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">sum</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]</span> <span class="o">+</span> <span class="o">(</span><span class="kt">long</span><span class="o">)</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
         <span class="o">}</span>
-        <span class="nc">ListNode</span> <span class="n">head</span> <span class="o">=</span> <span class="n">head1</span><span class="o">.</span><span class="na">val</span> <span class="o">&lt;=</span> <span class="n">head2</span><span class="o">.</span><span class="na">val</span> <span class="o">?</span> <span class="n">head1</span> <span class="o">:</span> <span class="n">head2</span><span class="o">;</span>
-        <span class="nc">ListNode</span> <span class="n">cur1</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
-        <span class="nc">ListNode</span> <span class="n">cur2</span> <span class="o">=</span> <span class="n">head</span> <span class="o">==</span> <span class="n">head1</span> <span class="o">?</span> <span class="n">head2</span> <span class="o">:</span> <span class="n">head1</span><span class="o">;</span>
-        <span class="nc">ListNode</span> <span class="n">pre</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
-        <span class="k">while</span> <span class="o">(</span><span class="n">cur1</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">cur2</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">cur1</span><span class="o">.</span><span class="na">val</span> <span class="o">&lt;=</span> <span class="n">cur2</span><span class="o">.</span><span class="na">val</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">pre</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">;</span>
-                <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
-            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-                <span class="n">pre</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">;</span>
-                <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
-            <span class="o">}</span>
-            <span class="n">pre</span> <span class="o">=</span> <span class="n">pre</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="k">return</span> <span class="nf">count</span><span class="o">(</span><span class="n">sum</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="no">N</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">lower</span><span class="o">,</span> <span class="n">upper</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">count</span><span class="o">(</span><span class="kt">long</span><span class="o">[]</span> <span class="n">sum</span><span class="o">,</span> <span class="kt">int</span> <span class="no">L</span><span class="o">,</span> <span class="kt">int</span> <span class="no">R</span><span class="o">,</span> <span class="kt">int</span> <span class="n">lower</span><span class="o">,</span> <span class="kt">int</span> <span class="n">upper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="no">L</span> <span class="o">==</span> <span class="no">R</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">sum</span><span class="o">[</span><span class="no">L</span><span class="o">]</span> <span class="o">&gt;=</span> <span class="n">lower</span> <span class="o">&amp;&amp;</span> <span class="n">sum</span><span class="o">[</span><span class="no">L</span><span class="o">]</span> <span class="o">&lt;=</span> <span class="n">upper</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="o">;</span>
         <span class="o">}</span>
-        <span class="n">pre</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">cur1</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">cur1</span> <span class="o">:</span> <span class="n">cur2</span><span class="o">;</span>
-        <span class="k">return</span> <span class="n">head</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="no">M</span> <span class="o">=</span> <span class="no">L</span> <span class="o">+</span> <span class="o">((</span><span class="no">R</span> <span class="o">-</span> <span class="no">L</span><span class="o">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="k">return</span> <span class="nf">count</span><span class="o">(</span><span class="n">sum</span><span class="o">,</span> <span class="no">L</span><span class="o">,</span> <span class="no">M</span><span class="o">,</span> <span class="n">lower</span><span class="o">,</span> <span class="n">upper</span><span class="o">)</span> <span class="o">+</span> <span class="n">count</span><span class="o">(</span><span class="n">sum</span><span class="o">,</span> <span class="no">M</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="no">R</span><span class="o">,</span> <span class="n">lower</span><span class="o">,</span> <span class="n">upper</span><span class="o">)</span> <span class="o">+</span> <span class="n">merge</span><span class="o">(</span><span class="n">sum</span><span class="o">,</span> <span class="no">L</span><span class="o">,</span> <span class="no">M</span><span class="o">,</span> <span class="no">R</span><span class="o">,</span> <span class="n">lower</span><span class="o">,</span> <span class="n">upper</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">merge</span><span class="o">(</span><span class="kt">long</span><span class="o">[]</span> <span class="n">sum</span><span class="o">,</span> <span class="kt">int</span> <span class="no">L</span><span class="o">,</span> <span class="kt">int</span> <span class="no">M</span><span class="o">,</span> <span class="kt">int</span> <span class="no">R</span><span class="o">,</span> <span class="kt">int</span> <span class="n">lower</span><span class="o">,</span> <span class="kt">int</span> <span class="n">upper</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">windowL</span> <span class="o">=</span> <span class="no">L</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">windowR</span> <span class="o">=</span> <span class="no">L</span><span class="o">;</span>
+        
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="no">M</span> <span class="o">+</span><span class="mi">1</span><span class="o">;</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="no">R</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="kt">long</span> <span class="n">min</span> <span class="o">=</span> <span class="n">sum</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">-</span> <span class="n">upper</span><span class="o">;</span>
+            <span class="kt">long</span> <span class="n">max</span> <span class="o">=</span> <span class="n">sum</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">-</span> <span class="n">lower</span><span class="o">;</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">windowR</span> <span class="o">&lt;=</span> <span class="no">M</span> <span class="o">&amp;&amp;</span> <span class="n">sum</span><span class="o">[</span><span class="n">windowR</span><span class="o">]</span> <span class="o">&lt;=</span> <span class="n">max</span><span class="o">)</span> <span class="n">windowR</span><span class="o">++;</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">windowL</span> <span class="o">&lt;=</span> <span class="no">M</span> <span class="o">&amp;&amp;</span> <span class="n">sum</span><span class="o">[</span><span class="n">windowL</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">min</span><span class="o">)</span> <span class="n">windowL</span><span class="o">++;</span>
+            <span class="n">ans</span> <span class="o">+=</span> <span class="o">(</span><span class="n">windowR</span> <span class="o">-</span> <span class="n">windowL</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kt">int</span> <span class="n">a</span>  <span class="o">=</span> <span class="no">L</span><span class="o">,</span> <span class="n">b</span> <span class="o">=</span> <span class="no">M</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">i</span> <span class="o">=</span> <span class="no">L</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">a</span> <span class="o">&lt;=</span> <span class="no">M</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="no">R</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">help</span><span class="o">[</span><span class="n">i</span><span class="o">++]</span> <span class="o">=</span> <span class="n">sum</span><span class="o">[</span><span class="n">a</span><span class="o">]</span> <span class="o">&lt;=</span> <span class="n">sum</span><span class="o">[</span><span class="n">b</span><span class="o">]</span> <span class="o">?</span> <span class="n">sum</span><span class="o">[</span><span class="n">a</span><span class="o">++]</span> <span class="o">:</span> <span class="n">sum</span><span class="o">[</span><span class="n">b</span><span class="o">++];</span>
+        <span class="o">}</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">a</span> <span class="o">&lt;=</span> <span class="no">M</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">help</span><span class="o">[</span><span class="n">i</span><span class="o">++]</span> <span class="o">=</span> <span class="n">sum</span><span class="o">[</span><span class="n">a</span><span class="o">++];</span>
+        <span class="o">}</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">b</span> <span class="o">&lt;=</span> <span class="no">R</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">help</span><span class="o">[</span><span class="n">i</span><span class="o">++]</span> <span class="o">=</span> <span class="n">sum</span><span class="o">[</span><span class="n">b</span><span class="o">++];</span>
+        <span class="o">}</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="no">L</span><span class="o">;</span><span class="n">j</span> <span class="o">&lt;=</span> <span class="no">R</span><span class="o">;</span><span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">sum</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">help</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">ans</span><span class="o">;</span>
     <span class="o">}</span>
 <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
@@ -456,19 +476,12 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/03/20/%E7%AE%97%E6%B3%95009/" data-toggle="tooltip" data-placement="top" title="009 单双链表及其反转-堆栈诠释">
+                        <a href="/2025/09/21/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-5%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F1/" data-toggle="tooltip" data-placement="top" title="【体系学习005】归并排序1">
                         Previous<br>
-                        <span>009 单双链表及其反转-堆栈诠释</span>
+                        <span>【体系学习005】归并排序1</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/03/21/%E7%AE%97%E6%B3%95011/" data-toggle="tooltip" data-placement="top" title="011 链表入门题目-两个链表相加">
-                        Next<br>
-                        <span>011 链表入门题目-两个链表相加</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
