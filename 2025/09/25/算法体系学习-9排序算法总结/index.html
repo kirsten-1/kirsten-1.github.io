@@ -12,14 +12,14 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="【体系学习006】堆结构和堆排序 - Hilda的博客 | Your genius girlfriend's blog">
+        content="【体系学习009】排序算法总结 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-09-22T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-09-25T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
@@ -29,10 +29,10 @@
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/09/22/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-6%E5%A0%86%E7%BB%93%E6%9E%84%E5%92%8C%E5%A0%86%E6%8E%92%E5%BA%8F/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/09/25/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-9%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>【体系学习006】堆结构和堆排序 - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>【体系学习009】排序算法总结 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/09/22/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-6%E5%A0%86%E7%BB%93%E6%9E%84%E5%92%8C%E5%A0%86%E6%8E%92%E5%BA%8F/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/09/25/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-9%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -273,10 +273,10 @@
                         <a class="tag" href="/archive/?tag=%E7%AE%97%E6%B3%95" title="算法">算法</a>
                         
                     </div>
-                    <h1>【体系学习006】堆结构和堆排序</h1>
+                    <h1>【体系学习009】排序算法总结</h1>
                     
                     <h2 class="subheading"></h2>
-                    <span class="meta">Posted by Hilda on September 22, 2025</span>
+                    <span class="meta">Posted by Hilda on September 25, 2025</span>
                 </div>
             </div>
         </div>
@@ -306,17 +306,135 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<h1 id="1java中的比较器">1.java中的比较器</h1>
+<h1 id="1排序算法稳定性">1.排序算法稳定性</h1>
 
-<p>Java 中主要有两种形式的比较器：<strong><code class="language-plaintext highlighter-rouge">Comparable</code></strong> 和 <strong><code class="language-plaintext highlighter-rouge">Comparator</code></strong>。</p>
+<p>稳定性是指同样大小的样本再排序之后不会改变相对次序</p>
 
-<h2 id="11-comparable内部比较器">1.1 Comparable（内部比较器）</h2>
+<p>对基础类型来说，稳定性毫无意义</p>
 
-<p><code class="language-plaintext highlighter-rouge">Comparable</code> 接口用于定义类的<strong>自然排序</strong>。只有一个方法 <code class="language-plaintext highlighter-rouge">compareTo()</code>。</p>
+<p>对非基础类型来说，稳定性有重要意义</p>
 
-<p><strong>实现形式：</strong> 你需要在需要排序的类（比如 <code class="language-plaintext highlighter-rouge">Person</code> 类）中实现 <code class="language-plaintext highlighter-rouge">Comparable</code> 接口，并重写 <code class="language-plaintext highlighter-rouge">compareTo()</code> 方法。</p>
+<p>有些排序算法可以实现成稳定的，而有些排序算法无论如何都实现不成稳定的</p>
 
-<p><strong>代码示例：</strong></p>
+<p>【不稳定】：选择排序、快排、堆、希尔</p>
+
+<p>【可以做到稳定】：冒泡、插入、归并</p>
+
+<hr />
+
+<h1 id="2排序算法总结">2.排序算法总结</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>时间复杂度</th>
+      <th>额外空间复杂度</th>
+      <th>稳定性</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>选择排序</td>
+      <td>O(N^2)</td>
+      <td>O(1)</td>
+      <td>无</td>
+    </tr>
+    <tr>
+      <td>冒泡排序</td>
+      <td>O(N^2)</td>
+      <td>O(1)</td>
+      <td>有</td>
+    </tr>
+    <tr>
+      <td>插入排序</td>
+      <td>O(N^2)</td>
+      <td>O(1)</td>
+      <td>有</td>
+    </tr>
+    <tr>
+      <td>归并排序</td>
+      <td>O(N*logN)</td>
+      <td>O(N)</td>
+      <td>有</td>
+    </tr>
+    <tr>
+      <td>随机快排</td>
+      <td>O(N*logN)</td>
+      <td>O(logN)</td>
+      <td>无</td>
+    </tr>
+    <tr>
+      <td>堆排序</td>
+      <td>O(N*logN)</td>
+      <td>O(1)</td>
+      <td>无</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>计数排序</td>
+      <td>O(N)</td>
+      <td>O(M)</td>
+      <td>有</td>
+    </tr>
+    <tr>
+      <td>基数排序</td>
+      <td>O(N)</td>
+      <td>O(N)</td>
+      <td>有</td>
+    </tr>
+  </tfoot>
+</table>
+
+<p>1）不基于比较的排序，对样本数据有严格要求，不易改写
+2）基于比较的排序，只要规定好两个样本怎么比大小就可以直接复用
+3）基于比较的排序，时间复杂度的极限是\(O(N*logN)\)
+<strong>4）时间复杂度\(O(N*logN)\)、额外空间复杂度低于\(O(N)\)、且稳定的基于比较的排序是不存在的。</strong>
+<strong>5）为了绝对的速度选快排、为了省空间选堆排、为了稳定性选归并</strong></p>
+
+<blockquote>
+  <p>如果考虑常数时间，在\(O(N*logN)\)的时间复杂度中，快排是最好的最快的，但是快排不稳定。</p>
+
+  <p><strong>单纯追求速度快—–&gt;快排</strong></p>
+
+  <p><strong>追求稳定性—-&gt;归并排序</strong></p>
+
+  <p><strong>追求空间复杂度—-&gt;堆排序</strong></p>
+</blockquote>
+
+<h1 id="3排序算法常见的坑">3.排序算法常见的坑</h1>
+
+<p>1）归并排序的额外空间复杂度可以变成O(1)，“归并排序 内部缓存法”，但是将变得不再稳定。–&gt;既然如此，用堆不香吗？？</p>
+
+<p>2）“原地归并排序” 是垃圾贴，会让时间复杂度变成\(O(N^2)\)</p>
+
+<p>3）快速排序稳定性改进，论文“01 stable sort”，但是会对样本数据要求更多。但是为啥不用基数排序呢？？那样不是更香吗？</p>
+
+<p>【一道垃圾题】在整型数组中，请把奇数放在数组左边，偶数放在数组右边，要求所有奇数之间原始的相对次序不变，所有偶数之间原始相对次序不变。时间复杂度做到O(N)，额外空间复杂度做到O(1)</p>
+
+<p>这道题做不着稳定性，不然归并排序的partition就可以稳定了，那么归并排序也可以变成稳定了。</p>
+
+<h1 id="4工程上对排序的改进">4.工程上对排序的改进</h1>
+
+<p>1)稳定性的考虑</p>
+
+<p>2)充分利用\(O(N*logN)\)和\(O(N^2)\)排序各自的优势</p>
+
+<hr />
+
+<p>【解释第1点】比如java的<code class="language-plaintext highlighter-rouge">Arrays.sort</code>方法，如果查看源码会发现，对于基础类型，采用快排，对于非基础类型，采用归并。为什么呢？</p>
+
+<ul>
+  <li>因为基础类型，稳定性没什么用，用快排就可以了（常数时间，快排比归并和堆都要快）。追求极致的性能和内存效率，因此选择了快速排序。</li>
+  <li>如果是非基础类型，最好保证稳定性。在对一个学生对象数组按年龄排序时，如果两个学生的年龄相同，我们通常希望他们原本的顺序能保持不变。如果使用不稳定排序算法，这种原始顺序就会丢失。归并排序通常比优化后的快速排序略慢，因为它需要额外的内存操作。但为了保证稳定性和性能的可靠性，这种牺牲是值得的。</li>
+</ul>
+
+<hr />
+
+<p>【解释第2点】：</p>
+
+<p>在实际工程中，优秀的排序库（如 Java 的 <code class="language-plaintext highlighter-rouge">Arrays.sort()</code> 和 C++ 的 <code class="language-plaintext highlighter-rouge">std::sort</code>）通常不会只用一种排序算法，而是会根据数据规模动态选择或混合使用。例如下面的代码：</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -331,278 +449,37 @@
 11
 12
 13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="kd">implements</span> <span class="nc">Comparable</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">&gt;</span> <span class="o">{</span>
-    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
-
-    <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+</pre></td><td class="rouge-code"><pre><span class="c1">// 插入排序 O(N^2) 常数项小</span>
+<span class="c1">// 快排 O(N * logN) 常数项高</span>
+<span class="c1">// N 很大的时候 快排</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">quickSort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="no">L</span><span class="o">,</span> <span class="kt">int</span> <span class="no">R</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="no">L</span> <span class="o">+</span> <span class="mi">60</span> <span class="o">&gt;</span> <span class="no">R</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">执行插入排序arr</span><span class="o">[</span><span class="no">L</span><span class="o">...</span><span class="na">R</span><span class="o">]</span>
+        <span class="k">return</span><span class="o">;</span>
     <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">age</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compareTo</span><span class="o">(</span><span class="nc">Person</span> <span class="n">other</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// 根据年龄进行升序排序</span>
-        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="na">age</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="s">"Person{"</span> <span class="o">+</span>
-               <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
-               <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
-               <span class="sc">'}'</span><span class="o">;</span>
-    <span class="o">}</span>
+    <span class="kt">int</span><span class="o">[]</span> <span class="n">p</span> <span class="o">=</span> <span class="n">partition</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="no">L</span><span class="o">,</span> <span class="no">R</span><span class="o">);</span>
+    <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="no">L</span><span class="o">,</span> <span class="n">p</span><span class="o">[</span><span class="mi">0</span><span class="o">]-</span><span class="mi">1</span><span class="o">);</span>
+    <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span><span class="n">p</span><span class="o">[</span><span class="mi">0</span><span class="o">]+</span> <span class="mi">1</span><span class="o">,</span> <span class="no">R</span><span class="o">);</span>
 <span class="o">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span><span class="o">[]</span> <span class="nf">partition</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="no">L</span><span class="o">,</span> <span class="kt">int</span> <span class="no">R</span><span class="o">)</span> <span class="o">{</span>
 </pre></td></tr></tbody></table></code></pre></div></div>
 
-<p><strong>特点：</strong></p>
-
 <ul>
-  <li><strong>侵入性强：</strong> 需要修改被排序的类本身的代码。</li>
-  <li><strong>单一性：</strong> 一个类只能有一个自然排序，即只能实现一个 <code class="language-plaintext highlighter-rouge">compareTo()</code> 方法。</li>
-  <li><strong>应用场景：</strong> 当你想为某个类定义一个默认的、最常见的排序规则时使用。</li>
-</ul>
-
-<hr />
-
-<h2 id="12-comparator外部比较器">1.2. Comparator（外部比较器）</h2>
-
-<p><code class="language-plaintext highlighter-rouge">Comparator</code> 接口用于定义<strong>自定义排序</strong>。它位于 <code class="language-plaintext highlighter-rouge">java.util</code> 包中，常用于对那些没有实现 <code class="language-plaintext highlighter-rouge">Comparable</code> 接口的类，或者需要多种排序方式的场景。</p>
-
-<p><strong>实现形式：</strong> 你可以创建一个独立的类来实现 <code class="language-plaintext highlighter-rouge">Comparator</code> 接口，或者使用匿名内部类、Lambda 表达式来创建比较器实例。</p>
-
-<p><strong>如下方法：</strong>
-<strong>@Override</strong>
-<strong>public int compare(T o1, T o2) ;</strong>
-<strong>返回负数的情况，就是o1比o2优先的情况</strong>
-<strong>返回正数的情况，就是o2比o1优先的情况</strong>
-<strong>返回0的情况，就是o1与o2同样优先的情况</strong></p>
-
-<ul>
-  <li>
-    <p><strong>独立的比较器类：</strong></p>
-
-    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">java.util.Comparator</span><span class="o">;</span>
-  
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonNameComparator</span> <span class="kd">implements</span> <span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">&gt;</span> <span class="o">{</span>
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="nc">Person</span> <span class="n">p1</span><span class="o">,</span> <span class="nc">Person</span> <span class="n">p2</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// 根据姓名进行升序排序</span>
-        <span class="k">return</span> <span class="n">p1</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">p2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
-  </li>
-  <li>
-    <p><strong>Lambda 表达式（推荐）：</strong></p>
-
-    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">java.util.Comparator</span><span class="o">;</span>
-  
-<span class="c1">// 根据姓名进行升序排序</span>
-<span class="nc">Comparator</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">&gt;</span> <span class="n">nameComparator</span> <span class="o">=</span> <span class="o">(</span><span class="n">p1</span><span class="o">,</span> <span class="n">p2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">p1</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span><span class="n">p2</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-</pre></td></tr></tbody></table></code></pre></div>    </div>
-  </li>
-</ul>
-
-<p><strong>特点：</strong></p>
-
-<ul>
-  <li><strong>侵入性弱：</strong> 不需要修改被排序的类，是一种“即插即用”的排序方式。</li>
-  <li><strong>多样性：</strong> 一个类可以有多种排序方式，比如你可以创建按姓名排序的 <code class="language-plaintext highlighter-rouge">Comparator</code>，也可以创建按年龄降序排序的 <code class="language-plaintext highlighter-rouge">Comparator</code>。</li>
-  <li><strong>应用场景：</strong>
+  <li>大数组用快排 ($O(N \log N)$):当数组的元素数量很大时，快速排序的渐近优势会压倒一切。它的 $O(N \log N)$ 复杂度确保了整体性能不会随数据量爆炸式增长。</li>
+  <li>小数组用插入排序 ($O(N^2)$):当快速排序的递归将数组分解到足够小的子数组时（例如上面代码中的 <code class="language-plaintext highlighter-rouge">if (L + 60 &gt; R)</code>），其递归调用栈的开销和常数因子（常数时间）开始凸显出来。此时，继续使用快排反而不如直接切换到插入排序。
     <ul>
-      <li>需要对不可修改的类进行排序（如 JDK 自带的类）。</li>
-      <li>需要为同一个类提供多种排序规则时。</li>
+      <li>为什么选择插入排序？
+        <ol>
+          <li>常数因子小: 插入排序的实现非常简单，内层循环的常数开销极低。</li>
+          <li>对小数组高效: 对于几十个元素的数组，插入排序的 $O(N^2)$ 性能退化不明显，其简单的操作甚至比快排更快。</li>
+          <li>对已排序数据高效: 快速排序在分解子数组后，子数组可能已经部分有序，而插入排序在这种情况下表现非常好，接近线性时间 $O(N)$。</li>
+        </ol>
+      </li>
     </ul>
   </li>
 </ul>
 
 <hr />
-
-<h2 id="13-总结与对比">1.3 总结与对比</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>特性</th>
-      <th>Comparable (内部比较器)</th>
-      <th>Comparator (外部比较器)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>接口位置</strong></td>
-      <td><code class="language-plaintext highlighter-rouge">java.lang</code></td>
-      <td><code class="language-plaintext highlighter-rouge">java.util</code></td>
-    </tr>
-    <tr>
-      <td><strong>使用方式</strong></td>
-      <td>在类内部实现</td>
-      <td>在类外部实现</td>
-    </tr>
-    <tr>
-      <td><strong>方法</strong></td>
-      <td><code class="language-plaintext highlighter-rouge">compareTo(Object obj)</code></td>
-      <td><code class="language-plaintext highlighter-rouge">compare(Object o1, Object o2)</code></td>
-    </tr>
-    <tr>
-      <td><strong>侵入性</strong></td>
-      <td>强（修改被排序的类）</td>
-      <td>弱（不需要修改被排序的类）</td>
-    </tr>
-    <tr>
-      <td><strong>排序规则</strong></td>
-      <td>只能定义一个<strong>自然排序</strong></td>
-      <td>可以定义多个<strong>自定义排序</strong></td>
-    </tr>
-    <tr>
-      <td><strong>应用场景</strong></td>
-      <td>为类定义默认排序</td>
-      <td>需要多种排序方式，或对不可修改的类排序</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>在 Java 8 之后，<code class="language-plaintext highlighter-rouge">Comparator</code> 接口引入了许多便捷的静态方法（如 <code class="language-plaintext highlighter-rouge">comparing()</code>、<code class="language-plaintext highlighter-rouge">reversed()</code>），这使得使用 Lambda 表达式创建比较器变得非常简单和优雅。因此，在现代 Java 开发中，<code class="language-plaintext highlighter-rouge">Comparator</code> 尤其是结合 Lambda 表达式的方式，被更广泛地使用。</p>
-
-<h1 id="2堆结构">2.堆结构</h1>
-
-<ul>
-  <li>1）堆结构就是用数组实现的完全二叉树结构</li>
-  <li>2）完全二叉树中如果每棵子树的最大值都在顶部就是大根堆</li>
-  <li>3）完全二叉树中如果每棵子树的最小值都在顶部就是小根堆</li>
-  <li>4）堆结构的heapInsert与heapify操作</li>
-  <li>5）堆结构的增大和减少</li>
-  <li>6）优先级队列结构，就是堆结构</li>
-</ul>
-
-<h2 id="heapinsert和heapify操作">heapInsert和heapify操作</h2>
-
-<p>参考博客：https://kirsten-1.github.io/2025/04/05/%E7%AE%97%E6%B3%95025/</p>
-
-<p>heapInsert和heapify的操作的时间复杂度：O(logN)</p>
-
-<h2 id="语言提供的堆结构-vs-手写的堆结构">语言提供的堆结构 vs 手写的堆结构</h2>
-
-<ul>
-  <li>取决于，你有没有动态改信息的需求！</li>
-  <li>语言提供的堆结构，如果你动态改数据，不保证依然有序</li>
-  <li>手写堆结构，因为增加了对象的位置表，所以能够满足动态改信息的需求</li>
-</ul>
-
-<h1 id="3堆排序">3.堆排序</h1>
-
-<p>1，先让整个数组都变成大根堆结构，建立堆的过程:
-1)从上到下的方法，时间复杂度为<code class="language-plaintext highlighter-rouge">O(N*logN) </code>
-2)从下到上的方法，时间复杂度为<code class="language-plaintext highlighter-rouge">O(N) </code>
-2，把堆的最大值和堆末尾的值交换，然后减少堆的大小之后，再去调整堆，一直周而复始，时间复杂度为O(N*logN)
-3，堆的大小减小成0之后，排序完成</p>
-
-<p>堆排序代码参考博客：https://kirsten-1.github.io/2025/04/05/%E7%AE%97%E6%B3%95025/</p>
-
-<h1 id="4题目-几乎有序">4.题目-几乎有序</h1>
-
-<p>已知一个几乎有序的数组。几乎有序是指，如果把数组排好顺序的话，每个元素移动的距离一定不超过k，并且k相对于数组长度来说是比较小的。</p>
-
-<p>请选择一个合适的排序策略，对这个数组进行排序。</p>
-
-<hr />
-
-<p>思路整理如下：</p>
-
-<ol>
-  <li>使用小顶堆来解决该问题，它要使移动元素不超过k，那么就要将k+1个元素放入小顶堆。</li>
-  <li>将堆顶元素弹出放入数组对应的位置，比如第一次弹出的一定是最小的，(由小顶堆的性质可知，根节点一定小于左右节点的，但是左右节点大小就不一定类。) 然后为了保持堆的大小不变(主要是由于k的限制，所以堆的长度只能为k+1)，第一个元素已经确定好了，故可以不用考虑，然后将第k+2个元素入堆，进行小根堆调整，保证满足小根堆条件。</li>
-  <li>当数组元素长度已经不满足k+1时，直接将heap中剩下的元素给拷贝到数组就行。</li>
-</ol>
-
-<p><strong>时间复杂度是O(Nlogk)</strong>,额外空间复杂度是O(k+1)</p>
-
-<hr />
-
-<p>试题链接：https://kirsten-1.github.io/2025/09/22/%E7%AE%97%E6%B3%95%E9%A2%98%E5%BA%93-1%E5%87%A0%E4%B9%8E%E6%9C%89%E5%BA%8F/</p>
-
-<p>解法：</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sortedArrDistanceLessK</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">k</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span><span class="o">;</span>
-    <span class="o">}</span>
-    <span class="kt">int</span> <span class="no">N</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
-    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-    <span class="nc">PriorityQueue</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">heap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PriorityQueue</span><span class="o">&lt;&gt;();</span>
-    <span class="k">for</span> <span class="o">(;</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="no">N</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span> <span class="n">index</span><span class="o">++)</span> <span class="o">{</span>
-        <span class="n">heap</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">index</span><span class="o">]);</span>
-    <span class="o">}</span>
-    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-    <span class="k">for</span> <span class="o">(;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="no">N</span><span class="o">;</span> <span class="n">i</span><span class="o">++,</span> <span class="n">index</span><span class="o">++)</span> <span class="o">{</span>
-        <span class="n">heap</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">index</span><span class="o">]);</span>
-        <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">heap</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
-    <span class="o">}</span>
-    <span class="k">while</span> <span class="o">(!</span><span class="n">heap</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
-        <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">++]</span> <span class="o">=</span> <span class="n">heap</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
 
 
 
@@ -610,19 +487,12 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/09/22/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-5%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F2/" data-toggle="tooltip" data-placement="top" title="【体系学习005】归并排序2-力扣327">
+                        <a href="/2025/09/25/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-8%E5%89%8D%E7%BC%80%E6%A0%91%E4%B8%8E%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/" data-toggle="tooltip" data-placement="top" title="【体系学习008】前缀树与基数排序">
                         Previous<br>
-                        <span>【体系学习005】归并排序2-力扣327</span>
+                        <span>【体系学习008】前缀树与基数排序</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/09/22/%E7%AE%97%E6%B3%95%E9%A2%98%E5%BA%93-1%E5%87%A0%E4%B9%8E%E6%9C%89%E5%BA%8F/" data-toggle="tooltip" data-placement="top" title="【算法题库1】几乎有序">
-                        Next<br>
-                        <span>【算法题库1】几乎有序</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
