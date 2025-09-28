@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="【体系学习010】链表题目 - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-09-28T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="算法">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/09/28/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-10%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>【体系学习010】链表题目 - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/09/28/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-10%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=%E7%AE%97%E6%B3%95" title="算法">算法</a>
+                        
+                    </div>
+                    <h1>【体系学习010】链表题目</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Hilda on September 28, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1面试时链表解题的方法论">1.面试时链表解题的方法论</h1>
+
+<p>1)对于笔试，不用太在乎空间复杂度，一切为了时间复杂度</p>
+
+<p>2)对于面试，时间复杂度依然放在第一位，但是一定要找到空间最省的方法</p>
+
+<h1 id="2链表面试题常用数据结构和技巧">2.链表面试题常用数据结构和技巧</h1>
+
+<p>1）使用容器(哈希表、数组等)</p>
+
+<p>2）快慢指针</p>
+
+<hr />
+
+<p>例如下面的功能：</p>
+
+<p>1）输入链表头节点，奇数长度返回中点，偶数长度返回上中点</p>
+
+<p>2）输入链表头节点，奇数长度返回中点，偶数长度返回下中点</p>
+
+<p>3）输入链表头节点，奇数长度返回中点前一个，偶数长度返回上中点前一个</p>
+
+<p>4）输入链表头节点，奇数长度返回中点前一个，偶数长度返回下中点前一个</p>
+
+<p>这种题目没有什么难度，只是抠边界（考察coding能力的）</p>
+
+<h1 id="3力扣234回文链表">3.力扣234回文链表</h1>
+
+<p>https://leetcode.cn/problems/palindrome-linked-list/</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isPalindrome</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">listLen</span><span class="o">(</span><span class="n">head</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">pre</span> <span class="o">=</span> <span class="kc">null</span> <span class="o">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">,</span> <span class="n">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span> <span class="o">/</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">i</span><span class="o">++;</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">cur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">pre</span><span class="o">;</span>
+            <span class="n">pre</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">// pre = 2 cur = 2   len偶数</span>
+        <span class="c1">// pre = 2 cur = 3</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">len</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">pre</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">pre</span><span class="o">.</span><span class="na">val</span> <span class="o">!=</span> <span class="n">cur</span><span class="o">.</span><span class="na">val</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">pre</span> <span class="o">=</span> <span class="n">pre</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">listLen</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">h</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">h</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">ans</span><span class="o">++;</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">ans</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="4牛客-链表分隔为3个区域">4.牛客-链表分隔为3个区域</h1>
+
+<p>测试链接：（ACM风格）https://www.nowcoder.com/practice/04fcabc5d76e428c8100dbd855761778</p>
+
+<p><strong>将单向链表按某值划分为左边小，中间相等，右边大的形式</strong></p>
+
+<blockquote>
+  <p>非常类似的题还有力扣86题：https://leetcode.cn/problems/partition-list/description/</p>
+
+  <p>题目描述：给你一个链表的头节点 <code class="language-plaintext highlighter-rouge">head</code> 和一个特定值 <code class="language-plaintext highlighter-rouge">x</code> ，请你对链表进行分隔，使得所有 <strong>小于</strong> <code class="language-plaintext highlighter-rouge">x</code> 的节点都出现在 <strong>大于或等于</strong> <code class="language-plaintext highlighter-rouge">x</code> 的节点之前。你应当 <strong>保留</strong> 两个分区中每个节点的初始相对位置。</p>
+</blockquote>
+
+<p>1）把链表放入数组里，在数组上做partition（笔试用）</p>
+
+<p>2）分成小、中、大三部分，再把各个部分之间串起来（面试用）</p>
+
+<p>下面只展示第二种解法：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">java.util.Scanner</span><span class="o">;</span> 
+<span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">ListNode</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">val</span><span class="o">;</span>
+    <span class="nc">ListNode</span> <span class="n">next</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">ListNode</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// 注意类名必须为 Main, 不要有任何 package xxx 信息</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span><span class="o">{</span>
+        <span class="nc">BufferedReader</span> <span class="n">br</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">InputStreamReader</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">));</span>
+        <span class="nc">StreamTokenizer</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StreamTokenizer</span><span class="o">(</span><span class="n">br</span><span class="o">);</span>
+        <span class="nc">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PrintWriter</span><span class="o">(</span><span class="k">new</span> <span class="nc">OutputStreamWriter</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">));</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">nextToken</span><span class="o">()</span> <span class="o">!=</span> <span class="nc">StreamTokenizer</span><span class="o">.</span><span class="na">TT_EOF</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="n">in</span><span class="o">.</span><span class="na">nval</span><span class="o">;</span>
+            <span class="n">in</span><span class="o">.</span><span class="na">nextToken</span><span class="o">();</span>
+            <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="n">in</span><span class="o">.</span><span class="na">nval</span><span class="o">;</span>
+            <span class="n">in</span><span class="o">.</span><span class="na">nextToken</span><span class="o">();</span>
+            <span class="nc">ListNode</span> <span class="n">head</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ListNode</span><span class="o">((</span><span class="kt">int</span><span class="o">)</span><span class="n">in</span><span class="o">.</span><span class="na">nval</span><span class="o">);</span>
+            <span class="n">in</span><span class="o">.</span><span class="na">nextToken</span><span class="o">();</span>
+            <span class="nc">ListNode</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="n">cur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ListNode</span><span class="o">((</span><span class="kt">int</span><span class="o">)</span><span class="n">in</span><span class="o">.</span><span class="na">nval</span><span class="o">);</span>
+                <span class="n">in</span><span class="o">.</span><span class="na">nextToken</span><span class="o">();</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="nc">ListNode</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">partition</span><span class="o">(</span><span class="n">head</span><span class="o">,</span> <span class="n">v</span><span class="o">);</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">ans</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">ans</span><span class="o">.</span><span class="na">val</span> <span class="o">+</span> <span class="s">" "</span><span class="o">);</span>
+                <span class="n">ans</span> <span class="o">=</span> <span class="n">ans</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">out</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+        <span class="n">br</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="n">out</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">ListNode</span> <span class="nf">partition</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head</span><span class="o">,</span> <span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">head</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">ListNode</span> <span class="n">smallHead</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">equalHead</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">biggerHead</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">smallCur</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">equalCur</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">biggerCur</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">val</span> <span class="o">&lt;</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">smallHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">smallHead</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+                    <span class="n">smallCur</span> <span class="o">=</span> <span class="n">smallHead</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">smallCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+                    <span class="n">smallCur</span> <span class="o">=</span> <span class="n">smallCur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">val</span> <span class="o">==</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">equalHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">equalHead</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+                    <span class="n">equalCur</span> <span class="o">=</span> <span class="n">equalHead</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">equalCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+                    <span class="n">equalCur</span> <span class="o">=</span> <span class="n">equalCur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">biggerHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">biggerHead</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+                    <span class="n">biggerCur</span> <span class="o">=</span> <span class="n">biggerHead</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">biggerCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">;</span>
+                    <span class="n">biggerCur</span> <span class="o">=</span> <span class="n">biggerCur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">smallHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">equalHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">biggerHead</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">equalCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">biggerHead</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">biggerCur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span><span class="n">biggerCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="k">return</span> <span class="n">equalHead</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">equalHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">smallCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">biggerHead</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">biggerCur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="n">biggerCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">smallCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">equalHead</span><span class="o">;</span>
+                <span class="n">equalCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">biggerHead</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">biggerCur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="n">biggerCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">smallHead</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>力扣86题解法参考：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">partition</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head</span><span class="o">,</span> <span class="kt">int</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">head</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="n">head</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">smallHead</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">biggerHead</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">smallCur</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">biggerCur</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">head</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">head</span><span class="o">.</span><span class="na">val</span> <span class="o">&lt;</span> <span class="n">x</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">smallHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">smallHead</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+                    <span class="n">smallCur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">smallCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+                    <span class="n">smallCur</span> <span class="o">=</span> <span class="n">smallCur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">biggerHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">biggerHead</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+                    <span class="n">biggerCur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">biggerCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+                    <span class="n">biggerCur</span> <span class="o">=</span> <span class="n">biggerCur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">// 至少2个节点</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">smallHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">biggerHead</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">biggerHead</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">smallHead</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">smallCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">biggerHead</span><span class="o">;</span>
+                <span class="n">biggerCur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="k">return</span> <span class="n">smallHead</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="5力扣138-随机链表的复制">5.力扣138-随机链表的复制</h1>
+
+<p>测试链接：<a href="https://leetcode.cn/problems/copy-list-with-random-pointer/">138. 随机链表的复制</a></p>
+
+<p>一种特殊的单链表节点类描述如下</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Node</span> <span class="o">{</span> 
+  <span class="kt">int</span> <span class="n">value</span><span class="o">;</span> 
+  <span class="nc">Node</span> <span class="n">next</span><span class="o">;</span> 
+  <span class="nc">Node</span> <span class="n">rand</span><span class="o">;</span> 
+  <span class="nc">Node</span><span class="o">(</span><span class="kt">int</span> <span class="n">val</span><span class="o">)</span> <span class="o">{</span> <span class="n">value</span> <span class="o">=</span> <span class="n">val</span><span class="o">;</span> <span class="o">}</span> 
+<span class="o">}</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>rand指针是单链表节点结构中新增的指针，rand可能指向链表中的任意一个节点，也可能指向null。
+给定一个由Node节点类型组成的无环单链表的头节点 head，请实现一个函数完成这个链表的复制，并返回复制的新链表的头节点。
+【要求】
+时间复杂度O(N)，额外空间复杂度O(1)</p>
+
+<p><strong>示例 1：</strong></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/e1.png" alt="img" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>示例 2：</strong></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/e2.png" alt="img" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>输入：head = [[1,1],[2,1]]
+输出：[[1,1],[2,1]]
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>示例 3：</strong></p>
+
+<p><strong><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/e3.png" alt="img" /></strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>输入：head = [[3,null],[3,0],[3,null]]
+输出：[[3,null],[3,0],[3,null]]
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>提示：</p>
+
+\[0 &lt;= n &lt;= 1000\]
+
+\[-10^4 &lt;= Node.val &lt;= 10^4\]
+
+<p><code class="language-plaintext highlighter-rouge">Node.random</code> 为 null 或指向链表中的节点。</p>
+
+<hr />
+
+<h2 id="解法1容器">解法1:容器</h2>
+
+<p>准备一个Map,key是老节点，value是新节点(这是第一次遍历)。然后第二次遍历，利用哈希表中的映射关系来设置新链表的 next 和 rand 指针。</p>
+
+<p>对于每个老节点 cur：</p>
+
+<p>新节点的 next 指针：<code class="language-plaintext highlighter-rouge">map.get(cur).next = map.get(cur.next)</code>。</p>
+
+<p>新节点的 rand 指针：<code class="language-plaintext highlighter-rouge">map.get(cur).rand = map.get(cur.rand)</code>。</p>
+
+<p>注意，如果 <code class="language-plaintext highlighter-rouge">cur.next</code> 或 <code class="language-plaintext highlighter-rouge">cur.rand</code> 为 <code class="language-plaintext highlighter-rouge">null</code>，<code class="language-plaintext highlighter-rouge">map.get(null)</code> 也会返回 <code class="language-plaintext highlighter-rouge">null</code>，这正是我们想要的。</p>
+
+<p>返回头节点： 最后返回新链表的头节点，即 <code class="language-plaintext highlighter-rouge">map.get(head)</code>。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Node</span> <span class="nf">copyRandomList</span><span class="o">(</span><span class="nc">Node</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 0 &lt;= n &lt;= 1000</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">head</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">Node</span><span class="o">,</span> <span class="nc">Node</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">Node</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Node</span> <span class="n">newNode</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Node</span><span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+            <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">cur</span><span class="o">,</span> <span class="n">newNode</span><span class="o">);</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">cur</span><span class="o">).</span><span class="na">next</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">);</span>
+            <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">cur</span><span class="o">).</span><span class="na">random</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">random</span><span class="o">);</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">head</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="解法2不用容器">解法2:不用容器</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Node</span> <span class="nf">copyRandomList</span><span class="o">(</span><span class="nc">Node</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">head</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">Node</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="nc">Node</span> <span class="n">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">cur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Node</span><span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+            <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="nc">Node</span> <span class="n">copy</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">copy</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">copy</span><span class="o">.</span><span class="na">random</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">random</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="n">cur</span><span class="o">.</span><span class="na">random</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">// 分离</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="nc">Node</span> <span class="n">res</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">cur</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">copy</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">cur</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+            <span class="n">copy</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">next</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">next</span><span class="o">.</span><span class="na">next</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="6力扣160-相交链表">6.力扣160-相交链表</h1>
+
+<p><a href="https://leetcode.cn/problems/intersection-of-two-linked-lists/">160. 相交链表</a></p>
+
+<p>给定两个可能有环也可能无环的单链表，头节点head1和head2。请实现一个函数，如果两个链表相交，请返回相交的 第一个节点。如果不相交，返回null
+【要求】
+如果两个链表长度之和为N，时间复杂度请达到O(N)，额外空间复杂度 请达到O(1)。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">getIntersectionNode</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">headA</span><span class="o">,</span> <span class="nc">ListNode</span> <span class="n">headB</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ListNode</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">headA</span><span class="o">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">headB</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">p1</span> <span class="o">!=</span> <span class="n">p2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">headB</span> <span class="o">:</span> <span class="n">p1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">p2</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">headA</span> <span class="o">:</span> <span class="n">p2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">p1</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如果要找到第一个相交的节点呢？(容器法:用HashMap就可以，不说了)</p>
+
+<p>同时遍历两个链表到尾部，同时记录两个链表的长度。若两个链表最后的一个节点相同，则两个链表相交。
+有两个链表的长度后，我们就可以知道哪个链表长，设较长的链表长度为len1,短的链表长度为len2。
+则先让较长的链表向后移动<code class="language-plaintext highlighter-rouge">(len1-len2)</code>个长度。然后开始从当前位置同时遍历两个链表，当遍历到的链表的节点相同时，则这个节点就是第一个相交的节点。</p>
+
+<p>测试链接：<a href="https://leetcode.cn/problems/intersection-of-two-linked-lists-lcci/">面试题 02.07. 链表相交</a></p>
+
+<p>https://leetcode.cn/problems/intersection-of-two-linked-lists-lcci/description/</p>
+
+<p>牛客上也有类似题：https://www.nowcoder.com/practice/bd911c77a1ed4e289a0699fa7df23b6c</p>
+
+<p>https://www.nowcoder.com/practice/6ab1d9a29e88450685099d45c9e31e46</p>
+
+<p>https://www.nowcoder.com/questionTerminal/bd911c77a1ed4e289a0699fa7df23b6c?orderByHotValue=1&amp;page=1&amp;onlyReference=false</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">getIntersectionNode</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">headA</span><span class="o">,</span> <span class="nc">ListNode</span> <span class="n">headB</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">headA</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">headB</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">l1</span> <span class="o">=</span> <span class="n">headA</span><span class="o">,</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">headB</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">l1</span><span class="o">.</span><span class="na">next</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">m</span><span class="o">++;</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">m</span><span class="o">++;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">l2</span><span class="o">.</span><span class="na">next</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">n</span><span class="o">++;</span>
+            <span class="n">l2</span> <span class="o">=</span> <span class="n">l2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">n</span><span class="o">++;</span>
+        <span class="c1">// 判断是否相交</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">l1</span> <span class="o">!=</span> <span class="n">l2</span><span class="o">)</span> <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="c1">// 否则相交</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">l</span> <span class="o">=</span> <span class="n">m</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">?</span> <span class="n">headA</span> <span class="o">:</span> <span class="n">headB</span><span class="o">;</span>
+        <span class="nc">ListNode</span> <span class="n">s</span> <span class="o">=</span> <span class="n">headA</span> <span class="o">==</span> <span class="n">l</span> <span class="o">?</span> <span class="n">headB</span> <span class="o">:</span> <span class="n">headA</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nc">Math</span><span class="o">.</span><span class="na">abs</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">i</span><span class="o">++;</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">// </span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">l</span> <span class="o">!=</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">l</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>注意：</p>
+
+<ul>
+  <li>一个链表有环一个链表无环，则两者不可能相交</li>
+  <li>两个链表都有环时，考虑下面3种情况：
+    <ul>
+      <li>不相交</li>
+      <li>相交，且在同一个地方相交</li>
+      <li>相交，但不在同一个地方相交</li>
+    </ul>
+  </li>
+</ul>
+
+<p>如下图所示3种情况</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/683206-20221125201133978-1139401221.png" alt="image" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/683206-20221125201245503-739868358.png" alt="image" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/683206-20221125201336734-383129959.png" alt="image" /></p>
+
+<p>两个链表的入环结点（loop1，loop2）如果是同一个，可以记录两个链表的差值，然后让长链表先走差值步以后，长短链表同时开始走，相遇的结点就是第一个相交结点。这是3种情况中最简单的。</p>
+
+<p>剩下2 种情况如何判断？让loop1往下走，如果loop1走回到自己都没遇到loop2则属于上面情况1，如果loop1走回到自己之前遇到了loop2则属于情况3</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Node</span> <span class="nf">getIntersectNode</span><span class="o">(</span><span class="nc">Node</span> <span class="n">head1</span><span class="o">,</span> <span class="nc">Node</span> <span class="n">head2</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">head1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="nc">Node</span> <span class="n">loop1</span> <span class="o">=</span> <span class="n">getLoopNode</span><span class="o">(</span><span class="n">head1</span><span class="o">);</span>
+  <span class="nc">Node</span> <span class="n">loop2</span> <span class="o">=</span> <span class="n">getLoopNode</span><span class="o">(</span><span class="n">head2</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">loop1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">loop2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">noLoop</span><span class="o">(</span><span class="n">head1</span><span class="o">,</span> <span class="n">head2</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">loop1</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">loop2</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">bothLoop</span><span class="o">(</span><span class="n">head1</span><span class="o">,</span> <span class="n">loop1</span><span class="o">,</span> <span class="n">head2</span><span class="o">,</span> <span class="n">loop2</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c1">// 找到链表第一个入环节点，如果无环，返回null</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Node</span> <span class="nf">getLoopNode</span><span class="o">(</span><span class="nc">Node</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">head</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="c1">// n1 慢  n2 快</span>
+  <span class="nc">Node</span> <span class="n">slow</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">;</span> <span class="c1">// n1 -&gt; slow</span>
+  <span class="nc">Node</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span><span class="o">;</span> <span class="c1">// n2 -&gt; fast</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">slow</span> <span class="o">!=</span> <span class="n">fast</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">fast</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">fast</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="c1">// slow fast  相遇</span>
+  <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span> <span class="c1">// n2 -&gt; walk again from head</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">slow</span> <span class="o">!=</span> <span class="n">fast</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">slow</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c1">// 如果两个链表都无环，返回第一个相交节点，如果不想交，返回null</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Node</span> <span class="nf">noLoop</span><span class="o">(</span><span class="nc">Node</span> <span class="n">head1</span><span class="o">,</span> <span class="nc">Node</span> <span class="n">head2</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">head1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">head2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="nc">Node</span> <span class="n">cur1</span> <span class="o">=</span> <span class="n">head1</span><span class="o">;</span>
+  <span class="nc">Node</span> <span class="n">cur2</span> <span class="o">=</span> <span class="n">head2</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">cur1</span><span class="o">.</span><span class="na">next</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">n</span><span class="o">++;</span>
+    <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">cur2</span><span class="o">.</span><span class="na">next</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">n</span><span class="o">--;</span>
+    <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">cur1</span> <span class="o">!=</span> <span class="n">cur2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="c1">// n  :  链表1长度减去链表2长度的值</span>
+  <span class="n">cur1</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">head1</span> <span class="o">:</span> <span class="n">head2</span><span class="o">;</span> <span class="c1">// 谁长，谁的头变成cur1</span>
+  <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur1</span> <span class="o">==</span> <span class="n">head1</span> <span class="o">?</span> <span class="n">head2</span> <span class="o">:</span> <span class="n">head1</span><span class="o">;</span> <span class="c1">// 谁短，谁的头变成cur2</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">abs</span><span class="o">(</span><span class="n">n</span><span class="o">);</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">n</span><span class="o">--;</span>
+    <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">cur1</span> <span class="o">!=</span> <span class="n">cur2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">cur1</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c1">// 两个有环链表，返回第一个相交节点，如果不想交返回null</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Node</span> <span class="nf">bothLoop</span><span class="o">(</span><span class="nc">Node</span> <span class="n">head1</span><span class="o">,</span> <span class="nc">Node</span> <span class="n">loop1</span><span class="o">,</span> <span class="nc">Node</span> <span class="n">head2</span><span class="o">,</span> <span class="nc">Node</span> <span class="n">loop2</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">Node</span> <span class="n">cur1</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="nc">Node</span> <span class="n">cur2</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">loop1</span> <span class="o">==</span> <span class="n">loop2</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">cur1</span> <span class="o">=</span> <span class="n">head1</span><span class="o">;</span>
+    <span class="n">cur2</span> <span class="o">=</span> <span class="n">head2</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">cur1</span> <span class="o">!=</span> <span class="n">loop1</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">n</span><span class="o">++;</span>
+      <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">cur2</span> <span class="o">!=</span> <span class="n">loop2</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">n</span><span class="o">--;</span>
+      <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">cur1</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">head1</span> <span class="o">:</span> <span class="n">head2</span><span class="o">;</span>
+    <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur1</span> <span class="o">==</span> <span class="n">head1</span> <span class="o">?</span> <span class="n">head2</span> <span class="o">:</span> <span class="n">head1</span><span class="o">;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">abs</span><span class="o">(</span><span class="n">n</span><span class="o">);</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">n</span><span class="o">--;</span>
+      <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">cur1</span> <span class="o">!=</span> <span class="n">cur2</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+      <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">cur1</span><span class="o">;</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">cur1</span> <span class="o">=</span> <span class="n">loop1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">cur1</span> <span class="o">!=</span> <span class="n">loop1</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">cur1</span> <span class="o">==</span> <span class="n">loop2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">loop1</span><span class="o">;</span>
+      <span class="o">}</span>
+      <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="7环形链表">7.环形链表</h1>
+
+<p><a href="https://leetcode.cn/problems/linked-list-cycle-ii/">142. 环形链表 II</a></p>
+
+<p>测试链接：https://leetcode.cn/problems/linked-list-cycle-ii/</p>
+
+<p>数学证明如下：</p>
+
+<p>需要利用数学知识：</p>
+
+<p>相遇时的情况：</p>
+
+<ul>
+  <li>假设链表头到环起点的距离为 ( D )。</li>
+  <li>环的长度为 ( C )。</li>
+  <li>slow 和 fast 在环内的某个点相遇，设相遇点到环起点的距离为 ( X )。</li>
+</ul>
+
+<p>关键观察：</p>
+
+<ul>
+  <li>
+    <p>当相遇时，slow 走的总距离为 <code class="language-plaintext highlighter-rouge">D + X</code>。</p>
+  </li>
+  <li>
+    <p>fast 走的总距离为 \(D + X + k \cdot C\)（因为 fast 可能在环中多跑了几圈，( k ) 是圈数）。</p>
+  </li>
+  <li>
+    <p>由于 fast 的速度是 slow 的 2 倍，( fast ) 走的距离是 ( slow ) 的 2 倍：\(D + X + k \cdot C = 2 \cdot (D + X)\)</p>
+  </li>
+  <li>
+    <p>化简：</p>
+
+\[D + X + k \cdot C = 2D + 2X\]
+
+\[k \cdot C = D + X\]
+
+\[D = k \cdot C - X\]
+  </li>
+  <li>
+    <p>这表明：从链表头到环起点的距离 ( D ) 和相遇点到环起点的距离（通过环内的路径）有关系。</p>
+  </li>
+</ul>
+
+<p>找到环起点的方法：</p>
+
+<ul>
+  <li>当 slow 和 fast 相遇后：
+    <ul>
+      <li>将一个指针（比如 slow）放回链表头部。</li>
+      <li>另一个指针（fast）留在相遇点。</li>
+      <li>两个指针以相同速度（每次 1 步）移动。</li>
+    </ul>
+  </li>
+  <li>它们会在环的起点相遇。</li>
+</ul>
+
+<p>为什么有效：</p>
+
+<ul>
+  <li>从链表头到环起点走 ( D ) 步。</li>
+  <li>从相遇点回到环起点（沿环走剩余部分），距离为 <code class="language-plaintext highlighter-rouge">C - X</code>（环长减去相遇点到起点的距离）。</li>
+  <li>根据公式 \(D = k \cdot C - X\)：
+    <ul>
+      <li>如果 <code class="language-plaintext highlighter-rouge">k = 1</code>，则 <code class="language-plaintext highlighter-rouge">D = C - X</code>。</li>
+      <li>两个指针同时走 ( D ) 步：
+        <ul>
+          <li>从头走的指针到达环起点。</li>
+          <li>从相遇点走的指针沿环走 <code class="language-plaintext highlighter-rouge">C - X</code>，正好回到环起点。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>因此，它们一定在环起点相遇。(见下图，画的比较抽象)</li>
+</ul>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250331161320035.png" alt="image-20250331161320035" style="zoom:50%;" /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="rouge-code"><pre><span class="cm">/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">ListNode</span> <span class="nf">detectCycle</span><span class="o">(</span><span class="nc">ListNode</span> <span class="n">head</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ListNode</span> <span class="n">q</span> <span class="o">=</span> <span class="n">head</span><span class="o">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">q</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">q</span><span class="o">.</span><span class="na">next</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">q</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">q</span> <span class="o">==</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">q</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span>
+                <span class="k">while</span> <span class="o">(</span><span class="n">q</span> <span class="o">!=</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="k">return</span> <span class="n">q</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="8环形链表续">8.环形链表（续）</h1>
+
+<p>能不能不给单链表的头节点，只给想要删除的节点，就能做到在链表上把这个点删掉？返回头部（万一要删除的是头部节点）</p>
+
+<blockquote>
+  <p>面试如果真的问这个，也是想问他说的内个抖机灵的做法（将要删除的下一个节点的值给当前这个节点，然后调节当前节点的next指针）。</p>
+
+  <p><strong>示例：</strong> 链表: A→B→C→D→E 要删除 C（只知道 C）</p>
+
+  <ol>
+    <li>复制 D 的值到 C。 链表变成: A→B→D→D→E (节点 C 存储了 D 的值)</li>
+    <li>C.next=D.next (指向 E) 链表变成: A→B→D→E</li>
+  </ol>
+
+  <p>节点 D 被成功移除了，链表保持了 A→B→D→E 的逻辑顺序。</p>
+
+  <p><strong>至于最后一个节点怎么办，确实是没有办法的</strong>，解释如下。</p>
+</blockquote>
+
+<p><strong>抖机灵的办法无法完成一种情况：删除链表最后一个节点。null是系统上一个独立的区域。比如1-&gt;2-&gt;null。如果你要删掉2。你需要找到1，然后将1.next指向这个区域。不是说你把2变成null，你变不成。你就是变成了，1的next也没有指向公认的null的区域。</strong></p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/09/25/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-9%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" data-toggle="tooltip" data-placement="top" title="【体系学习009】排序算法总结">
+                        Previous<br>
+                        <span>【体系学习009】排序算法总结</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0171" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0134" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="40">算法</a>
+        
+                <a data-sort="0156" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0157" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0159" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="15">力扣</a>
+        
+                <a data-sort="0161" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0161" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0162" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0163" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"
+                    title="机器学习算法"
+                    rel="11">机器学习算法</a>
+        
+                <a data-sort="0168" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0171" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0172" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0172" 
+                    href="/archive/?tag=java%E9%9B%86%E5%90%88"
+                    title="java集合"
+                    rel="2">java集合</a>
+        
+                <a data-sort="0172" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0172" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
