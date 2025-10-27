@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="【AI思想启蒙04】线性回归3突破瓶颈，模型效果的提升  - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-10-27T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="AI思想启蒙">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/10/27/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9904/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>【AI思想启蒙04】线性回归3突破瓶颈，模型效果的提升  - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/10/27/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9904/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99" title="AI思想启蒙">AI思想启蒙</a>
+                        
+                    </div>
+                    <h1>【AI思想启蒙04】线性回归3突破瓶颈，模型效果的提升 </h1>
+                    
+                    <h2 class="subheading">多元线性回归处理多特征数据，通过增广向量统一表达，MSE优化权重。多项式回归拟合非线性，需平衡过拟合。随机特征权重期望为0，共线性导致系数不稳定，需特征选择或正则化。</h2>
+                    <span class="meta">Posted by Hilda on October 27, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p>现实中，线性回归的问题往往是多元的。</p>
+
+<h1 id="1多元回归模型基本描述">1.多元回归模型基本描述</h1>
+
+<p>多元线性回归模型是处理具有多个特征（\(X\) 向量）的回归问题。</p>
+
+<p>模型是一个函数，将输入 \(X\) 映射到输出 \(Y\)。</p>
+
+<p>目标值 \(y\) 是由多个特征 \(x_i\) 及其对应的权重 \(w_i\) 的线性组合构成。</p>
+
+\[y = w_1 x_1 + w_2 x_2 + \cdots + w_n x_n + w_0\]
+
+<p>上面的是标量形式，也可以写成向量形式/矩阵乘法形式，这是一种更规范、更紧凑的表达方式：</p>
+
+\[\hat{y} = \mathbf{W}^{\text{T}} \mathbf{X} + w_0\]
+
+<p>其中，\(\mathbf{W} = \begin{pmatrix} w_1 \\ \vdots \\ w_n \end{pmatrix}\) 是权重向量。\(\mathbf{X} = \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix}\) 是特征向量。\(w_0\)（或 \(b\)）是偏置（截距）项。</p>
+
+<p>模型的目标是找到最优的权重 \(\mathbf{W}\) 和偏置 \(w_0\)，使得预测值 \(\hat{y}\) 与真实值 \(y\) 之间的误差最小。</p>
+
+<p>和一元的线性回归问题一样，衡量模型性能最常用的指标还是MSE（均方误差）：</p>
+
+\[\text{MSE} = \frac{1}{n}\sum_{i=1}^n (\hat{y}_i - y_i)^2\]
+
+<p>为了将偏置项 \(w_0\) 融入矩阵乘法中，使其成为权重 \(\mathbf{W}\) 的一部分，我们需要对特征向量 \(\mathbf{X}\) 进行<strong>增广（Augmentation）</strong>：</p>
+
+<p>增广特征向量 \(\mathbf{X}\)：在原始特征向量 \(\mathbf{X}\) 的第一个位置（或最后一个位置）添加一个恒为1的元素。</p>
+
+\[\mathbf{X} = \begin{pmatrix} 1 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{pmatrix}\]
+
+<p>这个常数 $1$ 确保了 $w_0$ 在矩阵乘法中被保留。</p>
+
+<p><strong>增广权重向量 \(\mathbf{W}\)：</strong> 将偏置项 \(w_0\) 作为权重向量 \(\mathbf{W}\) 的第一个元素（对应于增广特征1）。</p>
+
+\[\mathbf{W} = \begin{pmatrix} w_0 \\ w_1 \\ w_2 \\ \vdots \\ w_n \end{pmatrix}\]
+
+<p>通过这种增广，多元线性回归模型可以统一表达为一个简单的向量内积（矩阵乘法）：</p>
+
+\[\hat{y} = \mathbf{W}^{\text{T}} \mathbf{X}\]
+
+<p>或</p>
+
+\[\hat{y} = \mathbf{X}^{\text{T}} \mathbf{W}\]
+
+<p>这种简化表达是机器学习和深度学习中的<strong>标准做法</strong>,简化所有数学推导（如梯度、正规方程）。同时简化了编程实现，而且MSE 损失函数仍然适用于这种简化形式：</p>
+
+\[\text{MSE} = \frac{1}{m}\sum_{i=1}^m (\mathbf{W}^{\text{T}} \mathbf{X}_i - y_i)^2\]
+
+<p>这种简洁的表达方式使得复杂的多元线性回归模型在代数和编程上都变得高效和优雅。</p>
+
+<h1 id="2多元回归-实战">2.多元回归-实战</h1>
+
+<p>1.读取数据：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">ast</span>
+
+<span class="k">def</span> <span class="nf">load_data_from_list_format</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    加载并解析您的特定格式（[[...], ...]）的数据文件。
+    </span><span class="sh">"""</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># 1. 使用 ast.literal_eval 安全地将字符串解析为 Python 列表
+</span>            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data_tuple</span> <span class="o">=</span> <span class="n">ast</span><span class="p">.</span><span class="nf">literal_eval</span><span class="p">(</span><span class="n">line</span><span class="p">.</span><span class="nf">strip</span><span class="p">())</span>
+                
+                <span class="c1"># 2. 解包：第一个元素是特征列表，第二个是目标值
+</span>                <span class="n">X_row</span> <span class="o">=</span> <span class="n">data_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">y_value</span> <span class="o">=</span> <span class="n">data_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                
+                <span class="n">features</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">X_row</span><span class="p">)</span>
+                <span class="n">targets</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">y_value</span><span class="p">)</span>
+                
+            <span class="nf">except </span><span class="p">(</span><span class="nb">ValueError</span><span class="p">,</span> <span class="nb">SyntaxError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Skipping line due to error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s"> in line: </span><span class="si">{</span><span class="n">line</span><span class="p">.</span><span class="nf">strip</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+                <span class="k">continue</span>
+                
+    <span class="c1"># 3. 转换为 NumPy 数组
+</span>    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="c1"># 示例调用
+</span><span class="n">file_path</span> <span class="o">=</span> <span class="sh">"</span><span class="s">../boston/train_data</span><span class="sh">"</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="nf">load_data_from_list_format</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Features (X_train) shape: </span><span class="si">{</span><span class="n">X_train</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Targets (y_train) shape: </span><span class="si">{</span><span class="n">y_train</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">First row of features:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">First target value:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">y_train</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251027180907089.png" alt="image-20251027180907089" style="zoom:50%;" /></p>
+
+<p>2.使用多元线性回归模型对加载的全部数据进行训练，并打印出模型的参数（即截距和系数）。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre><span class="c1"># ----------------- 模型训练 -----------------
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">🚀 正在使用多元线性回归模型进行训练...</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 1. 初始化模型
+</span><span class="n">model</span> <span class="o">=</span> <span class="nc">LinearRegression</span><span class="p">()</span>
+
+<span class="c1"># 2. 训练模型
+# 注意：在实际应用中，您通常会划分训练集和测试集，但根据您的请求，我们使用全部数据进行训练。
+</span><span class="n">model</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅ 模型训练完成。</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">--- 模型参数 ---</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 3. 打印模型参数
+# 截距 (Intercept)
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">**截距 (Intercept, $</span><span class="se">\\</span><span class="s">beta_0$):** </span><span class="si">{</span><span class="n">model</span><span class="p">.</span><span class="n">intercept_</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 系数 (Coefficients)
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">**特征系数 (Coefficients, $</span><span class="se">\\</span><span class="s">beta_{1}$ 到 $</span><span class="se">\\</span><span class="s">beta_{13}$):**</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># 将系数打印成易于阅读的格式
+</span><span class="n">coefficients</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">coef_</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coef</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">coefficients</span><span class="p">):</span>
+    <span class="c1"># 假设特征索引对应于第 1 到 第 13 个特征
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  - Feature </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s"> (X</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">): </span><span class="si">{</span><span class="n">coef</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 如果您想以 NumPy 数组形式查看所有系数
+# print(f"\n所有系数数组: \n{coefficients}")
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251027181202802.png" alt="image-20251027181202802" style="zoom:50%;" /></p>
+
+<p>注意，上面的13个变量没有进行标准化，只有在所有特征（自变量 \(X_i\)）都经过<strong>标准化（Standardization）</strong>处理，即它们具有相同的尺度（例如，均值为 0，标准差为 1）时，参数（系数）的绝对值越大，才说明该变量对 \(Y\) 的影响越大。</p>
+
+<blockquote>
+  <p>在训练模型之前，对所有特征 \(X\) 进行标准化（StandardScaler），然后再次训练模型。</p>
+
+\[\text{标准化} (X') = \frac{X - \mu}{\sigma}\]
+</blockquote>
+
+<h1 id="3多项式回归">3.多项式回归</h1>
+
+<p>使用线性回归的前提条件：数据尽量在一条直线上</p>
+
+<p>但是如果有下面这样的数据，如何拟合？</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="k">def</span> <span class="nf">load_and_clean_data</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    从指定文件中读取数据，清理字符串格式，并返回 NumPy 数组。
+    数据格式预期为：[[x], [y]]
+    </span><span class="sh">"""</span>
+    <span class="n">cleaned_data_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">line_number</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># 用于跟踪行号
+</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">line_number</span> <span class="o">+=</span> <span class="mi">1</span>
+                
+                <span class="c1"># 1. 清理行首和行尾的空白字符
+</span>                <span class="n">line_stripped</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">strip</span><span class="p">()</span>
+                
+                <span class="c1"># 严格跳过空行或仅包含空白字符的行
+</span>                <span class="k">if</span> <span class="ow">not</span> <span class="n">line_stripped</span><span class="p">:</span>
+                    <span class="c1"># 如果需要调试，可以取消注释下面这行
+</span>                    <span class="c1"># print(f"跳过文件中的空行或空白行 (行号: {line_number})")
+</span>                    <span class="k">continue</span>
+                    
+                <span class="c1"># 2. 移除所有方括号 '[]' 和空格，只留下数字和逗号
+</span>                <span class="c1"># 示例: "[[5.34...], [30.91...]]" -&gt; "5.34...,30.91..."
+</span>                <span class="n">clean_value_str</span> <span class="o">=</span> <span class="n">line_stripped</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sh">'</span><span class="s">[</span><span class="sh">'</span><span class="p">,</span> <span class="sh">''</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">'</span><span class="s">]</span><span class="sh">'</span><span class="p">,</span> <span class="sh">''</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">'</span><span class="s"> </span><span class="sh">'</span><span class="p">,</span> <span class="sh">''</span><span class="p">)</span>
+                
+                <span class="c1"># 3. 按逗号分隔，得到 X 和 y 的字符串
+</span>                <span class="n">x_str</span><span class="p">,</span> <span class="n">y_str</span> <span class="o">=</span> <span class="n">clean_value_str</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">'</span><span class="s">,</span><span class="sh">'</span><span class="p">)</span>
+                
+                <span class="c1"># 4. 转换为浮点数并存储
+</span>                <span class="n">x_val</span> <span class="o">=</span> <span class="nf">float</span><span class="p">(</span><span class="n">x_str</span><span class="p">)</span>
+                <span class="n">y_val</span> <span class="o">=</span> <span class="nf">float</span><span class="p">(</span><span class="n">y_str</span><span class="p">)</span>
+                <span class="n">cleaned_data_list</span><span class="p">.</span><span class="nf">append</span><span class="p">([</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">])</span>
+                
+    <span class="k">except</span> <span class="nb">FileNotFoundError</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">❌ 错误：未找到文件 </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s">。请检查文件路径。</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    <span class="k">except</span> <span class="nb">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">❌ 错误：数据格式不正确，无法转换为浮点数。请检查数据行 (行号: </span><span class="si">{</span><span class="n">line_number</span><span class="si">}</span><span class="s">): </span><span class="si">{</span><span class="n">line_stripped</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">具体错误信息: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">❌ 发生未知错误: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+
+    <span class="c1"># 5. 转换为最终的 NumPy 数组
+</span>    <span class="n">cleaned_data_np</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">cleaned_data_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">float64</span><span class="p">)</span>
+    
+    <span class="c1"># 6. 分离特征 (X) 和目标值 (y)
+</span>    <span class="c1"># X 必须是二维数组 (n, 1)
+</span>    <span class="n">X</span> <span class="o">=</span> <span class="n">cleaned_data_np</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">].</span><span class="nf">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">cleaned_data_np</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="c1"># y 是一维数组 (n,)
+</span>    
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="c1"># ----------------- 修改后的使用示例 -----------------
+</span><span class="n">file_name</span> <span class="o">=</span> <span class="sh">'</span><span class="s">train_paracurve_data</span><span class="sh">'</span> <span class="c1"># 建议使用 .txt 扩展名，以明确文件类型
+</span>
+<span class="c1"># **注意:** 请确保您的数据已保存到指定的文件中
+</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nf">load_and_clean_data</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">X</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">--- ✅ 数据读取成功 ---</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">特征 X 的形状: </span><span class="si">{</span><span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">目标 y 的形状: </span><span class="si">{</span><span class="n">y</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">X 的前 5 个样本:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">X</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">y 的前 5 个样本:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">y</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">数据已清理并准备好进行模型训练（未分割数据集）。</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="c1"># **********************************************
+</span>    <span class="c1"># 移除的分割代码原本在此处，现在直接对 X 和 y 进行操作
+</span>    <span class="c1"># **********************************************
+</span>    
+    <span class="c1"># 现在您可以直接使用整个 X 和 y 进行模型训练（例如，训练集就是整个数据集）
+</span>    <span class="c1"># from sklearn.linear_model import LinearRegression
+</span>    <span class="c1"># model = LinearRegression()
+</span>    <span class="c1"># model.fit(X, y) # 直接使用所有数据进行训练
+</span>    
+<span class="k">if</span> <span class="n">X</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">🎨 正在生成散点图...</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="c1"># 绘制散点图
+</span>    <span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="c1"># 绘制原始数据点 (散点图)
+</span>    <span class="c1"># X 必须被展平为一维数组才能作为 x 轴输入
+</span>    <span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="nf">flatten</span><span class="p">(),</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    
+    <span class="c1"># 添加标题和标签
+</span>    <span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">特征 X 与目标 Y 的数据散点图</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">特征 X 值</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">目标值 Y 值</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    
+    <span class="c1"># 显示网格
+</span>    <span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">--</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    
+    <span class="c1"># 显示图形
+</span>    <span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅ 散点图绘制完成。</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251027182028140.png" alt="image-20251027182028140" /></p>
+
+<p>可以用下面的模型拟合：（因为通过观察猜测可以用抛物线拟合）</p>
+
+\[y = a x_1^2 + b x_1 + c\]
+
+<p>这被称为 <strong>二次多项式回归 (Quadratic Polynomial Regression)</strong>。</p>
+
+<p>使用 <code class="language-plaintext highlighter-rouge">sklearn</code> 的 <code class="language-plaintext highlighter-rouge">PolynomialFeatures</code> 来生成 \(x^2\) 和 \(x\) 这两个特征，然后使用 <code class="language-plaintext highlighter-rouge">LinearRegression</code> 进行拟合。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="n">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="n">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PolynomialFeatures</span>
+<span class="kn">from</span> <span class="n">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
+
+<span class="c1"># 为保证绘图平滑，我们对 X 进行排序
+</span><span class="n">sort_index</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">argsort</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="nf">flatten</span><span class="p">())</span>
+<span class="n">X_sorted</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">sort_index</span><span class="p">]</span>
+<span class="n">y_sorted</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">sort_index</span><span class="p">]</span>
+
+<span class="c1"># -------------------------- 1. 特征工程：生成多项式特征 --------------------------
+# 我们需要创建 X^2 和 X 这两个特征
+# 公式: y = a*x^2 + b*x + c
+# 这相当于一个线性模型: y = a*Z1 + b*Z2 + c，其中 Z1=x^2, Z2=x
+</span>
+<span class="c1"># degree=2 会生成 [1, x, x^2] (如果 include_bias=True)
+# 我们设置为 include_bias=False，因为 LinearRegression 默认会添加截距 (c)
+</span><span class="n">poly</span> <span class="o">=</span> <span class="nc">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">include_bias</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">X_poly</span> <span class="o">=</span> <span class="n">poly</span><span class="p">.</span><span class="nf">fit_transform</span><span class="p">(</span><span class="n">X_sorted</span><span class="p">)</span>
+
+<span class="c1"># X_poly 现在有两列: [x, x^2] (注意：PolynomialFeatures 默认按幂次升序 [x^1, x^2])
+</span>
+<span class="c1"># 为了对应您公式中的顺序 (x^2, x)，我们手动调整列的顺序（可选，但有助于参数对应）
+# 确保 X_poly 的列顺序是 [x^2, x]
+# 实际上，由于系数是自动拟合的，保持默认顺序 [x, x^2] 更简单。
+# 我们保持默认顺序，并在解释系数时说明。
+# 默认列顺序: X_poly = [x^1, x^2]
+</span>
+<span class="c1"># -------------------------- 2. 模型训练 --------------------------
+</span><span class="n">model</span> <span class="o">=</span> <span class="nc">LinearRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">X_poly</span><span class="p">,</span> <span class="n">y_sorted</span><span class="p">)</span>
+
+<span class="c1"># 3. 预测拟合曲线
+# 用于绘图的预测值
+</span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="n">X_poly</span><span class="p">)</span>
+
+<span class="c1"># -------------------------- 4. 打印参数 --------------------------
+# 系数顺序: model.coef_[0] 对应 x， model.coef_[1] 对应 x^2
+# 截距: model.intercept_ 对应 c
+</span><span class="n">coef_x</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">coef_x2</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">intercept_c</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">intercept_</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">--- ✅ 模型训练完成 ---</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拟合公式: y = </span><span class="si">{</span><span class="n">coef_x2</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> * x^2 + </span><span class="si">{</span><span class="n">coef_x</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> * x + </span><span class="si">{</span><span class="n">intercept_c</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">--- 模型参数 ---</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">a (x^2 的系数): </span><span class="si">{</span><span class="n">coef_x2</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">b (x 的系数): </span><span class="si">{</span><span class="n">coef_x</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">c (截距): </span><span class="si">{</span><span class="n">intercept_c</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拟合优度 R²: </span><span class="si">{</span><span class="nf">r2_score</span><span class="p">(</span><span class="n">y_sorted</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="c1"># -------------------------- 5. 绘图 --------------------------
+# Matplotlib 绘图设置
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">font.sans-serif</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">SimHei</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">axes.unicode_minus</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c1"># 解决负号显示的问题
+</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># 绘制原始数据点 (散点图)
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">X_sorted</span><span class="p">.</span><span class="nf">flatten</span><span class="p">(),</span> <span class="n">y_sorted</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">原始数据点</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 绘制拟合曲线
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">X_sorted</span><span class="p">.</span><span class="nf">flatten</span><span class="p">(),</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="sh">'</span><span class="s">拟合曲线: y = a*x² + b*x + c</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 添加标题和标签
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">二次多项式回归拟合</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">特征 X</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">目标值 Y</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># 添加图例
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+
+<span class="c1"># 显示网格
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">--</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># 显示图形
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251027182554921.png" alt="image-20251027182554921" /></p>
+
+<p><strong>\(R^2\)​ (R-squared) ，也称为决定系数 (Coefficient of Determination)</strong>,是用来衡量建立的回归模型对原始数据的拟合程度的一个指标。计算公式如下（非必要了解，但可帮助理解）：</p>
+
+\[R^2 = 1 - \frac{SS_{res}}{SS_{tot}}\]
+
+<ul>
+  <li>\(SS_{res}\)（Residual Sum of Squares）：残差平方和，即预测值与实际值之间差异的平方和。</li>
+  <li>\(SS_{tot}\)（Total Sum of Squares）：总平方和，即实际值与实际值平均值之间差异的平方和（代表了 $Y$ 的总变异）。</li>
+</ul>
+
+<p>\(R^2\) 的取值范围通常在 0 到 1 之间。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>R^2 值</strong></th>
+      <th><strong>含义</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>\(R^2 \approx 1\)</strong></td>
+      <td>模型能很好地解释数据的变异。这意味着模型对数据的拟合非常好，预测值与实际值非常接近。</td>
+    </tr>
+    <tr>
+      <td><strong>\(R^2 \approx 0\)</strong></td>
+      <td>模型几乎不能解释数据的变异。这意味着模型的预测能力很弱，可能还不如直接使用 \(Y\) 的平均值来预测。</td>
+    </tr>
+    <tr>
+      <td><strong>\(R^2 &lt; 0\)</strong></td>
+      <td>这种情况很少见，但可能发生在拟合一个<strong>非线性模型</strong>（如您刚才做的多项式回归）或使用<strong>不合适的模型</strong>时。它意味着您的模型拟合效果比简单地使用 \(Y\) 的平均值进行预测还要差。</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>上面演示的是二次，三次甚至高次都是同理。</p>
+
+<p>根据泰勒公式，任意函数都可以表示成\(y = \beta_n x^n + \beta_{n-1} x^{n-1} + \dots + \beta_1 x + \beta_0\)</p>
+
+<blockquote>
+  <p>根据 <strong>泰勒公式 (Taylor’s Formula)</strong>，<strong>在一定条件下</strong>，一个平滑（可导）的函数 \(f(x)\) 可以在某一点 \(x_0\) 附近用一个<strong>多项式</strong>来近似表示：</p>
+
+\[f(x) \approx f(x_0) + f'(x_0)(x-x_0) + \frac{f''(x_0)}{2!}(x-x_0)^2 + \dots + \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n\]
+
+  <p><strong>这正是多项式回归的理论基础！</strong></p>
+
+  <p>多项式回归的本质就是利用线性模型来拟合特征的<strong>多项式组合</strong>，从而<strong>利用泰勒多项式的能力去逼近数据集中存在的任何潜在的非线性关系</strong>。</p>
+</blockquote>
+
+<p>只需通过 <code class="language-plaintext highlighter-rouge">PolynomialFeatures(degree=n)</code> 来生成 \(x\) 的 \(n\) 次方直到 1 次方的特征，然后将其输入到线性回归模型中进行拟合即可。</p>
+
+<p>次数越高，计算量<strong>不一定</strong>是越来越大的（因为线性回归的计算复杂度主要取决于样本量 \(N\) 和特征数 \(P\)），<strong>但模型引入的风险是越来越高的。</strong>理由如下：</p>
+
+<p>1.过拟合是最主要的问题。高次多项式能够<strong>完美</strong>穿过所有训练数据点，但它学到的是数据中的<strong>噪声</strong>和随机误差，而不是数据背后的真实规律。这会导致模型在<strong>新的、未见过的数据</strong>上的泛化能力极差。</p>
+
+<p>2.共线性：当 \(x\) 的数值范围较大时，\(x^2, x^3, \dots, x^n\) 这些高次项之间的相关性会非常高，导致<strong>特征共线性</strong>。这会使回归系数 \(\beta_i\) 的估计变得非常不稳定，微小的数据变动都可能导致系数的巨大变化。</p>
+
+<p>3.计算量。虽然对单变量而言计算量增加不显著，但对于<strong>多变量</strong>（如 \(x_1, x_2\)）的高次模型，特征数量会呈指数级增长，此时计算时间和内存消耗会急剧增加。</p>
+
+<p>4.随着多项式次数的增加，模型的系数变得难以解释，降低了模型的可读性和实用性。</p>
+
+<p>因此，在实践中，我们通常选择一个<strong>较低的次数（如 2 次或 3 次）</strong>，并在拟合度（\(R^2\)）和模型复杂度之间找到最佳的平衡点。</p>
+
+<p>另外，如果模型过拟合（在训练集上学习过多噪声），不一定在测试集上就一定好，所以次数一定不是越高越好。（虽然次数越高，模型对于训练集的拟合就越好）。这也是一种trade off</p>
+
+<h1 id="4花式玩法-抗噪声">4.花式玩法-抗噪声</h1>
+
+<p>考虑这样的问题，原来有数据\([X, y]\)，现在引入随机产生的数据\(X_2\)，就有了\([X_1, X_2, y]\)，请问最后多元线性回归拟合的\(\hat{y}=w_1X_1+w_2X_2+b\)中，\(w_2\)的取值是不是0？</p>
+
+<p>结论：\(w_2\) 的<strong>期望</strong>值是0，但<strong>实际</strong>值可能不为0</p>
+
+<p>\(X_2\) 是完全随机生成的（例如，来自 \(\mathcal{N}(0, 1)\) 或 \(\mathcal{U}(a, b)\) 分布）。\(X_2\) 与原始特征 \(X_1\) <strong>完全独立</strong>，并且与目标变量 \(y\) <strong>完全独立</strong>（即它们之间没有真实的线性关系）。</p>
+
+<p>在线性回归中，模型的系数 \(w_i\) 旨在最小化残差平方和（最小二乘法）。如果 \(X_2\) 与 \(y\) 之间没有真实关系，那么在<strong>无限大的样本集</strong>上，最小化残差平方和的最佳解是设置 \(w_2\) 为 $0$，因为任何非零的 \(w_2\) 只会引入额外的、不可解释的误差。</p>
+
+\[E[w_2] = 0\]
+
+<p><strong>实际原因 (有限样本集和随机误差)：</strong></p>
+
+<p>在任何<strong>有限的实际数据集</strong>上，即使 \(X_2\) 是纯随机的，它也会由于<strong>抽样误差（Sampling Error）和随机噪声</strong>而出现以下情况：</p>
+
+<ul>
+  <li><strong>偶然相关性 (Spurious Correlation)：</strong> 随机生成的 \(X_2\) 与目标变量 \(y\) 之间会存在微弱、偶然的非零相关性。最小二乘法会试图利用这种微弱的、随机的相关性来进一步稍微降低残差平方和。</li>
+  <li><strong>噪声吸收：</strong> \(X_2\) 可能会“吸收”模型中未被 \(X_1\) 解释的<strong>随机噪声</strong>部分。模型可能会将 \(w_2\) 设置为一个微小的非零值，以利用 \(X_2\) 的随机波动来微调拟合，使 \(\sum (y - \hat{y})^2\) 略微减小。</li>
+</ul>
+
+<p>在实际运行代码时，您会发现拟合得到的 \(w_2\) 是一个<strong>接近于 0 的非零小数</strong></p>
+
+<hr />
+
+<p>下面是模拟的代码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="n">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="c1"># --- 1. 创建模拟数据 ---
+</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># 设置随机种子以保证结果可重现
+</span><span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="mi">1000</span>    <span class="c1"># 样本数量
+</span><span class="n">TRUE_W1</span> <span class="o">=</span> <span class="mf">5.0</span>       <span class="c1"># X1 的真实系数
+</span><span class="n">TRUE_B</span> <span class="o">=</span> <span class="mf">10.0</span>       <span class="c1"># 真实截距
+</span>
+<span class="c1"># 原始特征 X1 (与 y 有关)
+</span><span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">rand</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> 
+
+<span class="c1"># 目标变量 y (包含随机噪声)
+# y = 5*X1 + 10 + 噪声
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">TRUE_W1</span> <span class="o">*</span> <span class="n">X1</span><span class="p">.</span><span class="nf">flatten</span><span class="p">()</span> <span class="o">+</span> <span class="n">TRUE_B</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">N_SAMPLES</span><span class="p">)</span>
+
+<span class="c1"># --- 2. 引入随机特征 X2 ---
+# X2 是一个完全随机的特征，与 X1 和 y 均独立
+</span><span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># --- 3. 组合特征矩阵 ---
+# 现在的特征矩阵 X 包含 X1 和 X2
+# X.shape -&gt; (1000, 2)
+</span><span class="n">X_combined</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">hstack</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">))</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">原始特征 X1 形状: </span><span class="si">{</span><span class="n">X1</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">随机特征 X2 形状: </span><span class="si">{</span><span class="n">X2</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">组合特征 X 形状: </span><span class="si">{</span><span class="n">X_combined</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># --- 4. 训练多元线性回归模型 ---
+</span><span class="n">model</span> <span class="o">=</span> <span class="nc">LinearRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">X_combined</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># --- 5. 打印结果 ---
+</span><span class="n">w1_fit</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">w2_fit</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">b_fit</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">intercept_</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">--- 模型拟合结果 ---</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">特征 X1 的真实系数 (w1): </span><span class="si">{</span><span class="n">TRUE_W1</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拟合得到的 X1 系数 (w1): </span><span class="si">{</span><span class="n">w1_fit</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">-</span><span class="sh">"</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">随机特征 X2 的真实系数 (w2): 0.0000</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拟合得到的 X2 系数 (w2): </span><span class="si">{</span><span class="n">w2_fit</span><span class="si">:</span><span class="p">.</span><span class="mi">8</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">-</span><span class="sh">"</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">截距的真实值 (b): </span><span class="si">{</span><span class="n">TRUE_B</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">拟合得到的截距 (b): </span><span class="si">{</span><span class="n">b_fit</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251027204319656.png" alt="image-20251027204319656" style="zoom:50%;" /></p>
+
+<p>上面的例子可以说明<strong>线性回归具有抗噪声的能力。</strong></p>
+
+<h1 id="5花式玩法-共线性">5.花式玩法-共线性</h1>
+
+<p>假设我们从原始特征 \(x_1\) 构造了两个完全相同的特征 \(X_{1a} = x_1\)和 \(X_{1b} = x_1\)，并将它们代入模型：</p>
+
+\[y = w_{1a} X_{1a} + w_{1b} X_{1b} + w_0\]
+
+<p>这种复制特征的操作创建了<strong>完美的共线性（Perfect Collinearity）</strong>，即特征 \(X_{1a}\) 和 \(X_{1b}\) 之间的相关系数为1。</p>
+
+<p>线性回归模型（最小二乘法）的优化目标是找到最优的权重组合 \((w_{1a}, w_{1b})\)，使得残差平方和最小。</p>
+
+<p>假设原始的真实关系是 \(y = W_{\text{true}} x_1 + w_0\)。</p>
+
+<p>当引入 \(X_{1a}\) 和 \(X_{1b}\) 时，模型要拟合的是：</p>
+
+\[y = w_{1a} x_1 + w_{1b} x_1 + w_0 = (w_{1a} + w_{1b}) x_1 + w_0\]
+
+<p><strong>问题在于：</strong> 只要保持系数之和 \((w_{1a} + w_{1b})\) 等于原始的真实系数 \(W_{\text{true}}\)，模型的预测结果 \(\hat{y}\) 就不会改变，残差平方和（RSS）也保持不变。</p>
+
+<p>因此，模型无法确定 \(w_{1a}\) 和 \(w_{1b}\) 的具体取值，只要满足：</p>
+
+\[w_{1a} + w_{1b} = W_{\text{true}}\]
+
+<p>即，存在<strong>无穷多组</strong>解，它们都能最小化 RSS。这使得系数矩阵在数学上是<strong>奇异</strong>的（不可逆），导致最小二乘解变得不确定或不稳定。</p>
+
+<p>这种现象说明了线性回归的一个重要特性：</p>
+
+<p><strong>线性回归对特征间的共线性高度敏感。当特征之间存在高度相关性时，模型的系数会被“摊派”，变得不稳定、难以解释，并且在不同数据集上运行时，系数的取值可能会发生剧烈变化。</strong></p>
+
+<p>因此，在实际应用中，处理共线性是特征工程的一个重要环节，常用的解决方法包括：</p>
+
+<ol>
+  <li><strong>特征选择：</strong> 删除重复或高度相关的特征（例如，在这个例子中删除 \(X_{1b}\)）。</li>
+  <li><strong>正则化：</strong> 使用 <strong>岭回归 (Ridge Regression)</strong> 或 <strong>Lasso 回归</strong>，它们通过引入惩罚项来稳定和约束系数，减轻共线性的影响。</li>
+</ol>
+
+<hr />
+
+<p><strong>加噪声对于线性回归没有伤害，加相关性强的变量也不会带来帮助。</strong>这是线性回归很重要的特点。</p>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/10/27/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9903/" data-toggle="tooltip" data-placement="top" title="【AI思想启蒙03】线性回归2从傻瓜到智能，梯度下降法学习法">
+                        Previous<br>
+                        <span>【AI思想启蒙03】线性回归2从傻瓜到智能，梯度下降法学习法</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0177" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0139" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="41">算法</a>
+        
+                <a data-sort="0162" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0163" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0165" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="15">力扣</a>
+        
+                <a data-sort="0167" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0167" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0168" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0169" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"
+                    title="机器学习算法"
+                    rel="11">机器学习算法</a>
+        
+                <a data-sort="0174" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0176" 
+                    href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99"
+                    title="AI思想启蒙"
+                    rel="4">AI思想启蒙</a>
+        
+                <a data-sort="0177" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0178" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95%E9%A2%98%E5%BA%93"
+                    title="算法题库"
+                    rel="2">算法题库</a>
+        
+                <a data-sort="0178" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0178" 
+                    href="/archive/?tag=java%E9%9B%86%E5%90%88"
+                    title="java集合"
+                    rel="2">java集合</a>
+        
+                <a data-sort="0178" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0178" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
