@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="【AI思想启蒙05】逻辑回归1猛将起于卒伍，工业环境下的分类模型  - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-11-17T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="AI思想启蒙">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/11/17/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9905/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>【AI思想启蒙05】逻辑回归1猛将起于卒伍，工业环境下的分类模型  - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/11/17/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9905/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99" title="AI思想启蒙">AI思想启蒙</a>
+                        
+                    </div>
+                    <h1>【AI思想启蒙05】逻辑回归1猛将起于卒伍，工业环境下的分类模型 </h1>
+                    
+                    <h2 class="subheading">逻辑回归是线性回归+Sigmoid的扩展，等价于单层神经网络（输出Sigmoid+BCE损失）。深度学习通过隐藏层+非线性激活（如ReLU）突破线性模型局限，拟合复杂非线性关系。BCE损失本质是最小化真实与预测分布的KL散度；Softmax回归将逻辑回归推广至多分类，使用交叉熵损失实现概率归一化输出。</h2>
+                    <span class="meta">Posted by Hilda on November 17, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251117162736025.png" alt="image-20251117162736025" /></p>
+
+<p><strong>逻辑回归是线性回归的扩展：</strong> 它在线性回归的输出上应用了 Sigmoid 变换。</p>
+
+<p><strong>逻辑回归是最简单的单层神经网络：</strong> 它相当于一个<strong>只有输入层和输出层（带 Sigmoid 激活函数）</strong>，并使用<strong>二元交叉熵 (BCE) 损失</strong>的神经网络。</p>
+
+<p>当神经网络只有一层（没有隐藏层）时，如果输出层是 Sigmoid 激活函数，它就是逻辑回归；如果输出层是恒等激活函数，它就是线性回归。</p>
+
+<p>深度学习通过引入<strong>隐藏层</strong>和使用 <strong>ReLU、Tanh</strong> 等<strong>非线性激活函数</strong>，能够学习和建模数据中高度复杂的<strong>非线性</strong>关系，这是线性回归和逻辑回归作为单层模型所无法实现的。</p>
+
+<h1 id="1回顾线性回归">1.回顾线性回归</h1>
+
+<p>线性回归是最基础的回归模型，它假设输入特征 \(X\) 和输出目标 \(Y\) 之间存在<strong>线性关系</strong>。</p>
+
+\[Y = W^T X + b\]
+
+<p>线性回归是<strong>最简单的神经网络</strong>。如果一个神经网络<strong>只有输入层和输出层</strong>，并且<strong>输出层没有激活函数</strong>（即使用恒等函数 \(f(z)=z\)），那么它执行的操作就是线性回归。</p>
+
+<p>线性回归的核心在于预测连续数值。建立输入特征（即自变量 \(X\)）与连续输出目标（未知的“另一个坐标”，即因变量 \(Y\)）之间的线性关系。其目标是找到一条最佳拟合的直线或平面，使得模型可以根据输入的 \(X\) 值，直接预测出一个具体、连续的数值，例如预测房价、气温或股票价格，解决的是<strong>回归问题</strong>。</p>
+
+<p>而<strong>逻辑回归的核心在于确定相对位置以进行分类。</strong> 逻辑回归：知道完整的坐标，计算和直线的相对位置，这就是逻辑回归的分类本质。这里的“直线”是模型的<strong>决策边界</strong>。逻辑回归首先通过线性计算确定数据点在线性空间中的位置（知道完整的坐标），然后通过 Sigmoid 函数将数据点与决策边界的相对位置转换为一个 \([0, 1]\) 之间的概率值。这个概率值决定了数据点被分到某一类别的可能性，从而解决了<strong>分类问题</strong>，实现了对离散类别的预测。</p>
+
+<h1 id="2逻辑回归">2.逻辑回归</h1>
+
+<h2 id="21原理">2.1原理</h2>
+
+<p>线性 + Sigmoid 非线性 = 逻辑回归</p>
+
+<p>逻辑回归主要用于<strong>二分类</strong>任务。它在<strong>线性组合</strong>的基础上，增加了一个 <strong>Sigmoid (S型)</strong> 激活函数，将输出压缩到 \([0, 1]\) 之间，表示概率。</p>
+
+\[P(Y=1|X) = \sigma(W^T X + b)\]
+
+<p>其中 \(\sigma(z) = \frac{1}{1 + e^{-z}}\) 是 Sigmoid 函数。</p>
+
+<p>sigmoid函数图像如下：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251117173055512.png" alt="image-20251117173055512" style="zoom:50%;" /></p>
+
+<blockquote>
+  <p>为什么是sigmoid函数（或类似的 S 型曲线）？</p>
+
+  <p>1.虽然逻辑回归本身是线性分类器，但 Sigmoid 函数作为<strong>非线性激活函数</strong>，使得它能够将线性模型的输出转化为非线性概率。更重要的是，在<strong>深度神经网络</strong>中，正是非线性激活函数的堆叠（如 Sigmoid）赋予了网络学习和拟合复杂非线性关系的能力。如果没有非线性激活函数，无论堆叠多少层，神经网络仍然只会是一个线性模型。补充：sigmoid作为神经网络的激活函数并不常见。因为在曲线平坦的区域，Sigmoid 的导数（梯度）接近于零。这意味着当模型的输出得分过大或过小时，通过反向传播计算出的梯度会非常小，导致权重 \(W\) 的更新非常缓慢，使得模型训练<strong>停滞不前</strong>。这也是在现代深度学习中，ReLU 及其变体更常被用作隐藏层激活函数的原因。</p>
+
+  <p>2.整个曲线是<strong>平滑且可导</strong>的（没有尖锐的拐角或跳变）。Sigmoid 函数处处可导，其导数（即梯度）也是连续的。这对于使用<strong>梯度下降法</strong>及其变体（如反向传播）来训练模型至关重要，因为优化算法需要平滑的梯度来稳定地更新模型的权重 \(W\)。</p>
+</blockquote>
+
+<p>sigmoid导数图像如下：\(\sigma'(z) = \sigma(z) \cdot (1 - \sigma(z))\)，其中\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251117173138335.png" alt="image-20251117173138335" style="zoom:50%;" /></p>
+
+<p>Sigmoid 导函数的图像是一个<strong>对称的钟形曲线</strong>。</p>
+
+<h3 id="kl散度">KL散度</h3>
+
+<p>线性回归的损失函数是MSE，逻辑回归的损失函数能不能也是MSE？</p>
+
+<p>不能。</p>
+
+<hr />
+
+<p>KL 距离，正式名称为 <strong>Kullback-Leibler 散度</strong>，是一种衡量<strong>两个概率分布之间差异</strong>的非对称度量。它源自信息论。</p>
+
+<p>KL 散度的定义如下：</p>
+
+\[\mathcal{L}_{KL} = \sum_{i=1}^{N} P(x_i) \cdot \log \frac{P(x_i)}{Q(x_i)}\]
+
+<ul>
+  <li><strong>\(P(x_i)\) (或图中的 \(y_i\))</strong>: 真实概率分布（或参考分布 \(P\)）中事件 \(x_i\) 发生的概率。</li>
+  <li><strong>\(Q(x_i)\) (或图中的 \(f(x_i)\))</strong>: 预测概率分布（或近似分布 \(Q\)）中事件 \(x_i\) 发生的概率。</li>
+  <li><strong>\(N\)</strong>: 离散事件或状态的总数（在分类中通常是类别数）。</li>
+  <li>衡量使用分布 \(Q\) 来近似分布 \(P\) 时，所<strong>损失的信息量</strong>或引入的<strong>信息增益</strong>。</li>
+</ul>
+
+<p>举例说明：</p>
+
+<p>有2枚硬币P和Q，抛硬币向上和向下的概率如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>P</th>
+      <th>Q</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>正面朝上</td>
+      <td>\(\frac{1}{3}\)</td>
+      <td>\(\frac{1}{4}\)</td>
+    </tr>
+    <tr>
+      <td>反面朝上</td>
+      <td>\(\frac{2}{3}\)</td>
+      <td>\(\frac{3}{4}\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>计算硬币 \(\mathbf{P}\) 相对于 \(\mathbf{Q}\) 的 KL 散度：$$D_{KL}(P</td>
+      <td> </td>
+      <td>Q)$$。</td>
+    </tr>
+  </tbody>
+</table>
+
+\[D_{KL}(P || Q) = \sum_{i} P(x_i) \log \frac{P(x_i)}{Q(x_i)}=P(x_1) \log \frac{P(x_1)}{Q(x_1)}+P(x_2) \log \frac{P(x_2)}{Q(x_2)} = \frac{1}{3} \ln \left( \frac{1/3}{1/4} \right) + \frac{2}{3} \ln \left( \frac{2/3}{3/4} \right)\]
+
+<p>KL 散度的<strong>性质:</strong></p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><strong>非对称性:</strong> $$D_{KL}(P</td>
+          <td> </td>
+          <td>Q) \neq D_{KL}(Q</td>
+          <td> </td>
+          <td>P)\(。它衡量的是\)P\(相对于\)Q$$ 的散度。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><strong>非负性:</strong> $$D_{KL}(P</td>
+          <td> </td>
+          <td>Q) \geq 0\(。只有当\)P\(和\)Q$$ 完全相同时，$D_{KL}(P</td>
+          <td> </td>
+          <td>Q) = 0$。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<hr />
+
+<p>一个很重要且有难度的结论：</p>
+
+<p><strong>散度表达式非对称导致拟合倾向不同</strong>：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251117212909037.png" alt="image-20251117212909037" /></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>**$$KL(P</td>
+      <td> </td>
+      <td>Q)\(** 倾向于让\)Q\(**覆盖**\)P\(的所有模式（**零回避**），因此\)Q\(会尽可能匹配\)P\(的**所有大值区域**，避免在\)P$$ 存在的地方 $Q$ 为零。</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>**$$KL(Q</td>
+      <td> </td>
+      <td>P)\(** 倾向于让\)Q\(**聚焦**于\)P\(的主要模式（**零强制**），因此\)Q\(会忽略\)P\(的长尾或不重要的区域，致力于完美匹配\)P\(的**少数几个峰值**，避免在\)P\(不存在的区域\)Q$$ 仍有值。</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h3 id="损失函数bce">损失函数BCE</h3>
+
+<p>逻辑回归的标准损失函数：二元交叉熵 (BCE)</p>
+
+<p>逻辑回归的训练目标是最大化似然函数，这等价于最小化<strong>二元交叉熵 (Binary Cross Entropy, BCE)</strong> 损失函数：</p>
+
+\[\mathcal{L}_{\text{BCE}}(P || Q) = - \sum_{i} [y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i)]\]
+
+<ul>
+  <li><strong>真实分布 \(P\) (True Distribution):</strong> 由真实标签 \(y_i\) 定义，它是一个伯努利分布，概率质量集中在 \(y_i\)上。</li>
+  <li><strong>预测分布 \(Q\) (Predicted Distribution):</strong> 由模型输出 \(\hat{y}_i\) 定义，它也是一个伯努利分布，正类概率为 $\hat{y}_i$，负类概率为 \(1 - \hat{y}_i\)。</li>
+</ul>
+
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td>KL 散度 $$D_{KL}(P</td>
+      <td> </td>
+      <td>Q)$$ 定义为：</td>
+    </tr>
+  </tbody>
+</table>
+
+\[D_{KL}(P || Q) = \sum_{i} P(x_i) \log \frac{P(x_i)}{Q(x_i)} = \sum_{i} P(x_i) \log P(x_i) - \sum_{i} P(x_i) \log Q(x_i)\]
+
+<p>在二分类问题中，对于单个样本：</p>
+
+<ol>
+  <li>
+    <p>真实分布 \(P\) 的熵 \(H(P)\)：</p>
+
+\[H(P) = - \sum_{k \in \{0, 1\}} P(Y=k) \log P(Y=k) = - [y \log y + (1 - y) \log (1 - y)]\]
+
+    <p>由于 \(y\) 是真实标签，只能取 0 或 1，所以 \(H(P) = 0\)（确定分布的熵为零）。</p>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>BCE 损失 $$\mathcal{L}_{\text{BCE}}(P</td>
+          <td> </td>
+          <td>Q)$$：</td>
+        </tr>
+      </tbody>
+    </table>
+
+\[\mathcal{L}_{\text{BCE}}(P || Q) = - \sum_{k \in \{0, 1\}} P(Y=k) \log Q(Y=k) = - [y \log \hat{y} + (1 - y) \log (1 - \hat{y})]=\\ \sum_{i=1}^{n} \left[ y_i \log \frac{y_i}{f_i} + (1 - y_i) \log \frac{1 - y_i}{1 - f_i} \right]\]
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>KL 散度 $$D_{KL}(P</td>
+          <td> </td>
+          <td>Q)$$：</td>
+        </tr>
+      </tbody>
+    </table>
+
+\[\mathbf{D_{KL}(P || Q)} = \mathcal{L}_{\text{BCE}}(P || Q) - H(P)\]
+  </li>
+</ol>
+
+<p>由于在逻辑回归中，目标是真实标签 \(y_i\)，其分布 \(P\) 是确定性的（熵 \(H(P)=0\)），所以：</p>
+
+\[\mathbf{D_{KL}(P || Q)} = \mathcal{L}_{\text{BCE}}(P || Q)\]
+
+<p>因此，<strong>最小化逻辑回归的 BCE 损失，在数学上完全等价于最小化真实分布 \(P\) 和预测分布 \(Q\) 之间的 KL 散度。</strong></p>
+
+<hr />
+
+<h2 id="22牛客习题1">2.2牛客习题1</h2>
+
+<p>https://www.nowcoder.com/practice/3718cf46430740c7bbb6cd31fc433b88?tpId=390&amp;tqId=11507519&amp;sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D37%26type%3D390%26channelPut%3Dw25post</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="n">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span><span class="p">,</span> <span class="n">ROUND_HALF_UP</span>
+
+<span class="c1"># --- 1. Sigmoid 函数 ---
+</span><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">计算 Sigmoid 激活函数值</span><span class="sh">"""</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="nf">clip</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)))</span>  <span class="c1"># np.clip 避免指数溢出
+</span>
+
+<span class="c1"># --- 2. 预测函数 ---
+</span><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">计算预测概率和标签</span><span class="sh">"""</span>
+    <span class="c1"># 线性组合：Z = X @ W (包含偏置项的矩阵乘法)
+</span>    <span class="n">Z</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">W</span>
+    <span class="c1"># 概率：Y_hat = sigmoid(Z)
+</span>    <span class="n">Y_hat</span> <span class="o">=</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+
+    <span class="c1"># 预测标签：概率 &gt;= 0.5 为 1，否则为 0
+</span>    <span class="n">predictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">Y_hat</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">).</span><span class="nf">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">Y_hat</span>
+
+
+<span class="c1"># --- 3. 损失函数 (平均交叉熵 + L2 正则) ---
+</span><span class="k">def</span> <span class="nf">compute_loss</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">lam</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">计算平均交叉熵损失和 L2 正则化项</span><span class="sh">"""</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">W</span>
+    <span class="n">Y_hat</span> <span class="o">=</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+
+    <span class="c1"># 避免 log(0)
+</span>    <span class="n">Y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">clip</span><span class="p">(</span><span class="n">Y_hat</span><span class="p">,</span> <span class="mf">1e-15</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-15</span><span class="p">)</span>
+
+    <span class="c1"># 交叉熵损失
+</span>    <span class="n">cross_entropy_loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">Y</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">Y_hat</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Y</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Y_hat</span><span class="p">))</span>
+
+    <span class="c1"># L2 正则化项 (通常不正则化偏置项 W[0])
+</span>    <span class="c1"># 注意：W[1:] 对应 w1, w2, w3
+</span>    <span class="n">l2_regularization</span> <span class="o">=</span> <span class="p">(</span><span class="n">lam</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cross_entropy_loss</span> <span class="o">+</span> <span class="n">l2_regularization</span>
+
+
+<span class="c1"># --- 4. 批量梯度下降训练 ---
+</span><span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">使用批量梯度下降训练逻辑回归模型</span><span class="sh">"""</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">num_features</span> <span class="o">=</span> <span class="n">X</span><span class="p">.</span><span class="n">shape</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="n">num_features</span><span class="p">)</span>  <span class="c1"># 初始化所有权重 W 为零 (包含 w0, 即 bias)
+</span>
+    <span class="n">current_loss</span> <span class="o">=</span> <span class="nf">float</span><span class="p">(</span><span class="sh">"</span><span class="s">inf</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+
+        <span class="c1"># 前向传播：计算预测概率
+</span>        <span class="n">Z</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">W</span>
+        <span class="n">Y_hat</span> <span class="o">=</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+
+        <span class="c1"># 反向传播：计算梯度 (包含正则项)
+</span>        <span class="n">error</span> <span class="o">=</span> <span class="n">Y_hat</span> <span class="o">-</span> <span class="n">Y</span>
+
+        <span class="c1"># 梯度 for 所有权重 (包括偏置 W[0])
+</span>        <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">X</span><span class="p">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">error</span>
+
+        <span class="c1"># 添加 L2 正则项的梯度 (只对 W[1:] 添加)
+</span>        <span class="n">l2_grad</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="n">num_features</span><span class="p">)</span>
+        <span class="n">l2_grad</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">W</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="n">grad</span> <span class="o">+=</span> <span class="n">l2_grad</span>
+
+        <span class="c1"># 权重更新
+</span>        <span class="n">W</span> <span class="o">-=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">grad</span>
+
+        <span class="c1"># 计算新的损失并检查收敛
+</span>        <span class="n">new_loss</span> <span class="o">=</span> <span class="nf">compute_loss</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">lam</span><span class="p">)</span>
+
+        <span class="c1"># 检查收敛条件
+</span>        <span class="k">if</span> <span class="nf">abs</span><span class="p">(</span><span class="n">current_loss</span> <span class="o">-</span> <span class="n">new_loss</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="c1"># print(f"Converged at iteration {i+1}. Loss change: {abs(current_loss - new_loss):.6f}")
+</span>            <span class="k">break</span>
+
+        <span class="n">current_loss</span> <span class="o">=</span> <span class="n">new_loss</span>
+
+    <span class="k">return</span> <span class="n">W</span>
+
+
+<span class="c1"># --- 5. 主程序 ---
+</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># 读取训练参数 (n max_iter alpha lam tol)
+</span>        <span class="n">line1</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="nf">readline</span><span class="p">().</span><span class="nf">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line1</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">line1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">max_iter</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">line1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="nf">float</span><span class="p">(</span><span class="n">line1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">lam</span> <span class="o">=</span> <span class="nf">float</span><span class="p">(</span><span class="n">line1</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="nf">float</span><span class="p">(</span><span class="n">line1</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+
+        <span class="c1"># 读取训练数据
+</span>        <span class="n">raw_train_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">raw_train_data</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="nf">readline</span><span class="p">().</span><span class="nf">split</span><span class="p">())))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">raw_train_data</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Handle case where n &gt; 0 but data is missing
+</span>            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Error: Missing training data.</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># 转换为 NumPy 数组
+</span>        <span class="n">train_data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">raw_train_data</span><span class="p">)</span>
+
+        <span class="c1"># 提取特征 X 和标签 Y
+</span>        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">X_train_raw</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># age, inc, dur
+</span>            <span class="n">Y_train</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>  <span class="c1"># label
+</span>        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 兼容 n=0 的情况
+</span>            <span class="n">X_train_raw</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="n">Y_train</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># --- 特征标准化 (Z-Score Normalization) ---
+</span>        <span class="c1"># 记录训练集的均值和标准差，用于标准化测试集
+</span>        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">X_train_raw</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="n">X_train_raw</span><span class="p">.</span><span class="nf">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># 避免除以零：将标准差为零的特征的标准差设为 1 (它们不会被缩放)
+</span>            <span class="n">sigma</span><span class="p">[</span><span class="n">sigma</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="n">X_train_normalized</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_train_raw</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># n=0 时，训练数据为空，标准化系数无关紧要
+</span>            <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">X_train_normalized</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="c1"># 添加偏置项 (Intercept/Bias Term)
+</span>        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">hstack</span><span class="p">((</span><span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X_train_normalized</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+        <span class="c1"># --- 训练模型 ---
+</span>        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">max_iter</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">W</span> <span class="o">=</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">max_iter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># 特殊情况：max_iter=0，权重保持初始值 W=0
+</span>            <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="n">X_train</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># n=0，权重 W 仍然为零
+</span>            <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># n&gt;0, max_iter=0, W=0 已经在上面处理
+</span>            <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="c1"># --- 读取测试数据 ---
+</span>        <span class="n">line_m</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="nf">readline</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line_m</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">line_m</span><span class="p">.</span><span class="nf">strip</span><span class="p">())</span>
+
+        <span class="n">raw_test_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">raw_test_data</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="nf">readline</span><span class="p">().</span><span class="nf">split</span><span class="p">())))</span>
+
+        <span class="k">if</span> <span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">X_test_raw</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">raw_test_data</span><span class="p">)</span>
+
+            <span class="c1"># 使用训练集的均值和标准差标准化测试集
+</span>            <span class="n">X_test_normalized</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test_raw</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span>
+
+            <span class="c1"># 添加偏置项
+</span>            <span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">hstack</span><span class="p">((</span><span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X_test_normalized</span><span class="p">))</span>
+
+            <span class="c1"># --- 进行预测 ---
+</span>            <span class="n">predictions</span><span class="p">,</span> <span class="n">probabilities</span> <span class="o">=</span> <span class="nf">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+
+            <span class="c1"># --- 输出结果 ---
+</span>            <span class="k">for</span> <span class="n">pred</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="nf">zip</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">probabilities</span><span class="p">):</span>
+                <span class="c1"># 按照要求，概率保留四位小数，四舍五入
+</span>                <span class="n">prob_str</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="nc">Decimal</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span>  <span class="c1"># 使用 Decimal 实现精确的四舍五入
+</span>                <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">pred</span><span class="si">}</span><span class="s"> </span><span class="si">{</span><span class="n">prob_str</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># print(f"An error occurred: {e}", file=sys.stderr)
+</span>        <span class="k">pass</span>  <span class="c1"># 示例环境中通常需要安静失败
+</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="nf">main</span><span class="p">()</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="23牛客习题2">2.3牛客习题2</h2>
+
+<p>https://www.nowcoder.com/practice/d9c4bcf3bc5e426b8a11e690f65ba601?tab=note</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="k">def</span> <span class="nf">generate_data</span><span class="p">():</span>
+    <span class="n">datasets</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">'</span><span class="s">dataSet.csv</span><span class="sh">'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">).</span><span class="n">values</span><span class="p">.</span><span class="nf">tolist</span><span class="p">()</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">'</span><span class="s">labels.csv</span><span class="sh">'</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">).</span><span class="n">values</span><span class="p">.</span><span class="nf">tolist</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">labels</span>
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="c1">#补全 sigmoid 函数功能
+</span>    <span class="c1">#code start here
+</span>    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">))</span>
+    <span class="c1">#code end here
+</span><span class="k">def</span> <span class="nf">gradientDescent</span><span class="p">(</span><span class="n">dataMatIn</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">):</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.001</span>  <span class="c1"># 学习率，也就是题目描述中的 α
+</span>    <span class="n">iteration_nums</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># 迭代次数，也就是for循环的次数
+</span>    <span class="n">dataMatrix</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">mat</span><span class="p">(</span><span class="n">dataMatIn</span><span class="p">)</span> 
+    <span class="n">labelMat</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">mat</span><span class="p">(</span><span class="n">classLabels</span><span class="p">).</span><span class="nf">transpose</span><span class="p">()</span> 
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)</span>  <span class="c1"># 返回dataMatrix的大小。m为行数,n为列数。
+</span>    <span class="n">weight_mat</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">#初始化权重矩阵
+</span>    <span class="c1">#iteration_nums 即为循环的迭代次数
+</span>    <span class="c1">#请在代码完善部分注意矩阵乘法的维度，使用梯度下降矢量化公式
+</span>    <span class="c1">#code start here
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">iteration_nums</span><span class="p">):</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">dataMatrix</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">weight_mat</span><span class="p">)</span> <span class="c1">#数据矩阵与权重矩阵点积，是预测值
+</span>        <span class="n">gradient</span> <span class="o">=</span> <span class="n">dataMatrix</span><span class="p">.</span><span class="nf">transpose</span><span class="p">().</span><span class="nf">dot</span><span class="p">(</span><span class="nf">sigmoid</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">-</span> <span class="n">labelMat</span><span class="p">)</span> <span class="c1">#梯度
+</span>        <span class="n">weight_mat</span> <span class="o">-=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">gradient</span> <span class="c1">#权重更新
+</span>    <span class="k">return</span> <span class="n">weight_mat</span>
+    <span class="c1">#code end here
+</span><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">dataMat</span><span class="p">,</span> <span class="n">labelMat</span> <span class="o">=</span> <span class="nf">generate_data</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="nf">gradientDescent</span><span class="p">(</span><span class="n">dataMat</span><span class="p">,</span> <span class="n">labelMat</span><span class="p">))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h1 id="3多分类">3.多分类</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251117163645461.png" alt="image-20251117163645461" style="zoom:50%;" /></p>
+
+<p>使用<strong>逻辑回归的思想</strong>来处理多分类问题，这种方法通常被称为 <strong>Softmax 回归 (Softmax Regression)</strong> 或<strong>多项逻辑回归 (Multinomial Logistic Regression)</strong>。</p>
+
+<p>对于输入特征向量 \(X\)，模型会为每个类别 \(k\) 计算一个<strong>分数</strong>（或称为 <strong>logit</strong>）。这个分数是通过输入 \(X\) 和该类别对应的权重向量 \(W_k\) 进行线性组合得到的。</p>
+
+\[z_k = W_k^T X + b_k\]
+
+<p>其中：</p>
+
+<ul>
+  <li>\(k = 1, 2, 3, 4\)（对应图中的 \(P_1\) 到 \(P_4\)）。</li>
+  <li>\(z_k\) 是输入 \(X\) 属于类别 \(k\) 的未归一化分数。</li>
+</ul>
+
+<p>这对应了图中 <strong>X</strong> 经过 <strong>W</strong> 矩阵变换后的中间结果。</p>
+
+<p>为了将这些分数 \(z_k\)  转换为符合概率要求的输出（即所有概率值在 \([0, 1]\) 之间，且总和为 1），模型使用 <strong>Softmax 函数</strong>。Softmax 函数是 <strong>Sigmoid 函数</strong>（用于二分类逻辑回归）在多分类上的泛化。</p>
+
+<p>样本 \(X\) 属于类别 \(k\) 的概率 \(P_k\) 为：</p>
+
+\[P_k = P(Y=k|X) = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}\]
+
+<p>这对应了图中 \(P_1, P_2, P_3, P_4\) 的输出，这些输出满足 \(\sum_{k=1}^{4} P_k = 1\)。</p>
+
+<p>在 Softmax 回归中，我们通常使用<strong>交叉熵损失 (Cross Entropy Loss)</strong> 来衡量预测概率分布 \(P\) 与真实标签分布 \(Y\) 之间的差异，并指导模型的训练。</p>
+
+\[\mathcal{L}_{CE} = - \sum_{k=1}^{K} Y_k \log(P_k)\]
+
+<ul>
+  <li>\(Y_k\) 是真实标签的 One-hot 编码（如果 \(X\) 属于类别 \(k\)，则 \(Y_k=1\)，否则为 0）。</li>
+</ul>
+
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/11/12/redis01%E5%85%A5%E9%97%A8%E4%BB%8E%E7%A3%81%E7%9B%98%E7%93%B6%E9%A2%88%E5%88%B0Redis%E5%86%85%E5%AD%98%E7%8E%8B%E8%80%85-%E7%BC%93%E5%AD%98%E4%BD%93%E7%B3%BB%E5%85%A8%E8%A7%A3%E6%9E%90/" data-toggle="tooltip" data-placement="top" title="【redis入门与实操-01】从磁盘瓶颈到Redis内存王者：缓存体系全解析">
+                        Previous<br>
+                        <span>【redis入门与实操-01】从磁盘瓶颈到Redis内存王者：缓存体系全解析</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0179" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0141" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="41">算法</a>
+        
+                <a data-sort="0164" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0165" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0167" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="15">力扣</a>
+        
+                <a data-sort="0169" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0169" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0170" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0171" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"
+                    title="机器学习算法"
+                    rel="11">机器学习算法</a>
+        
+                <a data-sort="0176" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0177" 
+                    href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99"
+                    title="AI思想启蒙"
+                    rel="5">AI思想启蒙</a>
+        
+                <a data-sort="0179" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0180" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95%E9%A2%98%E5%BA%93"
+                    title="算法题库"
+                    rel="2">算法题库</a>
+        
+                <a data-sort="0180" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0180" 
+                    href="/archive/?tag=java%E9%9B%86%E5%90%88"
+                    title="java集合"
+                    rel="2">java集合</a>
+        
+                <a data-sort="0180" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0180" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
