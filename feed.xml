@@ -5,9 +5,201 @@
     <description>这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员</description>
     <link>https://kirsten-1.github.io/</link>
     <atom:link href="https://kirsten-1.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 20 Nov 2025 13:40:15 +0000</pubDate>
-    <lastBuildDate>Thu, 20 Nov 2025 13:40:15 +0000</lastBuildDate>
+    <pubDate>Thu, 20 Nov 2025 15:43:54 +0000</pubDate>
+    <lastBuildDate>Thu, 20 Nov 2025 15:43:54 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化 </title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
+&lt;/script&gt;
+
+&lt;h1 id=&quot;1参数冗余性&quot;&gt;1.参数冗余性&lt;/h1&gt;
+
+&lt;p&gt;对于同一条决策边界（直线），可以有&lt;strong&gt;无数个&lt;/strong&gt; \(W\)（或 \(W\) 和 \(W_0\)）进行表达。例如，如果 \(W\) 和 \(W_0\) 变为 \(-W\) 和 \(-W_0\)，决策边界不变，但预测概率 \(f(x)\) 变为 \(1-f(x)\)。&lt;/p&gt;
+
+&lt;p&gt;另外，如果\(W\)变成\(10W\)，此时要考虑参数大小的影响（过拟合风险）&lt;/p&gt;
+
+&lt;p&gt;当权重 \(W\) 很大时（例如 \(W=100\)），输入 \(x\) 的微小变化会导致 \(\text{Sigmoid}\) 函数（\(\frac{1}{1+e^{-(Wx+W_0)}}\)）的输出变化非常大。&lt;/p&gt;
+
+&lt;p&gt;这表明&lt;strong&gt;大的 \(W\) 值会使模型对输入敏感（高方差）&lt;/strong&gt;，容易导致&lt;strong&gt;过拟合&lt;/strong&gt;。这解释了为什么在训练中需要使用&lt;strong&gt;正则化&lt;/strong&gt;来约束 \(W\) 的大小。&lt;/p&gt;
+
+&lt;p&gt;在没有正则化的情况下，优化器可能会在这些等效的 \(W\) 组合中来回震荡，导致训练过程不稳定，并且最终得到的 \(W\) 缺乏可解释性。&lt;/p&gt;
+
+&lt;p&gt;逻辑回归模型在没有正则化时，一个潜在的问题就是&lt;strong&gt;数值稳定性和过度自信&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h1 id=&quot;2正则化的概念和作用&quot;&gt;2.正则化的概念和作用&lt;/h1&gt;
+
+&lt;p&gt;正则化用于防止模型在训练数据上&lt;strong&gt;过拟合&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;正则化通过惩罚大的权重 \(W\)，降低模型的复杂度，使模型在 &lt;strong&gt;测试集&lt;/strong&gt; 上的误差（泛化误差）尽可能小。&lt;/p&gt;
+
+&lt;p&gt;L2 正则化（也称为 &lt;strong&gt;Ridge 正则化&lt;/strong&gt;或&lt;strong&gt;权重衰减&lt;/strong&gt;）通过在标准损失函数 \(J(\theta)\) 中添加一个与权重向量 \(W\) 的平方范数成比例的惩罚项来实现。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;L2 正则化后的损失函数 \(J_{\text{reg}}(W)\)：&lt;/strong&gt;&lt;/p&gt;
+
+\[J_{\text{reg}}(W) = \underbrace{J(W)}_{\text{原始损失（交叉熵）}} + \underbrace{\lambda \sum W_i^2}_{\text{L2 正则项}}\]
+
+&lt;p&gt;其中 \(\lambda\) 是正则化系数，用于控制惩罚的强度。&lt;/p&gt;
+
+&lt;p&gt;【正则化的作用】：&lt;/p&gt;
+
+&lt;p&gt;1.从机器角度考虑：抑制 W 在分类正确情况下，按比例无限增大&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在训练集中，一旦模型找到了一个能够正确分类所有样本的权重 \(W\)，那么将 \(W\) 扩大任意倍数 \(c &amp;gt; 1\)（即 \(cW\)），模型损失（交叉熵）会更小。但是随着 \(W\) 无限增大，模型的损失会&lt;strong&gt;无限减小&lt;/strong&gt;。在数学上，梯度下降会推动 $W$ 不断增大，直到发生&lt;strong&gt;数值溢出&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;p&gt;此时加入正则化就不同了。L2 正则项 \(\lambda \sum W_i^2\) 成为一个&lt;strong&gt;“约束”&lt;/strong&gt;。当 \(W\) 增大时，惩罚项也会&lt;strong&gt;二次方地快速增大&lt;/strong&gt;。这迫使优化器在减小原始损失 \(J(W)\) 的同时，必须&lt;strong&gt;付出越来越大的代价来增加 \(W\)&lt;/strong&gt;。最终，模型会找到一个 &lt;strong&gt;\(W\) 相对较小&lt;/strong&gt;的解，这个解既能正确分类，又能避免 \(W\) 无限膨胀和潜在的数值溢出问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;2.减少测试集和训练集的差异性（提高泛化能力）&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;过拟合的模型过度拟合了训练数据中的&lt;strong&gt;噪声&lt;/strong&gt;，导致其学习到的权重 \(W\) 过于复杂和极端。这种&lt;strong&gt;复杂的 \(W\) 使得决策边界在训练集上表现完美，但在测试集上表现糟糕&lt;/strong&gt;。&lt;/p&gt;
+
+  &lt;p&gt;L2 正则化倾向于使所有权重 \(W_i\) 的值&lt;strong&gt;趋于零&lt;/strong&gt;。&lt;/p&gt;
+
+  &lt;p&gt;小的 \(W_i\) 意味着模型对单个输入特征 \(x_i\) 的依赖程度减小(对噪声的依赖也会减小)。这使得模型的决策边界更加&lt;strong&gt;平滑&lt;/strong&gt;和&lt;strong&gt;简单&lt;/strong&gt;，降低了模型的方差。&lt;/p&gt;
+
+  &lt;p&gt;L2 正则化强制模型关注那些对大多数样本都有效的&lt;strong&gt;核心特征&lt;/strong&gt;，忽略训练集中的噪声和异常值，从而&lt;strong&gt;提高模型在测试集上的泛化能力&lt;/strong&gt;，减小训练集和测试集性能的差异。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;3.破坏训练集的效果（引入偏差，降低方差）&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;从统计学的偏差-方差权衡角度来看，正则化通过牺牲一点训练集的完美性，来换取测试集的稳定性。&lt;/p&gt;
+
+  &lt;p&gt;正则化项 \(\lambda \sum W_i^2\) &lt;strong&gt;不是在帮助最小化训练误差&lt;/strong&gt;，它是在&lt;strong&gt;增加一个额外的损失&lt;/strong&gt;。为了让 \(\sum W_i^2\) 减小，模型必须将权重 \(W\) 往零的方向拉，即使这会导致原始的交叉熵损失 \(J(W)\) 略微增大。&lt;/p&gt;
+
+  &lt;p&gt;因为模型被迫将 \(W\) 约束得很小，它可能无法完美拟合训练集中的每一个点，导致训练集上的损失（偏差）略微增加。&lt;/p&gt;
+
+  &lt;p&gt;正则化使得模型对数据的微小变动（即测试集与训练集的差异）不再那么敏感，极大地降低了模型的方差。&lt;/p&gt;
+
+  &lt;p&gt;最终的 \(J_{\text{reg}}(W)\) 追求的是 &lt;strong&gt;“训练误差”&lt;/strong&gt; 和 &lt;strong&gt;“模型复杂度”&lt;/strong&gt; 之间的最佳平衡点，这正是我们希望在&lt;strong&gt;测试集上得到最小总误差&lt;/strong&gt;所需的特性。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;3l1-正则化lasso和-l2-正则化ridge&quot;&gt;3.L1 正则化（Lasso）和 L2 正则化（Ridge）&lt;/h1&gt;
+
+&lt;p&gt;L2 正则项是权重W的平方和，乘以一个超参数 \(\lambda\)。损失函数变为 \(J_{\text{L2}}(W) = J(W) + \lambda \sum W_i^2\)。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;L1 正则项是权重W&lt;strong&gt;绝对值&lt;/strong&gt;的和，乘以一个超参数 \(\lambda\)。损失函数变为 $$J_{\text{L1}}(W) = J(W) + \lambda \sum&lt;/td&gt;
+      &lt;td&gt;W_i&lt;/td&gt;
+      &lt;td&gt;$$。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;L2 惩罚项对&lt;strong&gt;大的权重&lt;/strong&gt;施加的惩罚更大（二次方增长）。在梯度下降时，权重 \(W\) 的每一次更新都会被拉向零点，但拉力与 \(W\) 的值成正比（梯度为 \(2W\)）。&lt;/p&gt;
+
+&lt;p&gt;L1 惩罚项在 \(W\) 不为零时，施加的是一个&lt;strong&gt;恒定的惩罚&lt;/strong&gt;（梯度为 \(\pm 1\)）。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/1*nrWncnoJ4V_BkzEf1pd4MA.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;L2约束区域是一个&lt;strong&gt;圆形&lt;/strong&gt;。相切点往往落在非坐标轴上，这意味着所有权重都会被缩小，但很少会精确地变为零。&lt;/p&gt;
+
+&lt;p&gt;L1约束区域是一个&lt;strong&gt;菱形&lt;/strong&gt;（或正方形）。由于菱形的尖角位于坐标轴上，损失函数的等值线更容易与这些尖角相切，使得相切点的某些维度 \(W_i\) 恰好为零。所以L1 正则化的独特之处在于它能够产生&lt;strong&gt;稀疏解&lt;/strong&gt;，从而实现&lt;strong&gt;特征选择&lt;/strong&gt;。L1 倾向于将那些对模型贡献不大的特征所对应的权重&lt;strong&gt;直接压缩为零&lt;/strong&gt;。当数据集中包含大量冗余或不重要的特征时，L1 可以帮助我们自动识别并保留最重要的特征。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;如果目标是特征选择或降维&lt;/strong&gt;，L1 正则化通常是更好的选择。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;如果目标是确保所有特征都保留下来，只是希望减小它们的权重以提高模型的鲁棒性和稳定性&lt;/strong&gt;，L2 正则化是更常见的选择。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在实践中，人们常结合两者，使用 &lt;strong&gt;Elastic Net&lt;/strong&gt; 正则化来兼顾特征选择和模型平滑。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果不指定正则，一般也会默认用L2正则，因为要防止参数溢出。&lt;/p&gt;
+
+  &lt;p&gt;互联网行业，一般特征比较多（维度爆炸），一般采用L1正则，为了降维。&lt;/p&gt;
+
+  &lt;p&gt;特征比较少的情况（比如生物），可以只采用L2正则（这也是默认的）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;4归一化&quot;&gt;4.归一化&lt;/h1&gt;
+
+&lt;p&gt;归一化（Normalization，或标准化）通常是指对输入特征 \(x\) 进行缩放，使其落入特定范围（如 \([0, 1]\)）或具有标准分布（如均值 \(0\)，方差 \(1\)）。&lt;/p&gt;
+
+&lt;h2 id=&quot;41归一化的重要性&quot;&gt;4.1归一化的重要性&lt;/h2&gt;
+
+&lt;p&gt;模型的梯度（参数更新方向）依赖于输入特征 \(x\)。&lt;/p&gt;
+
+&lt;p&gt;回顾逻辑回归的梯度：https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9906/&lt;/p&gt;
+
+&lt;p&gt;对于整个训练集（所有 \(N\) 个样本），总损失 \(L(\mathbf{w}) = \frac{1}{N} \sum_{i=1}^{N} L_i(\mathbf{w})\) 对 \(w_j\) 的梯度为：&lt;/p&gt;
+
+\[\frac{\partial L}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} \frac{\partial L_i}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\]
+
+&lt;p&gt;显然，这个梯度依赖于x，并且梯度更新时，模型会沿着大范围特征（如 \(x_1\)）对应的维度进行大步更新，而在小范围特征（如 \(x_2\)）对应的维度进行小步更新。&lt;/p&gt;
+
+&lt;p&gt;这会导致&lt;strong&gt;梯度下降的等高线变得非常扁平狭长&lt;/strong&gt;，优化过程需要很小的学习率才能避免振荡，导致收敛速度非常慢。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/Users/apple/Library/Application Support/typora-user-images/image-20251120233233215.png&quot; alt=&quot;image-20251120233233215&quot; style=&quot;zoom:50%;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;归一化使得所有特征 \(x_i\) 具有相似的尺度。&lt;/p&gt;
+
+&lt;p&gt;这保证了所有权重 \(W_i\) 的梯度大致位于同一数量级，使得&lt;strong&gt;等高线更接近圆形&lt;/strong&gt;，梯度下降可以沿着最陡峭的方向平稳快速地收敛。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;归一化间接帮助控制模型内部的线性得分（\(z = W^T x\)），这对于激活函数的稳定性非常重要。&lt;/p&gt;
+
+&lt;p&gt;Softmax 或 Sigmoid 函数的输出 \(f(x)\) 依赖于线性得分 \(z = W^T x\)​。如果输入特征 \(x\) 的值很大，即使 \(W\) 很小， \(z\) 也可能非常大或非常小。&lt;/p&gt;
+
+&lt;p&gt;当 \(z\) 的绝对值过大时，Sigmoid函数会输出接近 0或 1的值(模型可能一开始就学不到新东西，梯度消失了，参数不更新，模型还没怎么训练或者训练其实不到位就认为已经收敛了)，此时函数的&lt;strong&gt;导数（梯度）会非常小&lt;/strong&gt;（进入饱和区）。归一化确保 \(x\) 的尺度适中，可以帮助控制 \(W^T x\) 的范围。&lt;/p&gt;
+
+&lt;p&gt;配合&lt;strong&gt;正则化&lt;/strong&gt;（它限制了 \(W\) 的大小），可以共同确保线性得分 \(W^T x\) 不会过度膨胀，从而&lt;strong&gt;避免激活函数进入饱和区&lt;/strong&gt;，保证训练过程中梯度的有效性。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251120232445510.png&quot; alt=&quot;image-20251120232445510&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如何选择归一化的方法？是Min-Max 归一化还是Z-score？&lt;/p&gt;
+
+&lt;p&gt;【Min-Max 归一化】缺点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;对异常值（Outliers）非常敏感。&lt;/strong&gt; 如果数据中存在极大的或极小的异常值，它们会严重挤压其余数据的范围，导致大部分数据点集中在 \([0, 1]\) 范围的一小部分，失去区分度。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;【Z-score归一化】缺点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;不将数据限制在特定的范围 \([0, 1]\) 内，缩放后的特征值可能超出此范围。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;【Min-Max 归一化】优点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;将所有特征值限制在固定的 \([0, 1]\) 范围内，易于解释和比较。&lt;/li&gt;
+  &lt;li&gt;在特征数量很少，且特征间差异不大的情况下表现良好。&lt;/li&gt;
+  &lt;li&gt;不改变数据的原始分布形状。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;【Z-score归一化】优点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使得数据符合标准正态分布（但不会改变原始分布的形状，只是进行平移和缩放）。&lt;/li&gt;
+  &lt;li&gt;鲁棒性好。算法使用均值和标准差进行缩放，受异常值的影响较小（尤其当数据集较大时）。&lt;/li&gt;
+  &lt;li&gt;适用于&lt;strong&gt;要求数据符合正态分布&lt;/strong&gt;或&lt;strong&gt;不依赖于固定范围&lt;/strong&gt;的算法，例如梯度下降法（有助于收敛）和许多线性模型。&lt;/li&gt;
+  &lt;li&gt;适用于不知道数据确切范围，但需要保证特征同尺度的场景。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Z-Score 归一化 (Standardization)&lt;/strong&gt; 通常是更优的选择，因为它确保了所有特征的尺度一致，有助于梯度下降算法更快、更稳定地收敛。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Min-Max 归一化&lt;/strong&gt; 也可使用，但在处理带有极端异常值的数据时，需要格外小心。&lt;/p&gt;
+</description>
+        <pubDate>Thu, 20 Nov 2025 00:00:00 +0000</pubDate>
+        <link>https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9908/</link>
+        <guid isPermaLink="true">https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9908/</guid>
+        
+        <category>AI思想启蒙</category>
+        
+        
+      </item>
     
       <item>
         <title>【AI思想启蒙07】逻辑回归3到底好不好？模型评价指标 </title>
@@ -12174,226 +12366,6 @@ class Node
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/10/08/%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E5%AD%A6%E4%B9%A0-11%E4%BA%8C%E5%8F%89%E6%A0%91%E9%A2%98%E7%9B%AE/</guid>
         
         <category>算法</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>【算法题库2】微软面试题-折纸问题</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
-&lt;/script&gt;
-
-&lt;p&gt;&lt;strong&gt;【微软面试题】&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;请把一段纸条竖着放在桌子上，然后从纸条的下边向上方对折1次，压出折痕后展开。此时折痕是凹下去的，即折痕突起的方向指向纸条的背面。 如果从纸条的下边向上方连续对折2次，压出折痕后展开，此时有三条折痕，从上到下依次是下折痕、下折痕和上折痕。&lt;/p&gt;
-
-&lt;p&gt;给定一个输入参数N，代表纸条都从下边向上方连续对折N次。 请从上到下打印所有折痕的方向。
-例如:N=1时，打印: down N=2时，打印: down down up   最终答应  凹 凹 凸&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;printAllFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;测试如下：注意，将你写的解法粘贴入类&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MainChecker&lt;/code&gt;中&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.ByteArrayOutputStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.PrintStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FoldChecker&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// 暴力解：生成 N 次折叠后的折痕序列&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getStandardFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-        &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastFolds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;lastFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;凹&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// N=1 时的初始序列&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currentFolds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-            &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;// 1. 上一次的序列 (左子树)&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fold&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;currentFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fold&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;// 2. 当前折叠的折痕 (根节点) - 总是“凹”&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;currentFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;凹&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;// 3. 上一次序列的逆序且凹凸性取反 (右子树)&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opposite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;凹&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;凸&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;凹&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;currentFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;opposite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-            &lt;span class=&quot;n&quot;&gt;lastFolds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;currentFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 更新为当前序列&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MainChecker&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// ===================================================&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// 你的被测方法（需要修改为返回 List&amp;lt;String&amp;gt; 以便比较）&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// ===================================================&lt;/span&gt;
-
-
-    &lt;span class=&quot;c1&quot;&gt;// ===================================================&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// 暴力解（标准答案生成器）- 沿用上面的 FoldChecker.getStandardFolds(int N)&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// ===================================================&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// ... 将 FoldChecker 类的 getStandardFolds 方法包含进来&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// ===================================================&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// 对数器主程序&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// ===================================================&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;testTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// 对于“折纸问题”，对数器中的 N 值通常不能超过 20 到 25，这取决于您的 JVM 默认分配的堆内存大小。&lt;/span&gt;
-        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maxN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;Random&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;success&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-        &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;开始对数器测试...&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;testTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// N 值不宜过大，10次对折序列长度为 2^10 - 1 = 1023&lt;/span&gt;
-            &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;nextInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;maxN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;// 1. 获取标准答案&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;standard&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FoldChecker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getStandardFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;// 2. 获取被测方法的输出&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;actual&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;printAllFolds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;// 3. 比较结果&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;standard&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;actual&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;success&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-                &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;----------------- ❌ 失败！-----------------&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;N = &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;标准答案 (Standard): &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;standard&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;被测方法 (Actual):   &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;actual&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;success&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;----------------- ✅ 成功！-----------------&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;通过 &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;testTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; 组测试，恭喜！&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;对数器测试失败。&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-        <pubDate>Thu, 02 Oct 2025 00:00:00 +0000</pubDate>
-        <link>https://kirsten-1.github.io/2025/10/02/%E7%AE%97%E6%B3%95%E9%A2%98%E5%BA%93-2%E6%8A%98%E7%BA%B8%E9%97%AE%E9%A2%98/</link>
-        <guid isPermaLink="true">https://kirsten-1.github.io/2025/10/02/%E7%AE%97%E6%B3%95%E9%A2%98%E5%BA%93-2%E6%8A%98%E7%BA%B8%E9%97%AE%E9%A2%98/</guid>
-        
-        <category>算法题库</category>
         
         
       </item>

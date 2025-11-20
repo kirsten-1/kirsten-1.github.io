@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="【java集合】01.集合的引入 - Hilda的博客 | Your genius girlfriend's blog">
+        content="【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化  - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-09-04T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-11-20T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="java集合">
+    <meta property="article:tag" content="AI思想启蒙">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/09/04/java%E9%9B%86%E5%90%8801%E9%9B%86%E5%90%88%E7%9A%84%E5%BC%95%E5%85%A5/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9908/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>【java集合】01.集合的引入 - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化  - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/09/04/java%E9%9B%86%E5%90%8801%E9%9B%86%E5%90%88%E7%9A%84%E5%BC%95%E5%85%A5/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9908/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -272,13 +272,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=java%E9%9B%86%E5%90%88" title="java集合">java集合</a>
+                        <a class="tag" href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99" title="AI思想启蒙">AI思想启蒙</a>
                         
                     </div>
-                    <h1>【java集合】01.集合的引入</h1>
+                    <h1>【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化 </h1>
                     
-                    <h2 class="subheading"></h2>
-                    <span class="meta">Posted by Hilda on September 4, 2025</span>
+                    <h2 class="subheading">逻辑回归训练中的两大关键问题：1. 参数冗余导致权重无限膨胀、过拟合，需用L2（防溢出、平滑）或L1（特征选择）正则化约束；2. 特征尺度不一致导致梯度椭圆、收敛慢，需归一化（推荐Z-score）使特征同尺度、加速收敛并防止激活函数饱和。</h2>
+                    <span class="meta">Posted by Hilda on November 20, 2025</span>
                 </div>
             </div>
         </div>
@@ -308,104 +308,195 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<h1 id="1集合的引入">1.集合的引入</h1>
+<h1 id="1参数冗余性">1.参数冗余性</h1>
 
-<p>java集合也叫容器。主要是由两大接口派生而来：一个是 <code class="language-plaintext highlighter-rouge">Collection</code>接口，主要用于存放单一元素；另一个是 <code class="language-plaintext highlighter-rouge">Map</code> 接口，主要用于存放键值对。对于<code class="language-plaintext highlighter-rouge">Collection</code> 接口，下面又有三个主要的子接口：<code class="language-plaintext highlighter-rouge">List</code>、<code class="language-plaintext highlighter-rouge">Set</code> 、 <code class="language-plaintext highlighter-rouge">Queue</code>。</p>
+<p>对于同一条决策边界（直线），可以有<strong>无数个</strong> \(W\)（或 \(W\) 和 \(W_0\)）进行表达。例如，如果 \(W\) 和 \(W_0\) 变为 \(-W\) 和 \(-W_0\)，决策边界不变，但预测概率 \(f(x)\) 变为 \(1-f(x)\)。</p>
+
+<p>另外，如果\(W\)变成\(10W\)，此时要考虑参数大小的影响（过拟合风险）</p>
+
+<p>当权重 \(W\) 很大时（例如 \(W=100\)），输入 \(x\) 的微小变化会导致 \(\text{Sigmoid}\) 函数（\(\frac{1}{1+e^{-(Wx+W_0)}}\)）的输出变化非常大。</p>
+
+<p>这表明<strong>大的 \(W\) 值会使模型对输入敏感（高方差）</strong>，容易导致<strong>过拟合</strong>。这解释了为什么在训练中需要使用<strong>正则化</strong>来约束 \(W\) 的大小。</p>
+
+<p>在没有正则化的情况下，优化器可能会在这些等效的 \(W\) 组合中来回震荡，导致训练过程不稳定，并且最终得到的 \(W\) 缺乏可解释性。</p>
+
+<p>逻辑回归模型在没有正则化时，一个潜在的问题就是<strong>数值稳定性和过度自信</strong>。</p>
+
+<h1 id="2正则化的概念和作用">2.正则化的概念和作用</h1>
+
+<p>正则化用于防止模型在训练数据上<strong>过拟合</strong>。</p>
+
+<p>正则化通过惩罚大的权重 \(W\)，降低模型的复杂度，使模型在 <strong>测试集</strong> 上的误差（泛化误差）尽可能小。</p>
+
+<p>L2 正则化（也称为 <strong>Ridge 正则化</strong>或<strong>权重衰减</strong>）通过在标准损失函数 \(J(\theta)\) 中添加一个与权重向量 \(W\) 的平方范数成比例的惩罚项来实现。</p>
+
+<p><strong>L2 正则化后的损失函数 \(J_{\text{reg}}(W)\)：</strong></p>
+
+\[J_{\text{reg}}(W) = \underbrace{J(W)}_{\text{原始损失（交叉熵）}} + \underbrace{\lambda \sum W_i^2}_{\text{L2 正则项}}\]
+
+<p>其中 \(\lambda\) 是正则化系数，用于控制惩罚的强度。</p>
+
+<p>【正则化的作用】：</p>
+
+<p>1.从机器角度考虑：抑制 W 在分类正确情况下，按比例无限增大</p>
+
+<blockquote>
+  <p>在训练集中，一旦模型找到了一个能够正确分类所有样本的权重 \(W\)，那么将 \(W\) 扩大任意倍数 \(c &gt; 1\)（即 \(cW\)），模型损失（交叉熵）会更小。但是随着 \(W\) 无限增大，模型的损失会<strong>无限减小</strong>。在数学上，梯度下降会推动 $W$ 不断增大，直到发生<strong>数值溢出</strong></p>
+
+  <p>此时加入正则化就不同了。L2 正则项 \(\lambda \sum W_i^2\) 成为一个<strong>“约束”</strong>。当 \(W\) 增大时，惩罚项也会<strong>二次方地快速增大</strong>。这迫使优化器在减小原始损失 \(J(W)\) 的同时，必须<strong>付出越来越大的代价来增加 \(W\)</strong>。最终，模型会找到一个 <strong>\(W\) 相对较小</strong>的解，这个解既能正确分类，又能避免 \(W\) 无限膨胀和潜在的数值溢出问题。</p>
+</blockquote>
+
+<p>2.减少测试集和训练集的差异性（提高泛化能力）</p>
+
+<blockquote>
+  <p>过拟合的模型过度拟合了训练数据中的<strong>噪声</strong>，导致其学习到的权重 \(W\) 过于复杂和极端。这种<strong>复杂的 \(W\) 使得决策边界在训练集上表现完美，但在测试集上表现糟糕</strong>。</p>
+
+  <p>L2 正则化倾向于使所有权重 \(W_i\) 的值<strong>趋于零</strong>。</p>
+
+  <p>小的 \(W_i\) 意味着模型对单个输入特征 \(x_i\) 的依赖程度减小(对噪声的依赖也会减小)。这使得模型的决策边界更加<strong>平滑</strong>和<strong>简单</strong>，降低了模型的方差。</p>
+
+  <p>L2 正则化强制模型关注那些对大多数样本都有效的<strong>核心特征</strong>，忽略训练集中的噪声和异常值，从而<strong>提高模型在测试集上的泛化能力</strong>，减小训练集和测试集性能的差异。</p>
+</blockquote>
+
+<p>3.破坏训练集的效果（引入偏差，降低方差）</p>
+
+<blockquote>
+  <p>从统计学的偏差-方差权衡角度来看，正则化通过牺牲一点训练集的完美性，来换取测试集的稳定性。</p>
+
+  <p>正则化项 \(\lambda \sum W_i^2\) <strong>不是在帮助最小化训练误差</strong>，它是在<strong>增加一个额外的损失</strong>。为了让 \(\sum W_i^2\) 减小，模型必须将权重 \(W\) 往零的方向拉，即使这会导致原始的交叉熵损失 \(J(W)\) 略微增大。</p>
+
+  <p>因为模型被迫将 \(W\) 约束得很小，它可能无法完美拟合训练集中的每一个点，导致训练集上的损失（偏差）略微增加。</p>
+
+  <p>正则化使得模型对数据的微小变动（即测试集与训练集的差异）不再那么敏感，极大地降低了模型的方差。</p>
+
+  <p>最终的 \(J_{\text{reg}}(W)\) 追求的是 <strong>“训练误差”</strong> 和 <strong>“模型复杂度”</strong> 之间的最佳平衡点，这正是我们希望在<strong>测试集上得到最小总误差</strong>所需的特性。</p>
+</blockquote>
+
+<h1 id="3l1-正则化lasso和-l2-正则化ridge">3.L1 正则化（Lasso）和 L2 正则化（Ridge）</h1>
+
+<p>L2 正则项是权重W的平方和，乘以一个超参数 \(\lambda\)。损失函数变为 \(J_{\text{L2}}(W) = J(W) + \lambda \sum W_i^2\)。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>L1 正则项是权重W<strong>绝对值</strong>的和，乘以一个超参数 \(\lambda\)。损失函数变为 $$J_{\text{L1}}(W) = J(W) + \lambda \sum</td>
+      <td>W_i</td>
+      <td>$$。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>L2 惩罚项对<strong>大的权重</strong>施加的惩罚更大（二次方增长）。在梯度下降时，权重 \(W\) 的每一次更新都会被拉向零点，但拉力与 \(W\) 的值成正比（梯度为 \(2W\)）。</p>
+
+<p>L1 惩罚项在 \(W\) 不为零时，施加的是一个<strong>恒定的惩罚</strong>（梯度为 \(\pm 1\)）。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/1*nrWncnoJ4V_BkzEf1pd4MA.png" alt="img" /></p>
+
+<p>L2约束区域是一个<strong>圆形</strong>。相切点往往落在非坐标轴上，这意味着所有权重都会被缩小，但很少会精确地变为零。</p>
+
+<p>L1约束区域是一个<strong>菱形</strong>（或正方形）。由于菱形的尖角位于坐标轴上，损失函数的等值线更容易与这些尖角相切，使得相切点的某些维度 \(W_i\) 恰好为零。所以L1 正则化的独特之处在于它能够产生<strong>稀疏解</strong>，从而实现<strong>特征选择</strong>。L1 倾向于将那些对模型贡献不大的特征所对应的权重<strong>直接压缩为零</strong>。当数据集中包含大量冗余或不重要的特征时，L1 可以帮助我们自动识别并保留最重要的特征。</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">List</code>(对付顺序的好帮手): 存储的元素是有序的、可重复的。</li>
-  <li><code class="language-plaintext highlighter-rouge">Set</code>(注重独一无二的性质): 存储的元素不可重复的。</li>
-  <li><code class="language-plaintext highlighter-rouge">Queue</code>(实现排队功能的叫号机): 按特定的排队规则来确定先后顺序，存储的元素是有序的、可重复的。</li>
-  <li><code class="language-plaintext highlighter-rouge">Map</code>(用 key 来搜索的专家): 使用键值对（key-value）存储，类似于数学上的函数 y=f(x)，”x” 代表 key，”y” 代表 value，key 是无序的、不可重复的，value 是无序的、可重复的，每个键最多映射到一个值。</li>
+  <li><strong>如果目标是特征选择或降维</strong>，L1 正则化通常是更好的选择。</li>
+  <li><strong>如果目标是确保所有特征都保留下来，只是希望减小它们的权重以提高模型的鲁棒性和稳定性</strong>，L2 正则化是更常见的选择。</li>
+</ul>
+
+<p>在实践中，人们常结合两者，使用 <strong>Elastic Net</strong> 正则化来兼顾特征选择和模型平滑。</p>
+
+<blockquote>
+  <p>如果不指定正则，一般也会默认用L2正则，因为要防止参数溢出。</p>
+
+  <p>互联网行业，一般特征比较多（维度爆炸），一般采用L1正则，为了降维。</p>
+
+  <p>特征比较少的情况（比如生物），可以只采用L2正则（这也是默认的）</p>
+</blockquote>
+
+<h1 id="4归一化">4.归一化</h1>
+
+<p>归一化（Normalization，或标准化）通常是指对输入特征 \(x\) 进行缩放，使其落入特定范围（如 \([0, 1]\)）或具有标准分布（如均值 \(0\)，方差 \(1\)）。</p>
+
+<h2 id="41归一化的重要性">4.1归一化的重要性</h2>
+
+<p>模型的梯度（参数更新方向）依赖于输入特征 \(x\)。</p>
+
+<p>回顾逻辑回归的梯度：https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9906/</p>
+
+<p>对于整个训练集（所有 \(N\) 个样本），总损失 \(L(\mathbf{w}) = \frac{1}{N} \sum_{i=1}^{N} L_i(\mathbf{w})\) 对 \(w_j\) 的梯度为：</p>
+
+\[\frac{\partial L}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} \frac{\partial L_i}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\]
+
+<p>显然，这个梯度依赖于x，并且梯度更新时，模型会沿着大范围特征（如 \(x_1\)）对应的维度进行大步更新，而在小范围特征（如 \(x_2\)）对应的维度进行小步更新。</p>
+
+<p>这会导致<strong>梯度下降的等高线变得非常扁平狭长</strong>，优化过程需要很小的学习率才能避免振荡，导致收敛速度非常慢。</p>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251120233233215.png" alt="image-20251120233233215" style="zoom:50%;" /></p>
+
+<p>归一化使得所有特征 \(x_i\) 具有相似的尺度。</p>
+
+<p>这保证了所有权重 \(W_i\) 的梯度大致位于同一数量级，使得<strong>等高线更接近圆形</strong>，梯度下降可以沿着最陡峭的方向平稳快速地收敛。</p>
+
+<hr />
+
+<p>归一化间接帮助控制模型内部的线性得分（\(z = W^T x\)），这对于激活函数的稳定性非常重要。</p>
+
+<p>Softmax 或 Sigmoid 函数的输出 \(f(x)\) 依赖于线性得分 \(z = W^T x\)​。如果输入特征 \(x\) 的值很大，即使 \(W\) 很小， \(z\) 也可能非常大或非常小。</p>
+
+<p>当 \(z\) 的绝对值过大时，Sigmoid函数会输出接近 0或 1的值(模型可能一开始就学不到新东西，梯度消失了，参数不更新，模型还没怎么训练或者训练其实不到位就认为已经收敛了)，此时函数的<strong>导数（梯度）会非常小</strong>（进入饱和区）。归一化确保 \(x\) 的尺度适中，可以帮助控制 \(W^T x\) 的范围。</p>
+
+<p>配合<strong>正则化</strong>（它限制了 \(W\) 的大小），可以共同确保线性得分 \(W^T x\) 不会过度膨胀，从而<strong>避免激活函数进入饱和区</strong>，保证训练过程中梯度的有效性。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251120232445510.png" alt="image-20251120232445510" /></p>
+
+<p>如何选择归一化的方法？是Min-Max 归一化还是Z-score？</p>
+
+<p>【Min-Max 归一化】缺点：</p>
+
+<ul>
+  <li><strong>对异常值（Outliers）非常敏感。</strong> 如果数据中存在极大的或极小的异常值，它们会严重挤压其余数据的范围，导致大部分数据点集中在 \([0, 1]\) 范围的一小部分，失去区分度。</li>
+</ul>
+
+<p>【Z-score归一化】缺点：</p>
+
+<ul>
+  <li>不将数据限制在特定的范围 \([0, 1]\) 内，缩放后的特征值可能超出此范围。</li>
 </ul>
 
 <hr />
 
-<p>容器：用来存储数据，比如数组，链表等等。</p>
+<p>【Min-Max 归一化】优点：</p>
 
-<p>这里说的存储是指内存层面的存储，不是持久化存储（持久化存储有：<code class="language-plaintext highlighter-rouge">.txt</code>,<code class="language-plaintext highlighter-rouge">.avi</code>,<code class="language-plaintext highlighter-rouge">.jpg</code>,数据库）。</p>
+<ul>
+  <li>将所有特征值限制在固定的 \([0, 1]\) 范围内，易于解释和比较。</li>
+  <li>在特征数量很少，且特征间差异不大的情况下表现良好。</li>
+  <li>不改变数据的原始分布形状。</li>
+</ul>
+
+<p>【Z-score归一化】优点：</p>
+
+<ul>
+  <li>使得数据符合标准正态分布（但不会改变原始分布的形状，只是进行平移和缩放）。</li>
+  <li>鲁棒性好。算法使用均值和标准差进行缩放，受异常值的影响较小（尤其当数据集较大时）。</li>
+  <li>适用于<strong>要求数据符合正态分布</strong>或<strong>不依赖于固定范围</strong>的算法，例如梯度下降法（有助于收敛）和许多线性模型。</li>
+  <li>适用于不知道数据确切范围，但需要保证特征同尺度的场景。</li>
+</ul>
 
 <hr />
 
-<p>数组：特点：</p>
+<p><strong>Z-Score 归一化 (Standardization)</strong> 通常是更优的选择，因为它确保了所有特征的尺度一致，有助于梯度下降算法更快、更稳定地收敛。</p>
 
-<p><strong>（1）数组一旦指定了长度，那么长度就被确定了，不可以更改。</strong></p>
-
-<p><code class="language-plaintext highlighter-rouge">int[] arr = new int[6]; </code></p>
-
-<p><strong>（2）数组一旦声明了类型以后，数组中只能存放这个类型的数据。数组中只能存放同一种类型的数据。</strong></p>
-
-<p><code class="language-plaintext highlighter-rouge">int[] arr,String[] s,double[] d</code>…..</p>
-
-<hr />
-
-<p>数组：缺点：</p>
-
-<p>（1）数组一旦指定了长度，那么长度就被确定了，不可以更改。</p>
-
-<p>（2）删除，增加元素  效率低。</p>
-
-<p>（3）数组中实际元素的数量是没有办法获取的，没有提供对应的方法或者属性来获取</p>
-
-<p>（4）数组存储：有序，可重复 ，对于无序的，不可重复的数组不能满足要求。</p>
-
-<p>正因为上面的缺点，引入了一个新的存储数据的结构—》集合</p>
-
-<p>集合一章会学习很多集合，为什么要学习这么多集合呢？</p>
-
-<p>因为不同集合底层数据结构不一样。集合不一样，特点也不一样</p>
-
-<h2 id="11总结">1.1总结</h2>
-
-<ul>
-  <li><strong>数组</strong> 是一种 <strong>静态、低级</strong> 的数据结构。它直接对应于内存中的一段连续空间，访问速度快（通过索引），但灵活性差，无法动态改变大小。你可以把它看作是Java语言对底层硬件存储的一种直接映射。</li>
-  <li><strong>集合框架 (Java Collections Framework)</strong> 是一套 <strong>高级、动态</strong> 的工具。它抽象了各种数据存储结构（如链表、哈希表、树），并提供了一套统一、丰富的接口（<code class="language-plaintext highlighter-rouge">List</code>、<code class="language-plaintext highlighter-rouge">Set</code>、<code class="language-plaintext highlighter-rouge">Map</code>等）和实现类（<code class="language-plaintext highlighter-rouge">ArrayList</code>、<code class="language-plaintext highlighter-rouge">HashSet</code>、<code class="language-plaintext highlighter-rouge">HashMap</code>等）。它的设计目标是提供更强大的功能和更好的灵活性，让你在编程时不必关心底层内存分配的细节。</li>
-</ul>
-
-<p>简单来说，<strong>数组是基础，集合是建立在数组等基础结构之上的、功能更强大的抽象。</strong></p>
-
-<ul>
-  <li>如果你关心的是 <strong>元素的顺序</strong>，并且需要 <strong>频繁地在末尾添加或删除</strong> 元素，那么像 <code class="language-plaintext highlighter-rouge">ArrayList</code> 这样底层基于动态数组的集合就是很好的选择。</li>
-  <li>如果你需要 <strong>频繁地在中间插入或删除</strong> 元素，那么像 <code class="language-plaintext highlighter-rouge">LinkedList</code> 这样底层基于链表的集合就会比 <code class="language-plaintext highlighter-rouge">ArrayList</code> 效率高得多。</li>
-  <li>如果你关心的是 <strong>元素的唯一性</strong>，并且 <strong>不关心元素的顺序</strong>，那么 <code class="language-plaintext highlighter-rouge">HashSet</code> 这样底层基于哈希表的集合是最佳选择。它可以保证元素不重复，并且查找速度极快。</li>
-  <li>如果你需要存储的是 <strong>键值对 (Key-Value pairs)</strong>，那么 <code class="language-plaintext highlighter-rouge">HashMap</code> 这样底层基于哈希表的集合是唯一且最优的选择。</li>
-</ul>
-
-<p>每种集合都有其独特的性能特点和适用场景。学习它们，是为了让你在面对不同的编程任务时，能够选择最合适的“工具”，从而写出更高效、更健壮的代码。</p>
-
-<h1 id="2简要集合结构图">2.简要集合结构图</h1>
-
-<p>面向对象语言对事物的体现都是以对象的形式，所以为了方便对多个对象的操作，就对对象进行存储，集合就是存储对象最常用的一种方式。</p>
-
-<ul>
-  <li>数组虽然也可以存储对象，但长度是固定的；集合长度是可变的，数组中可以存储基本数据类型，集合只能存储对象。</li>
-  <li>集合类的特点：集合只用于存储对象，集合长度是可变的，集合可以存储不同类型的对象。</li>
-</ul>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250904143158901.png" alt="image-20250904143158901" /></p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250904143334514.png" alt="image-20250904143334514" />
-<img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250904145356914.png" alt="image-20250904145356914" /></p>
-
+<p><strong>Min-Max 归一化</strong> 也可使用，但在处理带有极端异常值的数据时，需要格外小心。</p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/09/02/%E4%BA%8C%E5%88%86-%E5%A4%8D%E6%9D%82%E5%BA%A6-%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84-%E5%93%88%E5%B8%8C%E8%A1%A8%E5%92%8C%E6%9C%89%E5%BA%8F%E8%A1%A8/" data-toggle="tooltip" data-placement="top" title="【新手003】二分、复杂度、动态数组、哈希表和有序表">
+                        <a href="/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9907/" data-toggle="tooltip" data-placement="top" title="【AI思想启蒙07】逻辑回归3到底好不好？模型评价指标 ">
                         Previous<br>
-                        <span>【新手003】二分、复杂度、动态数组、哈希表和有序表</span>
+                        <span>【AI思想启蒙07】逻辑回归3到底好不好？模型评价指标 </span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/09/04/java%E9%9B%86%E5%90%8802Collection%E6%8E%A5%E5%8F%A3/" data-toggle="tooltip" data-placement="top" title="【java集合】02.Collection接口">
-                        Next<br>
-                        <span>【java集合】02.Collection接口</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
