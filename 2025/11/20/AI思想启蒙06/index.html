@@ -1,0 +1,3150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员">
+    <meta name="keywords" content="Hilda">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="【AI思想启蒙06】逻辑回归2损失函数推到解析和特征选择优化  - Hilda的博客 | Your genius girlfriend's blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+
+">
+    
+    <meta property="article:published_time" content=" 2025-11-20T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Hilda">
+    
+    
+    <meta property="article:tag" content="AI思想启蒙">
+    
+    
+    <meta property="og:image" content="https://kirsten-1.github.io">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9906/">
+    <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
+
+    <title>【AI思想启蒙06】逻辑回归2损失函数推到解析和特征选择优化  - Hilda的博客 | Your genius girlfriend's blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9906/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Hilda</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99" title="AI思想启蒙">AI思想启蒙</a>
+                        
+                    </div>
+                    <h1>【AI思想启蒙06】逻辑回归2损失函数推到解析和特征选择优化 </h1>
+                    
+                    <h2 class="subheading">这篇博客系统讲解逻辑回归的全貌：从 sklearn 简单二分类实现入手，详细手推BCE损失对权重的导数，得到梯度形式（ŷ-y）x，并解释了为何必须用 BCE 而非 MSE（避免梯度消失与非凸问题）；接着扩展到多分类，对比了工程上易扩展的 OvR 和理论更优的 Softmax 回归（基于多项分布与指数族统一推导出了 Softmax 函数和交叉熵损失）；进一步揭示线性回归、逻辑回归、Softmax 回归在广义线性模型（GLM）框架下梯度形式的一致性：都是（预测-真实）×输入特征；最后通过 XOR 例子说明线性不可分问题可通过特征交叉（如加入 x1x2 项）或多层神经网络引入非线性解决，并附完整 PyTorch 实现，堪称从原理到代码一站式深入教程。</h2>
+                    <span class="meta">Posted by Hilda on November 20, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<h1 id="1逻辑回归回顾">1.逻辑回归回顾</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre></td><td class="rouge-code"><pre><span class="c1"># -*- encoding:utf-8 -*-
+</span><span class="kn">from</span> <span class="n">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="n">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="n">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="n">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_predict</span>
+<span class="kn">from</span> <span class="n">numpy</span> <span class="kn">import</span> <span class="n">shape</span>
+<span class="kn">from</span> <span class="n">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="n">sklearn.metrics</span> <span class="kn">import</span> <span class="n">log_loss</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+	<span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span> <span class="p">:</span>
+		<span class="n">lines</span><span class="o">=</span><span class="n">f</span><span class="p">.</span><span class="nf">readlines</span><span class="p">()</span>
+	<span class="n">lines</span><span class="o">=</span><span class="p">[</span><span class="nf">eval</span><span class="p">(</span><span class="n">line</span><span class="p">.</span><span class="nf">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+	<span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="nf">zip</span><span class="p">(</span><span class="o">*</span><span class="n">lines</span><span class="p">)</span>
+	<span class="n">X</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+	<span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">X</span><span class="p">,</span><span class="n">y</span>
+<span class="k">def</span> <span class="nf">curve</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">w0</span><span class="p">):</span>
+	<span class="n">results</span><span class="o">=</span><span class="n">x_train</span><span class="p">.</span><span class="nf">tolist</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">):</span>
+		<span class="n">x1</span><span class="o">=</span><span class="mf">1.0</span><span class="o">*</span><span class="n">i</span><span class="o">/</span><span class="mi">10</span>
+		<span class="n">x2</span><span class="o">=-</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x1</span><span class="o">+</span><span class="n">w0</span><span class="p">)</span><span class="o">/</span><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">results</span><span class="p">.</span><span class="nf">append</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">])</span>
+	<span class="n">results</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">{},{}</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span> <span class="k">for</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">]</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+	<span class="k">return</span> <span class="n">results</span>
+
+
+<span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="o">=</span><span class="nf">read_data</span><span class="p">(</span><span class="sh">"</span><span class="s">train_data</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="o">=</span><span class="nf">read_data</span><span class="p">(</span><span class="sh">"</span><span class="s">test_data</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="nc">LogisticRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span><span class="n">model</span><span class="p">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">w0</span><span class="sh">"</span><span class="p">,</span><span class="n">model</span><span class="p">.</span><span class="n">intercept_</span><span class="p">)</span>
+
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+<span class="c1"># y_pred=model.predict_proba(X_test)
+# print(y_pred)
+#loss=log_loss(y_test,y_pred)
+#print ("KL_loss:",loss)
+#loss=log_loss(y_pred,y_test)
+#print ("KL_loss:",loss)
+</span><span class="sh">'''</span><span class="s">
+curve_results=curve(X_train,model.coef_.tolist()[0],model.intercept_.tolist()[0])
+with open(</span><span class="sh">"</span><span class="s">train_with_splitline</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="s">) as f :
+	f.writelines(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="s">.join(curve_results))
+</span><span class="sh">'''</span>
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251118170657789.png" alt="image-20251118170657789" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">predict_proba</code>是用来预测概率的。如果解开下面2行注释：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="n">y_pred</span><span class="o">=</span><span class="n">model</span><span class="p">.</span><span class="nf">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>可以看到：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251118171146410.png" alt="image-20251118171146410" /></p>
+
+<p>可以看到，应该是大于0.5就会有预测结果0，小于0.5预测结果就是1.</p>
+
+<p>且每一行求和其实是1，因为是/非  是互斥的事件。</p>
+
+<hr />
+
+<p>计算KL距离（即损失函数）的函数是<code class="language-plaintext highlighter-rouge">log_loss</code>：</p>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251118172001139.png" alt="image-20251118172001139" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>注意：<code class="language-plaintext highlighter-rouge">model.fit(X_train, y_train)</code>就是模型不断学习的过程。即学习合适的参数\(w\)。</p>
+
+<h1 id="2逻辑回归的损失函数bce求导与梯度下降">2.逻辑回归的损失函数BCE求导与梯度下降</h1>
+
+<p>二元逻辑回归（Binary Logistic Regression）的损失函数——<strong>二元交叉熵损失 (Binary Cross-Entropy Loss, BCE Loss)</strong> ：</p>
+
+\[\mathcal{L}_{\text{BCE}}(P || Q) = - \sum_{k \in \{0, 1\}} P(Y=k) \log Q(Y=k) = - [y \log \hat{y} + (1 - y) \log (1 - \hat{y})]=\\ \sum_{i=1}^{n} \left[ y_i \log \frac{y_i}{f_i} + (1 - y_i) \log \frac{1 - y_i}{1 - f_i} \right]\]
+
+<p>逻辑回归模型 (Hypothesis):</p>
+
+\[\hat{y}_i = \sigma(z_i) = \frac{1}{1 + e^{-z_i}}\]
+
+<p>其中 \(z_i\) 是线性得分：</p>
+
+\[z_i = \mathbf{w}^T \mathbf{x}_i + b\]
+
+<p>（这里我们把偏置 \(b\) 视为 \(\mathbf{w}\) 中的 \(w_0\) 且 \(\mathbf{x}_i\) 扩展了 \(x_{i,0}\)=1维，简化为 \(\mathbf{w}^T \mathbf{x}_i\)。）</p>
+
+<h2 id="21求导">2.1求导</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>目标：</strong> 求损失函数 $$\mathcal{L}_{\text{BCE}}(P</td>
+      <td> </td>
+      <td>Q)\(对权重向量\)\mathbf{w}\(中任一分量\)w_j\(的偏导数\)\frac{\partial L_i}{\partial w_j}$$。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>使用链式法则，从 \(L_i\) 逐步向 \(w_j\) 追溯：</p>
+
+\[\frac{\partial L_i}{\partial w_j} = \frac{\partial L_i}{\partial \hat{y}_i} \cdot \frac{\partial \hat{y}_i}{\partial z_i} \cdot \frac{\partial z_i}{\partial w_j}\]
+
+<p>【步骤 A】: \(\frac{\partial L_i}{\partial \hat{y}_i}\) (损失对预测概率的导数)</p>
+
+\[\frac{\partial L_i}{\partial \hat{y}_i} = - \left[ y_i \cdot \frac{1}{\hat{y}_i} + (1 - y_i) \cdot \frac{1}{1 - \hat{y}_i} \cdot (-1) \right]\]
+
+\[\frac{\partial L_i}{\partial \hat{y}_i} = - \left[ \frac{y_i}{\hat{y}_i} - \frac{1 - y_i}{1 - \hat{y}_i} \right]\]
+
+\[\frac{\partial L_i}{\partial \hat{y}_i} = - \left[ \frac{y_i (1 - \hat{y}_i) - \hat{y}_i (1 - y_i)}{\hat{y}_i (1 - \hat{y}_i)} \right]\]
+
+\[\frac{\partial L_i}{\partial \hat{y}_i} = - \left[ \frac{y_i - y_i \hat{y}_i - \hat{y}_i + y_i \hat{y}_i}{\hat{y}_i (1 - \hat{y}_i)} \right] = - \frac{y_i - \hat{y}_i}{\hat{y}_i (1 - \hat{y}_i)}\]
+
+<p>【步骤 B】: \(\frac{\partial \hat{y}_i}{\partial z_i}\) (Sigmoid 函数对线性得分的导数)</p>
+
+<p>Sigmoid 函数 \(\sigma(z) = \frac{1}{1 + e^{-z}}\) 的导数有一个非常简洁的形式：</p>
+
+\[\frac{\partial \sigma(z_i)}{\partial z_i} = \sigma(z_i) (1 - \sigma(z_i)) = \hat{y}_i (1 - \hat{y}_i)\]
+
+<p>【步骤 C】: \(\frac{\partial z_i}{\partial w_j}\) (线性得分对权重的导数)</p>
+
+\[z_i = w_0 x_{i,0} + w_1 x_{i,1} + \dots + w_j x_{i,j} + \dots\]
+
+\[\frac{\partial z_i}{\partial w_j} = \frac{\partial}{\partial w_j} (\mathbf{w}^T \mathbf{x}_i) = x_{i,j}\]
+
+<p>【步骤 D】: 合并结果 (最终梯度)</p>
+
+<p>将 A、B、C 三个结果相乘：</p>
+
+\[\frac{\partial L_i}{\partial w_j} = \left[ - \frac{y_i - \hat{y}_i}{\hat{y}_i (1 - \hat{y}_i)} \right] \cdot \left[ \hat{y}_i (1 - \hat{y}_i) \right] \cdot \left[ x_{i,j} \right]\]
+
+<p>观察到中间两项相乘可以抵消：</p>
+
+\[\frac{\partial L_i}{\partial w_j} = - (y_i - \hat{y}_i) x_{i,j} = (\hat{y}_i - y_i) x_{i,j}\]
+
+<hr />
+
+<p>所以总体损失梯度如下：</p>
+
+<p>对于整个训练集（所有 \(N\) 个样本），总损失 \(L(\mathbf{w}) = \frac{1}{N} \sum_{i=1}^{N} L_i(\mathbf{w})\) 对 \(w_j\) 的梯度为：</p>
+
+\[\frac{\partial L}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} \frac{\partial L_i}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\]
+
+<h2 id="22梯度下降逼近最优解">2.2梯度下降逼近最优解</h2>
+
+<p>得到梯度后，就可以使用梯度下降法来迭代更新权重 \(\mathbf{w}\)，以最小化总体损失 \(L(\mathbf{w})\)。</p>
+
+<p>在每次迭代中，权重 \(\mathbf{w}\) 会沿着梯度的<strong>负方向</strong>进行更新。</p>
+
+<ul>
+  <li>
+    <p>更新公式:</p>
+
+\[\mathbf{w}_{\text{new}} = \mathbf{w}_{\text{old}} - \alpha \nabla_{\mathbf{w}} L(\mathbf{w}_{\text{old}})\]
+  </li>
+  <li>
+    <p>对单个权重 \(w_j\) 的更新:</p>
+
+\[w_{j, \text{new}} = w_{j, \text{old}} - \alpha \cdot \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\]
+  </li>
+</ul>
+
+<p>其中 \(\alpha\) 是<strong>学习率 (Learning Rate)</strong>，它控制了每一步更新的步长。</p>
+
+<p>整个迭代过程如下：</p>
+
+<ol>
+  <li>
+    <p><strong>初始化：</strong> 随机初始化权重向量 \(\mathbf{w}\)。</p>
+  </li>
+  <li>
+    <p>迭代循环 (直到收敛)：</p>
+
+    <p>a. 计算预测值： 对于所有样本 \(i=1\) 到 \(N\)，计算线性得分 \(z_i = \mathbf{w}^T \mathbf{x}_i\)，并计算预测概率 \(\hat{y}_i = \sigma(z_i)\)。</p>
+
+    <p>b. 计算梯度： 计算每个权重 \(w_j\) 的平均梯度 \(\frac{\partial L}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\)。</p>
+
+    <p>c. 更新权重： 使用更新公式 \(w_{j, \text{new}} = w_{j, \text{old}} - \alpha \cdot \frac{\partial L}{\partial w_j}\) 更新所有权重。</p>
+  </li>
+  <li>
+    <p><strong>收敛：</strong> 当权重向量 \(\mathbf{w}\) 在后续迭代中的变化小于一个预设的阈值，或者达到最大迭代次数时，停止迭代。</p>
+  </li>
+</ol>
+
+<p>这个梯度 \(\frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\) 直观地表示了<strong>“平均预测误差”</strong>乘以<strong>“输入特征”</strong>，模型会根据这个误差调整权重，使预测概率 \(\hat{y}_i\) 更接近真实标签 \(y_i\)。</p>
+
+<h1 id="3逻辑回归不用mse而用bce">3.逻辑回归不用MSE而用BCE</h1>
+
+<p>MSE均方误差：\(L_{MSE}=\frac{1}{N}\sum_{i=1}^N(f_i-y_i)^2\)</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>BCE二元交叉熵损失：$$\mathcal{L}_{\text{BCE}}(P</td>
+      <td> </td>
+      <td>Q) = - \sum_{k \in {0, 1}} P(Y=k) \log Q(Y=k) = - [y \log \hat{y} + (1 - y) \log (1 - \hat{y})]=\ \sum_{i=1}^{n} \left[ y_i \log \frac{y_i}{f_i} + (1 - y_i) \log \frac{1 - y_i}{1 - f_i} \right]$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>MSE求导：对于逻辑回归，模型预测为 \(\hat{y}_i = \sigma(z_i)\)，代入 MSE 损失公式并对权重 \(w_j\) 求导：</p>
+
+\[L_{\text{MSE}}=\frac{1}{N}\sum_{i=1}^N(\hat{y}_i-y_i)^2\]
+
+\[\frac{\partial L_{\text{MSE}}}{\partial w_j} = \frac{2}{N} \sum_{i} (\hat{y}_i - y_i) \cdot \underbrace{\hat{y}_i (1 - \hat{y}_i)}_{\text{Sigmoid 导数}} \cdot x_{i,j}\]
+
+<p>而BCE求导上面已经求过了：</p>
+
+\[\frac{\partial L_i}{\partial w_j} = - (y_i - \hat{y}_i) x_{i,j} = (\hat{y}_i - y_i) x_{i,j}\]
+
+<hr />
+
+<p>为什么逻辑回归不用MSE而用BCE？</p>
+
+<p>【1】若用MSE，如果初始权重 \(\mathbf{w}\) 被设置得<strong>非常大</strong>（在绝对值意义上），那么对于大多数样本 \(\mathbf{x}_i\)：</p>
+
+\[|z_i| = |\mathbf{w}^T \mathbf{x}_i + b|\]
+
+<p>\(z_i\) 的绝对值也会变得<strong>非常大</strong>。也就是说，当权重很大时，即使特征值 \(x_{i,j}\) 变化很小，也会导致得分 \(z_i\) 发生巨大的变化。</p>
+
+<blockquote>
+  <p>补充：Sigmoid 函数 \(\sigma(z) = \frac{1}{1 + e^{-z}}\) 具有以下特性：</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251118191312829.png" style="zoom: 33%;" /></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th><strong>\(z_i\) 的值</strong></th>
+        <th><strong>\(y_i=\frac{1}{1 + e^{-z_i}}\) 的值</strong></th>
+        <th><strong>\(y_i\) 接近</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>非常大的正数</strong> (\(\gg 0\))</td>
+        <td>趋近于 $\frac{1}{1 + 0}$</td>
+        <td><strong>1</strong></td>
+      </tr>
+      <tr>
+        <td><strong>非常大的负数</strong> (\(\ll 0\))</td>
+        <td>趋近于 $\frac{1}{1 + \infty}$</td>
+        <td><strong>0</strong></td>
+      </tr>
+      <tr>
+        <td>接近 0</td>
+        <td>趋近于 $\frac{1}{1 + 1} = 0.5$</td>
+        <td>0.5</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<table>
+  <tbody>
+    <tr>
+      <td>由于初始权重 \(w\) 很大，使得大多数 \(z_i\) 的绝对值 $$</td>
+      <td>z_i</td>
+      <td>$$ 非常大：</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>如果 \(z_i\) 是一个<strong>非常大的正数</strong>（例如，100），则 \(\hat{y}_i \approx 1\)。</li>
+  <li>如果 \(z_i\) 是一个<strong>非常大的负数</strong>（例如，-100），则 \(\hat{y}_i \approx 0\)。</li>
+</ul>
+
+<p>因此，<strong>当初始权重非常大时，模型对大部分样本的预测会非常自信地给出接近 0 或接近 1 的概率。</strong></p>
+
+<p>当 \(\hat{y}_i\) 非常接近 0 或 1 时，Sigmoid 导数项 \(\hat{y}_i (1 - \hat{y}_i)\) 的值会变得<strong>极小</strong></p>
+
+<p>即使模型预测错误（即 \((\hat{y}_i - y_i)\) 不为 0），由于 \(\hat{y}_i (1 - \hat{y}_i)\) 接近 0，<strong>整个梯度也会趋于 0</strong>。这就是<strong>梯度消失问题</strong>。</p>
+
+<p>即：若初始化W非常大，此时还没有正确分类，模型就已经不太能够学到东西了。</p>
+
+<p>而且其实就算不考虑极端的情况，本身\(f_i\)就很小，范围就是0到1，根据\(L_{MSE}== \frac{2}{N} \sum_{i} (\hat{y}_i - y_i) \cdot \underbrace{\hat{y}_i (1 - \hat{y}_i)}_{\text{Sigmoid 导数}} \cdot x_{i,j}\)，即\({\hat{y}_i (1 - \hat{y}_i)}\)本身就很小，梯度更新本身就很小了。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251118193101978.png" alt="image-20251118193101978" /></p>
+
+<hr />
+
+<p>【2】逻辑回归若用MSE，其曲线并不是一个凸函数，可能存在多个局部极小值的点，即非凸的损失曲面意味着它可能存在多个“小山谷”或“小坑”，梯度下降算法可能会收敛到一个局部极小值点，这个点的损失值大于全局最小值。此时就无法找到损失值最小的最佳模型了。</p>
+
+<blockquote>
+  <p>问：多选几个初始点w能不能避免  存在多个局部极小值的问题呢？</p>
+
+  <p>其实在机器学习的前沿领域，很多研究都是在讨论如何选初始点，这个策略叫做 <strong>Multi-start Optimization</strong>（多点启动优化）。但是达不到很好的效果。</p>
+
+  <p>而且维度如果很大，鞍点（Saddle Points）的数量急剧增加，成为主要的优化障碍。鞍点在某些方向是最小值，但在其他方向是最大值。SGD 可能会在鞍点附近停滞，因为所有方向的梯度都接近零，这比局部极小值更难逃逸。</p>
+
+  <p>而且在高维空间中，很多“足够好”的局部极小值点的损失值<strong>非常接近</strong>全局最优解。研究发现，许多局部极小值在泛化能力（即在测试集上的性能）上与全局最优解几乎没有区别。</p>
+
+  <p>在现代 ML 中，初始化研究的意义在于<strong>确保训练过程稳定、高效</strong>，并引导模型找到<strong>泛化能力强</strong>的局部最优解，而不是徒劳地去寻找理论上存在的、但在高维空间中难以捕捉的绝对全局最优解。</p>
+</blockquote>
+
+<h1 id="4多分类任务-ovr">4.多分类任务-OVR</h1>
+
+<p>为每一个类别训练一个二元分类器，叫做<strong>One-vs-Rest (OvR)</strong>或者<strong>One-vs-All (OvA)</strong>。具体逻辑如下：</p>
+
+<p>假设有 \(N\) 个类别，OvR 方法会训练 \(N\) 个独立的逻辑回归分类器：</p>
+
+<ol>
+  <li>
+    <p><strong>训练 \(N\) 个分类器：</strong></p>
+
+    <ul>
+      <li>为每个类别 \(k \in \{1, 2, \ldots, N\}\) 训练一个二元分类器 \(C_k\)。</li>
+      <li><strong>目标：</strong> \(C_k\) 的任务是判断一个样本<strong>是否属于类别 \(k\)</strong>，或者说，输出一个概率。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>构造数据集：</strong></p>
+
+    <ul>
+      <li>在训练 \(C_k\) 时，所有属于类别 $k$ 的样本被标记为<strong>正类（Positive, \(y=1\)）</strong>。</li>
+      <li>所有不属于类别 \(k\) 的样本（即剩下的 \(N-1\) 个类别的样本）都被标记为<strong>负类（Negative, \(y=0\)）</strong>。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>预测：</strong></p>
+
+    <ul>
+      <li>当一个新样本 \(\mathbf{x}\) 输入时，它会被馈送到所有的 \(N\) 个分类器 \(C_1, C_2, \ldots, C_N\) 中。</li>
+      <li>每个分类器 \(C_k\) 都会输出一个概率 \(P(\mathbf{x} \in \text{Class } k)\)。</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>最终决策：</strong></p>
+
+    <ul>
+      <li>
+        <p>样本 \(\mathbf{x}\) 被最终分配给 输出概率最高的那个类别。</p>
+
+\[\text{Class}(\mathbf{x}) = \underset{k}{\operatorname{argmax}} \left( P(\mathbf{x} \in \text{Class } k) \right)\]
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>OvR概念简单，易于并行化；可以使用任何二元分类器（如 SVM、决策树等）。</p>
+
+<hr />
+
+<p>这种方法适合工程，具有一定的开闭原则。</p>
+
+<p>开闭原则是面向对象设计（OOD）的五大原则之一，它要求：</p>
+
+<blockquote>
+  <p><strong>“软件实体（类、模块、函数等）应该是对扩展开放的，对修改封闭的。”</strong></p>
+</blockquote>
+
+<p>这意味着：当需要添加新功能（例如，增加一个新类别）时，应该通过<strong>扩展</strong>现有代码来实现，而不是<strong>修改</strong>已经稳定运行的代码。</p>
+
+<p>OvR对扩展开放是因为：如果需要从 10 个类别增加到 11 个类别（比如新增一个“短裤”类别），只需要<strong>训练和部署第 11 个独立的二元分类器 \(C_{11}\)</strong>。你不需要触碰或重新训练那 10 个已经存在的、稳定运行的分类器 \(C_1\) 到 \(C_{10}\)。</p>
+
+<p>而如果用softmax回归，必须<strong>修改</strong>模型的输出层（从 10 维改为 11 维），并且必须<strong>使用所有数据</strong>从头重新训练整个模型，因为所有权重都相互关联。</p>
+
+<p>因此，在需要<strong>频繁增加新类别</strong>、追求<strong>模块化</strong>和<strong>服务高可用性</strong>的工程实践中，OvR 策略（尤其是使用轻量级模型时）确实展现出更高的工程价值和更好的可扩展性。</p>
+
+<hr />
+
+<p>举例：更加形象的理解</p>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251119143435260.png" alt="image-20251119143435260" style="zoom:50%;" /></p>
+
+<p>对于上面的多分类任务，可以用下面的方式解决：</p>
+
+<p>第一：三角形的分类器</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251119143518462.png" alt="image-20251119143518462" style="zoom:50%;" /></p>
+
+<p>第二：叉叉的分类器</p>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251119143604594.png" alt="image-20251119143604594" style="zoom:50%;" /></p>
+
+<p>第三：正方形的分类器</p>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251119143628491.png" alt="image-20251119143628491" style="zoom:50%;" /></p>
+
+<h1 id="5多分类任务-softmax回归">5.多分类任务-softmax回归</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251120155712073.png" alt="image-20251120155712073" /></p>
+
+<p>Softmax 回归可以看作是<strong>逻辑回归的推广</strong>（从二分类推广到多分类）。</p>
+
+<h2 id="51原理">5.1原理</h2>
+
+<p>Softmax 回归是假设多项分布的，多项分布可以理解为二项分布的扩展。投硬币是二项分布，掷骰子是多项分布。</p>
+
+<p>多分类任务中，\(y\) 有多个可能的分类：\(y \in \{1, 2, 3, \ldots, k\}\)，</p>
+
+<p>每种分类对应的概率：\(\phi_1, \phi_2, \ldots, \phi_k\)。由于 \(\sum_{i=1}^{k} \phi_i = 1\)，所以一般用 \(k-1\) 个参数 \(\phi_1, \phi_2, \ldots, \phi_{k-1}\)。其中：</p>
+
+<ul>
+  <li>
+\[p(y = i; \phi) = \phi_i\]
+  </li>
+  <li>
+\[p(y = k; \phi) = 1 - \sum_{i=1}^{k-1} \phi_i\]
+  </li>
+</ul>
+
+<p>为了将多项分布表达为指数族分布，做以下工作：</p>
+
+<ul>
+  <li>定义 \(T(y) \in \mathbb{R}^{k-1}\) 它不再是一个数而是一个变量</li>
+</ul>
+
+\[\begin{aligned} T(1) = \begin{bmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{bmatrix}, &amp; T(2) = \begin{bmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{bmatrix}, T(3) = \begin{bmatrix} 0 \\ 0 \\ 1 \\ \vdots \\ 0 \end{bmatrix}, \ldots, \\ &amp; T(k-1) = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 1 \\ 0 \end{bmatrix}, T(k) = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \end{bmatrix} \end{aligned}\]
+
+<ul>
+  <li>
+    <p>引入指示函数：\(\mathbb{I}\{True\} = 1, \mathbb{I}\{False\} = 0\)</p>
+
+    <p>$E(T(y)_i) = p(y = i) = \phi_i$</p>
+  </li>
+</ul>
+
+<h3 id="为什么要将多项分布表达为指数族分布">为什么要将多项分布表达为指数族分布？</h3>
+
+<p><strong>指数族分布 (Exponential Family Distribution)</strong> 是统计学中一类重要的概率分布家族（包括正态分布、伯努利分布、泊松分布、伽马分布等）。</p>
+
+<p>要注意，学习过的线性回归中，变量服从<strong>高斯分布（正态分布）</strong>，它属于指数族。<strong>逻辑回归</strong>变量服从<strong>伯努利分布</strong>，它也属于指数族。</p>
+
+<p>现在对于<strong>多分类问题</strong>，它的输出是 \(k\) 种可能中的一种，服从<strong>多项分布</strong>。</p>
+
+<p>指数族分布是<strong>广义线性模型（GLM）</strong> 这个“模型大厦”的基石。 GLM 提供了一个<strong>统一的建模流程</strong>：</p>
+
+<ul>
+  <li><strong>线性部分</strong>（熟悉的 \(\theta^T x\)）：所有模型都用它来计算“分数”。</li>
+  <li><strong>连接函数</strong>（把分数转成概率或输出）：这个函数是根据分布的性质自动推导出来的。
+    <ul>
+      <li><strong>线性回归</strong>：连接函数是“恒等”（分数就是输出）。</li>
+      <li><strong>逻辑回归</strong>：连接函数是 <strong>Sigmoid</strong> 函数。</li>
+      <li><strong>Softmax 回归</strong>：连接函数是 <strong>Softmax</strong> 函数。</li>
+    </ul>
+  </li>
+</ul>
+
+<p>通过这种统一，不需要为 Softmax 回归设计一套全新的理论，只是在 GLM 框架下，将随机分量从伯努利（二元）换成了多项（多分类）。</p>
+
+<p>另外，在线性回归中用 <strong>MSE</strong>，在逻辑回归中用 <strong>BCE</strong>。这两种损失函数其实都是<strong>最大似然估计（MLE）</strong> 的结果。</p>
+
+<ul>
+  <li><strong>MSE</strong> 是高斯分布下 MLE 的结果。</li>
+  <li><strong>BCE</strong> 是伯努利分布下 MLE 的结果。</li>
+</ul>
+
+<p>指数族分布有一个极好的数学性质：当用 MLE 的方法来构建<strong>损失函数</strong>时，这个损失函数（即对数似然函数）通常是<strong>凸函数</strong>（或凹函数）。这保证了在训练 Softmax 模型时，使用梯度下降等优化算法能够<strong>稳定、快速地找到最佳的模型参数</strong>，而不用担心陷入局部最优解。</p>
+
+<p>所有指数族分布都可以写成统一的规范形式：</p>
+
+\[p(y; \eta) = b(y) \exp(\eta^T T(y) - a(\eta))\]
+
+<p>其中，\(\eta\) 是自然参数（或规范参数），\(T(y)\) 是充分统计量，\(a(\eta)\) 是对数配分函数（用于确保概率之和为 1）。</p>
+
+<p>一旦将多项分布（或任何其他分布）写成这种形式，就可以利用指数族分布的通用性质来推导其<strong>连接函数</strong>（link function）、<strong>均值和方差</strong>等，无需为每种分布从头开始推导。</p>
+
+<p>解释：</p>
+
+<p>【1】自然参数是什么？在所有 GLM 模型中，自然参数 \(\eta\) 总是由输入特征的线性组合得到的：</p>
+
+\[\eta = \theta^T x\]
+
+<p>可以把它理解为<strong>数据特征 \(x\) 经过线性组合后得到的“原始分数”</strong>，这个分数直接决定了数据服从的概率分布的形状。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>模型</strong></th>
+      <th><strong>\(η=θ^Tx\) 的含义</strong></th>
+      <th><strong>原始参数 (μ 或 ϕ)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>线性回归</strong></td>
+      <td><strong>期望本身</strong>。 \(\eta\) 直接等于我们想要预测的连续值 \(\mu\)（假设 \(\sigma^2=1\)）。</td>
+      <td>均值 \(\mu\)</td>
+    </tr>
+    <tr>
+      <td><strong>逻辑回归</strong></td>
+      <td><strong>Log-Odds</strong>。 \(\eta\) 是用来衡量 \(\frac{P(y=1)}{P(y=0)}\) 这个比率的对数。</td>
+      <td>概率 \(\phi\)</td>
+    </tr>
+    <tr>
+      <td><strong>Softmax 回归</strong></td>
+      <td><strong>Log-Odds Ratio</strong>。 \(\eta_i\) 是衡量第 \(i\) 类相对于基准类 \(k\) 的对数几率比。\(\eta = \begin{bmatrix} \log(\phi_1/\phi_k) \\ \log(\phi_2/\phi_k) \\ \vdots \\ \log(\phi_{k-1}/\phi_k) \end{bmatrix}\)</td>
+      <td>概率向量 \(\phi\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>【2】什么是响应函数 (\(h(\cdot)\))?</p>
+
+<p><strong>将模型的原始分数 (\(\eta\))，转化为我们真正想预测和解释的概率、均值或计数（\(\mu\)）</strong>。</p>
+
+\[\mu = h(\eta)\]
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>模型</strong></th>
+      <th><strong>自然参数 η</strong></th>
+      <th><strong>响应函数 μ=h(η)</strong></th>
+      <th><strong>最终输出 μ</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>线性回归</strong></td>
+      <td>\(\eta = \theta^T x\)</td>
+      <td>\(\mu = \eta\) <strong>(恒等函数)</strong></td>
+      <td><strong>均值 \(\mu\)</strong></td>
+    </tr>
+    <tr>
+      <td><strong>逻辑回归</strong></td>
+      <td>\(\eta = \text{Logit}(\phi)\)</td>
+      <td>\(\mu = \frac{e^\eta}{1+e^\eta}\) <strong>(Sigmoid 函数)</strong></td>
+      <td><strong>概率 \(\phi\)</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Softmax 回归</strong></td>
+      <td>\(\eta_i = \text{Log-Odds Ratio}\)</td>
+      <td>\(\mu_i = \frac{e^{\eta_i}}{\sum e^{\eta_j}}\) <strong>(Softmax 函数)</strong></td>
+      <td><strong>概率 \(\phi_i\)</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>简单来说，如果把 \(\theta^T x\) 看作原始的“火力值”，响应函数 \(h(\cdot)\) 就是将这个火力值转化为<strong>实际命中目标的概率</strong>（逻辑/Softmax 回归），或者<strong>实际的数值</strong>（线性回归）。</p>
+
+<h3 id="指数族分布">指数族分布</h3>
+
+<p>所有指数族分布都可以写成统一的规范形式：</p>
+
+\[p(y; \eta) = b(y) \exp(\eta^T T(y) - a(\eta))\]
+
+<p>其中，\(b(y)\) 被称为残余项（Base Measure Term）或基测度，\(\eta\) 是自然参数（或规范参数），是一个<strong>只依赖于原分布参数</strong>（如 \(\mu\) 和 \(\sigma^2\)）的函数，它<strong>不依赖于数据 $y$</strong>。\(T(y)\) 是充分统计量，只依赖于数据 \(y\)。\(a(\eta)\) 是对数配分函数（用于确保概率之和为 1）。在广义线性模型 (GLM) 中，主要通过<strong>最大似然估计（MLE）</strong> 来学习参数 \(\theta\)（它隐藏在 \(\eta\) 中）。</p>
+
+<blockquote>
+  <p>\(b(y)\) 一般包含原始概率分布函数（PDF 或 PMF）中所有与 \(y\) 相关但与模型参数 \(\eta\) 无关的项。</p>
+
+  <ul>
+    <li>对于连续分布（如高斯分布），\(b(y)\) 通常包含像 \(\frac{1}{\sqrt{2\pi}}\) 或 \(\exp(-\frac{y^2}{2\sigma^2})\) 这样的因子。</li>
+    <li>对于某些离散分布（如伯努利分布），\(b(y)\) 可能只等于 \(1\)。对于泊松分布，它可能包含 \(\frac{1}{y!}\)。</li>
+  </ul>
+</blockquote>
+
+<p><strong>以线性回归遵循的高斯分布为例</strong>，通常假设响应变量 \(y\) 服从均值为 \(\mu\)、方差为 \(\sigma^2\) 的高斯分布，即 \(y \sim N(\mu, \sigma^2)\)。为了简化，在 GLM 的推导中，我们通常假设 \(\sigma^2\) 是固定的常数（或为 1）。</p>
+
+<p>高斯分布的概率密度函数 (PDF) 为：</p>
+
+\[p(y; \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y - \mu)^2}{2\sigma^2}\right)\]
+
+<p>对上式进行代数展开，并<strong>将 \(\mu\) 作为参数</strong>：</p>
+
+\[\begin{aligned} p(y; \mu) &amp;= \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{1}{2\sigma^2}(y^2 - 2y\mu + \mu^2)\right) \\ &amp;= \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{y^2}{2\sigma^2}\right) \cdot \exp\left(\frac{2y\mu}{2\sigma^2} - \frac{\mu^2}{2\sigma^2}\right) \\ &amp;= \left(\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{y^2}{2\sigma^2}\right)\right) \cdot \exp\left(\left(\frac{\mu}{\sigma^2}\right)y - \left(\frac{\mu^2}{2\sigma^2}\right)\right)\end{aligned}\]
+
+<p>通过与规范形式 \(p(y; \eta) = b(y) \exp(\eta^T T(y) - a(\eta))\) 对比，我们可以确定各部分：</p>
+
+<blockquote>
+  <p>注意：<strong>充分统计量\(T(y)\)</strong>只依赖于数据 \(y\)。而\(\eta\) 是一个<strong>只依赖于原分布参数</strong>（如 \(\mu\) 和 \(\sigma^2\)）的函数，它<strong>不依赖于数据 \(y\)</strong>。所以\(T(y) = y\)，\(\eta = \frac{\mu}{\sigma^2}\)</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>部分</strong></th>
+      <th><strong>高斯分布 (N(μ,σ2)) 的对应项</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>充分统计量 \(T(y)\)</strong></td>
+      <td>\(T(y) = y\)</td>
+    </tr>
+    <tr>
+      <td><strong>自然参数 \(\eta\)</strong></td>
+      <td>\(\eta = \frac{\mu}{\sigma^2}\)</td>
+    </tr>
+    <tr>
+      <td><strong>对数配分函数 \(a(\eta)\)</strong></td>
+      <td>\(a(\eta) = \frac{\mu^2}{2\sigma^2} = \frac{(\eta\sigma^2)^2}{2\sigma^2} = \frac{1}{2}\sigma^2 \eta^2\)</td>
+    </tr>
+    <tr>
+      <td><strong>残余项 \(b(y)\)</strong></td>
+      <td>\(b(y) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{y^2}{2\sigma^2}\right)\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>自然参数 \(\eta\)​ 和均值 \(\mu\)​ 的关系是 \(\mu = \sigma^2 \eta\)​。在高斯分布的标准 GLM 中，通常假设方差 \(\sigma^2\) 是常数，并且为了简化，我们常取 \(\sigma^2 = 1\)。</p>
+
+\[\text{如果}\ \sigma^2 = 1\ \text{，则}\ \eta = \frac{\mu}{1} = \mu\]
+
+<p>所以，只有在这种特殊情况下（方差为 1），高斯分布的<strong>规范连接函数</strong>才是 \(\eta = \mu\)（即恒等连接）。</p>
+
+<p>所以，在标准 GLM 中，响应函数就是 \(\mu = h(\eta) = \eta\)，这正是<strong>线性回归</strong>的连接函数（恒等连接）。</p>
+
+<hr />
+
+<p>再说逻辑回归（伯努利分布）：响应变量 \(y\) 是二元的（0 或 1），服从均值为 \(\phi\) 的伯努利分布，即 \(y \sim \text{Bernoulli}(\phi)\)。</p>
+
+<p>伯努利分布的概率质量函数 (PMF) 为：</p>
+
+\[p(y; \phi) = \phi^y (1 - \phi)^{1-y}\]
+
+<p>转化为指数族规范形式</p>
+
+<p>对上式进行代数重写：</p>
+
+\[\begin{aligned} p(y; \phi) &amp;= \exp\left( \log\left(\phi^y (1 - \phi)^{1-y}\right) \right) \\ &amp;= \exp\left( y \log(\phi) + (1-y) \log(1 - \phi) \right) \\ &amp;= \exp\left( y \log(\phi) - y \log(1 - \phi) + \log(1 - \phi) \right) \\ &amp;= \exp\left( y \log\left(\frac{\phi}{1 - \phi}\right) + \log(1 - \phi) \right)\end{aligned}\]
+
+<p>通过与规范形式 $p(y; \eta) = b(y) \exp(\eta^T T(y) - a(\eta))$ 对比，我们可以确定各部分：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>部分</strong></th>
+      <th><strong>伯努利分布 (Bernoulli(ϕ)) 的对应项</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>充分统计量 \(T(y)\)</strong></td>
+      <td>\(T(y) = y\)</td>
+    </tr>
+    <tr>
+      <td><strong>自然参数 \(\eta\)</strong></td>
+      <td>\(\eta = \log\left(\frac{\phi}{1 - \phi}\right)\)</td>
+    </tr>
+    <tr>
+      <td><strong>对数配分函数 \(a(\eta)\)</strong></td>
+      <td>\(a(\eta) = -\log(1 - \phi) = \log\left(\frac{1}{1 - \phi}\right)\)</td>
+    </tr>
+    <tr>
+      <td><strong>残余项 \(b(y)\)</strong></td>
+      <td>\(b(y) = 1\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li>
+    <p>自然参数 \(\eta\) 与均值 \(\phi\) 的关系（连接函数）：</p>
+
+\[\eta = \log\left(\frac{\phi}{1 - \phi}\right)\]
+
+    <p>这就是著名的 Log-Odds 或 Logit 函数。</p>
+  </li>
+  <li>
+    <p>响应函数（反向）：</p>
+
+    <p>将 \(\phi\) 解出来：</p>
+
+\[e^\eta = \frac{\phi}{1 - \phi} \implies e^\eta (1 - \phi) = \phi \implies e^\eta - \phi e^\eta = \phi\]
+
+\[e^\eta = \phi (1 + e^\eta) \implies \phi = \frac{e^\eta}{1 + e^\eta}\]
+
+    <p>这就是 Sigmoid 函数！</p>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>关键点：</strong> <strong>逻辑回归</strong>的理论基础，正是通过将伯努利分布转化为指数族规范形式，自动推导出了 \(\phi = \frac{e^\eta}{1 + e^\eta}\) 这个 Sigmoid 函数作为它的<strong>响应函数</strong>。</p>
+</blockquote>
+
+<p>通过这两个例子，可以看到，指数族分布的规范形式确实是<strong>统一各种回归模型的理论框架</strong>。对于多项分布（Softmax 回归），其过程与伯努利分布的推导非常相似，最终会自动推导出 Softmax 函数作为它的响应函数。</p>
+
+<hr />
+
+<p>下面就是softmax回归的推导：</p>
+
+<p>为了将多项分布纳入广义线性模型 (GLM) 框架，通常需要将其写成指数族分布的标准形式：</p>
+
+\[p(y; \eta) = b(y) \exp(\eta^T T(y) - a(\eta))\]
+
+<p>在多分类问题中，单个数值 \(y\) 不足以直接作为 \(T(y)\)。因此，引入一个 \((k-1)\) 维的向量 $T(y)$，采用 <strong>“One-Hot Encoding”</strong>（独热编码）的思想：</p>
+
+<p>如果 \(y=i\) (对于 \(i=1, \ldots, k-1\))，则 $T(y)$ 的第 \(i\) 个分量是1，其余分量是 0。即：</p>
+
+\[\begin{aligned} T(1) = \begin{bmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{bmatrix}, &amp; T(2) = \begin{bmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{bmatrix}, T(3) = \begin{bmatrix} 0 \\ 0 \\ 1 \\ \vdots \\ 0 \end{bmatrix}, \ldots, \\ &amp; T(k-1) = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 1 \\ 0 \end{bmatrix}, T(k) = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \end{bmatrix} \end{aligned}\]
+
+<p>如果 \(y=k\)，则 \(T(k)\) 是一个全零向量 \(\mathbf{0}\)。</p>
+
+<p>另外，引入指示函数和期望，<strong>指示函数</strong> \(\mathbb{I}\{\cdot\}\) 用于将分类结果转化为数学表达式。</p>
+
+<p>\(\mathbb{I}\{y=i\}\) 的值：如果分类结果是 \(i\)，则为1；否则为0。</p>
+
+<p>期望 \(E(T(y)_i)\)：</p>
+
+<p>\(T(y)_i\) 代表向量 \(T(y)\) 的第 $i$ 个分量。</p>
+
+\[E(T(y)_i) = \sum_{y \in \{1, \ldots, k\}} T(y)_i \cdot p(y) = 1 \cdot p(y=i) + 0 \cdot p(y \ne i) = p(y=i)\]
+
+<p>这验证了 \(T(y)\) 向量的第 \(i\) 个分量的期望，正是第 \(i\) 类发生的概率 \(\phi_i\)（对于 \(i=1, \ldots, k-1\)）。在 Softmax 回归的推导中，这个 \(E(T(y))\) 会被设为 \(\phi\)，并与线性预测 \(\eta\) 通过连接函数联系起来。</p>
+
+<p>多项分布 PMF（使用指示函数）：</p>
+
+\[p(y; \phi) = \phi_1^{\mathbb{I}\{y=1\}} \phi_2^{\mathbb{I}\{y=2\}} \cdots \phi_k^{\mathbb{I}\{y=k\}}\]
+
+<p>其中，\(\mathbb{I}\{y=i\}\) 是指示函数，只有当 \(y=i\) 时取 1，否则取 0。</p>
+
+<p>由于 \(\phi_k = 1 - \sum_{i=1}^{k-1} \phi_i\)，且指示函数的和 \(\sum_{i=1}^{k} \mathbb{I}\{y=i\} = 1\)，所以 \(\mathbb{I}\{y=k\} = 1 - \sum_{i=1}^{k-1} \mathbb{I}\{y=i\}\)。</p>
+
+\[p(y; \phi) = \phi_1^{\mathbb{I}\{y=1\}} \phi_2^{\mathbb{I}\{y=2\}} \cdots \phi_k^{1 - \sum_{i=1}^{k-1} \mathbb{I}\{y=i\}}\]
+
+<p>即\(p(y; \phi) = \phi_1^{T(y)_1} \phi_2^{T(y)_2} \cdots \phi_k^{1 - \sum_{i=1}^{k-1} T(y)_i}\)</p>
+
+<p>取对数并写成 \(\exp(\cdot)\) 形式：</p>
+
+\[\begin{aligned} p(y; \phi) &amp;= \exp\left( T(y)_1 \log(\phi_1) + T(y)_2 \log(\phi_2) + \cdots + \left(1 - \sum_{i=1}^{k-1} T(y)_i\right) \log(\phi_k) \right) \\ &amp;= \exp\left( \sum_{i=1}^{k-1} T(y)_i \log(\phi_i) + \log(\phi_k) - \sum_{i=1}^{k-1} T(y)_i \log(\phi_k) \right)\end{aligned}\]
+
+<p>整理成指数族形式（引入 \(\phi_k\) 作为分母）：将所有 \(T(y)_i\) 对应的项归类，并提取 \(\log(\phi_k)\)：</p>
+
+\[\begin{aligned} p(y; \phi) &amp;= \exp\left( \sum_{i=1}^{k-1} T(y)_i \left(\log(\phi_i) - \log(\phi_k)\right) + \log(\phi_k) \right) \\ &amp;= \exp\left( \sum_{i=1}^{k-1} T(y)_i \log\left(\frac{\phi_i}{\phi_k}\right) + \log(\phi_k) \right) \\ &amp;= \exp\left( \begin{bmatrix} T(y)_1 \\ \vdots \\ T(y)_{k-1} \end{bmatrix}^T \begin{bmatrix} \log(\phi_1/\phi_k) \\ \vdots \\ \log(\phi_{k-1}/\phi_k) \end{bmatrix} - (-\log(\phi_k)) \right)\end{aligned}\]
+
+<p>与指数族规范形式 \(p(y; \eta) = b(y) \exp(\eta^T T(y) - a(\eta))\) 进行比对，得到最终的模型参数：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>参数</strong></th>
+      <th><strong>多项分布 (Softmax) 的对应项</strong></th>
+      <th><strong>解释</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>\(T(y)\)</strong></td>
+      <td>\(T(y) = \begin{bmatrix} \mathbb{I}\{y=1\} \\ \mathbb{I}\{y=2\} \\ \vdots \\ \mathbb{I}\{y=k-1\} \end{bmatrix}\)</td>
+      <td><strong>充分统计量</strong>，一个 \((k-1)\) 维的独热编码向量。</td>
+    </tr>
+    <tr>
+      <td><strong>\(\eta\)</strong></td>
+      <td>\(\eta = \begin{bmatrix} \log(\phi_1/\phi_k) \\ \log(\phi_2/\phi_k) \\ \vdots \\ \log(\phi_{k-1}/\phi_k) \end{bmatrix}\)</td>
+      <td><strong>自然参数</strong>，一个 \((k-1)\) 维向量，每个分量是 Log-Odds Ratio。</td>
+    </tr>
+    <tr>
+      <td><strong>\(a(\eta)\)</strong></td>
+      <td>\(a(\eta) = -\log(\phi_k)\)</td>
+      <td><strong>对数配分函数</strong>，确保概率总和为 1。</td>
+    </tr>
+    <tr>
+      <td><strong>\(b(y)\)</strong></td>
+      <td>\(b(y) = 1\)</td>
+      <td><strong>残余项</strong>。对于多项分布（没有阶乘项），\(b(y)\) 恒为 1。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="softmax-回归的核心理论基础"><strong>Softmax 回归</strong>的核心理论基础</h3>
+
+<ol>
+  <li>自然参数 \(\eta\) 即 Log-Odds Ratio</li>
+</ol>
+
+<p>自然参数 \(\eta_i\) 被定义为第 \(i\) 类相对于基准类 \(k\) 的对数几率比 (Log-Odds Ratio)：</p>
+
+\[\eta_i = \log\left(\frac{\phi_i}{\phi_k}\right)\]
+
+<ol>
+  <li>推导出 Softmax 函数（响应函数）</li>
+</ol>
+
+<p>从 \(\eta\) 的定义，我们可以反推出 Softmax 函数 \(\phi\)：</p>
+
+<ul>
+  <li>
+    <p>步骤 1： 对 \(\eta_i\) 取指数：</p>
+
+\[e^{\eta_i} = \frac{\phi_i}{\phi_k} \quad \implies \quad \phi_i = \phi_k e^{\eta_i} \quad (\text{for } i=1, \ldots, k-1)\]
+  </li>
+  <li>
+    <p><strong>步骤 2：</strong> 第 \(k\) 类可以定义为 \(\phi_k = \phi_k e^{\eta_k}\)，其中 \(\eta_k\) 被隐含地设定为 \(0\)。</p>
+  </li>
+  <li>
+    <p>步骤 3： 利用概率总和为 1 的约束：\(\sum_{j=1}^{k} \phi_j = 1\)</p>
+
+\[\sum_{j=1}^{k} \phi_j = \sum_{j=1}^{k} \phi_k e^{\eta_j} = \phi_k \sum_{j=1}^{k} e^{\eta_j} = 1\]
+
+    <p>解出 \(\phi_k\)：</p>
+
+\[\phi_k = \frac{1}{\sum_{j=1}^{k} e^{\eta_j}}\]
+  </li>
+  <li>
+    <p>步骤 4： 将 \(\phi_k\) 代回 \(\phi_i\) 的表达式，即将\(\phi_i = \phi_k e^{\eta_i} \quad (\text{for } i=1, \ldots, k-1)\)带入求和项</p>
+
+    <p>\(\sum_{j=1}^{k-1} \phi_j + \phi_k = 1\)中，得到\(\sum_{j=1}^{k-1} (\phi_k e^{\eta_j}) + \phi_k = 1\)，从等式左边提取公因式 \(\phi_k\)​：\(\phi_k \left( \sum_{j=1}^{k-1} e^{\eta_j} + 1 \right) = 1\)</p>
+
+    <p>将括号里的项重新写成一个包含 \(k\) 个类别的求和：(注意，这里的 \(+1\) 其实代表了 \(e^{\eta_k}\)，因为我们隐含地设定了 \(\eta_k = 0\) (\(e^0 = 1\))。)</p>
+
+\[\phi_k \left( \sum_{j=1}^{k} e^{\eta_j} \right) = 1\]
+
+    <p>现在，解出基准类别 $\phi_k$ 的表达式：</p>
+
+\[\phi_k = \frac{1}{\sum_{j=1}^{k} e^{\eta_j}} \quad\]
+
+    <p>最后一步，我们回到关系式 （$\phi_i = \phi_k e^{\eta_i}$），将我们刚刚解出的表达式  代入 \(\phi_k\) 的位置：</p>
+
+    <p>得到著名的 Softmax 函数：</p>
+
+\[\phi_i = \frac{e^{\eta_i}}{\sum_{j=1}^{k} e^{\eta_j}}\]
+  </li>
+</ul>
+
+<p>这一步是标准的归一化技巧：先用基准项（\(\phi_k\)）表示所有其他项（\(\phi_i\)），然后利用所有项的和等于 1 的约束，解出基准项，最后代回得到通用公式。</p>
+
+<hr />
+
+<p><strong>Log-Odds Ratio（对数几率比）</strong> 是 Softmax 回归（和 Logit 回归）中 \(\eta\) 的核心意义。</p>
+
+<ul>
+  <li><strong>Odds (几率)：</strong> \(\frac{P(\text{事件发生})}{P(\text{事件不发生})} = \frac{\phi}{1-\phi}\)。几率告诉我们事件发生的可能性是不发生的可能性的多少倍。</li>
+  <li><strong>Log-Odds (对数几率)：</strong> \(\log(\frac{\phi}{1-\phi})\)。取对数是为了将范围 \([0, \infty)\) 映射到 \((-\infty, \infty)\)，从而可以与线性模型 \(\theta^T x\) 相匹配。</li>
+</ul>
+
+<p>在 Softmax 回归 中，面对 \(k\) 个类别，用的是 Ratio (比率)：</p>
+
+\[\eta_i = \log\left(\frac{\phi_i}{\phi_k}\right)\]
+
+<p>这意味着：</p>
+
+<ol>
+  <li>不再与“不发生”作比较，而是与<strong>一个选定的基准类别 \(k\)</strong> 作比较。</li>
+  <li><strong>特殊意义：</strong> \(\eta_i\) 的数值直接告诉我们，<strong>第 \(i\) 类发生的对数几率，相对于第 \(k\) 类发生的对数几率，高出了多少。</strong></li>
+</ol>
+
+<p>如果 \(\theta_i\) 是特征 \(x_j\) 对应的模型系数，那么 \(\theta_i\) 代表着：<strong>当 \(x_j\) 增加 1 个单位时，第 \(i\) 类相对于基准类 \(k\) 的对数几率比 \(\eta_i\) 增加 \(\theta_i\) 个单位。</strong></p>
+
+<p>这种 Log-Odds Ratio 的形式，在统计学上是处理多项分布参数的最自然、最简洁的方式，也是确保 Softmax 模型能够被完美纳入指数族和 GLM 框架的关键。</p>
+
+<hr />
+
+<p>注意：\(\eta_k = \log\left(\frac{\phi_k}{\phi_k}\right) = \log(1) = 0\)</p>
+
+<p>将 \(\eta_k\) 设为 \(0\) 意味着<strong>第 \(k\) 类被选定为所有比较的基准类别</strong>。所有其他的线性预测器 \(\eta_1, \ldots, \eta_{k-1}\) 都被解释为相对于 \(\eta_k\) 的差异。</p>
+
+<p>这种设置与处理多项分布参数时使用 \(k-1\) 个参数（因为 \(\sum \phi_i = 1\)）的，最终只需要学习 \(k-1\) 组系数向量 \(\theta_1, \ldots, \theta_{k-1}\)。第 \(k\) 组系数 \(\theta_k\) 被隐含地设定为<strong>零向量</strong>（或被吸收进截距项）。</p>
+
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td>概率表示： Softmax 回归预测的是在给定输入 \(x\) 和模型参数 \(\theta\) 的条件下，输出为类别 \(i\) 的概率 $$p(y=i</td>
+      <td>x; \theta)\(，记为\)\phi_i$$。</td>
+    </tr>
+  </tbody>
+</table>
+
+\[p(y = i | x; \theta) = \phi_i\]
+
+<p>响应函数： 根据指数族分布的推导（我们之前讨论过），概率 \(\phi_i\) 由自然参数 \(\eta_i\) 经 Softmax 函数转换得到：</p>
+
+\[\phi_i = \frac{e^{\eta_i}}{\sum_{j=1}^{k} e^{\eta_j}}\]
+
+<p>线性预测子： Softmax 回归作为广义线性模型（GLM），其自然参数 \(\eta_i\) 由输入 \(x\) 的线性组合构成：</p>
+
+\[\eta_i = \theta_i^T x\]
+
+<p>注意：这里 \(\theta_i\) 是一个与类别 \(i\) 相关的参数向量，整个模型有 \(k\) 个这样的向量 \(\theta_1, \theta_2, \ldots, \theta_k\)。</p>
+
+<p><strong>最终假设函数:</strong> 将线性预测子代入响应函数，得到了 Softmax 回归的最终假设函数 \(h_{\theta}(x)\)，它输出一个 \(k\) 维的概率向量：</p>
+
+\[h_{\theta}(x) = \begin{cases} P(y=1|x) = \frac{e^{\theta_1^T x}}{\sum_{j=1}^{k} e^{\theta_j^T x}}, &amp; y=1 \\ P(y=2|x) = \frac{e^{\theta_2^T x}}{\sum_{j=1}^{k} e^{\theta_j^T x}}, &amp; y=2 \\ \vdots \\ P(y=k|x) = \frac{e^{\theta_k^T x}}{\sum_{j=1}^{k} e^{\theta_j^T x}}, &amp; y=k \end{cases}\]
+
+<p><strong>\(h_{\theta}(x)\) 的输出</strong> 是一个向量 \([\phi_1, \phi_2, \ldots, \phi_k]^T\)，其中 \(\sum_{i=1}^k \phi_i = 1\)，且 \(0 \le \phi_i \le 1\)。</p>
+
+<p>Softmax 是一个<strong>归一化指数函数</strong>:</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251120141218434.png" alt="image-20251120141218434" /></p>
+
+<p>假设我们有 \(k=3\) 个类别，输入 \(x\) 经过线性预测（即 \(\eta_i = \theta_i^T x\)）后，得到了 \(k=3\) 个原始分数 \(z_1, z_2, z_3\)：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>步骤</strong></th>
+      <th><strong>原始分数 (自然参数 η)</strong></th>
+      <th><strong>转换操作</strong></th>
+      <th><strong>结果值 (指数项 eη)</strong></th>
+      <th><strong>最终概率 ϕi</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1.</strong></td>
+      <td>\(z_1 = 3\)</td>
+      <td>\(e^{z_1}\)</td>
+      <td>\(e^3 \approx 20\)</td>
+      <td>\(y_1 = \frac{20}{23.75} \approx 0.88\)</td>
+    </tr>
+    <tr>
+      <td><strong>2.</strong></td>
+      <td>\(z_2 = 1\)</td>
+      <td>\(e^{z_2}\)</td>
+      <td>\(e^1 \approx 2.7\)</td>
+      <td>\(y_2 = \frac{2.7}{23.75} \approx 0.12\)</td>
+    </tr>
+    <tr>
+      <td><strong>3.</strong></td>
+      <td>\(z_3 = -3\)</td>
+      <td>\(e^{z_3}\)</td>
+      <td>\(e^{-3} \approx 0.05\)</td>
+      <td>\(y_3 = \frac{0.05}{23.75} \approx 0\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Softmax 机制:</p>
+
+<ul>
+  <li>1.<strong>指数化 (Exponentiation):</strong> 对每个原始分数 \(z_i\)（即 \(\eta_i\)）取指数 \(e^{z_i}\)。将分数映射到 \((0, \infty)\) 的范围内，确保输出的概率是非负的。同时，指数函数会<strong>放大分数之间的差异</strong>，分数越高，其指数值增长得越快。</li>
+  <li>2.<strong>求和 (Normalization Term):</strong> 计算所有指数项的和 \(\sum_{j=1}^3 e^{z_j}\)，确保所有概率之和为 1 的<strong>归一化因子</strong>（对应于指数族中的 \(e^{a(\eta)}\)）。</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>3.<strong>归一化 (Division):</strong> 将每个指数项除以总和，得到最终的概率 $$y_i = P(C_i</td>
+          <td>x)$$。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<blockquote>
+  <p>softmax输出的是概率分布，但其名称“Softmax”来源于它是一个<strong>平滑的、可微分的“argmax”函数</strong>的近似。它会给最大的输入分数（比如上面的\(z_1=3\)）分配一个<strong>远大于</strong>其他分数的概率（\(0.88\)），从而<strong>放大最大值</strong>。</p>
+</blockquote>
+
+<h3 id="多分类交叉熵损失">多分类交叉熵损失</h3>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251120143158820.png" alt="image-20251120143158820" /></p>
+
+<p>Softmax 回归的损失函数是通过最大化数据样本的<strong>对数似然函数</strong>推导出来的，这个函数就是著名的<strong>多分类交叉熵损失 (Multiclass Cross-Entropy Loss)</strong>。</p>
+
+<p>【1.似然函数 (Likelihood Function)】</p>
+
+<p>假设有一个包含 \(m\) 个独立同分布 (i.i.d.) 训练样本的数据集 \(\{(x^{(1)}, y^{(1)}), (x^{(2)}, y^{(2)}), \ldots, (x^{(m)}, y^{(m)})\}\), 其中 \(y^{(i)} \in \{1, \ldots, k\}\)。</p>
+
+<p>模型的参数是 \(\theta = \{\theta_1, \ldots, \theta_k\}\)。</p>
+
+<p>似然函数 \(\mathcal{L}(\theta)\) 是观察到整个数据集的概率，根据独立性原则，它是每个样本概率的乘积：</p>
+
+\[\mathcal{L}(\theta) = P(y^{(1)}, \ldots, y^{(m)} | x^{(1)}, \ldots, x^{(m)}; \theta) = \prod_{i=1}^{m} P(y^{(i)} | x^{(i)}; \theta)\]
+
+<table>
+  <tbody>
+    <tr>
+      <td>对于单个样本 \((x, y)\)，我们知道 $$P(y=j</td>
+      <td>x) = \phi_j\(。由于\)y\(只有一个取值，我们可以使用我们之前定义的指示函数\)\mathbb{I}{y=j}\(或充分统计量\)T(y)_j$$ 来简洁地表示这个概率：</td>
+    </tr>
+  </tbody>
+</table>
+
+\[P(y | x; \theta) = \prod_{j=1}^{k} \left( \phi_j \right)^{\mathbb{I}\{y=j\}}\]
+
+<p>其中 \(\phi_j\) 是 Softmax 函数：\(\phi_j = \frac{e^{\theta_j^T x}}{\sum_{l=1}^{k} e^{\theta_l^T x}}\)。</p>
+
+<p>将这个概率代入似然函数：</p>
+
+\[\mathcal{L}(\theta) = \prod_{i=1}^{m} \left[ \prod_{j=1}^{k} \left( \phi_j^{(i)} \right)^{\mathbb{I}\{y^{(i)}=j\}} \right]\]
+
+<p>【2.对数似然函数 (Log-Likelihood Function)】</p>
+
+<p>为了简化计算（将乘积转化为求和）并利用指数族分布的优点，我们取对数似然 \(\ell(\theta) = \log \mathcal{L}(\theta)\)：</p>
+
+\[\ell(\theta) = \log \left( \prod_{i=1}^{m} \prod_{j=1}^{k} \left( \phi_j^{(i)} \right)^{\mathbb{I}\{y^{(i)}=j\}} \right)\]
+
+\[\ell(\theta) = \sum_{i=1}^{m} \sum_{j=1}^{k} \mathbb{I}\{y^{(i)}=j\} \log\left( \phi_j^{(i)} \right)\]
+
+<p>【3.损失函数 (Loss Function)】</p>
+
+<p>在机器学习中，我们通常采用<strong>最小化损失函数</strong>的方式来训练模型，而不是最大化对数似然函数。</p>
+
+<p>损失函数 \(J(\theta)\) 被定义为负的平均对数似然函数：</p>
+
+\[J(\theta) = - \frac{1}{m} \ell(\theta) = - \frac{1}{m} \sum_{i=1}^{m} \sum_{j=1}^{k} \mathbb{I}\{y^{(i)}=j\} \log\left( \phi_j^{(i)} \right)\]
+
+<p>【4.交叉熵的本质】</p>
+
+<p>这个函数 \(J(\theta)\) 就是<strong>多分类交叉熵损失 (Multiclass Cross-Entropy Loss)</strong>。</p>
+
+<p>为什么叫交叉熵？在信息论中，交叉熵 \(H(p, q)\) 衡量的是用分布 \(q\)（模型预测的概率 \(\phi\)）来编码分布 \(p\)（真实标签 \(y\) 的概率分布）所需要的平均比特数。</p>
+
+<p>真实标签 \(y\) 的概率分布 \(p\) 是一个独热编码的分布，例如，如果真实标签是类别 3，那么 \(p\) 就是 \([0, 0, 1, 0, \ldots]^T\)。</p>
+
+<p>对于一个样本 \(i\)，其真实概率分布 \(p^{(i)}\) 是 \(p_j^{(i)} = \mathbb{I}\{y^{(i)}=j\}\)。</p>
+
+<p>样本 \(i\) 的交叉熵损失为：</p>
+
+\[J^{(i)}(\theta) = - \sum_{j=1}^{k} p_j^{(i)} \log\left( \phi_j^{(i)} \right)\]
+
+<p>由于 \(p_j^{(i)}\) 只有在 \(j\) 等于真实标签 \(y^{(i)}\) 时才为1，其余为0 ，所以上式简化为：</p>
+
+\[J^{(i)}(\theta) = - \log\left( \phi_{y^{(i)}}^{(i)} \right)\]
+
+<p>其中</p>
+
+<ul>
+  <li><strong>\(\phi_{y^{(i)}}^{(i)}\)</strong> 是模型预测的<strong>正确类别</strong>的概率。</li>
+  <li>\(\log(\phi_{y^{(i)}}^{(i)})\) 随着正确概率的增大而增大（但仍为负数）。</li>
+  <li><strong>最小化</strong> \(J(\theta)\) 等同于<strong>最大化</strong>正确类别的预测概率 \(\phi_{y^{(i)}}^{(i)}\)。</li>
+</ul>
+
+<p>最大化多项分布的对数似然，等价于最小化<strong>多分类交叉熵损失</strong>。这一损失函数具有<strong>凸性</strong>（由于指数族分布的良好性质），保证了模型可以通过梯度下降等优化算法稳定地找到全局最优参数。</p>
+
+<h3 id="损失函数的梯度">损失函数的梯度</h3>
+
+<p>现在来推导 Softmax 回归损失函数（多分类交叉熵）相对于模型参数 \(\theta_j\) 的梯度。这个梯度是训练模型时使用梯度下降法的核心。</p>
+
+<p>为了简洁，我们只推导<strong>单个样本</strong>的损失函数 \(J^{(i)}(\theta)\) 相对于<strong>某个特定类别 \(j\) 的参数向量 \(\theta_j\)</strong> 的梯度。</p>
+
+<p>单个样本 \((x, y)\) 的损失函数（负对数似然）为：</p>
+
+\[J(\theta) = - \log\left( \phi_{y} \right)\]
+
+<p>其中，\(\phi_{y}\) 是模型对真实类别 \(y\) 预测的概率。</p>
+
+<p>\(\phi_j\) 是 Softmax 函数：</p>
+
+\[\phi_j = \frac{e^{\eta_j}}{\sum_{l=1}^{k} e^{\eta_l}}\]
+
+<p>并且 \(\eta_j = \theta_j^T x\)。</p>
+
+<p>我们的目标是计算损失函数 \(J(\theta)\) 对第 \(j\) 个类别的参数向量 \(\theta_j\) 的偏导数：</p>
+
+\[\nabla_{\theta_j} J(\theta) = \frac{\partial J(\theta)}{\partial \theta_j}\]
+
+<hr />
+
+<p>\(J(\theta)\) 是关于 \(\phi_y\) 的函数，\(\phi_y\) 是关于 \(\eta_l\) 的函数，而 \(\eta_l\) 是关于 \(\theta_j\) 的函数，我们需要使用链式法则：</p>
+
+\[\frac{\partial J(\theta)}{\partial \theta_j} = \sum_{l=1}^{k} \left( \frac{\partial J(\theta)}{\partial \phi_l} \cdot \frac{\partial \phi_l}{\partial \eta_j} \cdot \frac{\partial \eta_j}{\partial \theta_j} \right)\]
+
+<p>\(\frac{\partial J(\theta)}{\partial \phi_l}\) 只有在 \(l=y\) 时非零，所以简化为：</p>
+
+\[\frac{\partial J(\theta)}{\partial \theta_j} = \frac{\partial J(\theta)}{\partial \phi_y} \cdot \frac{\partial \phi_y}{\partial \eta_j} \cdot \frac{\partial \eta_j}{\partial \theta_j}\]
+
+<p>然后计算各部分偏导数：</p>
+
+<p>A. \(\frac{\partial J(\theta)}{\partial \phi_y}\) (损失函数对概率的导数)</p>
+
+\[J(\theta) = - \log(\phi_y)\]
+
+\[\frac{\partial J(\theta)}{\partial \phi_y} = \frac{\partial (-\log(\phi_y))}{\partial \phi_y} = - \frac{1}{\phi_y}\]
+
+<p>B. \(\frac{\partial \eta_j}{\partial \theta_j}\) (自然参数对参数的导数)</p>
+
+\[\eta_j = \theta_j^T x\]
+
+\[\frac{\partial \eta_j}{\partial \theta_j} = x\]
+
+<p>(注意 \(\frac{\partial}{\partial \theta_j}\) 意味着对向量 \(\theta_j\) 求梯度，结果是向量 \(x\)。)</p>
+
+<p>C. \(\frac{\partial \phi_y}{\partial \eta_j}\) (Softmax 对原始分数的导数)</p>
+
+<p>这是最复杂的一步，需要根据 \(j\) 是否等于真实类别 \(y\) 进行分情况讨论：</p>
+
+<p><strong>Case 1: \(j = y\) (计算 \(\phi_y\) 对 \(\eta_y\) 的导数)</strong></p>
+
+\[\phi_y = \frac{e^{\eta_y}}{\sum_{l=1}^{k} e^{\eta_l}}\]
+
+<p>使用商法则 \(\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}\)，其中 \(u = e^{\eta_y}\)，\(v = \sum_{l=1}^{k} e^{\eta_l}\)。</p>
+
+\[\frac{\partial \phi_y}{\partial \eta_y} = \frac{(e^{\eta_y}) \sum_{l=1}^{k} e^{\eta_l} - e^{\eta_y} (e^{\eta_y})}{\left(\sum_{l=1}^{k} e^{\eta_l}\right)^2}\]
+
+\[= \frac{e^{\eta_y}}{\sum_{l=1}^{k} e^{\eta_l}} - \frac{e^{\eta_y} e^{\eta_y}}{\left(\sum_{l=1}^{k} e^{\eta_l}\right)^2} = \phi_y - \phi_y \cdot \phi_y\]
+
+\[\frac{\partial \phi_y}{\partial \eta_y} = \phi_y (1 - \phi_y)\]
+
+<p><strong>Case 2: \(j \ne y\) (计算 \(\phi_y\) 对 \(\eta_j\) 的导数)</strong></p>
+
+\[\frac{\partial \phi_y}{\partial \eta_j} = \frac{(0) \sum_{l=1}^{k} e^{\eta_l} - e^{\eta_y} (e^{\eta_j})}{\left(\sum_{l=1}^{k} e^{\eta_l}\right)^2}\]
+
+\[= - \frac{e^{\eta_y}}{\sum_{l=1}^{k} e^{\eta_l}} \cdot \frac{e^{\eta_j}}{\sum_{l=1}^{k} e^{\eta_l}} = - \phi_y \cdot \phi_j\]
+
+\[\frac{\partial \phi_y}{\partial \eta_j} = - \phi_y \phi_j\]
+
+<hr />
+
+<p>现在，将 A, B, C 代回链式法则，同样分 \(j=y\) 和 \(j \ne y\) 两种情况。</p>
+
+\[\frac{\partial J(\theta)}{\partial \theta_j} = \frac{\partial J(\theta)}{\partial \phi_y} \cdot \frac{\partial \phi_y}{\partial \eta_j} \cdot \frac{\partial \eta_j}{\partial \theta_j}\]
+
+<p><strong>Case 1: \(j = y\) (真实类别的参数梯度)</strong></p>
+
+\[\nabla_{\theta_y} J(\theta) = \underbrace{\left(- \frac{1}{\phi_y}\right)}_{\text{A}} \cdot \underbrace{\left(\phi_y (1 - \phi_y)\right)}_{\text{C1}} \cdot \underbrace{(x)}_{\text{B}}\]
+
+\[= - (1 - \phi_y) x = (\phi_y - 1) x\]
+
+<p><strong>Case 2: \(j \ne y\) (非真实类别的参数梯度)</strong></p>
+
+\[\nabla_{\theta_j} J(\theta) = \underbrace{\left(- \frac{1}{\phi_y}\right)}_{\text{A}} \cdot \underbrace{\left(- \phi_y \phi_j\right)}_{\text{C2}} \cdot \underbrace{(x)}_{\text{B}}\]
+
+\[= \phi_j x\]
+
+<blockquote>
+  <p>可以用一个统一的公式来表达梯度 \(\nabla_{\theta_j} J(\theta)\)：</p>
+
+\[\nabla_{\theta_j} J(\theta) = (\phi_j - \mathbb{I}\{y=j\}) x\]
+
+  <p>其中，\(\mathbb{I}\{y=j\}\) 是指示函数：如果 \(j\) 是真实类别 \(y\)，则为1；否则为0。</p>
+
+  <p>【注意】括号内的项 \((\phi_j - \mathbb{I}\{y=j\})\) 是<strong>预测概率</strong>和<strong>真实标签</strong>之间的<strong>误差</strong>。</p>
+
+  <p><strong>如果 \(j\) 是真实类别 \(y\)：</strong> 误差是 \((\phi_y - 1)\)。由于 \(\phi_y &lt; 1\)，误差是负的。梯度下降会向<strong>增加</strong> \(\phi_y\) 的方向调整 \(\theta_y\)。</p>
+
+  <p><strong>如果 \(j\) 不是真实类别 \(y\)：</strong> 误差是 \((\phi_j - 0) = \phi_j\)。梯度是正的。梯度下降会向<strong>减少</strong> \(\phi_j\) 的方向调整 \(\theta_j\)。</p>
+</blockquote>
+
+<p>模型的参数 \(\theta_j\) 的更新量正比于：</p>
+
+\[\text{误差} \times \text{输入特征}\]
+
+<p><strong>这个公式与线性回归和逻辑回归的梯度公式形式惊人地相似，展现了 GLM 框架的统一性。</strong></p>
+
+<p>有了这个梯度，我们就可以使用梯度下降（或其变体）来迭代更新所有 \(\theta_j\) 向量，直到损失函数收敛到最小值。</p>
+
+<h2 id="案例">案例</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">torch</span>
+<span class="kn">import</span> <span class="n">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="n">torch.optim</span> <span class="k">as</span> <span class="n">optim</span>
+<span class="kn">import</span> <span class="n">torchvision</span>
+<span class="kn">import</span> <span class="n">torchvision.transforms</span> <span class="k">as</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="n">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+
+<span class="c1"># --- 1. 数据加载与预处理 ---
+# 定义转换：将图像转换为张量，并归一化到 [0, 1]
+</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="p">.</span><span class="nc">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="p">.</span><span class="nc">ToTensor</span><span class="p">(),</span> <span class="c1"># 将 PIL Image 或 NumPy ndarray 转换为 Tensor
+</span>    <span class="c1"># PyTorch 的 ToTensor 默认会将像素值除以 255.0，实现归一化
+</span><span class="p">])</span>
+
+<span class="c1"># 加载 FashionMNIST 数据集
+</span><span class="n">mnist_train</span> <span class="o">=</span> <span class="n">torchvision</span><span class="p">.</span><span class="n">datasets</span><span class="p">.</span><span class="nc">FashionMNIST</span><span class="p">(</span>
+    <span class="n">root</span><span class="o">=</span><span class="sh">'</span><span class="s">./data</span><span class="sh">'</span><span class="p">,</span> 
+    <span class="n">train</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+    <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+    <span class="n">transform</span><span class="o">=</span><span class="n">transform</span>
+<span class="p">)</span>
+<span class="n">mnist_test</span> <span class="o">=</span> <span class="n">torchvision</span><span class="p">.</span><span class="n">datasets</span><span class="p">.</span><span class="nc">FashionMNIST</span><span class="p">(</span>
+    <span class="n">root</span><span class="o">=</span><span class="sh">'</span><span class="s">./data</span><span class="sh">'</span><span class="p">,</span> 
+    <span class="n">train</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
+    <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+    <span class="n">transform</span><span class="o">=</span><span class="n">transform</span>
+<span class="p">)</span>
+
+<span class="c1"># 数据读取
+</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="nc">DataLoader</span><span class="p">(</span><span class="n">mnist_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="nc">DataLoader</span><span class="p">(</span><span class="n">mnist_test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c1"># 标签对应的服饰名字
+</span><span class="k">def</span> <span class="nf">get_text_labels</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="n">text_labels</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sh">'</span><span class="s">t-shirt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">trouser</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">pullover</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">dress,</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">coat</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">sandal</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">shirt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">sneaker</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">bag</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">ankle boot</span><span class="sh">'</span>
+    <span class="p">]</span>
+    <span class="c1"># label 是一个 Tensor 或 NumPy 数组
+</span>    <span class="k">return</span> <span class="p">[</span><span class="n">text_labels</span><span class="p">[</span><span class="nf">int</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">label</span><span class="p">]</span>
+
+<span class="c1"># --- 2. 定义模型 ---
+# 在 PyTorch 中，我们使用 nn.Module 来定义模型。
+# Softmax 回归本质上是一个线性层。
+</span>
+<span class="k">class</span> <span class="nc">SoftmaxRegression</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">num_inputs</span><span class="p">,</span> <span class="n">num_outputs</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">SoftmaxRegression</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+        <span class="c1"># 784 (输入特征) -&gt; 10 (输出类别)
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Linear</span><span class="p">(</span><span class="n">num_inputs</span><span class="p">,</span> <span class="n">num_outputs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># x 的形状是 (batch_size, 1, 28, 28)
+</span>        <span class="c1"># 我们需要将其展平为 (batch_size, 784)
+</span>        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="nf">view</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> 
+        <span class="c1"># 然后通过线性层 (这一步包含了 wx + b)
+</span>        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># 初始化模型
+</span><span class="n">num_inputs</span> <span class="o">=</span> <span class="mi">784</span>  <span class="c1"># 28 * 28
+</span><span class="n">num_outputs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">net</span> <span class="o">=</span> <span class="nc">SoftmaxRegression</span><span class="p">(</span><span class="n">num_inputs</span><span class="p">,</span> <span class="n">num_outputs</span><span class="p">)</span>
+
+<span class="c1"># --- 3. 定义损失函数和优化器 ---
+# PyTorch 的 nn.CrossEntropyLoss 包含了 Softmax 运算和交叉熵计算，因此
+# 模型的 forward 函数只需要输出未经 Softmax 的原始得分 (logits)。
+</span>
+<span class="c1"># 损失函数: 交叉熵 (会自动应用 Softmax)
+</span><span class="n">loss</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">CrossEntropyLoss</span><span class="p">()</span> 
+
+<span class="c1"># 优化器: 随机梯度下降 (SGD)
+</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="p">.</span><span class="nc">SGD</span><span class="p">(</span><span class="n">net</span><span class="p">.</span><span class="nf">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+
+<span class="c1"># --- 4. 辅助函数 ---
+</span><span class="k">def</span> <span class="nf">evaluate_accuracy</span><span class="p">(</span><span class="n">data_iter</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
+    <span class="n">acc_sum</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span> <span class="c1"># 在测试阶段禁用梯度计算
+</span>        <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">data_iter</span><span class="p">:</span>
+            <span class="c1"># net(X) 返回 logits (未经 Softmax 的得分)
+</span>            <span class="c1"># argmax(dim=1) 找到概率最高的类别
+</span>            <span class="n">acc_sum</span> <span class="o">+=</span> <span class="p">(</span><span class="nf">net</span><span class="p">(</span><span class="n">X</span><span class="p">).</span><span class="nf">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">y</span><span class="p">).</span><span class="nf">float</span><span class="p">().</span><span class="nf">sum</span><span class="p">().</span><span class="nf">item</span><span class="p">()</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="n">y</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">acc_sum</span> <span class="o">/</span> <span class="n">n</span>
+
+<span class="c1"># --- 5. 训练模型 ---
+</span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">开始训练...</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="n">train_loss_sum</span><span class="p">,</span> <span class="n">train_acc_sum</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">:</span>
+        <span class="c1"># 清除梯度
+</span>        <span class="n">optimizer</span><span class="p">.</span><span class="nf">zero_grad</span><span class="p">()</span> 
+        
+        <span class="c1"># 前向传播 (计算预测的 logits)
+</span>        <span class="n">y_hat</span> <span class="o">=</span> <span class="nf">net</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        
+        <span class="c1"># 计算损失
+</span>        <span class="n">l</span> <span class="o">=</span> <span class="nf">loss</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        
+        <span class="c1"># 反向传播 (计算梯度)
+</span>        <span class="n">l</span><span class="p">.</span><span class="nf">backward</span><span class="p">()</span>
+        
+        <span class="c1"># 更新模型参数
+</span>        <span class="n">optimizer</span><span class="p">.</span><span class="nf">step</span><span class="p">()</span>
+        
+        <span class="c1"># 统计训练指标
+</span>        <span class="n">train_loss_sum</span> <span class="o">+=</span> <span class="n">l</span><span class="p">.</span><span class="nf">item</span><span class="p">()</span>
+        <span class="n">train_acc_sum</span> <span class="o">+=</span> <span class="p">(</span><span class="n">y_hat</span><span class="p">.</span><span class="nf">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">y</span><span class="p">).</span><span class="nf">sum</span><span class="p">().</span><span class="nf">item</span><span class="p">()</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="n">y</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># 模型训练完之后进行测试
+</span>    <span class="n">test_acc</span> <span class="o">=</span> <span class="nf">evaluate_accuracy</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">net</span><span class="p">)</span>
+    
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Epoch %d. Loss: %f, Train acc %f, Test acc %f</span><span class="sh">"</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">train_loss_sum</span> <span class="o">/</span> <span class="nf">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">),</span> <span class="n">train_acc_sum</span> <span class="o">/</span> <span class="n">n</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">))</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">训练完成。</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># --- 6. 对新的样本进行标签预测 ---
+# 取测试集前 9 个样本
+# --- 6. 对新的样本进行标签预测 ---
+</span><span class="n">num_samples</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="c1"># 从数据集中提取前 num_samples 个样本
+# mnist_test[i] 返回的是 (Image Tensor, label scalar)
+</span>
+<span class="c1"># 存储提取出的图像和标签
+</span><span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">true_labels_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
+    <span class="n">img_tensor</span><span class="p">,</span> <span class="n">label_scalar</span> <span class="o">=</span> <span class="n">mnist_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">images</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">img_tensor</span><span class="p">)</span>
+    <span class="n">true_labels_list</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">label_scalar</span><span class="p">)</span>
+
+<span class="c1"># 将图像列表堆叠成一个大的 Tensor (batch_size, channels, height, width)
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">stack</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> 
+<span class="c1"># 将标签列表转换为 Tensor
+</span><span class="n">label</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">tensor</span><span class="p">(</span><span class="n">true_labels_list</span><span class="p">)</span>
+
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="se">\n</span><span class="s">true labels:</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># 使用新的 label Tensor
+</span><span class="nf">print</span><span class="p">(</span><span class="nf">get_text_labels</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+
+<span class="c1"># 禁用梯度，进行预测
+</span><span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
+    <span class="c1"># 确保模型使用的是展平的输入 (784)
+</span>    <span class="n">y_hat_logits</span> <span class="o">=</span> <span class="nf">net</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> 
+    <span class="c1"># 找到预测概率最高的类别
+</span>    <span class="n">predicted_labels</span> <span class="o">=</span> <span class="n">y_hat_logits</span><span class="p">.</span><span class="nf">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">predicted labels:</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">get_text_labels</span><span class="p">(</span><span class="n">predicted_labels</span><span class="p">.</span><span class="nf">numpy</span><span class="p">()))</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251118205831477.png" alt="image-20251118205831477" /></p>
+
+<h1 id="6逻辑回归的线性不可分">6.逻辑回归的线性不可分</h1>
+
+<p>例子：有4个坐标(0,0),(0,1),(1,0),(1,1)，每个坐标对应了一个图形，能找得到一个边界区分下面的2类图形吗？</p>
+
+<p>答：找不到。这就是<strong>线性不可分</strong>。</p>
+
+<blockquote>
+  <p>实际工程的项目，一定是线性不可分的场景更加多。</p>
+</blockquote>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251119004243945.png" alt="image-20251119004243945" style="zoom:50%;" /></p>
+
+<hr />
+
+<p>线性可分是指：在一个 $D$ 维特征空间中，如果存在一个 $D-1$ 维的超平面（例如，在二维空间中是一条直线），能够将两类样本完全、准确地划分开，那么称这两类样本是<strong>线性可分</strong>的。</p>
+
+<p>上图是一个异或问题 (XOR)。这个问题的逻辑是：<strong>当且仅当 \(x_1\) 和 \(x_2\) 不同时，类别为 1 (三角形)</strong>。</p>
+
+<p>此时用逻辑回归就不能解决这个问题了。逻辑回归（以及其他任何<strong>线性分类器</strong>，如感知机 Perceptron）的核心是找到一个线性决策边界 \(\mathbf{w}^T \mathbf{x} + b = 0\)。由于 <strong>XOR 问题是线性不可分的</strong>，这个模型无论如何优化权重 \(\mathbf{w}\) 和偏置 \(b\)，都无法找到一条直线来正确地对所有四个点进行分类。</p>
+
+<p>要解决像 XOR 这样的线性不可分问题，我们必须引入<strong>非线性</strong>。主要有两种策略：</p>
+
+<ul>
+  <li>策略 A：特征变换 (Feature Transformation)</li>
+  <li>策略 B：引入非线性模型 (多层神经网络)</li>
+</ul>
+
+<hr />
+
+<h2 id="61策略a-特征变换">6.1策略A-特征变换</h2>
+
+<p>特征变化是最直接的方法，目标是将数据映射到一个<strong>更高维的空间</strong>，在这个新空间中，数据变得线性可分。</p>
+
+<p>核技巧的思路：<strong>原始特征：</strong> \(\mathbf{x} = (x_1, x_2)\)，<strong>添加非线性特征，</strong> 即引入一个乘积特征 \(x_3 = x_1 x_2\)，最终的<strong>新特征空间 \(\Phi(\mathbf{x})\)：</strong> \((x_1, x_2, x_3)\)</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>x=(x1,x2)</strong></th>
+      <th><strong>x3=x1x2</strong></th>
+      <th><strong>Φ(x)=(x1,x2,x3)</strong></th>
+      <th><strong>类别</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>$(0, 0)$</td>
+      <td>0</td>
+      <td>$(0, 0, 0)$</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>$(0, 1)$</td>
+      <td>0</td>
+      <td>$(0, 1, 0)$</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>$(1, 0)$</td>
+      <td>0</td>
+      <td>$(1, 0, 0)$</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>$(1, 1)$</td>
+      <td>1</td>
+      <td>$(1, 1, 1)$</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>特征由2维变成3维，在这个三维空间中，可以找到一个超平面（一个平面）来区分这两类点，从而解决线性不可分问题。</p>
+
+<p>与2维相同的思路，寻找一组新的权重 \(\mathbf{w}' = (w_1, w_2, w_3)\) 和偏置 \(b'\)。</p>
+
+\[\mathbf{w}'^T \Phi(\mathbf{x}) + b' = 0\]
+
+<p>展开形式（即平面的方程）就是：</p>
+
+\[w_1 x_1 + w_2 x_2 + w_3 (x_1 x_2) + b' = 0\]
+
+<p>寻找最佳平面就是找到最优的参数集合 \((\mathbf{w}', b')\)，使得这个平面能够在新空间中将两类样本准确地分开。</p>
+
+<p>为了训练模型，需要定义一个损失函数 \(L(\mathbf{w}', b')\)。</p>
+
+<ul>
+  <li>对于逻辑回归，使用<strong>二元交叉熵损失</strong>。</li>
+  <li>对于线性 SVM，使用 <strong>Hinge Loss</strong>。</li>
+</ul>
+
+<p>用逻辑回归解决的代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">torch</span>
+<span class="kn">import</span> <span class="n">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="n">torch.optim</span> <span class="k">as</span> <span class="n">optim</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="n">matplotlib</span> <span class="k">as</span> <span class="n">mpl</span>
+
+<span class="c1"># --- 字体设置 ---
+</span><span class="n">mpl</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">font.sans-serif</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Noto Sans CJK SC</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">SimHei</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">mpl</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">axes.unicode_minus</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c1"># --- 1. 准备 XOR 数据 ---
+# 原始的 XOR 数据点
+</span><span class="n">X_raw</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">tensor</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># 对应的标签 (0: 圆形, 1: 三角形)
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="n">float32</span><span class="p">).</span><span class="nf">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># --- 2. 特征工程: 引入乘积特征 x1*x2 ---
+# x3 = x1 * x2
+</span><span class="n">x1_x2</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_raw</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">X_raw</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]).</span><span class="nf">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 计算 x1*x2 并增加一个维度
+</span>
+<span class="c1"># 拼接原始特征和新特征
+# 新特征向量是 (x1, x2, x1*x2)
+</span><span class="n">X_extended</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">cat</span><span class="p">((</span><span class="n">X_raw</span><span class="p">,</span> <span class="n">x1_x2</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">扩展后的特征 X_extended:</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="n">X_extended</span><span class="p">)</span>
+
+<span class="c1"># --- 3. 定义逻辑回归模型 (使用扩展特征) ---
+</span><span class="k">class</span> <span class="nc">LogisticRegressionExtended</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">num_inputs</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">(</span><span class="n">LogisticRegressionExtended</span><span class="p">,</span> <span class="n">self</span><span class="p">).</span><span class="nf">__init__</span><span class="p">()</span>
+        <span class="c1"># 3 (输入特征: x1, x2, x1*x2) -&gt; 1 (输出: 概率)
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Linear</span><span class="p">(</span><span class="n">num_inputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Sigmoid 激活函数通常在 BCEWithLogitsLoss 中隐式包含，
+</span>        <span class="c1"># 但为了 forward 明确输出概率，我们在这里加上
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">sigmoid</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">Sigmoid</span><span class="p">()</span> 
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">sigmoid</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">linear</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+<span class="c1"># 模型初始化
+</span><span class="n">num_extended_inputs</span> <span class="o">=</span> <span class="n">X_extended</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># 3
+</span><span class="n">model</span> <span class="o">=</span> <span class="nc">LogisticRegressionExtended</span><span class="p">(</span><span class="n">num_extended_inputs</span><span class="p">)</span>
+
+<span class="c1"># --- 4. 定义损失函数和优化器 ---
+# nn.BCELoss 需要模型直接输出概率 (0到1之间)
+# nn.BCEWithLogitsLoss 更稳定，它内部包含 Sigmoid，所以模型forward不需要Sigmoid
+# 这里我们的模型forward已经有Sigmoid，所以直接用BCELoss
+</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="nc">BCELoss</span><span class="p">()</span> 
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="p">.</span><span class="nc">SGD</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="nf">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># --- 5. 训练模型 ---
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">开始训练...</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">5000</span> <span class="c1"># 训练更多轮次以确保收敛
+</span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="n">optimizer</span><span class="p">.</span><span class="nf">zero_grad</span><span class="p">()</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="nf">model</span><span class="p">(</span><span class="n">X_extended</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="nf">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">loss</span><span class="p">.</span><span class="nf">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="p">.</span><span class="nf">step</span><span class="p">()</span>
+
+    <span class="nf">if </span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">Epoch [</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">epochs</span><span class="si">}</span><span class="s">], Loss: </span><span class="si">{</span><span class="n">loss</span><span class="p">.</span><span class="nf">item</span><span class="p">()</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">训练完成。</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># --- 6. 获取训练后的模型参数 ---
+# 提取权重和偏置
+# net.linear.weight 是一个 (1, num_inputs) 的张量
+# net.linear.bias 是一个 (1,) 的张量
+</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w3</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">weight</span><span class="p">.</span><span class="nf">squeeze</span><span class="p">().</span><span class="nf">tolist</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">bias</span><span class="p">.</span><span class="nf">item</span><span class="p">()</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">最终学习到的权重 w = (</span><span class="si">{</span><span class="n">w1</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">w2</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">w3</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">)</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">最终学习到的偏置 b = </span><span class="si">{</span><span class="n">b</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># --- 7. 可视化结果 ---
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># 绘制原始数据点
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">X_raw</span><span class="p">)):</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">X_raw</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_raw</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="nf">item</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="sh">'</span><span class="s">o</span><span class="sh">'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="sh">'</span><span class="s">black</span><span class="sh">'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">类别 0 (圆形)</span><span class="sh">'</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="sh">""</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="sh">'</span><span class="s">^</span><span class="sh">'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="sh">'</span><span class="s">black</span><span class="sh">'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">类别 1 (三角形)</span><span class="sh">'</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">1</span> <span class="k">else</span> <span class="sh">""</span><span class="p">)</span>
+
+<span class="c1"># 绘制决策边界曲线
+# 定义一个网格来评估决策函数
+</span><span class="n">x1_min</span><span class="p">,</span> <span class="n">x1_max</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span>
+<span class="n">x2_min</span><span class="p">,</span> <span class="n">x2_max</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span>
+<span class="n">xx1</span><span class="p">,</span> <span class="n">xx2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="n">x1_min</span><span class="p">,</span> <span class="n">x1_max</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+                       <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="n">x2_min</span><span class="p">,</span> <span class="n">x2_max</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+<span class="c1"># 计算决策函数的值 (Logits)
+# Z = w1*x1 + w2*x2 + w3*x1*x2 + b
+</span><span class="n">Z</span> <span class="o">=</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">xx1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">xx2</span> <span class="o">+</span> <span class="n">w3</span> <span class="o">*</span> <span class="p">(</span><span class="n">xx1</span> <span class="o">*</span> <span class="n">xx2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="c1"># 绘制决策边界 (Z=0 的等高线)
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">contour</span><span class="p">(</span><span class="n">xx1</span><span class="p">,</span> <span class="n">xx2</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="sh">'</span><span class="s">green</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="sh">'</span><span class="s">--</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">XOR 问题：通过特征扩展实现的非线性决策边界</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">$x_1$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">$x_2$</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlim</span><span class="p">(</span><span class="n">x1_min</span><span class="p">,</span> <span class="n">x1_max</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylim</span><span class="p">(</span><span class="n">x2_min</span><span class="p">,</span> <span class="n">x2_max</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">:</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+
+<span class="c1"># --- 8. 验证预测结果 ---
+</span><span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="nf">model</span><span class="p">(</span><span class="n">X_extended</span><span class="p">)</span>
+    <span class="n">predicted_classes</span> <span class="o">=</span> <span class="p">(</span><span class="n">predictions</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">).</span><span class="nf">float</span><span class="p">()</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">模型预测结果:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">真实标签:</span><span class="sh">"</span><span class="p">,</span> <span class="n">y</span><span class="p">.</span><span class="nf">squeeze</span><span class="p">().</span><span class="nf">tolist</span><span class="p">())</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">预测概率:</span><span class="sh">"</span><span class="p">,</span> <span class="p">[</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">p</span><span class="p">.</span><span class="nf">item</span><span class="p">()</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">predictions</span><span class="p">.</span><span class="nf">squeeze</span><span class="p">()])</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">预测类别:</span><span class="sh">"</span><span class="p">,</span> <span class="n">predicted_classes</span><span class="p">.</span><span class="nf">squeeze</span><span class="p">().</span><span class="nf">tolist</span><span class="p">())</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251119142409259.png" alt="image-20251119142409259" style="zoom: 67%;" /></p>
+
+<hr />
+
+<p>虽然是三维的，但是画图，看到的是投影的边界，看上去像双曲线。</p>
+
+<hr />
+
+<p>以上的特征组合是\(x_1x_2\)，但是特征组合的方式多种多样，可以是\(x_1^2\)，也可以是\(x_2^2\)，…，等等。</p>
+
+<p>这就是特征工程的任务了，找到最好的某种特征的组合，得到最终的模型，使得分类任务完成的最好。</p>
+
+<hr />
+
+<p>另外，要注意，对于0.5的边界，其实也不一定合理，因为<strong>分类器有一定的概率预测错误</strong>。比如癌症，建议边界卡的低一点。宁可让小概率得癌症的人多检查几次，也不要认为他没有得癌症回家了，这是需要编程自己根据实际情况调整边界的。</p>
+
+<h2 id="62策略b-引入非线性模型-多层神经网络">6.2策略B-引入非线性模型 (多层神经网络)</h2>
+
+<p>这是现代机器学习中最常用的方法：</p>
+
+<ul>
+  <li><strong>多层感知机 (MLP)：</strong> 在输入层和输出层之间添加一个或多个<strong>隐藏层</strong>，并在隐藏层中引入<strong>非线性激活函数</strong>（如 ReLU, Sigmoid）。</li>
+  <li><strong>工作原理：</strong> 每个隐藏层可以被视为一个自动学习特征变换 Φ(x) 的模块。通过堆叠多个非线性层，模型能够学习到任意复杂的非线性决策边界，轻松解决 XOR 等问题。</li>
+</ul>
+
+<h1 id="7glm-模型的梯度更新形式都具有高度的统一性">7.GLM 模型的梯度更新形式都具有高度的统一性</h1>
+
+<p>来详细对比 Softmax 回归、逻辑回归和线性回归的<strong>单个样本</strong>的参数更新公式，看看它们的相似之处。</p>
+
+<blockquote>
+  <p>广义线性模型（GLM）理论中最核心的洞察之一：<strong>所有 GLM 模型的梯度更新形式都具有高度的统一性。</strong></p>
+</blockquote>
+
+<p>所有三种模型的参数更新都是基于 梯度下降法 的迭代更新规则：</p>
+
+\[\theta_{\text{new}} = \theta_{\text{old}} - \alpha \cdot \nabla_{\theta} J(\theta)\]
+
+<p>其中 \(\alpha\) 是学习率，\(\nabla_{\theta} J(\theta)\) 是梯度（损失函数 \(J(\theta)\) 对参数 \(\theta\) 的偏导数）。</p>
+
+<p>我们关注的重点是<strong>梯度项 \(\nabla_{\theta} J(\theta)\)</strong>。</p>
+
+<hr />
+
+<p>Softmax 回归 (多分类)是多分类交叉熵损失 (负对数似然)。梯度公式如下：</p>
+
+\[\nabla_{\theta_j} J(\theta) = \underbrace{(\phi_j - \mathbb{I}\{y=j\})}_{\text{误差项}} \cdot \underbrace{x}_{\text{输入特征}}\]
+
+<p>逻辑回归 (二分类)是 Softmax 回归在 \(k=2\) 时的特例。它只学习一个参数向量 \(\theta\)（通常 \(\theta_1\)）。损失函数是二元交叉熵损失 (BCE)。梯度公式如下：</p>
+
+\[\nabla_{\theta} J(\theta) = \underbrace{(\phi - y)}_{\text{误差项}} \cdot \underbrace{x}_{\text{输入特征}}\]
+
+<table>
+  <tbody>
+    <tr>
+      <td>其中，\(\phi = h_{\theta}(x)\) 是模型预测 $$P(y=1</td>
+      <td>x)\(的概率，而\)y$$ 是真实标签（0 或 1）。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>线性回归 (连续值预测)的损失函数是MSE（均方误差），梯度公式是：</p>
+
+\[\nabla_{\theta} J(\theta) = \underbrace{(h_{\theta}(x) - y)}_{\text{误差项}} \cdot \underbrace{x}_{\text{输入特征}}\]
+
+<p>其中，\(h_{\theta}(x) = \theta^T x\) 是模型的预测值，\(y\) 是真实值。</p>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>模型</strong></th>
+      <th><strong>损失函数 J(θ)</strong></th>
+      <th><strong>梯度 ∇θJ(θ)</strong></th>
+      <th><strong>误差项 (预测−真实)</strong></th>
+      <th><strong>基础分布</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>线性回归</strong></td>
+      <td>MSE</td>
+      <td>\((h_{\theta}(x) - y) x\)</td>
+      <td>(预测值-真实值)</td>
+      <td>高斯分布</td>
+    </tr>
+    <tr>
+      <td><strong>逻辑回归</strong></td>
+      <td>BCE</td>
+      <td>\((\phi - y) x\)</td>
+      <td>\((\text{预测概率} - \text{真实标签})\)</td>
+      <td>伯努利分布</td>
+    </tr>
+    <tr>
+      <td><strong>Softmax 回归</strong></td>
+      <td>交叉熵</td>
+      <td>\((\phi_j - \mathbb{I}\{y=j\}) x\)</td>
+      <td>\((\text{预测概率} - \text{真实标签})\)</td>
+      <td>多项分布</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>所有 GLM 模型的梯度更新都遵循以下结构：</strong></p>
+
+\[\nabla_{\theta} J(\theta) \propto (\text{预测值} - \text{观测值}) \times \text{输入特征}\]
+
+<h1 id="8正向传播与反向传播">8.正向传播与反向传播</h1>
+
+<p>其实表达式计算的过程就是正向传播，利用梯度下降反复更新参数（权重）就是反向传播。</p>
+
+<p>不论是线性回归、逻辑回归、softmax回归，其实都已经有了正向传播、反向传播的概念。</p>
+
+<p>在多层神经网络出现之前，这些模型就被称为<strong>“单层网络”</strong>。它们的反向传播过程之所以看起来简单，是因为它们只有<strong>一个计算层</strong>（线性组合 \(\theta^T x\)）和一个<strong>激活函数</strong>（Sigmoid 或 Softmax）</p>
+
+<ul>
+  <li><strong>正向传播：</strong> \(x \to \theta^T x \to h(\theta^T x) \to J(\theta)\)</li>
+  <li><strong>反向传播：</strong> \(J(\theta) \to \nabla_{\theta} J\) <strong>(通过链式法则) \(\to \theta_{\text{new}}\)</strong></li>
+</ul>
+
+<p>这两种传播机制是所有基于梯度学习的模型（包括深度学习）的根本。</p>
+
+<h1 id="9采样的重要性">9.采样的重要性</h1>
+
+<p>如果数据集极度不平衡（例如，欺诈检测、罕见疾病诊断、广告点击率），如果不进行采样，模型在训练时会过度关注<strong>多数类 0</strong>。模型会发现，只要它预测所有样本都是0，它就能达到一个<strong>看似很高</strong>的准确率（例如 99.9%），因为0的样本占了绝大多数。</p>
+
+<p>虽然整体准确率高，但模型实际上失去了识别<strong>少数类 1</strong>（例如，真正欺诈的交易、真正患病的人）的能力。这在关键业务场景中是不可接受的。</p>
+
+<p>所以需要采样，上采样（复制少数类样本）或下采样（减少多数类样本），有效提高少数类在损失计算中的权重，使其梯度能够充分指导模型的参数更新。</p>
+
+<h1 id="总结重点">总结重点</h1>
+
+<p>1.逻辑回归损失函数与梯度下降，手推数学公式，即求导。说明逻辑回归迭代的过程。</p>
+
+<p>2.KL距离（KL散度）与BCE之间的关系。并解释下图：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251118174428582.png" alt="image-20251118174428582" /></p>
+
+<p>3.为什么逻辑回归不用MSE而用BCE？</p>
+
+<p>4.softmax</p>
+
+<h1 id="补充-colab画图之显示中文字体">补充-colab画图之显示中文字体</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">matplotlib</span> <span class="k">as</span> <span class="n">mpl</span>
+<span class="kn">import</span> <span class="n">matplotlib.font_manager</span> <span class="k">as</span> <span class="n">fm</span>
+<span class="kn">import</span> <span class="n">os</span>
+
+<span class="c1"># --- 1. 设置变量 ---
+</span><span class="n">FONT_FILENAME</span> <span class="o">=</span> <span class="sh">'</span><span class="s">NotoSansCJKsc-Regular.otf</span><span class="sh">'</span>
+<span class="n">DOWNLOAD_URL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">https://github.com/googlefonts/noto-cjk/raw/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf</span><span class="sh">"</span> 
+
+<span class="c1"># 找出 Matplotlib 的缓存/配置目录（兼容性写法）
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">mpl</span><span class="p">.</span><span class="nf">get_cachedir</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">AttributeError</span><span class="p">:</span>
+    <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">mpl</span><span class="p">.</span><span class="nf">get_configdir</span><span class="p">()</span> 
+
+<span class="c1"># 定义下载和目标路径
+</span><span class="n">source_file</span> <span class="o">=</span> <span class="n">FONT_FILENAME</span>
+<span class="n">font_destination</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">FONT_FILENAME</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">目标缓存目录: </span><span class="si">{</span><span class="n">cache_dir</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># --- 2. 检查并下载字体 ---
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">source_file</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">getsize</span><span class="p">(</span><span class="n">source_file</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">正在重新下载 </span><span class="si">{</span><span class="n">FONT_FILENAME</span><span class="si">}</span><span class="s">...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="c1"># 强制重新下载，覆盖可能存在的空文件
+</span>    <span class="err">!</span><span class="n">wget</span> <span class="p">{</span><span class="n">DOWNLOAD_URL</span><span class="p">}</span> <span class="o">-</span><span class="n">O</span> <span class="p">{</span><span class="n">source_file</span><span class="p">}</span>
+
+<span class="c1"># 检查下载是否成功
+</span><span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">getsize</span><span class="p">(</span><span class="n">source_file</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1000000</span><span class="p">:</span> <span class="c1"># 字体文件通常大于 1MB
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">✅ 文件下载成功，大小：</span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">getsize</span><span class="p">(</span><span class="n">source_file</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> MB</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="c1"># --- 3. 复制字体文件到目标路径 ---
+</span>    <span class="c1"># 使用 shutil.copy 以确保复制成功
+</span>    <span class="kn">import</span> <span class="n">shutil</span>
+    <span class="n">shutil</span><span class="p">.</span><span class="nf">copyfile</span><span class="p">(</span><span class="n">source_file</span><span class="p">,</span> <span class="n">font_destination</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">✅ </span><span class="si">{</span><span class="n">FONT_FILENAME</span><span class="si">}</span><span class="s"> 已成功复制到目标目录。</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># --- 4. 清理并重建 Matplotlib 缓存（关键） ---
+</span>    <span class="c1"># 清除旧的字体缓存文件（如果存在）
+</span>    <span class="err">!</span><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="p">{</span><span class="n">cache_dir</span><span class="p">}</span><span class="o">/*</span><span class="p">.</span><span class="n">json</span>
+    
+    <span class="c1"># 强制 Matplotlib 重新扫描并构建缓存
+</span>    <span class="n">fm</span><span class="p">.</span><span class="nf">_load_fontmanager</span><span class="p">(</span><span class="n">try_read_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅ 字体管理器已强制重新加载和构建缓存。</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">else</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">❌ 错误：下载失败或文件大小异常 (</span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">getsize</span><span class="p">(</span><span class="n">source_file</span><span class="p">)</span><span class="si">}</span><span class="s"> 字节)。</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 验证字体是否被管理器识别
+</span><span class="k">if</span> <span class="sh">'</span><span class="s">Noto Sans CJK SC</span><span class="sh">'</span> <span class="ow">in</span> <span class="p">[</span><span class="n">f</span><span class="p">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fm</span><span class="p">.</span><span class="n">fontManager</span><span class="p">.</span><span class="n">ttflist</span><span class="p">]:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅ 验证成功：Matplotlib 字体管理器已识别 </span><span class="sh">'</span><span class="s">Noto Sans CJK SC</span><span class="sh">'"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">❌ 验证失败：字体管理器未识别该字体。</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如果验证失败，可以重启会话之后再执行一次。</p>
+
+<p>如何还是显示“验证失败”，这通常是因为 <code class="language-plaintext highlighter-rouge">font_manager</code> 模块在重新初始化时，并没有真正将复制到缓存目录的文件视为有效的字体文件，或者读取路径有问题。可以尝试运行下面代码：Python 代码强制指定 Matplotlib 使用这个字体文件，绕过自动识别过程。（注意，最好还是重启下）</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">matplotlib</span> <span class="k">as</span> <span class="n">mpl</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="n">matplotlib.font_manager</span> <span class="k">as</span> <span class="n">fm</span>
+<span class="kn">import</span> <span class="n">os</span>
+
+<span class="c1"># --- 1. 定义字体文件路径 ---
+</span><span class="n">FONT_FILENAME</span> <span class="o">=</span> <span class="sh">'</span><span class="s">NotoSansCJKsc-Regular.otf</span><span class="sh">'</span>
+
+<span class="c1"># 找出 Matplotlib 的缓存/配置目录
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">mpl</span><span class="p">.</span><span class="nf">get_cachedir</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">AttributeError</span><span class="p">:</span>
+    <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">mpl</span><span class="p">.</span><span class="nf">get_configdir</span><span class="p">()</span>
+    
+<span class="c1"># 目标路径就是我们复制到的路径
+</span><span class="n">font_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">FONT_FILENAME</span><span class="p">)</span>
+
+<span class="c1"># --- 2. 尝试将字体手动添加到字体管理器 ---
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># 使用 fontManager.addfont 明确告诉 Matplotlib 这个文件是一个字体
+</span>    <span class="n">fm</span><span class="p">.</span><span class="n">fontManager</span><span class="p">.</span><span class="nf">addfont</span><span class="p">(</span><span class="n">font_path</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">✅ 字体文件 </span><span class="si">{</span><span class="n">FONT_FILENAME</span><span class="si">}</span><span class="s"> 已通过 addfont 明确添加到管理器。</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">❌ 字体手动添加失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># --- 3. 强制设置参数 (使用文件名作为字体名称) ---
+# Matplotlib 有时会使用文件名作为字体名，我们使用正确的字体名 'Noto Sans CJK SC'
+</span><span class="n">font_name</span> <span class="o">=</span> <span class="sh">'</span><span class="s">Noto Sans CJK SC</span><span class="sh">'</span> 
+
+<span class="c1"># 检查字体是否已被识别 (重新检查，确保 addfont 有效)
+</span><span class="k">if</span> <span class="n">font_name</span> <span class="ow">in</span> <span class="p">[</span><span class="n">f</span><span class="p">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fm</span><span class="p">.</span><span class="n">fontManager</span><span class="p">.</span><span class="n">ttflist</span><span class="p">]:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅ 验证成功：Matplotlib 字体管理器已识别 </span><span class="sh">'</span><span class="s">Noto Sans CJK SC</span><span class="sh">'"</span><span class="p">)</span>
+    
+    <span class="c1"># 强制设置字体参数
+</span>    <span class="n">mpl</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">font.sans-serif</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">font_name</span><span class="p">,</span> <span class="sh">'</span><span class="s">SimHei</span><span class="sh">'</span><span class="p">]</span> <span class="c1"># 将其设置为首选
+</span>    <span class="n">mpl</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">axes.unicode_minus</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">✅ Matplotlib 默认字体已设置为 </span><span class="si">{</span><span class="n">font_name</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="c1"># --- 4. 运行一个快速测试图 ---
+</span>    <span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">中文显示测试</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sh">"</span><span class="s">测试文本：逻辑回归</span><span class="sh">"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="sh">'</span><span class="s">center</span><span class="sh">'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="sh">'</span><span class="s">center</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+
+<span class="k">else</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">❌ 最终验证失败：字体管理器未识别 </span><span class="si">{</span><span class="n">font_name</span><span class="si">}</span><span class="s">。请确保安装代码运行完整。</span><span class="sh">"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>如果没有问题会显示：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251119142127271.png" alt="image-20251119142127271" /></p>
+
+<p>以画sigmoid函数为例：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="n">matplotlib.font_manager</span> <span class="k">as</span> <span class="n">fm</span>
+<span class="kn">import</span> <span class="n">matplotlib</span> <span class="k">as</span> <span class="n">mpl</span>
+
+<span class="c1"># --- 【关键修复部分：强制刷新字体管理器】 ---
+# 这一步尝试强制 Matplotlib 重新加载字体缓存，以确保新安装的字体生效。
+</span>
+<span class="c1"># 确保 mpl 模块被正确导入
+</span><span class="kn">import</span> <span class="n">matplotlib</span> <span class="k">as</span> <span class="n">mpl</span>
+
+<span class="c1"># 尝试重建字体缓存（如果 Matplotlib 版本支持）
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># 强制重新加载字体管理器，不使用缓存
+</span>    <span class="n">fm</span><span class="p">.</span><span class="nf">_load_fontmanager</span><span class="p">(</span><span class="n">try_read_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">ℹ️ Matplotlib 字体管理器已强制刷新。</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="c1"># 打印错误，但允许代码继续运行，以防版本兼容问题
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">⚠️ 字体管理器刷新失败: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># --- 【设置中文字体】 ---
+# 使用思源黑体作为首选，并保留其他常用字体作为备用
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">font.sans-serif</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">Noto Sans CJK SC</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">WenQuanYi Zen Hei</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">SimHei</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">axes.unicode_minus</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>   <span class="c1"># 解决负号显示的问题
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">ℹ️ 当前设置的字体列表: </span><span class="si">{</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">'</span><span class="s">font.sans-serif</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="c1"># --- 【验证字体是否可用】 ---
+# 尝试查找首选字体，如果失败，会发出警告
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">fm</span><span class="p">.</span><span class="nf">findfont</span><span class="p">(</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="sh">"</span><span class="s">font.sans-serif</span><span class="sh">"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">fallback_to_default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅ 中文字体验证通过。</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">❌ 警告：首选中文字体仍未找到，可能显示乱码。</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="c1"># --- 【绘图逻辑】 ---
+# 生成 x 值范围
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="c1"># 计算 Sigmoid 函数
+</span><span class="n">y</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+<span class="c1"># 计算 Sigmoid 的导数：σ'(x) = σ(x)*(1-σ(x))
+</span><span class="n">dy</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># 绘图
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Sigmoid 函数: σ(x) = 1/(1+e^{-x})</span><span class="sh">'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">"</span><span class="s">Sigmoid 导数: σ</span><span class="sh">'</span><span class="s">(x) = σ(x)(1-σ(x))</span><span class="sh">"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">--</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 添加标题和标签
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">Sigmoid 函数及其导数</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># 添加网格、图例、零轴线
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">k</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">k</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">gray</span><span class="sh">'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">:</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">y=0.5</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">gray</span><span class="sh">'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">:</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">gray</span><span class="sh">'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">:</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c1"># 设置坐标轴范围
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+
+<span class="c1"># 显示图像
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251118191312829.png" alt="image-20251118191312829" /></p>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2025/11/17/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9905/" data-toggle="tooltip" data-placement="top" title="【AI思想启蒙05】逻辑回归1猛将起于卒伍，工业环境下的分类模型 ">
+                        Previous<br>
+                        <span>【AI思想启蒙05】逻辑回归1猛将起于卒伍，工业环境下的分类模型 </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0180" 
+                    href="/archive/?tag=%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB"
+                    title="书籍阅读"
+                    rel="3">书籍阅读</a>
+        
+                <a data-sort="0142" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95"
+                    title="算法"
+                    rel="41">算法</a>
+        
+                <a data-sort="0165" 
+                    href="/archive/?tag=%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BDAI%E5%9F%BA%E7%A1%80"
+                    title="人工智能AI基础"
+                    rel="18">人工智能AI基础</a>
+        
+                <a data-sort="0166" 
+                    href="/archive/?tag=python%E5%9F%BA%E7%A1%80"
+                    title="python基础"
+                    rel="17">python基础</a>
+        
+                <a data-sort="0168" 
+                    href="/archive/?tag=%E5%8A%9B%E6%89%A3"
+                    title="力扣"
+                    rel="15">力扣</a>
+        
+                <a data-sort="0170" 
+                    href="/archive/?tag=numpy"
+                    title="numpy"
+                    rel="13">numpy</a>
+        
+                <a data-sort="0170" 
+                    href="/archive/?tag=pandas"
+                    title="pandas"
+                    rel="13">pandas</a>
+        
+                <a data-sort="0171" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%90%B4%E6%81%A9%E8%BE%BE"
+                    title="机器学习-吴恩达"
+                    rel="12">机器学习-吴恩达</a>
+        
+                <a data-sort="0172" 
+                    href="/archive/?tag=%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"
+                    title="机器学习算法"
+                    rel="11">机器学习算法</a>
+        
+                <a data-sort="0177" 
+                    href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99"
+                    title="AI思想启蒙"
+                    rel="6">AI思想启蒙</a>
+        
+                <a data-sort="0177" 
+                    href="/archive/?tag=matplotlib"
+                    title="matplotlib"
+                    rel="6">matplotlib</a>
+        
+                <a data-sort="0180" 
+                    href="/archive/?tag=spring6"
+                    title="spring6"
+                    rel="3">spring6</a>
+        
+                <a data-sort="0181" 
+                    href="/archive/?tag=%E7%AE%97%E6%B3%95%E9%A2%98%E5%BA%93"
+                    title="算法题库"
+                    rel="2">算法题库</a>
+        
+                <a data-sort="0181" 
+                    href="/archive/?tag=Java%E5%9F%BA%E7%A1%80"
+                    title="Java基础"
+                    rel="2">Java基础</a>
+        
+                <a data-sort="0181" 
+                    href="/archive/?tag=java%E9%9B%86%E5%90%88"
+                    title="java集合"
+                    rel="2">java集合</a>
+        
+                <a data-sort="0181" 
+                    href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7"
+                    title="ollama工具"
+                    rel="2">ollama工具</a>
+        
+                <a data-sort="0181" 
+                    href="/archive/?tag=python%E7%88%AC%E8%99%AB"
+                    title="python爬虫"
+                    rel="2">python爬虫</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+  <li><a href="https://m.freebuf.com/">freebuf</a></li>
+  
+  <li><a href="https://xz.aliyun.com/">先知</a></li>
+  
+  <li><a href="https://www.sec-in.com/All">sec-in</a></li>
+  
+  <li><a href="https://paper.seebug.org/">see-bug</a></li>
+  
+  <li><a href="https://twitter.com/Concurr21486093">我的推特</a></li>
+  
+  <li><a href="https://pdai.tech/">pdai</a></li>
+  
+  <li><a href="https://nodejs.org/dist/">nodejs index of dist</a></li>
+  
+  <li><a href="#">公众号：小东方不败</a></li>
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  <li>
+    <a href="https://twitter.com/Concurr21486093">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+  <li>
+    <a target="_blank" href="https://www.zhihu.com/people/Hilda">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa  fa-stack-1x fa-inverse">知</i>
+      </span>
+    </a>
+  </li>
+  
+  
+  
+  
+  <li>
+    <a target="_blank" href="https://github.com/kirsten-1">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Hilda 2025
+                    <br>
+                    Powered by <a href="https://kirsten-1.github.io/">hilda Blog</a>
+<!--                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"-->
+<!--                        height="20px"-->
+<!--                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">-->
+<!--                    </iframe>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
