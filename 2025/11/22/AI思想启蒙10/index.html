@@ -12,14 +12,14 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化  - Hilda的博客 | Your genius girlfriend's blog">
+        content="【AI思想启蒙10】朴素贝叶斯模型：简单背后蕴含的有效  - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-11-20T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-11-22T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
@@ -29,10 +29,10 @@
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9908/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/11/22/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9910/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化  - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>【AI思想启蒙10】朴素贝叶斯模型：简单背后蕴含的有效  - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9908/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/11/22/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9910/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -275,10 +275,10 @@
                         <a class="tag" href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99" title="AI思想启蒙">AI思想启蒙</a>
                         
                     </div>
-                    <h1>【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化 </h1>
+                    <h1>【AI思想启蒙10】朴素贝叶斯模型：简单背后蕴含的有效 </h1>
                     
-                    <h2 class="subheading">逻辑回归训练中的两大关键问题：1. 参数冗余导致权重无限膨胀、过拟合，需用L2（防溢出、平滑）或L1（特征选择）正则化约束；2. 特征尺度不一致导致梯度椭圆、收敛慢，需归一化（推荐Z-score）使特征同尺度、加速收敛并防止激活函数饱和。</h2>
-                    <span class="meta">Posted by Hilda on November 20, 2025</span>
+                    <h2 class="subheading">基于贝叶斯公式+特征独立性假设计算后验概率；对比逻辑回归，讨论缺失值处理（推荐指示变量+树模型）、拉普拉斯平滑防零概率，最后引入信息量/自信息到信息熵的核心概念</h2>
+                    <span class="meta">Posted by Hilda on November 22, 2025</span>
                 </div>
             </div>
         </div>
@@ -308,202 +308,506 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<h1 id="1参数冗余性">1.参数冗余性</h1>
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251121165449435.png" alt="image-20251121165449435" style="zoom: 67%;" /></p>
 
-<p>对于同一条决策边界（直线），可以有<strong>无数个</strong> \(W\)（或 \(W\) 和 \(W_0\)）进行表达。例如，如果 \(W\) 和 \(W_0\) 变为 \(-W\) 和 \(-W_0\)，决策边界不变，但预测概率 \(f(x)\) 变为 \(1-f(x)\)。</p>
+<h1 id="1先验概率和后验概率">1.先验概率和后验概率</h1>
 
-<p>另外，如果\(W\)变成\(10W\)，此时要考虑参数大小的影响（过拟合风险）</p>
+<p>先验概率是根据经验得到的，比如看摊位买的西瓜，大致认为60%的概率西瓜是好的。先验概率不需要样本数据，不受任何条件的影响。不根据其他，就根据常识大致判断。</p>
 
-<p>当权重 \(W\) 很大时（例如 \(W=100\)），输入 \(x\) 的微小变化会导致 \(\text{Sigmoid}\) 函数（\(\frac{1}{1+e^{-(Wx+W_0)}}\)）的输出变化非常大。</p>
+<p>而后验概率就类似于看瓜蒂脱落与否判断西瓜是否是好的。</p>
 
-<p>这表明<strong>大的 \(W\) 值会使模型对输入敏感（高方差）</strong>，容易导致<strong>过拟合</strong>。这解释了为什么在训练中需要使用<strong>正则化</strong>来约束 \(W\) 的大小。</p>
+<p>计算后验概率就是朴素贝叶斯最核心的一步。</p>
 
-<p>在没有正则化的情况下，优化器可能会在这些等效的 \(W\) 组合中来回震荡，导致训练过程不稳定，并且最终得到的 \(W\) 缺乏可解释性。</p>
-
-<p>逻辑回归模型在没有正则化时，一个潜在的问题就是<strong>数值稳定性和过度自信</strong>。</p>
-
-<h1 id="2正则化的概念和作用">2.正则化的概念和作用</h1>
-
-<p>正则化用于防止模型在训练数据上<strong>过拟合</strong>。</p>
-
-<p>正则化通过惩罚大的权重 \(W\)，降低模型的复杂度，使模型在 <strong>测试集</strong> 上的误差（泛化误差）尽可能小。</p>
-
-<p>L2 正则化（也称为 <strong>Ridge 正则化</strong>或<strong>权重衰减</strong>）通过在标准损失函数 \(J(\theta)\) 中添加一个与权重向量 \(W\) 的平方范数成比例的惩罚项来实现。</p>
-
-<p><strong>L2 正则化后的损失函数 \(J_{\text{reg}}(W)\)：</strong></p>
-
-\[J_{\text{reg}}(W) = \underbrace{J(W)}_{\text{原始损失（交叉熵）}} + \underbrace{\lambda \sum W_i^2}_{\text{L2 正则项}}\]
-
-<p>其中 \(\lambda\) 是正则化系数，用于控制惩罚的强度。</p>
-
-<p>【正则化的作用】：</p>
-
-<p>1.从机器角度考虑：抑制 W 在分类正确情况下，按比例无限增大</p>
+<p><strong>联合概率</strong>是几个事件同时发生的概率。例如P(瓜熟， 瓜蒂脱落)就是一个联合概率</p>
 
 <blockquote>
-  <p>在训练集中，一旦模型找到了一个能够正确分类所有样本的权重 \(W\)，那么将 \(W\) 扩大任意倍数 \(c &gt; 1\)（即 \(cW\)），模型损失（交叉熵）会更小。但是随着 \(W\) 无限增大，模型的损失会<strong>无限减小</strong>。在数学上，梯度下降会推动 $W$ 不断增大，直到发生<strong>数值溢出</strong></p>
+  <p><code class="language-plaintext highlighter-rouge">P (瓜熟，瓜蒂脱落) =P (瓜熟|瓜蒂脱落) *P (瓜蒂脱落)</code></p>
 
-  <p>此时加入正则化就不同了。L2 正则项 \(\lambda \sum W_i^2\) 成为一个<strong>“约束”</strong>。当 \(W\) 增大时，惩罚项也会<strong>二次方地快速增大</strong>。这迫使优化器在减小原始损失 \(J(W)\) 的同时，必须<strong>付出越来越大的代价来增加 \(W\)</strong>。最终，模型会找到一个 <strong>\(W\) 相对较小</strong>的解，这个解既能正确分类，又能避免 \(W\) 无限膨胀和潜在的数值溢出问题。</p>
+  <p><code class="language-plaintext highlighter-rouge">P(瓜熟，瓜蒂脱落) =P(瓜蒂脱落|瓜熟) *P(瓜熟)</code></p>
 </blockquote>
-
-<p>2.减少测试集和训练集的差异性（提高泛化能力）</p>
-
-<blockquote>
-  <p>过拟合的模型过度拟合了训练数据中的<strong>噪声</strong>，导致其学习到的权重 \(W\) 过于复杂和极端。这种<strong>复杂的 \(W\) 使得决策边界在训练集上表现完美，但在测试集上表现糟糕</strong>。</p>
-
-  <p>L2 正则化倾向于使所有权重 \(W_i\) 的值<strong>趋于零</strong>。</p>
-
-  <p>小的 \(W_i\) 意味着模型对单个输入特征 \(x_i\) 的依赖程度减小(对噪声的依赖也会减小)。这使得模型的决策边界更加<strong>平滑</strong>和<strong>简单</strong>，降低了模型的方差。</p>
-
-  <p>L2 正则化强制模型关注那些对大多数样本都有效的<strong>核心特征</strong>，忽略训练集中的噪声和异常值，从而<strong>提高模型在测试集上的泛化能力</strong>，减小训练集和测试集性能的差异。</p>
-</blockquote>
-
-<p>3.破坏训练集的效果（引入偏差，降低方差）</p>
-
-<blockquote>
-  <p>从统计学的偏差-方差权衡角度来看，正则化通过牺牲一点训练集的完美性，来换取测试集的稳定性。</p>
-
-  <p>正则化项 \(\lambda \sum W_i^2\) <strong>不是在帮助最小化训练误差</strong>，它是在<strong>增加一个额外的损失</strong>。为了让 \(\sum W_i^2\) 减小，模型必须将权重 \(W\) 往零的方向拉，即使这会导致原始的交叉熵损失 \(J(W)\) 略微增大。</p>
-
-  <p>因为模型被迫将 \(W\) 约束得很小，它可能无法完美拟合训练集中的每一个点，导致训练集上的损失（偏差）略微增加。</p>
-
-  <p>正则化使得模型对数据的微小变动（即测试集与训练集的差异）不再那么敏感，极大地降低了模型的方差。</p>
-
-  <p>最终的 \(J_{\text{reg}}(W)\) 追求的是 <strong>“训练误差”</strong> 和 <strong>“模型复杂度”</strong> 之间的最佳平衡点，这正是我们希望在<strong>测试集上得到最小总误差</strong>所需的特性。</p>
-</blockquote>
-
-<h1 id="3l1-正则化lasso和-l2-正则化ridge">3.L1 正则化（Lasso）和 L2 正则化（Ridge）</h1>
-
-<p>L2 正则项是权重W的平方和，乘以一个超参数 \(\lambda\)。损失函数变为 \(J_{\text{L2}}(W) = J(W) + \lambda \sum W_i^2\)。</p>
 
 <table>
   <tbody>
     <tr>
-      <td>L1 正则项是权重W<strong>绝对值</strong>的和，乘以一个超参数 \(\lambda\)。损失函数变为 $$J_{\text{L1}}(W) = J(W) + \lambda \sum</td>
-      <td>W_i</td>
-      <td>$$。</td>
+      <td>但是要求的是$$P(\text{瓜熟</td>
+      <td>瓜蒂脱落})$$：</td>
     </tr>
   </tbody>
 </table>
 
-<p>L2 惩罚项对<strong>大的权重</strong>施加的惩罚更大（二次方增长）。在梯度下降时，权重 \(W\) 的每一次更新都会被拉向零点，但拉力与 \(W\) 的值成正比（梯度为 \(2W\)）。</p>
+<table>
+  <tbody>
+    <tr>
+      <td>$$P(\text{瓜熟</td>
+      <td>瓜蒂脱落}) \times P(\text{瓜蒂脱落}) = P(\text{瓜蒂脱落</td>
+      <td>瓜熟}) \times P(\text{瓜熟})$$</td>
+    </tr>
+    <tr>
+      <td>$$P(\text{瓜熟</td>
+      <td>瓜蒂脱落}) = \frac{P(\text{瓜蒂脱落</td>
+      <td>瓜熟}) \times P(\text{瓜熟})}{P(\text{瓜蒂脱落})}$$</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>L1 惩罚项在 \(W\) 不为零时，施加的是一个<strong>恒定的惩罚</strong>（梯度为 \(\pm 1\)）。</p>
+<table>
+  <tbody>
+    <tr>
+      <td>因为$$P(\text{瓜蒂脱落</td>
+      <td>瓜熟})\(和\)P(\text{瓜熟})\(是已知的，所以只需要求出\)P(\text{瓜蒂脱落})$$即可。</td>
+    </tr>
+  </tbody>
+</table>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/1*nrWncnoJ4V_BkzEf1pd4MA.png" alt="img" /></p>
+<p>而<code class="language-plaintext highlighter-rouge">P(瓜蒂脱落) = P(瓜蒂脱落|瓜熟) * P(瓜熟) + P(瓜蒂脱落|瓜生) * P(瓜生)</code>(全概率公式)</p>
 
-<p>L2约束区域是一个<strong>圆形</strong>。相切点往往落在非坐标轴上，这意味着所有权重都会被缩小，但很少会精确地变为零。</p>
+<table>
+  <tbody>
+    <tr>
+      <td>若已知P(瓜熟)=0.6，P(瓜蒂脱落</td>
+      <td>瓜生)=0.，P(瓜生)=0.4，P(瓜蒂脱落</td>
+      <td>瓜熟)=0.8</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>L1约束区域是一个<strong>菱形</strong>（或正方形）。由于菱形的尖角位于坐标轴上，损失函数的等值线更容易与这些尖角相切，使得相切点的某些维度 \(W_i\) 恰好为零。所以L1 正则化的独特之处在于它能够产生<strong>稀疏解</strong>，从而实现<strong>特征选择</strong>。L1 倾向于将那些对模型贡献不大的特征所对应的权重<strong>直接压缩为零</strong>。当数据集中包含大量冗余或不重要的特征时，L1 可以帮助我们自动识别并保留最重要的特征。</p>
+<p>则<code class="language-plaintext highlighter-rouge">P(瓜熟/瓜蒂脱落) = (0.8*0.6) / (0.8*0.6+0.4*0.4) =0.75</code></p>
+
+<p>如果特征很多（各个特征之间是独立的），那么可以这么计算：</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251121164242437.png" alt="image-20251121164242437" /></p>
+
+<p>以上就是朴素贝叶斯算法的一个应用。</p>
+
+<h1 id="2朴素贝叶斯算法">2.朴素贝叶斯算法</h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td>朴素贝叶斯（Naive Bayes）是一种基于<strong>贝叶斯定理</strong>的<strong>生成模型</strong>。它通过计算后验概率 $$P(\text{类别}</td>
+      <td>\text{特征})$$ 来进行分类。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>贝叶斯公式是其理论基础：</p>
+
+\[P(\text{类别}| \text{特征}) = \frac{P(\text{特征}| \text{类别}) \times P(\text{类别})}{P(\text{特征})}\]
 
 <ul>
-  <li><strong>如果目标是特征选择或降维</strong>，L1 正则化通常是更好的选择。</li>
-  <li><strong>如果目标是确保所有特征都保留下来，只是希望减小它们的权重以提高模型的鲁棒性和稳定性</strong>，L2 正则化是更常见的选择。</li>
+  <li><strong>\(P(\text{类别})\) (先验概率):</strong> 这是在观察任何特征之前，我们对某一类别概率的预估（如您所说，比如上面例子中\(P(\text{瓜熟})=0.6\)）。</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**$$P(\text{特征}</td>
+          <td>\text{类别})\((似然项):** 在类别已知的情况下，观察到特征的概率（如\)P(\text{瓜蒂脱落}</td>
+          <td>\text{瓜熟})=0.8$$）。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><strong>\(P(\text{特征})\) (证据项):</strong> 观察到特征本身的概率，通过<strong>全概率公式</strong>计算得出（如 \(P(\text{瓜蒂脱落})\)）。</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>**$$P(\text{类别}</td>
+          <td>\text{特征})\((后验概率):** 这是最终要求的，在特征已知的情况下，类别发生的概率（如\)P(\text{瓜熟}</td>
+          <td>\text{瓜蒂脱落})=0.75$$）。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
 </ul>
 
-<p>在实践中，人们常结合两者，使用 <strong>Elastic Net</strong> 正则化来兼顾特征选择和模型平滑。</p>
+<h2 id="21朴素的含义特征独立性假设">2.1“朴素”的含义：特征独立性假设</h2>
+
+<p>在实际的机器学习问题中，特征 \(x\) 往往不止一个，而是多个特征向量 \(x = (x_1, x_2, \dots, x_n)\)。</p>
+
+<p>朴素贝叶斯名字中的“朴素”指的是它做了一个<strong>强假设</strong>：<strong>所有特征之间相互独立</strong>。</p>
+
+<p>在类别 \(y\) 已知的情况下，所有特征的联合概率等于它们各自概率的乘积。</p>
+
+\[P(x_1, x_2, \dots, x_n | y) = P(x_1|y) \times P(x_2|y) \times \dots \times P(x_n|y)\]
+
+<p>这个“朴素”的假设大大简化了计算，使得模型可以在特征数量非常大时依然高效运行，但这也是它<strong>牺牲模型准确性</strong>的地方（因为现实中特征很少是完全独立的）。</p>
+
+<h2 id="22朴素贝叶斯与逻辑回归线性回归的对比">2.2朴素贝叶斯与逻辑回归、线性回归的对比</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>特性</strong></th>
+      <th><strong>朴素贝叶斯 (Naive Bayes)</strong></th>
+      <th><strong>逻辑回归 (Logistic Regression)</strong></th>
+      <th><strong>线性回归 (Linear Regression)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>模型类型</strong></td>
+      <td><strong>生成模型</strong> (Generative Model)</td>
+      <td><strong>判别模型</strong> (Discriminative Model)</td>
+      <td>判别模型 (Discriminative Model)</td>
+    </tr>
+    <tr>
+      <td><strong>解决问题</strong></td>
+      <td><strong>分类</strong> (Classification)</td>
+      <td><strong>分类</strong> (Classification)</td>
+      <td><strong>回归</strong> (Regression)</td>
+    </tr>
+    <tr>
+      <td><strong>目标输出</strong></td>
+      <td>离散的类别标签 (如“好瓜”/“坏瓜”)</td>
+      <td>类别概率</td>
+      <td>连续值</td>
+    </tr>
+    <tr>
+      <td><strong>优点</strong></td>
+      <td>训练速度极快；对缺失数据不敏感；对数据量较小的场景有效。</td>
+      <td>输出是概率值，可解释性强；决策边界是线性的；理论基础坚实。</td>
+      <td>模型简单且可解释性强；计算高效。</td>
+    </tr>
+    <tr>
+      <td><strong>缺点</strong></td>
+      <td>因为强大的<strong>特征独立性</strong>假设，但是独立性假设往往不成立，可能牺牲准确率。</td>
+      <td>易受异常值影响；只能解决线性可分或近似线性的问题。</td>
+      <td>只能拟合线性关系；对噪声和多重共线性敏感。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="3缺失值的处理">3.缺失值的处理</h1>
+
+<p>比如婚恋相亲网站，每个用户信息填写的完整程度不同（用户填写意愿、隐私考量或信息复杂性）。在推荐/匹配/预测场景（机器学习）中，如果碰到缺失值如何处理？</p>
+
+<p>处理缺失值的方法大致可以分为三类：<strong>删除（Deletion）</strong>、<strong>插值/填充（Imputation）</strong>、和<strong>建模（Modeling）</strong>。</p>
+
+<h2 id="31删除">3.1删除</h2>
+
+<p>当缺失量极少或缺失模式很随机时可以考虑。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>方法</strong></th>
+      <th><strong>描述</strong></th>
+      <th><strong>适用场景</strong></th>
+      <th><strong>风险/缺点</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. 行删除</strong> (Listwise Deletion)</td>
+      <td>直接删除任何包含缺失值的样本（用户记录）。</td>
+      <td>缺失值占总数据量比例<strong>极低</strong>（如 &lt; 1%）且缺失是<strong>完全随机</strong>的。</td>
+      <td>如果缺失值较多，会导致数据量急剧减少，损失大量信息，引入偏差。</td>
+    </tr>
+    <tr>
+      <td><strong>2. 列删除</strong> (Feature Deletion)</td>
+      <td>如果某个特征（如“年收入”）的缺失率<strong>极高</strong>（如 &gt; 90%），则直接删除该特征。</td>
+      <td>该特征对核心业务价值不大，且缺失率高到无法有效填充。</td>
+      <td>可能丢失对模型有潜在价值的信息。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="32填充">3.2填充</h2>
+
+<p>用某种值替换缺失值，这是最常用的方法。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>方法</strong></th>
+      <th><strong>描述</strong></th>
+      <th><strong>适用场景</strong></th>
+      <th><strong>风险/缺点</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>3. 均值/中位数/众数填充</strong></td>
+      <td>数值特征（如身高、年龄）：用<strong>均值</strong>或<strong>中位数</strong>填充。类别特征（如学历、信仰）：用<strong>众数</strong>填充。</td>
+      <td>缺失值比例适中，或缺失是随机的。</td>
+      <td>这种方法会减小特征的方差，并引入偏差（特别是均值填充），<strong>使数据分布失真</strong>。</td>
+    </tr>
+    <tr>
+      <td><strong>4. 哨兵值填充</strong> (Sentinel/Flag Value)</td>
+      <td>用一个特定的值（如 -999 或 <code class="language-plaintext highlighter-rouge">Unknown</code>）来标记缺失，让模型知道这个值是缺失的。</td>
+      <td>特别适用于类别特征，或当缺失本身可能包含信息（e.g., <strong>“不愿填写”本身就是一种信息</strong>）。</td>
+      <td>模型可能会错误地将这个哨兵值解释为一个“正常”的极大或极小值。</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>5. 基于模型填充</strong> (Model-based Imputation)</th>
+      <th>使用其他非缺失特征作为输入，训练一个模型（如线性回归、决策树、KNN 等）来预测缺失值。</th>
+      <th>缺失值数量较大，且特征之间有较强相关性。</th>
+      <th>填充值更接近真实数据分布，精度高。常用的方法有 <strong>MICE</strong>（多重插值）和 <strong>KNN Imputation</strong>。</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>6. 前后值填充</strong> (Locally based Imputation)</td>
+      <td>对于时间序列数据（不适用于相亲网站的静态数据），用前一个或后一个观测值填充。</td>
+      <td>数据存在时间或空间上的连续性。</td>
+      <td>不适用于独立的个人信息记录。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="33建模">3.3建模</h2>
+
+<p>不直接改变数据，而是修改模型或增加信息。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>方法</strong></th>
+      <th><strong>描述</strong></th>
+      <th><strong>适用场景</strong></th>
+      <th><strong>优点</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>7. 缺失指示变量</strong> (Missing Indicator)</td>
+      <td>对于每个有缺失值的特征X，增加一个二元指示变量I。如果 X缺失，则I=1，否则 I=0。然后用均值/中位数等填充 X。</td>
+      <td><strong>强烈推荐</strong>。假设缺失机制是非随机的（MNAR），即缺失的原因本身带有信息。</td>
+      <td>捕捉了“不愿填写”或“信息不存在”本身所包含的信号，保留了原始数据结构。</td>
+    </tr>
+    <tr>
+      <td><strong>8. 特殊模型</strong></td>
+      <td>使用能够<strong>自动处理缺失值</strong>的模型，例如基于树的模型（如 XGBoost, LightGBM, CatBoost）。</td>
+      <td>当缺失模式复杂、缺失量较大时。</td>
+      <td>模型在节点划分时可以自动处理或学习缺失值，无需手动填充。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="34案例">3.4案例</h2>
+
+<p>在婚恋相亲网站的场景中，<strong>缺失值往往不是随机的，而是带有明确的意图或隐私偏好</strong>（例如，高收入者可能不填收入，低收入者也可能不填收入）。因此，推荐结合使用以下方法：</p>
+
+<ol>
+  <li><strong>指示变量 + 填充 (方法 7 + 4)：</strong>
+    <ul>
+      <li><strong>数值特征</strong>（如年收入、身高）：用中位数填充，并新增一个“年收入_缺失指示”的二元特征。</li>
+      <li><strong>类别特征</strong>（如家庭状况）：用“<strong>Unknown</strong>”或“<strong>未公开</strong>”作为单独的类别进行填充。</li>
+    </ul>
+  </li>
+  <li><strong>使用树模型 (方法 8)：</strong> 优先使用 XGBoost 或 LightGBM 等集成树模型进行预测/匹配建模，因为它们对缺失值的鲁棒性更好，并且能自动学习缺失值模式。</li>
+  <li><strong>领域知识优先：</strong> 某些关键特征（如“性别”、“年龄”、“城市”）如果缺失，可能直接导致匹配失败，应要求用户必须填写，或者直接删除该记录。</li>
+</ol>
+
+<h1 id="4线性回归和逻辑回归极高的耦合度">4.线性回归和逻辑回归极高的耦合度</h1>
+
+<p><strong>线性回归（Linear Regression）和逻辑回归（Logistic Regression）在数学和结构上确实存在着极高的耦合度</strong>。它们常常被一起教授，正是因为它们共享了“广义线性模型”的核心思想。</p>
+
+<p>无论是在线性回归还是逻辑回归中，模型的第一步都是将输入特征 \(\mathbf{x}\) 进行<strong>线性组合</strong>（加权求和），得到一个预测值 \(z\)：</p>
+
+\[z = \mathbf{W}^T \mathbf{x} + b\]
+
+<p>两者都假设输入特征对目标变量的影响是<strong>线性的、可叠加的</strong>。—-&gt;耦合度很高。</p>
+
+<p><strong>朴素贝叶斯</strong>明确且<strong>强制</strong>地要求<strong>特征之间相互独立</strong>。这是其“朴素”的来源。</p>
+
+<p>而<strong>逻辑回归（LR）</strong>则不同：</p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><strong>LR</strong> 是一种<strong>判别模型</strong>，它直接建模 $$P(y</td>
+          <td>\mathbf{x})\(，并不对输入特征\)\mathbf{x}\(的**联合概率分布**\)P(x_1, x_2, \dots, x_n)$$ 做任何假设。</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>因此，<strong>LR 本身并没有假设特征独立性</strong>。它只关心 \(\mathbf{W}^T \mathbf{x}\) 这个线性组合，模型参数 $\mathbf{W}$ 会自动学习特征之间的相关性。</li>
+</ul>
+
+<p>LR 的耦合在于它<strong>强制将特征的贡献以线性和叠加的方式聚合</strong>，这限制了它无法捕捉特征之间的复杂<strong>非线性交互作用</strong>。</p>
+
+<p>另外，线性部分 \(\mathbf{W}^T \mathbf{x} + b\) 过于紧密地依赖于<strong>特征间的关系</strong>，从而导致： 如果 \(x_i\) 和 \(x_j\) 强相关，模型很难唯一确定它们各自的权重 \(w_i\) 和 \(w_j\)，从而让模型结构变得脆弱。(解决办法：利用<strong>正则化</strong>（如 L1 或 L2）来解耦 LR 模型中特征之间的相关性，从而处理多重共线性问题)</p>
+
+<p>显然，特征之间独立的可能性一般不大。所以朴素贝叶斯使用场景极其有限。</p>
+
+<p>但是朴素贝叶斯对于  数据缺失，又想要数据解耦  的场景又很友好。</p>
+
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td>计算<strong>后验概率</strong> $$P(y_k=1</td>
+      <td>\mathbf{x})$$：</td>
+    </tr>
+  </tbody>
+</table>
+
+\[P(y_k=1|\mathbf{x}) = \frac{P(y_k=1) \cdot P(\mathbf{x}|y_k=1)}{P(\mathbf{x})}\]
+
+<p>从通用贝叶斯公式到<strong>朴素贝叶斯分类器</strong>的关键一步。</p>
+
+\[P(y_k=1|\mathbf{x}) = \frac{P(y_k=1) \cdot P(x_1|y_k=1) \cdot P(x_2|y_k=1) \cdot P(x_3|y_k=1)}{P(x_1, x_2, x_3)}\]
+
+<table>
+  <tbody>
+    <tr>
+      <td>这个推导的关键在于分子中对**似然项 $$P(\mathbf{x}</td>
+      <td>y_k=1)$$ 的分解**：</td>
+    </tr>
+  </tbody>
+</table>
+
+\[P(\mathbf{x}|y_k=1) = P(x_1, x_2, x_3 | y_k=1)\]
+
+<p>根据朴素贝叶斯的<strong>核心假设（朴素假设）</strong>：<strong>在类别 \(y\) 确定的条件下，所有特征 \(x_i\) 之间相互独立。</strong></p>
+
+<p>因此，联合条件概率可以分解为各个特征条件概率的乘积：</p>
+
+\[P(x_1, x_2, x_3 | y_k=1) \approx P(x_1|y_k=1) \cdot P(x_2|y_k=1) \cdot P(x_3|y_k=1)\]
+
+<hr />
+
+<p>所以，朴素贝叶斯就是搞统计，且样本少的时候，误差就很大了，样本可能存在很强的偶然性，此时做统计就不准确了。</p>
+
+<p>线性回归抗冗余强，但是朴素贝叶斯抗冗余不强。</p>
+
+<h1 id="5拉普拉斯平滑">5.拉普拉斯平滑</h1>
+
+<p>在<strong>朴素贝叶斯（Naive Bayes）</strong>算法中处理<strong>小样本（或零概率）问题</strong>的一种经典且有效的解决方案：<strong>拉普拉斯平滑（Laplace Smoothing）</strong>。</p>
+
+<hr />
+
+<p>特征 \(x_1=1\) 的条件概率：</p>
+
+\[P(x_1=1 | y_1=1) = \frac{\text{Count}(x_1=1, y_1=1) + \frac{n}{2}}{\text{Count}(y_1) + n}\]
+
+<p>特征 \(x_1=0\) 的条件概率：</p>
+
+\[P(x_1=0 | y_1=1) = \frac{\text{Count}(x_1=0, y_1=1) + \frac{n}{2}}{\text{Count}(y_1) + n}\]
+
+<p><strong>这个n的取值</strong>：根据人为干预决定。也是根据人的经验得出的。</p>
+
+<hr />
+
+<p><strong>拉普拉斯平滑</strong>通过向分子和分母添加一个<strong>虚拟计数</strong>（Pseudo-count）\(\alpha\) 来调整概率估计。</p>
+
+<p>一般的拉普拉斯平滑公式如下：</p>
+
+\[P_{\text{smooth}}(x_i|y_k) = \frac{\text{Count}(x_i, y_k) + \alpha}{\text{Count}(y_k) + \alpha \cdot D}\]
+
+<p>其中：</p>
+
+<ul>
+  <li>\(\alpha\)：平滑参数（通常取 1，即“加一平滑”）。</li>
+  <li>\(D\)：特征 \(x_i\) 可能的取值数量（即<strong>维度</strong>）。</li>
+</ul>
+
+<p>它本质上是<strong>将训练集数据与一个均匀分布进行了加权平均</strong>。当样本量 \(\text{Count}(y_k)\) 很小时，添加的 \(\alpha \cdot D\) 影响较大，<strong>防止极端概率</strong>；当样本量很大时，平滑项的影响微乎其微。</p>
+
+<p>通过这种方式，拉普拉斯平滑有效地解决了小样本数据中由于偶然性导致的零概率问题，使朴素贝叶斯模型在训练集不完备的情况下依然能够给出合理的概率估计。</p>
+
+<h1 id="6信息如何量化">6.信息如何量化</h1>
+
+<p>1.明天太阳从东边升起</p>
+
+<p>2.明天下雨</p>
+
+<p>显然2的信息量更大，因为1发生的概率是1，而2发生的概率显然小于1</p>
+
+<h2 id="61信息量--自信息">6.1信息量 / 自信息</h2>
+
+<p>信息论认为，一个事件所包含的<strong>信息量</strong>与其发生的<strong>概率</strong>成反比。事件发生的概率越低，它所携带的信息量就越大。</p>
+
+<p>信息论中使用<strong>对数</strong>来量化信息量 \(I(x)\)，因为信息量具有可加性（独立事件的总信息量等于各自信息量之和），而概率具有可乘性（独立事件的总概率等于各自概率之积）。对数正好能将乘法转化为加法。</p>
+
+<p>对于一个事件 \(x\)，其<strong>自信息</strong> \(I(x)\) 的定义为：</p>
 
 <blockquote>
-  <p>如果不指定正则，一般也会默认用L2正则，因为要防止参数溢出。</p>
-
-  <p>互联网行业，一般特征比较多（维度爆炸），一般采用L1正则，为了降维。</p>
-
-  <p>特征比较少的情况（比如生物），可以只采用L2正则（这也是默认的）</p>
+  <p>下面公式，香农严格证明过。</p>
 </blockquote>
 
-<h1 id="4归一化">4.归一化</h1>
+\[I(x) = - \log_b P(x)\]
 
-<p>归一化（Normalization，或标准化）通常是指对输入特征 \(x\) 进行缩放，使其落入特定范围（如 \([0, 1]\)）或具有标准分布（如均值 \(0\)，方差 \(1\)）。</p>
-
-<h2 id="41归一化的重要性">4.1归一化的重要性</h2>
-
-<p>模型的梯度（参数更新方向）依赖于输入特征 \(x\)。</p>
-
-<p>回顾逻辑回归的梯度：https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9906/</p>
-
-<p>对于整个训练集（所有 \(N\) 个样本），总损失 \(L(\mathbf{w}) = \frac{1}{N} \sum_{i=1}^{N} L_i(\mathbf{w})\) 对 \(w_j\) 的梯度为：</p>
-
-\[\frac{\partial L}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} \frac{\partial L_i}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\]
-
-<p>显然，这个梯度依赖于x，并且梯度更新时，模型会沿着大范围特征（如 \(x_1\)）对应的维度进行大步更新，而在小范围特征（如 \(x_2\)）对应的维度进行小步更新。</p>
-
-<p>这会导致<strong>梯度下降的等高线变得非常扁平狭长</strong>，优化过程需要很小的学习率才能避免振荡，导致收敛速度非常慢。</p>
-
-<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251120233233215.png" alt="image-20251120233233215" style="zoom:50%;" /></p>
-
-<p>归一化使得所有特征 \(x_i\) 具有相似的尺度。</p>
-
-<p>这保证了所有权重 \(W_i\) 的梯度大致位于同一数量级，使得<strong>等高线更接近圆形</strong>，梯度下降可以沿着最陡峭的方向平稳快速地收敛。</p>
-
-<hr />
-
-<p>归一化间接帮助控制模型内部的线性得分（\(z = W^T x\)），这对于激活函数的稳定性非常重要。</p>
-
-<p>Softmax 或 Sigmoid 函数的输出 \(f(x)\) 依赖于线性得分 \(z = W^T x\)​。如果输入特征 \(x\) 的值很大，即使 \(W\) 很小， \(z\) 也可能非常大或非常小。</p>
-
-<p>当 \(z\) 的绝对值过大时，Sigmoid函数会输出接近 0或 1的值(模型可能一开始就学不到新东西，梯度消失了，参数不更新，模型还没怎么训练或者训练其实不到位就认为已经收敛了)，此时函数的<strong>导数（梯度）会非常小</strong>（进入饱和区）。归一化确保 \(x\) 的尺度适中，可以帮助控制 \(W^T x\) 的范围。</p>
-
-<p>配合<strong>正则化</strong>（它限制了 \(W\) 的大小），可以共同确保线性得分 \(W^T x\) 不会过度膨胀，从而<strong>避免激活函数进入饱和区</strong>，保证训练过程中梯度的有效性。</p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251120232445510.png" alt="image-20251120232445510" /></p>
-
-<p>如何选择归一化的方法？是Min-Max 归一化还是Z-score？</p>
-
-<p>【Min-Max 归一化】缺点：</p>
+<p>其中：</p>
 
 <ul>
-  <li><strong>对异常值（Outliers）非常敏感。</strong> 如果数据中存在极大的或极小的异常值，它们会严重挤压其余数据的范围，导致大部分数据点集中在 \([0, 1]\) 范围的一小部分，失去区分度。</li>
+  <li>\(P(x)\) 是事件 \(x\) 发生的概率。</li>
+  <li>\(b\) 是对数的底数，它决定了信息量的单位：
+    <ul>
+      <li>当 \(b=2\) 时，信息量的单位是<strong>比特 (bits)</strong>。</li>
+      <li>当 \(b=e\) 时，信息量的单位是<strong>奈特 (nats)</strong>。</li>
+    </ul>
+  </li>
 </ul>
 
-<p>【Z-score归一化】缺点：</p>
+<p>通过这个公式，可以看到：</p>
 
 <ul>
-  <li>不将数据限制在特定的范围 \([0, 1]\) 内，缩放后的特征值可能超出此范围。</li>
+  <li>如果 \(P(x) = 1\)，则 \(I(x) = -\log_b(1) = 0\)。</li>
+  <li>如果 \(P(x) \to 0\)，则 \(I(x) \to \infty\)。</li>
 </ul>
 
-<hr />
+<p>这个概念是后续<strong>熵 (Entropy)</strong>、<strong>交叉熵 (Cross-Entropy)</strong> 和<strong>信息增益 (Information Gain)</strong> 等机器学习中核心概念的基石。</p>
 
-<p>【Min-Max 归一化】优点：</p>
+<blockquote>
+  <p>比如推荐系统，喜欢推荐“新奇特”的信息一样，其信息量很大，发生的概率很小。</p>
+</blockquote>
 
-<ul>
-  <li>将所有特征值限制在固定的 \([0, 1]\) 范围内，易于解释和比较。</li>
-  <li>在特征数量很少，且特征间差异不大的情况下表现良好。</li>
-  <li>不改变数据的原始分布形状。</li>
-</ul>
+<h2 id="62信息熵">6.2信息熵</h2>
 
-<p>【Z-score归一化】优点：</p>
+<blockquote>
+  <p>说白了，信息熵是信息量的期望。</p>
+</blockquote>
 
-<ul>
-  <li>使得数据符合标准正态分布（但不会改变原始分布的形状，只是进行平移和缩放）。</li>
-  <li>鲁棒性好。算法使用均值和标准差进行缩放，受异常值的影响较小（尤其当数据集较大时）。</li>
-  <li>适用于<strong>要求数据符合正态分布</strong>或<strong>不依赖于固定范围</strong>的算法，例如梯度下降法（有助于收敛）和许多线性模型。</li>
-  <li>适用于不知道数据确切范围，但需要保证特征同尺度的场景。</li>
-</ul>
+<p><strong>信息熵是用来量化一个随机变量或一个系统所包含的平均不确定性或信息量。</strong>衡量在观察到 \(X\) 的任何结果之前，我们需要多少信息才能确定其结果。</p>
 
-<hr />
+<p>在机器学习中，熵常用于决策树（信息增益）、模型评估（交叉熵损失）等方面。</p>
 
-<p><strong>Z-Score 归一化 (Standardization)</strong> 通常是更优的选择，因为它确保了所有特征的尺度一致，有助于梯度下降算法更快、更稳定地收敛。</p>
+<p>熵可以被视为<strong>随机变量 \(X\) 所有可能结果的自信息期望值</strong>。</p>
 
-<p><strong>Min-Max 归一化</strong> 也可使用，但在处理带有极端异常值的数据时，需要格外小心。</p>
+<p>对于一个离散随机变量 \(X\)，它有 \(n\) 种可能的取值 \(\{x_1, x_2, \dots, x_n\}\)，每种取值的概率是 \(P(x_i)\)，其熵 \(H(X)\) 定义为：</p>
+
+\[H(X) = E[I(X)] = \sum_{i=1}^{n} P(x_i) \cdot I(x_i)\]
+
+<p>将自信息 \(I(x_i) = -\log_2 P(x_i)\) 代入，得到最终的熵公式（通常以比特为单位，故取底数为 2）：</p>
+
+\[H(X) = - \sum_{i=1}^{n} P(x_i) \log_2 P(x_i)\]
+
+<p><strong>单位：</strong> 比特（bits）。熵的数值代表了要对该随机变量进行编码所需的<strong>平均最小比特数</strong>。</p>
+
+<p><strong>熵值越高，不确定性越大。</strong> 样本的分布越均匀，熵越大。</p>
+
+<p><strong>熵值越低，不确定性越小。</strong> 样本的分布越集中，熵越小。</p>
+
+<p>熵给出了对随机变量编码所需的<strong>理论平均最短长度</strong>。</p>
+
+<p>例如，如果一个系统的信息熵是 3 比特，那么在平均意义上，你需要 3 个二元问题（是/否）才能确定该系统的状态。</p>
+
+<p>熵是计算<strong>信息增益</strong>的基础。在每次分裂时，决策树选择能最大程度<strong>降低熵</strong>（即最大程度减少不确定性）的特征，从而达到最佳分类效果。</p>
+
+<p><strong>交叉熵（Cross-Entropy）</strong>和<strong>相对熵（KL 散度）</strong>都是基于信息熵的概念发展而来，用于衡量模型预测的概率分布与真实概率分布之间的差异。</p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9907/" data-toggle="tooltip" data-placement="top" title="【AI思想启蒙07】逻辑回归3到底好不好？模型评价指标 ">
-                        Previous<br>
-                        <span>【AI思想启蒙07】逻辑回归3到底好不好？模型评价指标 </span>
-                        </a>
-                    </li>
-                    
-                    
-                    <li class="next">
                         <a href="/2025/11/21/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9909/" data-toggle="tooltip" data-placement="top" title="【AI思想启蒙09】逻辑回归5让学习更高效，数值优化和一只看不见的手 ">
-                        Next<br>
+                        Previous<br>
                         <span>【AI思想启蒙09】逻辑回归5让学习更高效，数值优化和一只看不见的手 </span>
                         </a>
                     </li>
+                    
                     
                 </ul>
                 <hr style="visibility: hidden;">

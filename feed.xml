@@ -5,9 +5,512 @@
     <description>这里是 Hilda 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员</description>
     <link>https://kirsten-1.github.io/</link>
     <atom:link href="https://kirsten-1.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 22 Nov 2025 03:09:51 +0000</pubDate>
-    <lastBuildDate>Sat, 22 Nov 2025 03:09:51 +0000</lastBuildDate>
+    <pubDate>Sat, 22 Nov 2025 07:04:01 +0000</pubDate>
+    <lastBuildDate>Sat, 22 Nov 2025 07:04:01 +0000</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>【AI思想启蒙10】朴素贝叶斯模型：简单背后蕴含的有效 </title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
+&lt;/script&gt;
+
+&lt;p&gt;&lt;img src=&quot;/Users/apple/Library/Application Support/typora-user-images/image-20251121165449435.png&quot; alt=&quot;image-20251121165449435&quot; style=&quot;zoom: 67%;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;1先验概率和后验概率&quot;&gt;1.先验概率和后验概率&lt;/h1&gt;
+
+&lt;p&gt;先验概率是根据经验得到的，比如看摊位买的西瓜，大致认为60%的概率西瓜是好的。先验概率不需要样本数据，不受任何条件的影响。不根据其他，就根据常识大致判断。&lt;/p&gt;
+
+&lt;p&gt;而后验概率就类似于看瓜蒂脱落与否判断西瓜是否是好的。&lt;/p&gt;
+
+&lt;p&gt;计算后验概率就是朴素贝叶斯最核心的一步。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;联合概率&lt;/strong&gt;是几个事件同时发生的概率。例如P(瓜熟， 瓜蒂脱落)就是一个联合概率&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;P (瓜熟，瓜蒂脱落) =P (瓜熟|瓜蒂脱落) *P (瓜蒂脱落)&lt;/code&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;P(瓜熟，瓜蒂脱落) =P(瓜蒂脱落|瓜熟) *P(瓜熟)&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;但是要求的是$$P(\text{瓜熟&lt;/td&gt;
+      &lt;td&gt;瓜蒂脱落})$$：&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;$$P(\text{瓜熟&lt;/td&gt;
+      &lt;td&gt;瓜蒂脱落}) \times P(\text{瓜蒂脱落}) = P(\text{瓜蒂脱落&lt;/td&gt;
+      &lt;td&gt;瓜熟}) \times P(\text{瓜熟})$$&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;$$P(\text{瓜熟&lt;/td&gt;
+      &lt;td&gt;瓜蒂脱落}) = \frac{P(\text{瓜蒂脱落&lt;/td&gt;
+      &lt;td&gt;瓜熟}) \times P(\text{瓜熟})}{P(\text{瓜蒂脱落})}$$&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;因为$$P(\text{瓜蒂脱落&lt;/td&gt;
+      &lt;td&gt;瓜熟})\(和\)P(\text{瓜熟})\(是已知的，所以只需要求出\)P(\text{瓜蒂脱落})$$即可。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;而&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;P(瓜蒂脱落) = P(瓜蒂脱落|瓜熟) * P(瓜熟) + P(瓜蒂脱落|瓜生) * P(瓜生)&lt;/code&gt;(全概率公式)&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;若已知P(瓜熟)=0.6，P(瓜蒂脱落&lt;/td&gt;
+      &lt;td&gt;瓜生)=0.，P(瓜生)=0.4，P(瓜蒂脱落&lt;/td&gt;
+      &lt;td&gt;瓜熟)=0.8&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;则&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;P(瓜熟/瓜蒂脱落) = (0.8*0.6) / (0.8*0.6+0.4*0.4) =0.75&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果特征很多（各个特征之间是独立的），那么可以这么计算：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251121164242437.png&quot; alt=&quot;image-20251121164242437&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;以上就是朴素贝叶斯算法的一个应用。&lt;/p&gt;
+
+&lt;h1 id=&quot;2朴素贝叶斯算法&quot;&gt;2.朴素贝叶斯算法&lt;/h1&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;朴素贝叶斯（Naive Bayes）是一种基于&lt;strong&gt;贝叶斯定理&lt;/strong&gt;的&lt;strong&gt;生成模型&lt;/strong&gt;。它通过计算后验概率 $$P(\text{类别}&lt;/td&gt;
+      &lt;td&gt;\text{特征})$$ 来进行分类。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;贝叶斯公式是其理论基础：&lt;/p&gt;
+
+\[P(\text{类别}| \text{特征}) = \frac{P(\text{特征}| \text{类别}) \times P(\text{类别})}{P(\text{特征})}\]
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;\(P(\text{类别})\) (先验概率):&lt;/strong&gt; 这是在观察任何特征之前，我们对某一类别概率的预估（如您所说，比如上面例子中\(P(\text{瓜熟})=0.6\)）。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;**$$P(\text{特征}&lt;/td&gt;
+          &lt;td&gt;\text{类别})\((似然项):** 在类别已知的情况下，观察到特征的概率（如\)P(\text{瓜蒂脱落}&lt;/td&gt;
+          &lt;td&gt;\text{瓜熟})=0.8$$）。&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;\(P(\text{特征})\) (证据项):&lt;/strong&gt; 观察到特征本身的概率，通过&lt;strong&gt;全概率公式&lt;/strong&gt;计算得出（如 \(P(\text{瓜蒂脱落})\)）。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;**$$P(\text{类别}&lt;/td&gt;
+          &lt;td&gt;\text{特征})\((后验概率):** 这是最终要求的，在特征已知的情况下，类别发生的概率（如\)P(\text{瓜熟}&lt;/td&gt;
+          &lt;td&gt;\text{瓜蒂脱落})=0.75$$）。&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;21朴素的含义特征独立性假设&quot;&gt;2.1“朴素”的含义：特征独立性假设&lt;/h2&gt;
+
+&lt;p&gt;在实际的机器学习问题中，特征 \(x\) 往往不止一个，而是多个特征向量 \(x = (x_1, x_2, \dots, x_n)\)。&lt;/p&gt;
+
+&lt;p&gt;朴素贝叶斯名字中的“朴素”指的是它做了一个&lt;strong&gt;强假设&lt;/strong&gt;：&lt;strong&gt;所有特征之间相互独立&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;在类别 \(y\) 已知的情况下，所有特征的联合概率等于它们各自概率的乘积。&lt;/p&gt;
+
+\[P(x_1, x_2, \dots, x_n | y) = P(x_1|y) \times P(x_2|y) \times \dots \times P(x_n|y)\]
+
+&lt;p&gt;这个“朴素”的假设大大简化了计算，使得模型可以在特征数量非常大时依然高效运行，但这也是它&lt;strong&gt;牺牲模型准确性&lt;/strong&gt;的地方（因为现实中特征很少是完全独立的）。&lt;/p&gt;
+
+&lt;h2 id=&quot;22朴素贝叶斯与逻辑回归线性回归的对比&quot;&gt;2.2朴素贝叶斯与逻辑回归、线性回归的对比&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;strong&gt;特性&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;朴素贝叶斯 (Naive Bayes)&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;逻辑回归 (Logistic Regression)&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;线性回归 (Linear Regression)&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;模型类型&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;生成模型&lt;/strong&gt; (Generative Model)&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;判别模型&lt;/strong&gt; (Discriminative Model)&lt;/td&gt;
+      &lt;td&gt;判别模型 (Discriminative Model)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;解决问题&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;分类&lt;/strong&gt; (Classification)&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;分类&lt;/strong&gt; (Classification)&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;回归&lt;/strong&gt; (Regression)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;目标输出&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;离散的类别标签 (如“好瓜”/“坏瓜”)&lt;/td&gt;
+      &lt;td&gt;类别概率&lt;/td&gt;
+      &lt;td&gt;连续值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;优点&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;训练速度极快；对缺失数据不敏感；对数据量较小的场景有效。&lt;/td&gt;
+      &lt;td&gt;输出是概率值，可解释性强；决策边界是线性的；理论基础坚实。&lt;/td&gt;
+      &lt;td&gt;模型简单且可解释性强；计算高效。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;缺点&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;因为强大的&lt;strong&gt;特征独立性&lt;/strong&gt;假设，但是独立性假设往往不成立，可能牺牲准确率。&lt;/td&gt;
+      &lt;td&gt;易受异常值影响；只能解决线性可分或近似线性的问题。&lt;/td&gt;
+      &lt;td&gt;只能拟合线性关系；对噪声和多重共线性敏感。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;3缺失值的处理&quot;&gt;3.缺失值的处理&lt;/h1&gt;
+
+&lt;p&gt;比如婚恋相亲网站，每个用户信息填写的完整程度不同（用户填写意愿、隐私考量或信息复杂性）。在推荐/匹配/预测场景（机器学习）中，如果碰到缺失值如何处理？&lt;/p&gt;
+
+&lt;p&gt;处理缺失值的方法大致可以分为三类：&lt;strong&gt;删除（Deletion）&lt;/strong&gt;、&lt;strong&gt;插值/填充（Imputation）&lt;/strong&gt;、和&lt;strong&gt;建模（Modeling）&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;31删除&quot;&gt;3.1删除&lt;/h2&gt;
+
+&lt;p&gt;当缺失量极少或缺失模式很随机时可以考虑。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;strong&gt;方法&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;描述&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;适用场景&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;风险/缺点&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;1. 行删除&lt;/strong&gt; (Listwise Deletion)&lt;/td&gt;
+      &lt;td&gt;直接删除任何包含缺失值的样本（用户记录）。&lt;/td&gt;
+      &lt;td&gt;缺失值占总数据量比例&lt;strong&gt;极低&lt;/strong&gt;（如 &amp;lt; 1%）且缺失是&lt;strong&gt;完全随机&lt;/strong&gt;的。&lt;/td&gt;
+      &lt;td&gt;如果缺失值较多，会导致数据量急剧减少，损失大量信息，引入偏差。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;2. 列删除&lt;/strong&gt; (Feature Deletion)&lt;/td&gt;
+      &lt;td&gt;如果某个特征（如“年收入”）的缺失率&lt;strong&gt;极高&lt;/strong&gt;（如 &amp;gt; 90%），则直接删除该特征。&lt;/td&gt;
+      &lt;td&gt;该特征对核心业务价值不大，且缺失率高到无法有效填充。&lt;/td&gt;
+      &lt;td&gt;可能丢失对模型有潜在价值的信息。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;32填充&quot;&gt;3.2填充&lt;/h2&gt;
+
+&lt;p&gt;用某种值替换缺失值，这是最常用的方法。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;strong&gt;方法&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;描述&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;适用场景&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;风险/缺点&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;3. 均值/中位数/众数填充&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;数值特征（如身高、年龄）：用&lt;strong&gt;均值&lt;/strong&gt;或&lt;strong&gt;中位数&lt;/strong&gt;填充。类别特征（如学历、信仰）：用&lt;strong&gt;众数&lt;/strong&gt;填充。&lt;/td&gt;
+      &lt;td&gt;缺失值比例适中，或缺失是随机的。&lt;/td&gt;
+      &lt;td&gt;这种方法会减小特征的方差，并引入偏差（特别是均值填充），&lt;strong&gt;使数据分布失真&lt;/strong&gt;。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;4. 哨兵值填充&lt;/strong&gt; (Sentinel/Flag Value)&lt;/td&gt;
+      &lt;td&gt;用一个特定的值（如 -999 或 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Unknown&lt;/code&gt;）来标记缺失，让模型知道这个值是缺失的。&lt;/td&gt;
+      &lt;td&gt;特别适用于类别特征，或当缺失本身可能包含信息（e.g., &lt;strong&gt;“不愿填写”本身就是一种信息&lt;/strong&gt;）。&lt;/td&gt;
+      &lt;td&gt;模型可能会错误地将这个哨兵值解释为一个“正常”的极大或极小值。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;strong&gt;5. 基于模型填充&lt;/strong&gt; (Model-based Imputation)&lt;/th&gt;
+      &lt;th&gt;使用其他非缺失特征作为输入，训练一个模型（如线性回归、决策树、KNN 等）来预测缺失值。&lt;/th&gt;
+      &lt;th&gt;缺失值数量较大，且特征之间有较强相关性。&lt;/th&gt;
+      &lt;th&gt;填充值更接近真实数据分布，精度高。常用的方法有 &lt;strong&gt;MICE&lt;/strong&gt;（多重插值）和 &lt;strong&gt;KNN Imputation&lt;/strong&gt;。&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;6. 前后值填充&lt;/strong&gt; (Locally based Imputation)&lt;/td&gt;
+      &lt;td&gt;对于时间序列数据（不适用于相亲网站的静态数据），用前一个或后一个观测值填充。&lt;/td&gt;
+      &lt;td&gt;数据存在时间或空间上的连续性。&lt;/td&gt;
+      &lt;td&gt;不适用于独立的个人信息记录。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;33建模&quot;&gt;3.3建模&lt;/h2&gt;
+
+&lt;p&gt;不直接改变数据，而是修改模型或增加信息。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;strong&gt;方法&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;描述&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;适用场景&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;优点&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;7. 缺失指示变量&lt;/strong&gt; (Missing Indicator)&lt;/td&gt;
+      &lt;td&gt;对于每个有缺失值的特征X，增加一个二元指示变量I。如果 X缺失，则I=1，否则 I=0。然后用均值/中位数等填充 X。&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;强烈推荐&lt;/strong&gt;。假设缺失机制是非随机的（MNAR），即缺失的原因本身带有信息。&lt;/td&gt;
+      &lt;td&gt;捕捉了“不愿填写”或“信息不存在”本身所包含的信号，保留了原始数据结构。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;8. 特殊模型&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;使用能够&lt;strong&gt;自动处理缺失值&lt;/strong&gt;的模型，例如基于树的模型（如 XGBoost, LightGBM, CatBoost）。&lt;/td&gt;
+      &lt;td&gt;当缺失模式复杂、缺失量较大时。&lt;/td&gt;
+      &lt;td&gt;模型在节点划分时可以自动处理或学习缺失值，无需手动填充。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;34案例&quot;&gt;3.4案例&lt;/h2&gt;
+
+&lt;p&gt;在婚恋相亲网站的场景中，&lt;strong&gt;缺失值往往不是随机的，而是带有明确的意图或隐私偏好&lt;/strong&gt;（例如，高收入者可能不填收入，低收入者也可能不填收入）。因此，推荐结合使用以下方法：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;指示变量 + 填充 (方法 7 + 4)：&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;数值特征&lt;/strong&gt;（如年收入、身高）：用中位数填充，并新增一个“年收入_缺失指示”的二元特征。&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;类别特征&lt;/strong&gt;（如家庭状况）：用“&lt;strong&gt;Unknown&lt;/strong&gt;”或“&lt;strong&gt;未公开&lt;/strong&gt;”作为单独的类别进行填充。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;使用树模型 (方法 8)：&lt;/strong&gt; 优先使用 XGBoost 或 LightGBM 等集成树模型进行预测/匹配建模，因为它们对缺失值的鲁棒性更好，并且能自动学习缺失值模式。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;领域知识优先：&lt;/strong&gt; 某些关键特征（如“性别”、“年龄”、“城市”）如果缺失，可能直接导致匹配失败，应要求用户必须填写，或者直接删除该记录。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;4线性回归和逻辑回归极高的耦合度&quot;&gt;4.线性回归和逻辑回归极高的耦合度&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;线性回归（Linear Regression）和逻辑回归（Logistic Regression）在数学和结构上确实存在着极高的耦合度&lt;/strong&gt;。它们常常被一起教授，正是因为它们共享了“广义线性模型”的核心思想。&lt;/p&gt;
+
+&lt;p&gt;无论是在线性回归还是逻辑回归中，模型的第一步都是将输入特征 \(\mathbf{x}\) 进行&lt;strong&gt;线性组合&lt;/strong&gt;（加权求和），得到一个预测值 \(z\)：&lt;/p&gt;
+
+\[z = \mathbf{W}^T \mathbf{x} + b\]
+
+&lt;p&gt;两者都假设输入特征对目标变量的影响是&lt;strong&gt;线性的、可叠加的&lt;/strong&gt;。—-&amp;gt;耦合度很高。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;朴素贝叶斯&lt;/strong&gt;明确且&lt;strong&gt;强制&lt;/strong&gt;地要求&lt;strong&gt;特征之间相互独立&lt;/strong&gt;。这是其“朴素”的来源。&lt;/p&gt;
+
+&lt;p&gt;而&lt;strong&gt;逻辑回归（LR）&lt;/strong&gt;则不同：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;LR&lt;/strong&gt; 是一种&lt;strong&gt;判别模型&lt;/strong&gt;，它直接建模 $$P(y&lt;/td&gt;
+          &lt;td&gt;\mathbf{x})\(，并不对输入特征\)\mathbf{x}\(的**联合概率分布**\)P(x_1, x_2, \dots, x_n)$$ 做任何假设。&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;因此，&lt;strong&gt;LR 本身并没有假设特征独立性&lt;/strong&gt;。它只关心 \(\mathbf{W}^T \mathbf{x}\) 这个线性组合，模型参数 $\mathbf{W}$ 会自动学习特征之间的相关性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;LR 的耦合在于它&lt;strong&gt;强制将特征的贡献以线性和叠加的方式聚合&lt;/strong&gt;，这限制了它无法捕捉特征之间的复杂&lt;strong&gt;非线性交互作用&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;另外，线性部分 \(\mathbf{W}^T \mathbf{x} + b\) 过于紧密地依赖于&lt;strong&gt;特征间的关系&lt;/strong&gt;，从而导致： 如果 \(x_i\) 和 \(x_j\) 强相关，模型很难唯一确定它们各自的权重 \(w_i\) 和 \(w_j\)，从而让模型结构变得脆弱。(解决办法：利用&lt;strong&gt;正则化&lt;/strong&gt;（如 L1 或 L2）来解耦 LR 模型中特征之间的相关性，从而处理多重共线性问题)&lt;/p&gt;
+
+&lt;p&gt;显然，特征之间独立的可能性一般不大。所以朴素贝叶斯使用场景极其有限。&lt;/p&gt;
+
+&lt;p&gt;但是朴素贝叶斯对于  数据缺失，又想要数据解耦  的场景又很友好。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;计算&lt;strong&gt;后验概率&lt;/strong&gt; $$P(y_k=1&lt;/td&gt;
+      &lt;td&gt;\mathbf{x})$$：&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+\[P(y_k=1|\mathbf{x}) = \frac{P(y_k=1) \cdot P(\mathbf{x}|y_k=1)}{P(\mathbf{x})}\]
+
+&lt;p&gt;从通用贝叶斯公式到&lt;strong&gt;朴素贝叶斯分类器&lt;/strong&gt;的关键一步。&lt;/p&gt;
+
+\[P(y_k=1|\mathbf{x}) = \frac{P(y_k=1) \cdot P(x_1|y_k=1) \cdot P(x_2|y_k=1) \cdot P(x_3|y_k=1)}{P(x_1, x_2, x_3)}\]
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;这个推导的关键在于分子中对**似然项 $$P(\mathbf{x}&lt;/td&gt;
+      &lt;td&gt;y_k=1)$$ 的分解**：&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+\[P(\mathbf{x}|y_k=1) = P(x_1, x_2, x_3 | y_k=1)\]
+
+&lt;p&gt;根据朴素贝叶斯的&lt;strong&gt;核心假设（朴素假设）&lt;/strong&gt;：&lt;strong&gt;在类别 \(y\) 确定的条件下，所有特征 \(x_i\) 之间相互独立。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;因此，联合条件概率可以分解为各个特征条件概率的乘积：&lt;/p&gt;
+
+\[P(x_1, x_2, x_3 | y_k=1) \approx P(x_1|y_k=1) \cdot P(x_2|y_k=1) \cdot P(x_3|y_k=1)\]
+
+&lt;hr /&gt;
+
+&lt;p&gt;所以，朴素贝叶斯就是搞统计，且样本少的时候，误差就很大了，样本可能存在很强的偶然性，此时做统计就不准确了。&lt;/p&gt;
+
+&lt;p&gt;线性回归抗冗余强，但是朴素贝叶斯抗冗余不强。&lt;/p&gt;
+
+&lt;h1 id=&quot;5拉普拉斯平滑&quot;&gt;5.拉普拉斯平滑&lt;/h1&gt;
+
+&lt;p&gt;在&lt;strong&gt;朴素贝叶斯（Naive Bayes）&lt;/strong&gt;算法中处理&lt;strong&gt;小样本（或零概率）问题&lt;/strong&gt;的一种经典且有效的解决方案：&lt;strong&gt;拉普拉斯平滑（Laplace Smoothing）&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;特征 \(x_1=1\) 的条件概率：&lt;/p&gt;
+
+\[P(x_1=1 | y_1=1) = \frac{\text{Count}(x_1=1, y_1=1) + \frac{n}{2}}{\text{Count}(y_1) + n}\]
+
+&lt;p&gt;特征 \(x_1=0\) 的条件概率：&lt;/p&gt;
+
+\[P(x_1=0 | y_1=1) = \frac{\text{Count}(x_1=0, y_1=1) + \frac{n}{2}}{\text{Count}(y_1) + n}\]
+
+&lt;p&gt;&lt;strong&gt;这个n的取值&lt;/strong&gt;：根据人为干预决定。也是根据人的经验得出的。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;拉普拉斯平滑&lt;/strong&gt;通过向分子和分母添加一个&lt;strong&gt;虚拟计数&lt;/strong&gt;（Pseudo-count）\(\alpha\) 来调整概率估计。&lt;/p&gt;
+
+&lt;p&gt;一般的拉普拉斯平滑公式如下：&lt;/p&gt;
+
+\[P_{\text{smooth}}(x_i|y_k) = \frac{\text{Count}(x_i, y_k) + \alpha}{\text{Count}(y_k) + \alpha \cdot D}\]
+
+&lt;p&gt;其中：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;\(\alpha\)：平滑参数（通常取 1，即“加一平滑”）。&lt;/li&gt;
+  &lt;li&gt;\(D\)：特征 \(x_i\) 可能的取值数量（即&lt;strong&gt;维度&lt;/strong&gt;）。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;它本质上是&lt;strong&gt;将训练集数据与一个均匀分布进行了加权平均&lt;/strong&gt;。当样本量 \(\text{Count}(y_k)\) 很小时，添加的 \(\alpha \cdot D\) 影响较大，&lt;strong&gt;防止极端概率&lt;/strong&gt;；当样本量很大时，平滑项的影响微乎其微。&lt;/p&gt;
+
+&lt;p&gt;通过这种方式，拉普拉斯平滑有效地解决了小样本数据中由于偶然性导致的零概率问题，使朴素贝叶斯模型在训练集不完备的情况下依然能够给出合理的概率估计。&lt;/p&gt;
+
+&lt;h1 id=&quot;6信息如何量化&quot;&gt;6.信息如何量化&lt;/h1&gt;
+
+&lt;p&gt;1.明天太阳从东边升起&lt;/p&gt;
+
+&lt;p&gt;2.明天下雨&lt;/p&gt;
+
+&lt;p&gt;显然2的信息量更大，因为1发生的概率是1，而2发生的概率显然小于1&lt;/p&gt;
+
+&lt;h2 id=&quot;61信息量--自信息&quot;&gt;6.1信息量 / 自信息&lt;/h2&gt;
+
+&lt;p&gt;信息论认为，一个事件所包含的&lt;strong&gt;信息量&lt;/strong&gt;与其发生的&lt;strong&gt;概率&lt;/strong&gt;成反比。事件发生的概率越低，它所携带的信息量就越大。&lt;/p&gt;
+
+&lt;p&gt;信息论中使用&lt;strong&gt;对数&lt;/strong&gt;来量化信息量 \(I(x)\)，因为信息量具有可加性（独立事件的总信息量等于各自信息量之和），而概率具有可乘性（独立事件的总概率等于各自概率之积）。对数正好能将乘法转化为加法。&lt;/p&gt;
+
+&lt;p&gt;对于一个事件 \(x\)，其&lt;strong&gt;自信息&lt;/strong&gt; \(I(x)\) 的定义为：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;下面公式，香农严格证明过。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+\[I(x) = - \log_b P(x)\]
+
+&lt;p&gt;其中：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;\(P(x)\) 是事件 \(x\) 发生的概率。&lt;/li&gt;
+  &lt;li&gt;\(b\) 是对数的底数，它决定了信息量的单位：
+    &lt;ul&gt;
+      &lt;li&gt;当 \(b=2\) 时，信息量的单位是&lt;strong&gt;比特 (bits)&lt;/strong&gt;。&lt;/li&gt;
+      &lt;li&gt;当 \(b=e\) 时，信息量的单位是&lt;strong&gt;奈特 (nats)&lt;/strong&gt;。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;通过这个公式，可以看到：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;如果 \(P(x) = 1\)，则 \(I(x) = -\log_b(1) = 0\)。&lt;/li&gt;
+  &lt;li&gt;如果 \(P(x) \to 0\)，则 \(I(x) \to \infty\)。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这个概念是后续&lt;strong&gt;熵 (Entropy)&lt;/strong&gt;、&lt;strong&gt;交叉熵 (Cross-Entropy)&lt;/strong&gt; 和&lt;strong&gt;信息增益 (Information Gain)&lt;/strong&gt; 等机器学习中核心概念的基石。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;比如推荐系统，喜欢推荐“新奇特”的信息一样，其信息量很大，发生的概率很小。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;62信息熵&quot;&gt;6.2信息熵&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;说白了，信息熵是信息量的期望。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;信息熵是用来量化一个随机变量或一个系统所包含的平均不确定性或信息量。&lt;/strong&gt;衡量在观察到 \(X\) 的任何结果之前，我们需要多少信息才能确定其结果。&lt;/p&gt;
+
+&lt;p&gt;在机器学习中，熵常用于决策树（信息增益）、模型评估（交叉熵损失）等方面。&lt;/p&gt;
+
+&lt;p&gt;熵可以被视为&lt;strong&gt;随机变量 \(X\) 所有可能结果的自信息期望值&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;对于一个离散随机变量 \(X\)，它有 \(n\) 种可能的取值 \(\{x_1, x_2, \dots, x_n\}\)，每种取值的概率是 \(P(x_i)\)，其熵 \(H(X)\) 定义为：&lt;/p&gt;
+
+\[H(X) = E[I(X)] = \sum_{i=1}^{n} P(x_i) \cdot I(x_i)\]
+
+&lt;p&gt;将自信息 \(I(x_i) = -\log_2 P(x_i)\) 代入，得到最终的熵公式（通常以比特为单位，故取底数为 2）：&lt;/p&gt;
+
+\[H(X) = - \sum_{i=1}^{n} P(x_i) \log_2 P(x_i)\]
+
+&lt;p&gt;&lt;strong&gt;单位：&lt;/strong&gt; 比特（bits）。熵的数值代表了要对该随机变量进行编码所需的&lt;strong&gt;平均最小比特数&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;熵值越高，不确定性越大。&lt;/strong&gt; 样本的分布越均匀，熵越大。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;熵值越低，不确定性越小。&lt;/strong&gt; 样本的分布越集中，熵越小。&lt;/p&gt;
+
+&lt;p&gt;熵给出了对随机变量编码所需的&lt;strong&gt;理论平均最短长度&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;例如，如果一个系统的信息熵是 3 比特，那么在平均意义上，你需要 3 个二元问题（是/否）才能确定该系统的状态。&lt;/p&gt;
+
+&lt;p&gt;熵是计算&lt;strong&gt;信息增益&lt;/strong&gt;的基础。在每次分裂时，决策树选择能最大程度&lt;strong&gt;降低熵&lt;/strong&gt;（即最大程度减少不确定性）的特征，从而达到最佳分类效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;交叉熵（Cross-Entropy）&lt;/strong&gt;和&lt;strong&gt;相对熵（KL 散度）&lt;/strong&gt;都是基于信息熵的概念发展而来，用于衡量模型预测的概率分布与真实概率分布之间的差异。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Nov 2025 00:00:00 +0000</pubDate>
+        <link>https://kirsten-1.github.io/2025/11/22/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9910/</link>
+        <guid isPermaLink="true">https://kirsten-1.github.io/2025/11/22/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9910/</guid>
+        
+        <category>AI思想启蒙</category>
+        
+        
+      </item>
     
       <item>
         <title>【AI思想启蒙09】逻辑回归5让学习更高效，数值优化和一只看不见的手 </title>
@@ -8770,466 +9273,6 @@ Enjoy!
         <pubDate>Mon, 27 Oct 2025 00:00:00 +0000</pubDate>
         <link>https://kirsten-1.github.io/2025/10/27/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9902/</link>
         <guid isPermaLink="true">https://kirsten-1.github.io/2025/10/27/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9902/</guid>
-        
-        <category>AI思想启蒙</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>【AI思想启蒙01】人工智能概述和特征提取？做人工智能的第一步 </title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG&quot;&gt;
-&lt;/script&gt;
-
-&lt;h1 id=&quot;1灰度转换计算&quot;&gt;1.灰度转换计算&lt;/h1&gt;
-
-&lt;p&gt;&lt;strong&gt;ITU-R BT.709 标准加权系数&lt;/strong&gt; 来对一个特定 RGB 颜色进行灰度转换计算&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;标准加权系数:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;\(a_1\) (Red, 红色) \(\approx 0.2126\)&lt;/li&gt;
-  &lt;li&gt;\(a_2\) (Green, 绿色) \(\approx 0.7152\)&lt;/li&gt;
-  &lt;li&gt;\(a_3\) (Blue, 蓝色) \(\approx 0.0722\)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;公式:&lt;/strong&gt; \(\rho = 0.2126 \cdot R + 0.7152 \cdot G + 0.0722 \cdot B\)，四舍五入到最近的整数（在 $0 \sim 255$ 范围内）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;色权重在 RGB 到灰度转换公式中占比如此之高（通常在 70% 左右，如 BT.709 标准中的 $0.7152$），主要是由&lt;strong&gt;人类视觉系统的生理结构&lt;/strong&gt;决定的。&lt;strong&gt;人类的眼睛对绿色光最敏感，对蓝色光最不敏感。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;转换公式的目的是让转换后的灰度值 (\(\rho\)) &lt;strong&gt;最准确地代表人类视觉系统所感知到的亮度 (Luminance)&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;绿色权重高是&lt;strong&gt;科学事实&lt;/strong&gt;，它反映了&lt;strong&gt;人眼在感知亮度时对绿色光最敏感&lt;/strong&gt;这一生理特性。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;2词袋到深度语义自然语言处理中的文本表示与局限性&quot;&gt;2.词袋到深度语义：自然语言处理中的文本表示与局限性&lt;/h1&gt;
-
-&lt;h2 id=&quot;21向量空间模型vsm的基础构建&quot;&gt;2.1向量空间模型（VSM）的基础构建&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;向量空间模型 (Vector Space Model, VSM)&lt;/strong&gt;， VSM 中的&lt;strong&gt;词频模型 (Term Frequency Model)&lt;/strong&gt;中，统计文档 \(D\) 的向量 \(V_D\) 中的每个元素 \(V_D[i]\) 代表词汇表中的第 \(i\) 个词在文档 中出现的\(D\) 次数，记为 \(TF_{i, D}\)。&lt;/p&gt;
-
-&lt;p&gt;如果文档中 \(a\) 出现 5 次，\(b\) 出现 2 次，\(e\) 出现 1 次，\(f\) 出现 3 次，其余词汇未出现，那么文档向量为：&lt;/p&gt;
-
-\[V_{D} = ( \stackrel{5}{a}, \stackrel{2}{b}, \stackrel{0}{c}, \stackrel{0}{d}, \stackrel{1}{e}, \stackrel{3}{f}, \stackrel{0}{g}, \stackrel{0}{h}, \stackrel{0}{i}, \stackrel{0}{j} )\]
-
-&lt;blockquote&gt;
-  &lt;p&gt;词袋模型 (BoW) 是对整个文档的表示方法，而 One-Hot 编码是词袋模型建立过程中，对单个词汇进行编码的基础技术。&lt;/p&gt;
-
-  &lt;p&gt;可以说，&lt;strong&gt;One-Hot 编码提供了词汇到数字的映射基础，而词袋模型利用这种基础映射，将整个文本转化为一个特征向量&lt;/strong&gt;。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;22词袋模型的固有局限性&quot;&gt;2.2词袋模型的固有局限性&lt;/h2&gt;
-
-&lt;p&gt;虽然词频模型比布尔模型有所改进，但它仍存在一个缺陷：它认为所有词汇的重要性都一样。但实际上，像“的”、“是”、“在”这样的&lt;strong&gt;常见词 (Stop Words)&lt;/strong&gt; 即使频率很高，对文档主题的区分度却很低。&lt;/p&gt;
-
-&lt;p&gt;无论是布尔模型、纯词频 (TF) 模型，还是更高级的 TF-IDF 模型，它们都面临着一个共同的、主要的局限性，即：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;向量空间模型 (VSM) 的主要局限性：缺乏顺序和结构信息&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;这种缺点被称为 &lt;strong&gt;“词袋模型” (Bag-of-Words, BoW) 的缺陷&lt;/strong&gt;，因为这些模型将文档视为一个装满了词语的袋子，只关心袋子里面有什么词以及它们的数量，而完全&lt;strong&gt;忽略了词语出现的顺序和它们之间的语法结构&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;比如“我借你钱” vs. “你借我钱”&lt;/p&gt;
-
-&lt;p&gt;在 TF 或 TF-IDF 模型中，这两个句子将产生&lt;strong&gt;完全相同的向量&lt;/strong&gt;，因此在计算相似度时（例如通过余弦相似度），它们将被认为是&lt;strong&gt;完全相似&lt;/strong&gt;的，但它们的&lt;strong&gt;语义是完全相反&lt;/strong&gt;的。&lt;/p&gt;
-
-&lt;p&gt;再例如，“苹果”（Apple）可以指代手机品牌，也可以指代一种水果，这是自然语言处理中一个经典且核心的问题：歧义，即&lt;strong&gt;词义消歧 (Word Sense Disambiguation, WSD)&lt;/strong&gt; 或更广义的&lt;strong&gt;多义性 (Polysemy)&lt;/strong&gt; 问题。&lt;/p&gt;
-
-&lt;p&gt;在向量空间模型或词袋模型中，“苹果”这个词只有一个唯一的 ID 和一个向量维度。模型无法区分以下两种情况：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;“我买了&lt;strong&gt;苹果&lt;/strong&gt;公司的最新手机。” (科技公司)&lt;/li&gt;
-  &lt;li&gt;“我喜欢吃红色的&lt;strong&gt;苹果&lt;/strong&gt;。” (水果)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;23解决顺序和语义缺陷的高级模型&quot;&gt;2.3解决顺序和语义缺陷的高级模型&lt;/h2&gt;
-
-&lt;p&gt;为了克服这种&lt;strong&gt;顺序和结构&lt;/strong&gt;的缺陷，信息检索和自然语言处理 (NLP) 领域发展出了更复杂的模型：&lt;/p&gt;
-
-&lt;p&gt;1.N-gram 模型 (部分解决语序)&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;思路：&lt;/strong&gt; 不将文档的基本单元视为单个词，而是视为&lt;strong&gt;连续的 $N$ 个词的序列&lt;/strong&gt;（例如，2-gram 或 bigram 是两个连续的词，3-gram 是三个连续的词）。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;示例：&lt;/strong&gt; 句子 “我借你钱” 将被视为 “我借”、”借你”、”你钱” 三个 N-gram。
-    &lt;ul&gt;
-      &lt;li&gt;句子 “你借我钱” 将被视为 “你借”、”借我”、”我钱” 三个 N-gram。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;结果：&lt;/strong&gt; 两个句子的 N-gram 集合&lt;strong&gt;不同&lt;/strong&gt;，因此它们的向量也不同，相似度计算结果更合理。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;缺点：&lt;/strong&gt; 向量维度会爆炸式增长，计算和存储成本极高。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;2.句法/语义模型 (Semantic Models)&lt;/p&gt;
-
-&lt;p&gt;这是更高级的 NLP 方法，目标是理解词语的真正含义和它们在句子中的角色：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Word Embeddings (词嵌入，如 Word2Vec, GloVe):&lt;/strong&gt; 将词语映射到低维连续向量空间，使语义相似的词在向量空间中距离相近。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;基于深度学习的模型 (如 RNN, LSTM, Transformer):&lt;/strong&gt; 这些模型（尤其是 Transformer 及其衍生的 BERT, GPT 等）通过&lt;strong&gt;注意力机制&lt;/strong&gt;和&lt;strong&gt;序列编码&lt;/strong&gt;，能够完全理解词语的顺序和它们之间的远距离依赖关系，从而捕捉到“我借你钱”和“你借我钱”的本质区别。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;24解决词义歧义wsd的现代方法&quot;&gt;2.4解决词义歧义（WSD）的现代方法&lt;/h2&gt;
-
-&lt;p&gt;解决多义性问题的方法&lt;/p&gt;
-
-&lt;p&gt;解决这种依赖于上下文的词义问题（歧义），需要模型能够理解词语所处的&lt;strong&gt;环境 (Context)&lt;/strong&gt;。主要有以下几种方法：&lt;/p&gt;
-
-&lt;p&gt;1.基于知识库的方法 (Knowledge-Based Methods)&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;使用同义词典/语义网络：&lt;/strong&gt; 利用人工构建的语义资源库，如 &lt;strong&gt;WordNet&lt;/strong&gt;。
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;方法：&lt;/strong&gt; 为每个词义定义其特征、同义词和上下文。当模型遇到“苹果”时，它会查看句子中其他词语（如“手机”、“吃”），然后根据预定义的语义关系选择最合适的词义。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;2.基于上下文的方法 (Context-Based Methods)&lt;/p&gt;
-
-&lt;p&gt;这是现代 NLP 的主流方法，主要依赖于统计模型和机器学习：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;词嵌入 (Word Embeddings) 的局限性：&lt;/strong&gt; 传统的 Word2Vec 或 GloVe 模型为“苹果”只生成一个静态向量，无法区分多义性。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;语境化词嵌入 (Contextualized Word Embeddings) — 解决问题的关键：&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;代表模型：&lt;/strong&gt; &lt;strong&gt;BERT&lt;/strong&gt;（来自 Google）、&lt;strong&gt;GPT&lt;/strong&gt;（来自 OpenAI）等基于 Transformer 架构的模型。&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;思路：&lt;/strong&gt; 这些模型为每个词生成的向量不再是固定的，而是&lt;strong&gt;动态的、随句子上下文变化的&lt;/strong&gt;。&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;如何工作：&lt;/strong&gt;
-        &lt;ul&gt;
-          &lt;li&gt;当输入 “我买了&lt;strong&gt;苹果&lt;/strong&gt;手机” 时，BERT 会通过其内部的&lt;strong&gt;注意力机制&lt;/strong&gt;，发现“苹果”与“手机”的关联性很高，从而生成一个倾向于&lt;strong&gt;“科技公司”&lt;/strong&gt;的向量。&lt;/li&gt;
-          &lt;li&gt;当输入 “我吃了红&lt;strong&gt;苹果&lt;/strong&gt;” 时，模型会发现“苹果”与“吃”、“红”的关联性更高，从而生成一个倾向于&lt;strong&gt;“水果”&lt;/strong&gt;的向量。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;通过这种方式，同一个词语“苹果”在不同的句子中会有两个截然不同的向量表示，从而在后续的相似度计算或分类任务中被正确地识别为两个不同的语义实体。&lt;/p&gt;
-
-&lt;p&gt;3.聚类方法 (Clustering Methods)&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;思路：&lt;/strong&gt; 将所有包含“苹果”的句子收集起来，然后利用机器学习算法根据周围的词语对其进行聚类。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;结果：&lt;/strong&gt; 句子可能会自然地分成两组：一组是关于科技和电子产品的，另一组是关于食物、农业和健康的。聚类中心就代表了“苹果”的两种不同词义。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;要解决“苹果”的多义性问题，现代方法已经超越了简单的词袋计数，而是通过&lt;strong&gt;复杂的深度学习模型&lt;/strong&gt;（例如 Transformer 架构），让计算机学会&lt;strong&gt;关注上下文&lt;/strong&gt;，从而为同一个词在不同语境下生成独特的&lt;strong&gt;语境化向量&lt;/strong&gt;，实现精确的&lt;strong&gt;词义消歧&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;3分析与比较两种性别编码方法&quot;&gt;3.分析与比较：两种性别编码方法&lt;/h1&gt;
-
-&lt;p&gt;用户画像（User Persona）&lt;strong&gt;构建中，对&lt;/strong&gt;性别（Sex/Gender）&lt;strong&gt;这一特征进行&lt;/strong&gt;数值化编码，有下面2种方法：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;男 \([0] \quad\) 女 \([1]\)   —–&amp;gt;标签编码 (Label Encoding)&lt;/li&gt;
-  &lt;li&gt;男 \([0, 1] \quad\) 女 \([1, 0]\)   —–&amp;gt;独热编码 (One-Hot Encoding)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这两种方法都属于将&lt;strong&gt;分类变量&lt;/strong&gt;转化为&lt;strong&gt;数值变量&lt;/strong&gt;的技术，以便输入到机器学习模型中进行训练和分析。&lt;/p&gt;
-
-&lt;p&gt;【标签编码】:&lt;strong&gt;引入了错误的序数关系（Order/Magnitude）：&lt;/strong&gt; 机器会将 $[1]$ 识别为比 $[0]$ &lt;strong&gt;“更大”&lt;/strong&gt;或&lt;strong&gt;“更高”&lt;/strong&gt;的值。&lt;/p&gt;
-
-&lt;p&gt;对于像性别这样的&lt;strong&gt;名义变量 (Nominal Variable)&lt;/strong&gt;（即没有大小、顺序或等级之分的分类），这种编码会使模型误认为 &lt;strong&gt;“女”&lt;/strong&gt; 比 &lt;strong&gt;“男”&lt;/strong&gt; 更重要、更优越，或者存在某种数值上的顺序关系。这会&lt;strong&gt;扭曲模型对特征权重的学习&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;【独热编码】:每个类别都用一个独立的维度表示，所有维度都是二进制（0 或 1）。模型无法从数值大小上推断出“男”和“女”之间有任何顺序或大小关系。确保了模型将“男”和“女”视为两个&lt;strong&gt;独立的、平等的类别特征&lt;/strong&gt;。对于只有两个类别的性别特征，维度从 1 增加到了 2。在特征类别非常多的情况下，会导致特征空间维度膨胀。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;结论：方法 ② 更好&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在机器学习和数据分析中，对于&lt;strong&gt;名义分类变量&lt;/strong&gt;（如性别、国家、职业类型等），&lt;strong&gt;方法 ② (独热编码)&lt;/strong&gt; 是&lt;strong&gt;标准且更推荐&lt;/strong&gt;的编码方法。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;原因总结：&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;方法 ② (独热编码)&lt;/strong&gt; 能够正确地处理&lt;strong&gt;名义变量&lt;/strong&gt;，避免了方法 ① &lt;strong&gt;错误引入数值上的序数关系&lt;/strong&gt;，从而保证了机器学习模型能够更准确、无偏地学习该特征对预测目标的影响。&lt;/p&gt;
-
-&lt;p&gt;在您的例子中，虽然性别只有两种，用标签编码 (方法 ①) 也能跑通，但在处理&lt;strong&gt;多类别&lt;/strong&gt;（如学历：小学、中学、大学、硕士）时，标签编码的问题会更加突出。独热编码是处理所有分类变量的安全做法。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;用于减少维度的独热编码变体，即 &lt;strong&gt;虚拟编码（Dummy Coding）&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;虚拟编码&lt;/strong&gt;是&lt;strong&gt;独热编码 (One-Hot Encoding)&lt;/strong&gt;的一种变体，主要目的是在不损失信息的前提下，&lt;strong&gt;避免多重共线性 (Multicollinearity)&lt;/strong&gt; 问题。&lt;/p&gt;
-
-  &lt;p&gt;虚拟编码只使用 \(N-1\) 个特征维度来表示 $N$ 个类别。它&lt;strong&gt;省略了其中一个类别&lt;/strong&gt;的维度，将这个被省略的类别作为&lt;strong&gt;基准 (Reference Category)&lt;/strong&gt;。&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;如果所有 \(N-1\) 个维度的值都是 $0$，就意味着这个样本属于被省略的那个基准类别。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;在统计回归模型中，如果特征之间存在精确的线性关系（例如：如果“男”是 \([1, 0]\)，“女”是 \([0, 1]\)，那么“女”就可以通过 \(1 - \text{“男”}\) 线性推导出来），这就会导致&lt;strong&gt;多重共线性&lt;/strong&gt;，使得模型估计的系数不稳定。&lt;/p&gt;
-
-  &lt;p&gt;虚拟编码通过丢弃一个维度来打破这种完美的线性关系。&lt;/p&gt;
-
-  &lt;p&gt;假设我们仍有&lt;strong&gt;性别&lt;/strong&gt;这一特征（\(N=2\) 个类别）。&lt;/p&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;&lt;strong&gt;类别&lt;/strong&gt;&lt;/th&gt;
-        &lt;th&gt;&lt;strong&gt;独热编码 (One-Hot)&lt;/strong&gt;&lt;/th&gt;
-        &lt;th&gt;&lt;strong&gt;虚拟编码 (Dummy Coding)&lt;/strong&gt;&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;男&lt;/td&gt;
-        &lt;td&gt;\([1, 0]\)&lt;/td&gt;
-        &lt;td&gt;\([0]\)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;女&lt;/td&gt;
-        &lt;td&gt;\([0, 1]\)&lt;/td&gt;
-        &lt;td&gt;\([1]\)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;维度数&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;\(N=2\)&lt;/td&gt;
-        &lt;td&gt;\(N-1=1\)&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;p&gt;假设有三个学历类别：&lt;strong&gt;小学&lt;/strong&gt;、&lt;strong&gt;中学&lt;/strong&gt;、&lt;strong&gt;大学&lt;/strong&gt;。我们将“小学”设为基准类别。&lt;/p&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;&lt;strong&gt;类别&lt;/strong&gt;&lt;/th&gt;
-        &lt;th&gt;&lt;strong&gt;独热编码 (One-Hot) (N=3 维)&lt;/strong&gt;&lt;/th&gt;
-        &lt;th&gt;&lt;strong&gt;虚拟编码 (Dummy Coding) (N−1=2 维)&lt;/strong&gt;&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;小学&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;\([1, 0, 0]\)&lt;/td&gt;
-        &lt;td&gt;&lt;strong&gt;\([0, 0]\)&lt;/strong&gt; (基准类别)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;中学&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;\([0, 1, 0]\)&lt;/td&gt;
-        &lt;td&gt;&lt;strong&gt;\([1, 0]\)&lt;/strong&gt; (中学=1, 大学=0)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;大学&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;\([0, 0, 1]\)&lt;/td&gt;
-        &lt;td&gt;&lt;strong&gt;\([0, 1]\)&lt;/strong&gt; (中学=0, 大学=1)&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;p&gt;虚拟编码在&lt;strong&gt;回归分析&lt;/strong&gt;中特别常见，因为它能保持模型系数的可解释性（系数代表相对于基准类别的差异）。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;4处理连续特征如年龄的表示&quot;&gt;4.处理连续特征（如年龄）的表示&lt;/h1&gt;
-
-&lt;p&gt;在机器学习中，处理连续特征（如年龄）有多种表示方法，目标是提高模型的性能、稳定性和可解释性。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;对于卖一定产品的人群来说，比如中年30-50岁，这群年龄的人更容易消费，所以0-29和51-100更不重要了。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;其次，25岁和26岁，虽然只差一岁，但是没啥大的区别。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在电商场景中，往往利用&lt;strong&gt;离散化/分箱（Binning or Discretization）&lt;/strong&gt;+ &lt;strong&gt;独热编码&lt;/strong&gt;处理年龄。&lt;/p&gt;
-
-&lt;p&gt;比如：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;箱子 1：&lt;/strong&gt; 0-18 岁（青少年） \(\rightarrow [1]\)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;箱子 2：&lt;/strong&gt; 19-35 岁（青年） \(\rightarrow [2]\)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;箱子 3：&lt;/strong&gt; 36-60 岁（中年） \(\rightarrow [3]\)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;箱子 4：&lt;/strong&gt; 61-100 岁（老年） \(\rightarrow [4]\)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;基于此：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;0-18 岁 \(\rightarrow [1, 0, 0, 0]\)&lt;/li&gt;
-  &lt;li&gt;36-60 岁 \(\rightarrow [0, 0, 1, 0]\)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这种分法，边节点的选择非常重要。&lt;/p&gt;
-
-&lt;p&gt;为了缓和震荡，也可以这么划分：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;0-18&lt;/li&gt;
-  &lt;li&gt;15-35&lt;/li&gt;
-  &lt;li&gt;30-55&lt;/li&gt;
-  &lt;li&gt;50-100&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这种划分策略在特征工程中被称为&lt;strong&gt;重叠分箱 (Overlapping Binning)&lt;/strong&gt;，主要目的是&lt;strong&gt;缓和分界点处的震荡和突变&lt;/strong&gt;，提高模型的平滑度和鲁棒性。&lt;/p&gt;
-
-&lt;h1 id=&quot;5二手车平台场景下的颜色编码问题&quot;&gt;5.二手车平台场景下的颜色编码问题&lt;/h1&gt;
-
-&lt;p&gt;如果&lt;strong&gt;二手车平台&lt;/strong&gt;要将汽车的&lt;strong&gt;颜色&lt;/strong&gt;（如“绿”、“红”、“黑”）作为特征输入到机器学习模型中（例如，预测售价或用户偏好），\((0 \sim 255, 0 \sim 255, 0 \sim 255)\) 对应 \(R, G, B\),&lt;/p&gt;
-
-&lt;p&gt;这种基于 &lt;strong&gt;RGB 原始值比较&lt;/strong&gt;的编码方法是&lt;strong&gt;不合适&lt;/strong&gt;的。&lt;/p&gt;
-
-&lt;p&gt;原始 RGB 值是连续、感知且多维的，如果模型试图直接比较这些 &lt;strong&gt;RGB 向量&lt;/strong&gt;，就会错误地引入&lt;strong&gt;数值上的大小关系&lt;/strong&gt;。比如，在二手车交易中，“红色车”和“黑色车”只是两种不同的&lt;strong&gt;分类&lt;/strong&gt;，它们之间&lt;strong&gt;没有数值大小、顺序或等级之分&lt;/strong&gt;。模型可能会错误地认为 RGB 值高的车（例如，浅色或高亮度的车）在某些方面“更重要”或与目标变量有错误的数值关联，从而&lt;strong&gt;扭曲模型的学习&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;对于“二手车颜色”这种&lt;strong&gt;名义分类变量&lt;/strong&gt;（车的颜色其实就几种，没有特别多的类别），正确的机器学习表示方法应该是：&lt;strong&gt;独热编码&lt;/strong&gt;，因为像之前讨论的性别编码一样，避免了在“绿”、“红”、“黑”之间引入错误的数值顺序或大小关系。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;所以在处理特征的时候，一定要强烈地理解业务场景。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;6组合特征&quot;&gt;6.组合特征&lt;/h1&gt;
-
-&lt;p&gt;电商场景下，2 位 (性别) + 4 位 (年龄)去刻画用户画像，考虑这样的场景，16-40岁的人购买力是10，对于女生购买力是15，但是年龄是16-40且女性，购买力飙升变成40。这就需要&lt;strong&gt;多个分类特征&lt;/strong&gt;（性别和年龄）组合编码成一个向量，所以需要&lt;strong&gt;创建交叉特征 (Interaction Feature)&lt;/strong&gt; 来捕捉特征组合的非线性效应。即引入第7位特征 \(X_{组合}\)。&lt;/p&gt;
-
-\[X_{组合} = \begin{cases} 1 &amp;amp; \text{如果用户属于 “16-40 岁” 且为 “女性”} \\ 0 &amp;amp; \text{否则} \end{cases}\]
-
-&lt;p&gt;原来的 6 位向量会扩展为 7 位。&lt;/p&gt;
-
-&lt;p&gt;当模型学习时，它会为这个新的交叉特征 \(X_{组合}\)分配一个巨大的&lt;strong&gt;权重&lt;/strong&gt; \(w_{组合}\)。&lt;/p&gt;
-
-\[\text{购买力} \approx w_{\text{基线}} + \sum w_i \cdot X_i + \dots + w_{\text{组合}} \cdot X_{\text{组合}}\]
-
-&lt;ul&gt;
-  &lt;li&gt;对于普通的16-40岁男性， \(X_{组合}=0\)，该权重项消失。&lt;/li&gt;
-  &lt;li&gt;对于16-40岁的女性， \(X_{组合}=1\)，模型会学习到一个很大的 值\(w_{组合}\)，从而将最终的购买力预测值推高到40左右。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;通过这种方式，成功地将两个特征的&lt;strong&gt;协同效应&lt;/strong&gt;以线性项的方式引入到模型中，使模型能够&lt;strong&gt;精确地学习和预测特定用户群体的非线性高价值&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h1 id=&quot;7亿维特征问题&quot;&gt;7.亿维特征问题&lt;/h1&gt;
-
-&lt;p&gt;这种方法也有缺点，一个在互联网和大数据领域（尤其是推荐系统、广告系统、用户画像构建）中非常现实且棘手的问题：&lt;strong&gt;亿维特征 (Billion-Scale Feature Dimensions)&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;独热编码 (One-Hot Encoding)*&lt;em&gt;和*&lt;/em&gt;特征交叉&lt;/strong&gt;是维度爆炸的直接原因。&lt;/p&gt;
-
-&lt;p&gt;当遇到&lt;strong&gt;高基数特征&lt;/strong&gt;（High Cardinality Feature，即特征的可能取值非常多）时，使用独热编码会立即引发维度爆炸。如果用户 ID 有1亿个取值，广告 ID 有10万个取值，那么它们的交叉特征维度就是 \(10^8 \times 10^5 = 10^{13}\)（十万亿），这远远超出了实际计算的能力范围。&lt;/p&gt;
-
-&lt;p&gt;训练数据和模型参数需要巨大的存储空间和分布式计算集群。即使维度很高，对于单个样本而言，大部分特征值仍为 0（高度稀疏），导致计算资源浪费。许多交叉特征可能在训练集中只出现过一两次，导致模型无法进行有效学习和泛化。&lt;/p&gt;
-
-&lt;p&gt;解决亿维特征问题的关键是：&lt;strong&gt;将高维稀疏的特征空间，压缩到低维密集的语义空间。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;1.特征降维与嵌入（Embedding）—— 最核心的方法&lt;/p&gt;
-
-&lt;p&gt;这是现代推荐和广告系统中最常用的技术，灵感来源于词嵌入 (Word Embedding)。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;方法：&lt;/strong&gt; 不再对高基数 ID（如用户 ID、商品 ID）使用 One-Hot 编码，而是将每个 ID 映射到一个&lt;strong&gt;低维、密集的向量&lt;/strong&gt;中。
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;示例：&lt;/strong&gt; 一个1亿维的用户 ID 独热向量，被压缩成一个 &lt;strong&gt;64维或128维的密集向量（Embedding）&lt;/strong&gt;。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;优势：&lt;/strong&gt; 既保留了每个 ID 的语义信息（向量空间中的距离代表相似性），又解决了维度爆炸和稀疏性问题。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;2.特征哈希（Feature Hashing）&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;方法：&lt;/strong&gt; 使用哈希函数将原始的高维特征空间映射到一个&lt;strong&gt;预先指定维度&lt;/strong&gt;的低维空间中。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;示例：&lt;/strong&gt; 无论用户 ID 是 1亿还是 100 亿，都将其哈希到 \(10^5\) 维的向量中。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;优势：&lt;/strong&gt; 不占用额外内存存储哈希表，效率高。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;缺点：&lt;/strong&gt; 存在&lt;strong&gt;哈希碰撞&lt;/strong&gt;（不同的特征可能被映射到相同的维度），会轻微损失模型精度。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;3.自动化特征交叉（Factorization Machines &amp;amp; Deep Learning）&lt;/p&gt;
-
-&lt;p&gt;对于交叉特征，不再手动创建所有 \(A \times B\) 的组合特征：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;因子分解机 (Factorization Machines, FM)：&lt;/strong&gt; 自动学习任意两个特征之间的&lt;strong&gt;隐式交叉权重&lt;/strong&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;深度神经网络 (Deep Learning, 如 Wide &amp;amp; Deep Model)：&lt;/strong&gt; 利用神经网络的多层结构，&lt;strong&gt;自动学习&lt;/strong&gt;高阶、非线性的特征组合，无需人工显式创建交叉特征。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;总结：&lt;/strong&gt; 解决“亿维特征”问题的关键在于&lt;strong&gt;拥抱低维密集表示&lt;/strong&gt;。通过 &lt;strong&gt;Embedding 技术&lt;/strong&gt;处理高基数特征，结合 &lt;strong&gt;深度学习模型&lt;/strong&gt; 或 &lt;strong&gt;FM&lt;/strong&gt; 来实现特征的自动化交叉学习，是当前业界的主流解决方案。&lt;/p&gt;
-
-&lt;h1 id=&quot;8复杂特征工程多模态数据与特征提取&quot;&gt;8.复杂特征工程：多模态数据与特征提取&lt;/h1&gt;
-
-&lt;p&gt;多模态输入&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Video (视频)&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Img (图像)&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Text (文本)&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;【视频/图像特征提取】&lt;/p&gt;
-
-&lt;p&gt;完成率： 视频播放进度指标。&lt;/p&gt;
-
-&lt;p&gt;数量： 可能是图片数量、视频时长、帧率等。&lt;/p&gt;
-
-&lt;p&gt;敏感信息： 这是一个业务相关的视觉标签（可能是用于吸引用户点击或计算内容风险），通过图像识别或目标检测模型提取。&lt;/p&gt;
-
-&lt;p&gt;清晰度： 图像或视频的质量指标，用于评估用户体验。&lt;/p&gt;
-
-&lt;p&gt;【文本特征提取】&lt;/p&gt;
-
-&lt;p&gt;章长度： 文本的基础统计特征。&lt;/p&gt;
-
-&lt;p&gt;[ one-hot 关键词 ]： 使用独热编码 (One-Hot) 或 布尔向量 来表示文章中是否包含特定的关键词，即使用高维稀疏向量表示。&lt;/p&gt;
-
-&lt;p&gt;[ 文章类别 ]： 文章所属的分类标签，也常使用独热编码。&lt;/p&gt;
-
-&lt;p&gt;在现代系统中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Video&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Img&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Text&lt;/code&gt; 更常用 &lt;strong&gt;Embedding 向量&lt;/strong&gt;（低维密集表示）来提取特征，而非完全依赖手动设计的统计特征或高维稀疏的 One-Hot 编码。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;这些特征提取的方案一般都是&lt;strong&gt;强业务绑定&lt;/strong&gt;的&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;特征工程不仅仅是数据处理，更是业务知识的数学化表达。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;所以透彻的理解业务是做好AI的关键。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;应用场景涵盖了&lt;strong&gt;电商、短视频、金融、医疗&lt;/strong&gt;等众多领域。首先，我们需要&lt;strong&gt;结合领域知识 (Domain Knowledge)&lt;/strong&gt;，与&lt;strong&gt;产品经理&lt;/strong&gt;、&lt;strong&gt;业务分析师&lt;/strong&gt;深度协作，将这些场景中复杂、多样的&lt;strong&gt;业务概念和用户行为&lt;/strong&gt;，转化为机器可理解的&lt;strong&gt;数值特征&lt;/strong&gt;。这个过程的最终目标是构建一个&lt;strong&gt;统一、标准化&lt;/strong&gt;的特征向量（即&lt;strong&gt;‘屏蔽掉场景差异的向量’&lt;/strong&gt;）。这个向量的核心是&lt;strong&gt;用低维、密集的语义表示&lt;/strong&gt;（如 &lt;strong&gt;Embedding&lt;/strong&gt;）来替代高维、稀疏的原始特征。最终，这个&lt;strong&gt;通用化的特征向量&lt;/strong&gt;被送入模型进行训练。模型通过学习特征与目标变量之间的复杂关系，得出适用于&lt;strong&gt;跨场景或特定场景的预测结果&lt;/strong&gt;（如推荐、风控评分或点击率）。&lt;/p&gt;
-
-&lt;p&gt;即，分成3个阶段：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;特征工程阶段：涉及到&lt;strong&gt;人工特征工程 (Hand-crafted Features)&lt;/strong&gt;，需要利用领域专家知识，定义具有高区分度的特征，并通过&lt;strong&gt;分箱、标准化、标签编码&lt;/strong&gt;等方式将业务概念转化为数值。&lt;/li&gt;
-  &lt;li&gt;特征表示阶段：变成一个向量（一个屏蔽掉场景差异的向量），这个过程称为&lt;strong&gt;特征统一化&lt;/strong&gt;或&lt;strong&gt;通用特征表示&lt;/strong&gt;。关键是使用 &lt;strong&gt;Embedding 技术&lt;/strong&gt;。即使是不同的场景，如果用户行为模式相似，其 Embedding 向量也会在语义空间中靠近，从而“屏蔽掉场景差异”。&lt;/li&gt;
-  &lt;li&gt;模型应用阶段：训练的目的是让模型学习特征向量中的&lt;strong&gt;权重和交互关系&lt;/strong&gt;。最终结果是模型对目标变量（如 \(P(\text{Click})\)、LTV、违约风险）的&lt;strong&gt;概率或数值预测&lt;/strong&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;以上是传统模型的AI的工作过程。&lt;/p&gt;
-
-&lt;p&gt;深度学习自动化了传统特征工程的一部分，但引入了新的、更抽象的特征工程任务。&lt;/p&gt;
-
-&lt;p&gt;在深度学习框架下，特征工程的任务转变为对&lt;strong&gt;模型输入和架构&lt;/strong&gt;的设计&lt;/p&gt;
-
-&lt;p&gt;对于表格数据（如用户ID、年龄、地区），深度学习仍然需要：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;独热编码/分箱：&lt;/strong&gt; 虽然最终会被嵌入层处理，但原始特征的&lt;strong&gt;离散化和规范化&lt;/strong&gt;是必要的。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;特征归一化/标准化：&lt;/strong&gt; 对连续特征（如年龄、收入），标准化（如 Z-score）仍是提高模型收敛速度和稳定性的标准步骤。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;创建 Embedding 特征：&lt;/strong&gt; 这是深度学习特有的、最重要的“特征工程”。需要决定：
-    &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;哪些 ID 需要被 Embedding？&lt;/strong&gt;（如 User ID, Item ID）&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Embedding 的维度是多少？&lt;/strong&gt;（如 64 维还是 128 维）&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Embedding 是共享还是独立？&lt;/strong&gt;（如所有商品的颜色特征共享一个 Embedding 矩阵）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;虽然模型可以自动学习交互，但在模型架构设计中，&lt;strong&gt;显式地引入重要的交叉特征&lt;/strong&gt;依然能提升性能（即 Wide &amp;amp; Deep 模型中的 Wide 部分）。&lt;/p&gt;
-
-&lt;p&gt;在处理用户行为序列或时间序列时，特征工程尤为关键：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;序列截断/填充：&lt;/strong&gt; 确定序列的最大长度，并进行填充（Padding）或截断（Truncation）。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;位置编码 (Positional Encoding)：&lt;/strong&gt; 在 Transformer 模型中，必须手动将位置信息编码为特征向量，以便模型理解词语的顺序。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;时间特征：&lt;/strong&gt; 将时间戳转化为机器可学习的特征，如 &lt;strong&gt;“星期几”、“小时”、“是否为周末”&lt;/strong&gt; 等。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;深度学习要求工程师将精力投入到&lt;strong&gt;高层抽象、稀疏 ID 的 Embedding 化，以及模型结构的优化&lt;/strong&gt;上。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 26 Oct 2025 00:00:00 +0000</pubDate>
-        <link>https://kirsten-1.github.io/2025/10/26/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9901/</link>
-        <guid isPermaLink="true">https://kirsten-1.github.io/2025/10/26/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9901/</guid>
         
         <category>AI思想启蒙</category>
         
