@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="numpy初级2-基本操作 - Hilda的博客 | Your genius girlfriend's blog">
+        content="【AI思想启蒙11】深度神经网络入门 - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-07-14T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-11-22T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="numpy">
+    <meta property="article:tag" content="AI思想启蒙">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/07/14/numpy%E5%88%9D%E7%BA%A72/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/11/22/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9911/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>numpy初级2-基本操作 - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>【AI思想启蒙11】深度神经网络入门 - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/07/14/numpy%E5%88%9D%E7%BA%A72/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/11/22/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9911/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -272,13 +272,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=numpy" title="numpy">numpy</a>
+                        <a class="tag" href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99" title="AI思想启蒙">AI思想启蒙</a>
                         
                     </div>
-                    <h1>numpy初级2-基本操作</h1>
+                    <h1>【AI思想启蒙11】深度神经网络入门</h1>
                     
-                    <h2 class="subheading"></h2>
-                    <span class="meta">Posted by Hilda on July 14, 2025</span>
+                    <h2 class="subheading">特征工程决定机器学习成败，一层神经网络通过全连接层实现自动线性特征组合+激活函数引入非线性，使多层网络具备任意函数逼近能力；无激活则退化为线性模型。Softmax为可导多分类，特化即Sigmoid</h2>
+                    <span class="meta">Posted by Hilda on November 22, 2025</span>
                 </div>
             </div>
         </div>
@@ -308,216 +308,330 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<h1 id="1ndarray-的数据类型">1.ndarray 的数据类型</h1>
+<h1 id="1机器学习中最大的难点">1.机器学习中最大的难点</h1>
 
-<p>NumPy <code class="language-plaintext highlighter-rouge">ndarray</code> 中的所有元素都必须是相同的数据类型（dtype）。这种固定类型的设计是 NumPy 实现高性能数值计算的基础。NumPy 提供了比 Python 内置类型更丰富、更精确的数值数据类型，包括不同位宽的整数、浮点数，以及布尔值、复数和字符串等。</p>
+<p>特征！特征！特征！</p>
 
-<p>Python 的列表可以存储不同类型的数据（例如 <code class="language-plaintext highlighter-rouge">[1, "hello", 3.14]</code>），因为它存储的是指向不同 Python 对象的引用。然而，NumPy 的 <code class="language-plaintext highlighter-rouge">ndarray</code> 追求的是内存效率和计算性能，它要求数组中的所有元素都具有相同的数据类型。这种同构性使得 NumPy 能够将数组数据连续地存储在内存中，从而实现高效的向量化操作和与底层 C/Fortran 库的无缝集成。</p>
+<p>一个好的特征，即使最简单的逻辑回归，也能出色的完成任务</p>
 
-<p>NumPy 提供了丰富的数据类型，这些类型通常以 <code class="language-plaintext highlighter-rouge">numpy.dtype</code> 对象表示，并且可以通过字符串简写来指定。</p>
-
-<p><strong>主要数据类型分类：</strong></p>
+<p>好特征的标准：</p>
 
 <ol>
-  <li><strong>整数类型 (Integer Types)：</strong>
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">int8</code>：8位有符号整数，范围 [−128,127]。</li>
-      <li><code class="language-plaintext highlighter-rouge">uint8</code>：8位无符号整数，范围 [0,255]。</li>
-      <li><code class="language-plaintext highlighter-rouge">int16</code>：16位有符号整数，范围 [−32768,32767]。</li>
-      <li><code class="language-plaintext highlighter-rouge">uint16</code>：16位无符号整数，范围 [0,65535]。</li>
-      <li><code class="language-plaintext highlighter-rouge">int32</code>：32位有符号整数，范围 [−2147483648,2147483647]。</li>
-      <li><code class="language-plaintext highlighter-rouge">uint32</code>：32位无符号整数，范围 [0,4294967295]。</li>
-      <li><code class="language-plaintext highlighter-rouge">int64</code>：64位有符号整数，范围 [−9223372036854775808,9223372036854775807]。</li>
-      <li><code class="language-plaintext highlighter-rouge">uint64</code>：64位无符号整数，范围 [0,18446744073709551615]。</li>
-      <li><code class="language-plaintext highlighter-rouge">int</code>：默认整数类型，通常是 <code class="language-plaintext highlighter-rouge">int32</code> 或 <code class="language-plaintext highlighter-rouge">int64</code>，取决于操作系统和编译环境。</li>
-      <li><strong>拓展：</strong> 选择合适的整数类型可以节省内存。例如，如果知道数据范围在 0-255 之间，使用 <code class="language-plaintext highlighter-rouge">uint8</code> 比 <code class="language-plaintext highlighter-rouge">int64</code> 可以节省 8 倍内存。</li>
-    </ul>
-  </li>
-  <li><strong>浮点数类型 (Floating-Point Types)：</strong>
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">float16</code>：16位半精度浮点数。精度较低，范围有限，但在某些深度学习场景中用于节省内存和加速计算。</li>
-      <li><code class="language-plaintext highlighter-rouge">float32</code>：32位单精度浮点数。提供约 7 位十进制精度。</li>
-      <li><code class="language-plaintext highlighter-rouge">float64</code>：64位双精度浮点数（默认）。提供约 15-17 位十进制精度，是科学计算中最常用的浮点类型。</li>
-      <li><code class="language-plaintext highlighter-rouge">float</code>：默认浮点类型，通常是 <code class="language-plaintext highlighter-rouge">float64</code>。</li>
-      <li><strong>拓展：</strong> 浮点数的精度和范围是有限的，理解浮点数表示的限制（如浮点数精度问题）对于数值计算至关重要。</li>
-    </ul>
-  </li>
-  <li><strong>字符串类型 (String Type)：</strong>
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">'S'</code> 或 <code class="language-plaintext highlighter-rouge">'bytes'</code>：字节字符串。例如 <code class="language-plaintext highlighter-rouge">'S10'</code> 表示长度为 10 的字节字符串。</li>
-      <li><code class="language-plaintext highlighter-rouge">'U'</code> 或 <code class="language-plaintext highlighter-rouge">'str'</code>：Unicode 字符串。例如 <code class="language-plaintext highlighter-rouge">'U10'</code> 表示长度为 10 的 Unicode 字符串。</li>
-      <li><strong>重要：</strong> NumPy 的字符串是<strong>定长</strong>的。当创建或转换到字符串 <code class="language-plaintext highlighter-rouge">dtype</code> 时，NumPy 会根据最长字符串的长度来确定每个元素的存储空间。如果新字符串超过这个长度，它会被截断；如果短于这个长度，会用空字符填充。这与 Python 动态长度的字符串不同。</li>
-      <li><strong>拓展：</strong> 由于定长字符串的限制和效率问题，NumPy 数组通常不推荐直接存储大量可变长度的字符串。对于字符串操作，Python 原生字符串列表或 Pandas Series 更为合适。</li>
-    </ul>
-  </li>
-  <li><strong>其他常见类型：</strong>
-    <ul>
-      <li><code class="language-plaintext highlighter-rouge">bool</code>：布尔类型，存储 <code class="language-plaintext highlighter-rouge">True</code> 或 <code class="language-plaintext highlighter-rouge">False</code>。</li>
-      <li><code class="language-plaintext highlighter-rouge">complex64</code> / <code class="language-plaintext highlighter-rouge">complex128</code>：复数类型，分别由两个 <code class="language-plaintext highlighter-rouge">float32</code> / <code class="language-plaintext highlighter-rouge">float64</code> 组成。</li>
-      <li><code class="language-plaintext highlighter-rouge">object</code>：Python 对象类型。数组元素可以是任意 Python 对象。这使得 <code class="language-plaintext highlighter-rouge">ndarray</code> 失去了 NumPy 的主要性能优势，因为它存储的是 Python 对象的引用，而不是连续的原始数据。</li>
-    </ul>
-  </li>
+  <li>区分性强：特征值在不同类别之间应有显著差异，而在同一类别内部应保持相似。</li>
+  <li>特征多：特征的数量并非越多越好，而是要<strong>尽可能覆盖目标变量的所有影响因素</strong>。</li>
+  <li>特征的各类组合：有的时候看基础特征进行分类，意义不大。但是特征组合就很厉害。比如双十一时期，二三十岁的女性。需要升维（特征组合等）/使用非线性的模型（比如FM，深度学习等）</li>
 </ol>
 
-<blockquote>
-  <p>NumPy <code class="language-plaintext highlighter-rouge">ndarray</code> 的核心优势在于其内存布局。当指定一个 <code class="language-plaintext highlighter-rouge">dtype</code> 时，NumPy 会：</p>
-
-  <ol>
-    <li><strong>确定元素大小：</strong> <code class="language-plaintext highlighter-rouge">dtype</code> 明确地告诉 NumPy 数组中每个元素占用多少字节的内存（例如，<code class="language-plaintext highlighter-rouge">int32</code> 占用 4 字节，<code class="language-plaintext highlighter-rouge">float64</code> 占用 8 字节）。</li>
-    <li><strong>连续内存分配：</strong> NumPy 会一次性分配一块足够大的连续内存区域，以容纳所有数组元素。例如，一个 <code class="language-plaintext highlighter-rouge">(1000, 1000)</code> 的 <code class="language-plaintext highlighter-rouge">float64</code> 数组会分配 <code class="language-plaintext highlighter-rouge">1000*1000*8</code> 字节的内存。</li>
-    <li><strong>直接内存访问：</strong> 由于元素大小固定且内存连续，NumPy 可以通过简单的指针算术（C 语言风格）快速定位到任何一个元素，而无需像 Python 列表那样进行多次引用查找。</li>
-    <li><strong>优化计算：</strong> 这种连续内存布局使得 NumPy 能够利用 CPU 的缓存优势，并且可以高效地将计算任务分发给底层的 C/Fortran 库或 BLAS/LAPACK 等优化过的线性代数库。这些底层库是为处理固定类型、连续内存数据而高度优化的，从而实现了 Python 中难以匹敌的计算速度。</li>
-  </ol>
-
-  <p>选择正确的 <code class="language-plaintext highlighter-rouge">dtype</code> 对于内存使用和计算性能至关重要。如果数据不需要高精度，使用较小的 <code class="language-plaintext highlighter-rouge">dtype</code> 可以显著减少内存占用，尤其是在处理大型数据集时。</p>
-</blockquote>
+<p>在实际工作中，数据科学家通常将 <strong>70%</strong> 的时间投入到特征工程中，因为这是决定项目成败的关键。</p>
 
 <hr />
 
-<p>1.以下关于 NumPy <code class="language-plaintext highlighter-rouge">ndarray</code> 数据类型的说法，哪项是正确的？</p>
+<p>FM模型自动学习两两特征之间的潜在交互强度，但是只能组合<strong>二阶</strong>特征，更高阶的组合仍需手动定义或忽略。</p>
 
-<p>A. NumPy 数组可以像 Python 列表一样存储不同类型的数据。</p>
+<p>借鉴FM模型，我们可以提供特征组合的框架，具体组合方式，由模型自动学习</p>
 
-<p>B. <code class="language-plaintext highlighter-rouge">int8</code> 类型的整数可以存储从 -255 到 255 的值。</p>
+<h1 id="2一层神经网络">2.一层神经网络</h1>
 
-<p>C. <code class="language-plaintext highlighter-rouge">float32</code> 比 <code class="language-plaintext highlighter-rouge">float64</code> 占用更少的内存，但精度更高。</p>
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122171035499.png" alt="image-20251122171035499" style="zoom:50%;" /></p>
 
-<p>D. NumPy 的字符串 <code class="language-plaintext highlighter-rouge">dtype</code> 是定长的，如果字符串过长可能会被截断。</p>
+<p>每个d都由所有x加权求和组成，权重为自动学习，即输出层的每个神经元，都是输入层所有特征的加权求和。</p>
 
-<blockquote>
-  <p>答案：D，<code class="language-plaintext highlighter-rouge">int8</code>：8位有符号整数，范围 [−128,127]。</p>
-</blockquote>
+<p><strong>一层神经网络</strong>（通常也称为<strong>单层感知机</strong>或<strong>无激活函数的全连接层</strong>）</p>
 
-<p>2.创建一个 NumPy 数组，包含以下浮点数：<code class="language-plaintext highlighter-rouge">[1.23456789, 9.87654321, 5.0]</code>。</p>
+<p>这个网络模型由<strong>输入层</strong>和<strong>输出层（隐藏层）</strong>组成。</p>
 
 <ul>
-  <li>分别将其 <code class="language-plaintext highlighter-rouge">dtype</code> 指定为 <code class="language-plaintext highlighter-rouge">float16</code>、<code class="language-plaintext highlighter-rouge">float32</code> 和 <code class="language-plaintext highlighter-rouge">float64</code>。</li>
-  <li>打印每个数组及其 <code class="language-plaintext highlighter-rouge">dtype</code> 和 <code class="language-plaintext highlighter-rouge">itemsize</code>。</li>
-  <li>观察不同 <code class="language-plaintext highlighter-rouge">dtype</code> 下浮点数的精度变化。</li>
+  <li><strong>输入向量 \(x\)：</strong>
+    <ul>
+      <li>表示 \(m\) 个输入特征，\(x = [x_1, x_2, \dots, x_m]^T\)。</li>
+      <li>它们是模型接收的原始数据点。</li>
+    </ul>
+  </li>
+  <li><strong>输出向量 \(d^{(1)}\)：</strong>
+    <ul>
+      <li>表示 \(M^{(1)}\) 个神经元的输出，\(d^{(1)} = [d_1^{(1)}, d_2^{(1)}, \dots, d_{M^{(1)}}^{(1)}]^T\)。</li>
+      <li>上标 \(^{(1)}\) 表示这是第一层（通常也是<strong>唯一一层</strong>隐藏层）的输出。</li>
+    </ul>
+  </li>
 </ul>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-</pre></td><td class="rouge-code"><pre><span class="sh">"""</span><span class="s">
-float16 2
-float32 4
-float64 8
-</span><span class="sh">"""</span>
-<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<p>对于输出层的第 \(j\) 个神经元 \(d_j^{(1)}\) 而言：</p>
 
-<span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.23456789</span><span class="p">,</span> <span class="mf">9.87654321</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]</span>
-<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="sh">"</span><span class="s">float16</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="sh">"</span><span class="s">float32</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">arr3</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="sh">"</span><span class="s">float64</span><span class="sh">"</span><span class="p">)</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">arr1</span><span class="p">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">arr1</span><span class="p">.</span><span class="n">itemsize</span><span class="p">)</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">arr2</span><span class="p">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">arr2</span><span class="p">.</span><span class="n">itemsize</span><span class="p">)</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">arr3</span><span class="p">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">arr3</span><span class="p">.</span><span class="n">itemsize</span><span class="p">)</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+\[d_{j}^{(1)} = w_{j,1}^{(1)} x_{1} + \dots + w_{j,m}^{(1)} x_{m}\]
 
-<h1 id="2数组创建时指定数据类型">2.数组创建时指定数据类型</h1>
+<ul>
+  <li>\(w_{j,i}^{(1)}\)：是连接输入特征 \(x_i\) 到输出神经元 \(d_j^{(1)}\) 的<strong>权重 (Weight)</strong>。这个权重衡量了输入 \(x_i\) 对输出 \(d_j^{(1)}\) 的重要性或贡献度。</li>
+</ul>
 
-<p>在使用 <code class="language-plaintext highlighter-rouge">numpy.array()</code> 函数创建 <code class="language-plaintext highlighter-rouge">ndarray</code> 时，可以通过 <code class="language-plaintext highlighter-rouge">dtype</code> 参数显式指定数组中元素的数据类型。这允许你精确控制内存使用和数值精度，并覆盖 NumPy 的默认类型推断。</p>
-
-<p>当你不指定 <code class="language-plaintext highlighter-rouge">dtype</code> 参数时，NumPy 会根据输入数据自动推断出最合适的数据类型。例如，如果输入是整数，它通常会推断为 <code class="language-plaintext highlighter-rouge">int64</code>；如果包含浮点数，则推断为 <code class="language-plaintext highlighter-rouge">float64</code>。然而，在以下情况下，显式指定 <code class="language-plaintext highlighter-rouge">dtype</code> 非常重要：</p>
-
-<ol>
-  <li><strong>优化内存：</strong> 如果你确定数据范围较小（例如，所有值都在 0-255 之间），可以指定 <code class="language-plaintext highlighter-rouge">uint8</code> 或 <code class="language-plaintext highlighter-rouge">int8</code> 来大幅减少内存占用。</li>
-  <li><strong>控制精度：</strong> 对于浮点数，你可以选择 <code class="language-plaintext highlighter-rouge">float32</code> 来节省内存（例如在深度学习中），或者坚持使用 <code class="language-plaintext highlighter-rouge">float64</code> 来保证最高精度。</li>
-  <li><strong>避免意外推断：</strong> 有时 NumPy 的自动推断可能不符合你的预期。例如，一个包含整数和字符串的列表，NumPy 可能会将其推断为 <code class="language-plaintext highlighter-rouge">object</code> 类型，而不是你可能希望的特定数值类型（如果字符串可以转换为数字）。</li>
-  <li><strong>数据类型统一：</strong> 在处理来自不同源的数据时，确保所有数组具有统一的 <code class="language-plaintext highlighter-rouge">dtype</code> 可以简化后续操作。</li>
-</ol>
+<p>标准的神经网络计算通常还会包括一个偏置项 \(b_j\)，即 \(d_j^{(1)} = (\sum_{i=1}^{m} w_{j,i}^{(1)} x_{i}) + b_{j}^{(1)}\)。图中为了简化表示，省略了偏置项。</p>
 
 <hr />
 
-<h1 id="3asarray-转换时指定数据类型">3.<code class="language-plaintext highlighter-rouge">asarray</code> 转换时指定数据类型</h1>
+<p><strong>矩阵形式的表达（效率和抽象）</strong></p>
 
-<p><code class="language-plaintext highlighter-rouge">numpy.asarray()</code> 函数用于将输入转换为 <code class="language-plaintext highlighter-rouge">ndarray</code>。与 <code class="language-plaintext highlighter-rouge">numpy.array()</code> 类似，它也可以通过 <code class="language-plaintext highlighter-rouge">dtype</code> 参数指定数据类型。但 <code class="language-plaintext highlighter-rouge">asarray()</code> 的一个关键特性是，如果输入已经是具有相同 <code class="language-plaintext highlighter-rouge">dtype</code> 和顺序的 <code class="language-plaintext highlighter-rouge">ndarray</code>，它将<strong>不会创建副本</strong>，而是返回对原始数组的引用（视图），从而提高内存效率。</p>
+<p>将所有 \(M^{(1)}\) 个神经元的计算过程抽象为一个<strong>矩阵运算</strong>，更加简洁高效：</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-</pre></td><td class="rouge-code"><pre><span class="sh">"""</span><span class="s">
-array([1, 2, 3, 4])
-</span><span class="sh">"""</span>
-<span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">asarray</span><span class="p">(</span><span class="n">l1</span><span class="p">)</span>
-<span class="n">arr1</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+\[d^{(1)} = W^{(1)} x\]
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-</pre></td><td class="rouge-code"><pre><span class="sh">"""</span><span class="s">
-array([[1., 1., 1.],
-       [1., 1., 1.]])
-</span><span class="sh">"""</span>
-<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">arr3</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">asarray</span><span class="p">(</span><span class="n">arr2</span><span class="p">)</span>
-<span class="n">arr3</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251122174108626.png" alt="image-20251122174108626" style="zoom:50%;" /></p>
 
-<h1 id="4数据类型转换-astype">4.数据类型转换 <code class="language-plaintext highlighter-rouge">astype</code></h1>
+<ul>
+  <li><strong>权重矩阵 \(W^{(1)}\)：</strong> 这是一个 \(M^{(1)} \times m\) 维度的矩阵，包含了所有连接权重 \(w_{j,i}^{(1)}\)。
+    <ul>
+      <li>矩阵的每一行对应一个输出神经元 \(d_j^{(1)}\)。</li>
+      <li>矩阵的每一列对应一个输入特征 \(x_i\)。</li>
+    </ul>
+  </li>
+  <li>矩阵乘法 \(W^{(1)} x\) 实现了所有神经元同时进行加权求和的计算。</li>
+</ul>
 
-<p><code class="language-plaintext highlighter-rouge">ndarray.astype()</code> 是一个 <code class="language-plaintext highlighter-rouge">ndarray</code> 对象的方法，用于将数组中的元素从当前数据类型转换为指定的新数据类型，并返回一个<strong>新的数组</strong>。这是一个显式的数据类型转换操作。</p>
+<p>这个模型的目标就是通过学习，找到最优的权重矩阵 \(W^{(1)}\)，使得模型的预测输出最接近真实值。</p>
 
-<p><code class="language-plaintext highlighter-rouge">astype()</code> 方法是 NumPy 中进行数据类型转换的常用且推荐的方式。</p>
+<p><strong>学习过程：</strong></p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="rouge-code"><pre><span class="sh">"""</span><span class="s">
-array([[0., 0., 0., 0.],
-       [0., 0., 0., 0.],
-       [0., 0., 0., 0.]], dtype=float32)
-</span><span class="sh">"""</span>
-<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="p">.</span><span class="nf">astype</span><span class="p">(</span><span class="sh">"</span><span class="s">float32</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">arr</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
+<ol>
+  <li>模型计算当前权重下的输出 \(d^{(1)}\)。</li>
+  <li>计算输出与真实标签之间的<strong>损失 (Loss)</strong>。</li>
+  <li>通过<strong>梯度下降 (Gradient Descent)</strong> 等优化算法和<strong>反向传播 (Backpropagation)</strong> 机制，计算损失对每个权重 \(w_{j,i}^{(1)}\) 的梯度（即偏导数）。</li>
+  <li>根据梯度来更新和调整权重 \(W^{(1)}\)，使损失函数减小。</li>
+</ol>
 
+<p>如果这个“一层神经网络”的输出 \(d^{(1)}\) 直接作为最终输出，并且没有使用非线性激活函数，那么这个模型本质上执行的是一个<strong>线性变换</strong>：</p>
+
+<ul>
+  <li><strong>作为线性模型：</strong> 如果 \(M^{(1)}=1\)（只有一个输出神经元），并且在其上加一个 Sigmoid 激活函数，它就退化成一个<strong>逻辑回归 (Logistic Regression) 分类器</strong>。</li>
+  <li><strong>作为特征提取器：</strong> 在多层网络中，这一层被称为<strong>隐藏层</strong>。它将原始的 \(m\) 维输入特征 \(x\) 映射到了一个新的 \(M^{(1)}\) 维<strong>特征表示</strong> \(d^{(1)}\)。这个新的 \(d^{(1)}\) 包含了原始特征的<strong>线性组合</strong>信息，为后续更深层的非线性处理奠定了基础。</li>
+</ul>
+
+<h2 id="21维度转换">2.1维度转换</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122175839464.png" alt="image-20251122175839464" /></p>
+
+<ul>
+  <li>\(m &gt; n\)，升维/维度扩展，增加数据点的<strong>线性可分性</strong>，提高分辨能力</li>
+  <li>\(m &lt; n\)，降维/维度压缩，特征中可能包含大量<strong>冗余、噪声或不相关</strong>的特征，去除无用数据</li>
+</ul>
+
+<p>一般的神经网络，一般都是先升维然后降维。</p>
+
+<h2 id="22非线性变换">2.2非线性变换</h2>
+
+<p>加权后，还需要进行非线性变换 (激活函数)</p>
+
+\[a^{(1)} = f(d^{(1)} + w0^{(1)}) = \begin{bmatrix} f(d_1^{(1)} + w0_1^{(1)}) \\ \vdots \\ f(d_{M^{(1)}}^{(1)} + w0_{M^{(1)}}^{(1)}) \end{bmatrix}\]
+
+\[a^{(1)} = f(d^{(1)} + w0^{(1)})\]
+
+<ul>
+  <li><strong>\(d^{(1)}\)：</strong> 这是前一步骤的<strong>线性输出</strong>。 \(d^{(1)} = W^{(1)} x\)。</li>
+  <li><strong>\(w0^{(1)}\)：</strong> 这是该层的<strong>偏置项 (Bias)</strong>，通常记为 \(b^{(1)}\)。在向量形式中，\(w0^{(1)}\) 就是 \(b^{(1)}\) 向量，维度与 \(d^{(1)}\) 相同。
+    <ul>
+      <li><strong>\(d^{(1)} + w0^{(1)}\)：</strong> 这构成了神经元完整的<strong>净输入 (Net Input)</strong> 或<strong>加权和</strong>。</li>
+    </ul>
+  </li>
+  <li><strong>\(f(\cdot)\)：</strong> 这就是<strong>激活函数 (Activation Function)</strong>，它是一个<strong>非线性函数</strong>。
+    <ul>
+      <li>\(f(\cdot)\) 被逐元素（element-wise）地应用到净输入向量的每个分量上。</li>
+    </ul>
+  </li>
+  <li><strong>\(a^{(1)}\)：</strong> 这是该层的<strong>激活输出 (Activation Output)</strong>，也是下一层的输入特征。</li>
+</ul>
+
+<p>为什么要“一定要进行非线性变换”？</p>
+
+<p>这是深度学习中最重要的概念之一。如果神经网络中<strong>不使用任何激活函数</strong>（即 \(f(x)=x\)，使用线性函数），那么无论网络堆叠多少层，整个网络最终都等同于<strong>一个单一的线性模型</strong>。</p>
+
+<hr />
+
+<p>假设我们有一个两层网络，都只使用线性变换：</p>
+
+<ol>
+  <li><strong>第一层输出 (线性)：</strong> \(d^{(1)} = W^{(1)} x\)</li>
+  <li><strong>第二层输出 (线性)：</strong> \(d^{(2)} = W^{(2)} d^{(1)}\)</li>
+</ol>
+
+<p>将 \(d^{(1)}\) 代入 \(d^{(2)}\) 中：</p>
+
+\[d^{(2)} = W^{(2)} (W^{(1)} x)\]
+
+<p>根据矩阵乘法的结合律，我们可以定义一个新的矩阵 \(W_{\text{new}} = W^{(2)} W^{(1)}\)：</p>
+
+\[d^{(2)} = W_{\text{new}} x\]
+
+<p><strong>结论：</strong> 无论堆叠多少层线性层，整个网络的输出始终是<strong>输入 \(x\) 的一个线性函数</strong> \(W_{\text{new}} x\)。</p>
+
+<p>线性模型（如逻辑回归）只能找到一个<strong>直线或平面</strong>作为决策边界，无法拟合现实世界中大量存在的<strong>非线性</strong>关系（例如圆圈、S 形、复杂曲线等）。 如果没有非线性，堆叠再多的层也无法增强模型的表达能力。</p>
+
+<hr />
+
+<p>激活函数通过引入非线性，为神经网络赋予了强大的能力：</p>
+
+<ul>
+  <li>允许网络拟合<strong>任意复杂的函数</strong>。这是区分深度学习与传统线性模型的关键。</li>
+  <li>每一层激活函数后的输出 \(a^{(1)}\) 都是<strong>非线性组合后的新特征</strong>，这些特征比原始输入具有更高的抽象层次和更强的区分性。</li>
+  <li>激活函数（尤其是 Sigmoid 和 Tanh）最初是为了模仿生物神经元<strong>“阈值触发”</strong>的机制，即当净输入超过某个阈值时，神经元才被激活。</li>
+</ul>
+
+<hr />
+
+<h2 id="23常见的非线性激活函数">2.3常见的非线性激活函数</h2>
+
+<p>(1)Sigmoid:将输出压缩到 \((0, 1)\) 区间，常用于二分类输出层。但容易导致梯度消失。</p>
+
+\[f(z) = \frac{1}{1 + e^{-z}}\]
+
+<p>(2)Tanh:将输出压缩到 \((-1, 1)\) 区间，输出均值更接近 0，收敛速度通常比 Sigmoid 快。</p>
+
+\[f(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}\]
+
+<p>(3)ReLU:最常用。计算简单（只有阈值判断），有效解决了梯度消失问题，加速了网络训练。</p>
+
+\[f(z) = \max(0, z)\]
+
+<h2 id="24两层神经网络">2.4两层神经网络</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122183830418.png" alt="image-20251122183830418" /></p>
+
+<p><strong>输入层 \(x\)：</strong> 包含 \(m\) 个特征 \(x_1\) 到 \(x_m\)。</p>
+
+<p><strong>第一层（隐藏层/全连接层）：</strong> 进行了两次操作。是整个网络的核心，它实现了之前讨论的<strong>特征工程自动化</strong>。</p>
+
+<ul>
+  <li><strong>线性加权和 (Weighted Sum)：</strong> 从 \(x\) 到 \(d^{(1)}\)。\(d^{(1)} = [d_1^{(1)}, d_2^{(1)}, \dots, d_{M^{(1)}}^{(1)}]^T\)，其中\(d_{j}^{(1)} = w_{j,1}^{(1)} x_{1} + \dots + w_{j,m}^{(1)} x_{m}\)。</li>
+  <li><strong>非线性激活 (Activation)：</strong> 从 \(d^{(1)}\) 到 \(a^{(1)}\)，通过激活函数 \(f\) 实现。\(a^{(1)} = f(d^{(1)} + w0^{(1)})\)</li>
+  <li>这是一个<strong>线性变换</strong>，将 \(m\) 维的原始输入 \(x\) 映射到一个 \(M^{(1)}\) 维的新空间 \(d^{(1)}\)。这一步完成了所有特征的<strong>线性交叉和重组</strong>。</li>
+</ul>
+
+<blockquote>
+  <p><strong>“全连接层”是基于它的</strong>结构（拓扑）<strong>命名的；而</strong>“隐藏层”是基于它的<strong>位置（功能）</strong>命名的。</p>
+
+  <p>在大多数情况下，一个隐藏层同时也是一个全连接层，因此这两个术语经常互换使用。</p>
+
+  <ul>
+    <li>“隐藏”是因为这层神经元的输入和输出既不是直接的原始输入 \(x\)，也不是最终的预测输出 \(y'\)，而是<strong>位于输入和输出之间的层</strong>。只有<strong>位于输入层和输出层之间的层</strong>才能被称为隐藏层。一个网络可以有零个、一个或多个隐藏层。</li>
+    <li>“全连接”是描述这一层神经元之间的<strong>连接拓扑结构</strong>。在一个全连接层中，该层的<strong>每一个</strong>神经元都与前一层的<strong>所有</strong>神经元（或输入特征）相连接。这种结构在数学上体现为<strong>矩阵乘法</strong> \(d = Wx\)。绝大多数神经网络（如 MLP）的隐藏层都是全连接层。网络的最终输出层（例如分类器的 Softmax 层之前）通常也是一个全连接层。像<strong>卷积神经网络（CNN）</strong>中的<strong>卷积层 (Convolutional Layer)</strong> 就<strong>不是</strong>全连接层，因为卷积核只连接到前一层特征图的<strong>局部区域</strong>。</li>
+  </ul>
+</blockquote>
+
+<p><strong>第二层（输出层）：</strong> 同样进行了两次操作。</p>
+
+<ul>
+  <li><strong>线性加权和：</strong> 从 \(a^{(1)}\) 到 \(d^{(2)}\)。引入<strong>非线性</strong>，使得新的特征表示 \(a^{(1)}\) 能够捕捉输入特征之间<strong>非线性的、高阶的复杂关系</strong>。向量 \(a^{(1)}\) 是由 \(M^{(1)}\) 个<strong>高度抽象的、非线性组合的新特征</strong>构成，这些特征是模型自动从数据中学习到的。“自动”体现在<strong>模型无需人类预先设计任何特征组合规则</strong>，完全依靠数据驱动来找到最佳的特征表示。</li>
+  <li><strong>非线性激活 (Sigmoid)：</strong> 从 \(d^{(2)}\) 到最终的预测输出 \(y'\)。</li>
+</ul>
+
+<h1 id="3反向传播-backpropagation">3.<strong>反向传播 (Backpropagation)</strong></h1>
+
+<p>BP 是<strong>反向传播 (Backpropagation)</strong> 的缩写，它是一种用于训练多层前馈神经网络的<strong>高效算法</strong>。</p>
+
+<ul>
+  <li><strong>前向传播 (Forward Pass)：</strong> 从 \(x\) 到 \(y'\) 计算一次预测值。</li>
+  <li><strong>计算损失 (Loss)：</strong> 根据 \(y'\) 和真实标签 \(y\) 计算误差 \(L\)。</li>
+  <li><strong>反向传播 (Backward Pass)：</strong> 利用<strong>链式法则</strong>（Chain Rule），将损失 \(L\) 的梯度（导数）从输出层 \(y'\) 逐层向后传递，计算出每一层（\(W^{(2)}\) 和 \(W^{(1)}\)）的权重对总损失的贡献。</li>
+  <li><strong>权重更新：</strong> 利用优化器（如 SGD 或 Adam），根据计算出的梯度来更新和调整所有权重矩阵 $W^{(1)}$ 和 $W^{(2)}$，使损失最小化。</li>
+</ul>
+
+<p>优化器（Optimizer）的主要任务是：<strong>根据反向传播计算出的梯度，智能地调整神经网络中的所有参数（权重 \(W\) 和偏置 \(b\)），使得损失函数 \(L\) 的值持续下降。</strong></p>
+
+<h1 id="4为什么一定要激活函数">4.为什么一定要激活函数</h1>
+
+<p>第一：防止深度丧失意义。</p>
+
+<blockquote>
+  <p>没有激活函数的两层线性变换，真的没有一点意义吗？</p>
+
+  <p>有意义，减少了大量的参数</p>
+
+  <p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122192121082.png" alt="image-20251122192121082" /></p>
+
+  <p>而且参数量的大幅减少，相当于引入了一种<strong>正则化 (Regularization)</strong>。参数越少，模型的自由度越低，它越难在训练数据上“死记硬背”，从而有效降低了模型在小样本数据集上的<strong>过拟合 (Overfitting)</strong> 风险。</p>
+
+  <p>参数越少，每次反向传播计算梯度和更新权重所需的时间就越短，从而<strong>加速了模型的训练过程</strong>，提高了计算效率。</p>
+
+  <p>总结：虽然<strong>添加非线性激活函数</strong>是赋予神经网络强大拟合能力的关键，但<strong>没有激活函数的两层线性变换</strong>仍有其明确的价值，尤其是在工程实践中：它通过引入一个<strong>低维的中间层</strong>，在不改变模型最终线性表达能力的前提下，极大地<strong>减少了参数量</strong>，从而提高了模型的泛化能力和训练效率。</p>
+</blockquote>
+
+<p>第二，根据泰勒公式，线性变换(加权求和 \(z = Wx+b\))：是神经网络中<strong>没有激活函数</strong>时的计算形式，二阶以后 全都为0，这意味着无论我们如何堆叠线性层，它始终只能表达 \(x\) 的一阶关系，无法逼近任何复杂的非线性函数。</p>
+
+<p>但是合适的非线性变换（常见的激活函数）  ：高阶导数都不为0，尽可能保留高阶项。<strong>非线性激活函数</strong>（如 Sigmoid, Tanh, ReLU）的引入，使得函数可以逼近<strong>任意复杂的非线性函数</strong>。这些高阶项赋予了神经网络拟合曲线、圆环、螺旋线等<strong>非线性决策边界</strong>的能力（相当于做了高阶特征组合）。这正是<strong>万能逼近定理（Universal Approximation Theorem）</strong>的数学基础：一个具有至少一个隐藏层和非线性激活函数的神经网络，理论上可以无限逼近任何连续函数。</p>
+
+<blockquote>
+  <p>【补充】泰勒公式及其展开式：</p>
+
+\[f(x) = \frac{f(a)}{0!} + \frac{f'(a)}{1!}(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \dots + \frac{f^{(n)}(a)}{n!}(x-a)^n + R_n(x)\]
+
+  <p><strong>关键注释：</strong></p>
+
+  <ul>
+    <li><strong>任何函数</strong>都可以写成多项式的和。</li>
+    <li>\(a\) 是函数定义域上的任意一点，\(x\) 在 \(a\) 的附近。</li>
+    <li>\(R_n\) 是<strong>余项</strong>；\(n\) 越大，\(R_n\) 越小；当 \(n \to \infty\) 时，\(R_n \to 0\)。</li>
+  </ul>
+</blockquote>
+
+<hr />
+
+<p>为什么\(f(x)=e^x\)很少作为激活函数？</p>
+
+<p>虽然 \(e^x\) 是一个非线性函数，且在数学上性质优良，但在实际的神经网络训练中，它存在两个致命的缺陷，使其难以作为通用的激活函数。</p>
+
+<p>【问题1】梯度爆炸问题</p>
+
+<p>在神经网络的前向传播中，如果神经元的净输入 \(z\) 稍微偏大，例如 \(z = 10\)，那么 \(f(z) = e^{10} \approx 22000\)。</p>
+
+<p>在反向传播中，梯度会乘以激活函数的导数 \(f'(z)\)。</p>
+
+<p>如果 \(z=10\)，导数 \(f'(10) = e^{10} \approx 22000\)。</p>
+
+<p>由于指数函数增长得非常快，一旦网络中的某个权重或输入使净输入 \(z\) 稍大，反向传播的梯度就会被这个巨大的导数放大，导致梯度在层间传递时<strong>急剧增大</strong>，即<strong>梯度爆炸</strong>。</p>
+
+<p>梯度爆炸会导致网络权重更新幅度过大，模型参数快速震荡，损失函数变为 <code class="language-plaintext highlighter-rouge">NaN</code>（Not a Number），使训练过程<strong>彻底崩溃</strong>。</p>
+
+<p>【问题2】输出非零均值</p>
+
+<p>\(f(x) = e^x\) 的值域是 \((0, +\infty)\)，函数值<strong>永远是正数</strong>。</p>
+
+<p>隐藏层的输出 \(a^{(l)}\)（即下一层的输入 \(x^{(l+1)}\)）总是正的。</p>
+
+<p>这意味着，下一层的净输入 \(z^{(l+1)} = W^{(l+1)} a^{(l)} + b^{(l+1)}\) 对梯度的影响是<strong>同向的</strong>。</p>
+
+<p>当所有输入 \(a^{(l)}\) 都是正数时，下一层 \(W^{(l+1)}\) 的梯度计算（\(\partial L / \partial W\)）要么<strong>全部是正的</strong>，要么<strong>全部是负的</strong>。这使得梯度更新方向被局限在特定的象限内，无法直接朝向最优解的方向。这会减慢<strong>梯度下降的效率</strong>和<strong>收敛速度</strong>。</p>
+
+<h1 id="5softmax函数">5.softmax函数</h1>
+
+<p>Softmax 函数的公式和计算原理</p>
+
+<p>将净输入 \(d^{(L)} + w0^{(L)}\) 向量转换为概率向量 \(y'\)。</p>
+
+\[y' = \text{Softmax}(d^{(L)} + w0^{(L)}) = \frac{1}{\sum_{m=1}^{C} e^{d_m^{(L)} + w0_m^{(L)}}} \begin{bmatrix} e^{d_1^{(L)} + w0_1^{(L)}} \\ \vdots \\ e^{d_C^{(L)} + w0_C^{(L)}} \end{bmatrix}\]
+
+<p>Softmax 软分类（可求导），而max是一种硬分类（不可导）。</p>
+
+<p>在机器学习中，函数求导是一件很重要的事情—-&gt;softmax比max更好</p>
+
+<p>可导性是进行<strong>反向传播</strong>和<strong>梯度下降</strong>的前提。Max 函数无法提供梯度来指导模型如何修正错误。</p>
+
+<p>Softmax 提供了“软”的决策边界，有利于平滑训练。</p>
+
+<hr />
+
+<p>Softmax 在<strong>只有 2 个类别</strong>时的简化版本，等价于 Sigmoid 函数。</p>
+
+<p>https://kirsten-1.github.io/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9906/</p>
+
+<p><strong>二分类 Softmax 严格等价于 Sigmoid 函数</strong>，这证明了 Softmax 是 Sigmoid 在多分类场景下的<strong>泛化</strong>。</p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/07/14/numpy%E5%88%9D%E7%BA%A71/" data-toggle="tooltip" data-placement="top" title="numpy初级1-基本操作">
+                        <a href="/2025/11/22/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9910/" data-toggle="tooltip" data-placement="top" title="【AI思想启蒙10】朴素贝叶斯模型：简单背后蕴含的有效 ">
                         Previous<br>
-                        <span>numpy初级1-基本操作</span>
+                        <span>【AI思想启蒙10】朴素贝叶斯模型：简单背后蕴含的有效 </span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/07/14/numpy%E6%95%B0%E7%BB%84%E8%BF%90%E7%AE%97/" data-toggle="tooltip" data-placement="top" title="numpy-数组运算">
-                        Next<br>
-                        <span>numpy-数组运算</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
