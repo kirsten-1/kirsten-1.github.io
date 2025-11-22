@@ -12,27 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="ollama工具-下载安装快速上手 - Hilda的博客 | Your genius girlfriend's blog">
+        content="【AI思想启蒙09】逻辑回归5让学习更高效，数值优化和一只看不见的手  - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="
 
 ">
     
-    <meta property="article:published_time" content=" 2025-04-07T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-11-21T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="ollama工具">
+    <meta property="article:tag" content="AI思想启蒙">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2025/04/07/Ollama%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/11/21/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9909/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>ollama工具-下载安装快速上手 - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>【AI思想启蒙09】逻辑回归5让学习更高效，数值优化和一只看不见的手  - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2025/04/07/Ollama%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/11/21/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9909/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -272,13 +272,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=ollama%E5%B7%A5%E5%85%B7" title="ollama工具">ollama工具</a>
+                        <a class="tag" href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99" title="AI思想启蒙">AI思想启蒙</a>
                         
                     </div>
-                    <h1>ollama工具-下载安装快速上手</h1>
+                    <h1>【AI思想启蒙09】逻辑回归5让学习更高效，数值优化和一只看不见的手 </h1>
                     
-                    <h2 class="subheading">介绍本地大模型运行器Ollama，说明了如何安装、通过命令行下载并运行Gemma等模型进行交互，以及如何列出、删除模型。还演示了直接提问、查看效率和使用llava分析图片功能</h2>
-                    <span class="meta">Posted by Hilda on April 7, 2025</span>
+                    <h2 class="subheading">Z-score标准化解决梯度尺度不一致、加速收敛；从同方差高斯+贝叶斯生成模型推导出逻辑回归与LDA等价；再由最大似然估计自然得到BCE损失本质为负对数似然</h2>
+                    <span class="meta">Posted by Hilda on November 21, 2025</span>
                 </div>
             </div>
         </div>
@@ -308,218 +308,421 @@
 				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 
-<p>简单来说Ollama就是一个大模型的管理平台，<strong>“LLM 运行器”</strong> 或 <strong>“本地 LLM 管理器”</strong></p>
+<h1 id="1特征缩放-z-score标准化归一化">1.特征缩放-Z-score标准化/归一化</h1>
 
-<blockquote>
-  <p><code class="language-plaintext highlighter-rouge">Ollama</code> 是一个基于 Go 语言开发的简单易用的本地大语言模型运行框架。可以将其类比为 docker，事实上它也的确制定了类 docker 的一种模型应用标准</p>
+<p>回顾逻辑回归的损失函数，及其导数：</p>
 
-  <p>在管理模型的同时，它还基于 Go 语言中的 Web 框架 <a href="https://github.com/gin-gonic/gin">gin</a>提供了一些 Api 接口，让你能够像跟 OpenAI 提供的接口那样进行交互。</p>
-</blockquote>
+<table>
+  <tbody>
+    <tr>
+      <td>损失函数是BCE：$$\mathcal{L}_{\text{BCE}}(P</td>
+      <td> </td>
+      <td>Q) = - \sum_{k \in {0, 1}} P(Y=k) \log Q(Y=k) = - [y \log \hat{y} + (1 - y) \log (1 - \hat{y})]=\ \sum_{i=1}^{n} \left[ y_i \log \frac{y_i}{f_i} + (1 - y_i) \log \frac{1 - y_i}{1 - f_i} \right]$$</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>几个关键点：</p>
+<table>
+  <tbody>
+    <tr>
+      <td>导数：损失函数 $$\mathcal{L}_{\text{BCE}}(P</td>
+      <td> </td>
+      <td>Q)\(对权重向量\)\mathbf{w}\(中任一分量\)w_j\(的偏导数\)\frac{\partial L_i}{\partial w_j}$$：</td>
+    </tr>
+  </tbody>
+</table>
 
-<ul>
-  <li>允许用户下载并在自己的 Mac、Windows (通过 WSL) 或 Linux 电脑上运行各种强大的开源 LLMs，例如DeepSeek，llama等。</li>
-  <li>Ollama 是一个开源项目，代码托管在 GitHub 上，社区活跃，发展迅速</li>
-  <li>提供了一个简单易用的<strong>命令行工具</strong>（也有webUI）来管理（下载、删除、列出）模型和运行模型进行交互式聊天</li>
-  <li>当你运行一个模型时，Ollama 会在本地启动一个 API 服务器（默认在 11434 端口）。这使得其他应用程序（如自定义脚本、Web 界面、开发工具等）可以通过标准的 REST API 与本地运行的 LLM 进行交互，通常兼容 OpenAI 的 API 格式，方便集成。</li>
-  <li>Ollama 维护了一个包含许多流行开源模型的库，用户可以方便地从中选择和下载。用户也可以导入自定义模型</li>
-  <li>支持利用 GPU（如果你的系统有兼容的 NVIDIA GPU 或 Apple Silicon）进行加速，以提高模型推理的速度。当然，它也可以仅在 CPU 上运行（速度会慢很多）。——<strong>灵活：没有GPU就用CPU</strong></li>
-</ul>
+\[\frac{\partial L_i}{\partial w_j} = - (y_i - \hat{y}_i) x_{i,j} = (\hat{y}_i - y_i) x_{i,j}\]
 
-<p><a href="https://ollama.com/">官网链接</a></p>
+<p>总体损失梯度如下：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250404204402314.png" alt="image-20250404204402314" style="zoom:50%;" /></p>
+<p>对于整个训练集（所有 \(N\) 个样本），总损失 \(L(\mathbf{w}) = \frac{1}{N} \sum_{i=1}^{N} L_i(\mathbf{w})\) 对 \(w_j\) 的梯度为：</p>
 
-<p>直接在官网根据不同的操作系统下载与安装即可。</p>
-
-<h1 id="ollama支持的模型">Ollama支持的模型</h1>
-
-<p>https://ollama.com/search列出了支持的模型。</p>
-
-<p>例如有<a href="https://ollama.com/library/gemma3">gemma3</a>，<a href="https://ollama.com/library/qwq">qwq</a>，<a href="https://ollama.com/library/deepseek-r1">deepseek-r1</a>，<a href="https://ollama.com/library/llama3.3">llama3.3</a>，<a href="https://ollama.com/library/phi4">phi4</a></p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250404210435534.png" alt="image-20250404210435534" style="zoom:50%;" /></p>
-
-<p>7B表示70亿的参数，以此类推。</p>
-
-<p>选择相应的模型参数数量级之后通过右侧的命令进行下载：</p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250404221750593.png" alt="image-20250404221750593" style="zoom:50%;" /></p>
-
-<p>注：ollama官方给出的参考如下：</p>
-
-<p>如果下载7b，建议本机拥有8G内存；如果下载13b，建议本机拥有16G内存；如果下载33b，建议本机拥有32G内存；如果下载70b，建议本机拥有128G内存</p>
-
-<p>下载建议：</p>
-
-<p>如果是语言类模型，建议Gemma，DeepSeek，Qwen</p>
-
-<p>如果是视觉类(图片)，建议llava，Phi，minicpm-v</p>
-
-<h1 id="ollama-快速上手">Ollama 快速上手</h1>
-
-<p>可以通过“ollama run +模型”来运行模型，这里以运行“gemma”模型为例演示如何使用Ollama。</p>
-
-<p>打开终端窗口，输入“ollama run gemma:2b”运行Gemma模型（或者官网看到的其他模型的运行命令），如果Ollama没有该模型，会自动下载模型后再运行，后续运行不会重复下载模型。(下面这个命令是7b的)</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ollama run gemma
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407142832882.png" alt="image-20250407142832882" style="zoom:50%;" /></p>
-
-<p>Ollama支持命令行方式使用模型，也支持API方式使用模型，这里先演示命令行方式使用模型，API方式使用模型参考后文。</p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407153958877.png" alt="image-20250407153958877" style="zoom:50%;" /></p>
-
-<p>可以在与模型多次对话后输入“/clear”来清除上下文信息。最后使用ctrl+d 或者 输入<code class="language-plaintext highlighter-rouge"> /bye </code>退出Ollama。</p>
-
-<p>注：</p>
-
-<p>通过<code class="language-plaintext highlighter-rouge">ollama list</code>查看ollama已经下载过的模型有哪些：</p>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407155429937.png" alt="image-20250407155429937" style="zoom:50%;" /></p>
-
-<p>删除某个模型：</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>ollama rm gemma:latest
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20250407155522970.png" alt="image-20250407155522970" style="zoom:50%;" /></p>
-
-<p>补充其他命令：</p>
-
-<p>模型会话中支持多行输入，可以使用<code class="language-plaintext highlighter-rouge">“"""”</code>将文本括起来，进行对话。</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="rouge-code"><pre><span class="o">&gt;&gt;&gt;</span><span class="sh">"""
-... 请给我讲一个故事
-... 不超过100字
-... """</span>
-<span class="o">&lt;</span><span class="n">think</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">think</span><span class="o">&gt;</span>
-<span class="n">当然可以</span><span class="err">，</span><span class="n">请听一下这个有趣的故事</span><span class="err">：</span>
-<span class="o">...</span> <span class="o">...</span>
-<span class="o">&gt;&gt;&gt;/</span><span class="n">bye</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>在运行模型时，可以将prompt（提示词）作为参数传入给模型，无需进入与模型对话的交互式窗口即可获取模型返回内容。如下：</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre>ollama run deepseek-r1:1.5b "你是谁"
-&lt;think&gt;
-&lt;/think&gt;
-您好！我是由中国的深度求索（DeepSeek）公司开发的智能助手DeepSeek-R1。如您有任何任何问题，我会尽我所能为您提供帮助。
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>执行模型时，可以加入“–verbose”来查看每次对话后模型执行的效率细节。</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-</pre></td><td class="rouge-code"><pre>ollama run deepseek-r1:1.5b --verbose
-&gt;&gt;&gt; 你是谁
-&lt;think&gt;
-
-&lt;/think&gt;
-
-您好！我是由中国的深度求索（DeepSeek）公司开发的智能助手DeepSeek-R1。如您有任何任何问题，我会尽我所能为您提供帮助。
-
-total duration:       578.5214ms 
-load duration:        28.5914ms
-prompt eval count:    5 token(s)
-prompt eval duration: 37.5937ms
-prompt eval rate:     133.00 tokens/s
-eval count:           40 token(s)
-eval duration:        511.8619ms
-eval rate:            78.15 tokens/s
-
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>total duration：表示整个运行过程所花费的总时间。</p>
-
-<p>load duration：表示加载模型所花费的时间，单位为毫秒。</p>
-
-<p>prompt eval count：表示在处理提示（prompt）时评估的标记（token）数量。</p>
-
-<p>prompt eval duration：表示评估提示所花费的时间，单位为毫秒。</p>
-
-<p>prompt eval rate：表示评估提示时的速度，以每秒处理的标记数量表示。</p>
-
-<p>eval count：表示在生成响应时评估的标记数量。</p>
-
-<p>eval duration：表示生成响应所花费的时间，单位为毫秒。</p>
-
-<p>eval rate：表示生成响应时的速度，以每秒处理的标记数量表示。</p>
+\[\frac{\partial L}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} \frac{\partial L_i}{\partial w_j} = \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\]
 
 <hr />
 
-<p>不仅仅可以与模型进行对话，也可以让模型分析文本文件及图片内容。这里下载llava模型并进行图片内容分析。</p>
+<p>梯度下降：对单个权重 \(w_j\) 的更新:</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="rouge-code"><pre><span class="err">#</span><span class="n">拉取模型</span>
-<span class="n">ollama</span> <span class="n">pull</span> <span class="nl">llava:</span><span class="mi">7</span><span class="n">b</span>
+\[w_{j, \text{new}} = w_{j, \text{old}} - \alpha \cdot \frac{1}{N} \sum_{i=1}^{N} (\hat{y}_i - y_i) x_{i,j}\]
 
-<span class="err">#</span><span class="n">在C盘下准备pic</span><span class="o">.</span><span class="na">png图片</span><span class="err">，</span><span class="n">并通过该模型分析图片内容</span>
-<span class="nl">C:</span><span class="err">\</span><span class="nc">Users</span><span class="err">\</span><span class="n">wubai</span><span class="o">&gt;</span><span class="n">ollama</span> <span class="n">run</span> <span class="nl">llava:</span><span class="mi">7</span><span class="n">b</span> <span class="s">"请中文回复图片中是什么内容？ C:\pic1.png"</span>
-<span class="nc">Added</span> <span class="n">image</span> <span class="err">'</span><span class="nl">C:</span><span class="err">\</span><span class="n">pic1</span><span class="o">.</span><span class="na">png</span><span class="err">'</span>
- <span class="n">这张照片显示了一名人</span><span class="err">，</span><span class="n">戴着头部上的葫叶服饰</span><span class="err">，</span><span class="n">手中也戴着一些装饰</span><span class="err">。</span><span class="n">他们身穿的衣服有多彩的元素</span><span class="err">，</span><span class="n">以及一些华佩样式的鞋和裙</span><span class="err">。</span><span class="n">照片背景是一个山谷场景</span><span class="err">，</span><span class="n">可以看到远处的山岭</span><span class="err">、</span><span class="n">天空和白云</span><span class="err">。</span><span class="n">整体感觉像是一位在中国农村地区的人</span><span class="err">，</span><span class="n">戴着传统服饰</span><span class="err">，</span><span class="n">与自然环境相轨</span><span class="err">。</span>
+<p>如果特征都是大于0的取值，根据梯度下降的式子，参数\(w\)只会越来越小。反之如果特征都是小于0的数值，参数只会越来越大。如果用4个象限的等高线描述梯度下降的过程，那么梯度只会往第一象限/第三象限走。此时就会使得收敛过程发生巨大的震荡。</p>
 
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>这些都属于<strong>未归一化/未标准化特征</strong>在梯度下降优化过程中的<strong>效率和稳定性</strong>问题。<strong>特征尺度的不一致或不平衡，会导致损失函数的等高线变得极度扁平狭长，使得梯度下降路径低效且震荡。</strong></p>
 
+<p>解决这个问题的最优方案是使用 <strong>特征缩放（Feature Scaling）</strong>，特别是 <strong>Z-Score 归一化（标准化）</strong>。</p>
+
+<p>每个特征 \(x_j\) 转换为标准正态分布，使其均值 \(\mu=0\)，标准差 \(\sigma=1\)。</p>
+
+\[x_{\text{new}} = \frac{x - \mu}{\sigma}\]
+
+<p>这是最推荐的解决方案，尤其适用于基于梯度下降的线性模型（如逻辑回归）和神经网络。</p>
+
+<p>当然也可以用Min-Max 归一化 (Normalization)，但是Min-Max 归一化对异常值很敏感。</p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251121003720143.png" alt="image-20251121003720143" /></p>
+
+<h1 id="2逻辑回归的总结">2.逻辑回归的总结</h1>
+
+<p>1.sigmoid伯努利分布   特殊的softmax（多项分布）</p>
+
+<p>2.BCE  不用MSE</p>
+
+<p>3.L1/L2正则</p>
+
+<p>4.归一化</p>
+
+<p>5.指标  ： 准确率/召回率/查准率/AUC-ROC</p>
+
+<h1 id="3先验条件">3.先验条件</h1>
+
+<p>一元高斯分布（Univariate Gaussian Distribution），也称为<strong>一维正态分布</strong>，其概率密度函数（Probability Density Function, PDF）为：</p>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251121004636434.png" alt="image-20251121004636434" style="zoom: 33%;" /></p>
+
+\[f(x | \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}\]
+
+<p>其中：</p>
+
+<ul>
+  <li>\(x\) 是随机变量的取值。</li>
+  <li>\(\mu\) 是分布的<strong>均值</strong>（Mean），决定了分布的中心位置。</li>
+  <li>\(\sigma^2\) 是分布的<strong>方差</strong>（Variance），决定了分布的形状，即数据的分散程度。\(\sigma\)越大，越分散。</li>
+  <li>\(\sigma\) 是标准差（Standard Deviation）。</li>
+  <li>\(\frac{1}{\sqrt{2\pi\sigma^2}}\) 是归一化常数，确保概率密度函数在整个实数域上的积分为 $1$。</li>
+</ul>
+
+<hr />
+
+<p>相对论的成功在于它基于最少的公理，得到了最大的推论，构建了一个自洽的宇宙模型。</p>
+
+<p>即：假设（公理）—-&gt;推论</p>
+
+<p>机器学习中，这个假设（公理）就是：<strong>对于某一类来说，分布符合正态分布</strong></p>
+
+<blockquote>
+  <p>其实严格来说，判别模型（逻辑回归/softmax回归等）应该符合的是伯努利分布/多项分布（统称为指数族分布）。</p>
+</blockquote>
+
+<h1 id="4贝叶斯公式与高斯分布的结合">4.贝叶斯公式与高斯分布的结合</h1>
+
+<p>贝叶斯公式是所有生成模型的理论基础。</p>
+
+\[P(y|x) = \frac{P(x|y) \cdot P(y)}{P(x)} \quad \text{（后验概率）}\]
+
+<p>例如身高判断 \(x=170\) 是男还是女</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>**$$P(y=1</td>
+      <td>x)\(：** 在已知身高\)x$$ 的情况下，是<strong>男</strong>的概率。</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>**$$P(y=0</td>
+      <td>x)\(：** 在已知身高\)x$$ 的情况下，是<strong>女</strong>的概率。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>由于 \(P(x)\) 对两个类别的比较是相同的，我们只需要比较<strong>分子</strong>：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>选择$$\quad y = \arg\max_{y \in {\text{男}, \text{女}}} \left{ P(x=170</td>
+      <td>y) \cdot P(y) \right}$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>还有已知条件：</p>
+
+<p>\(P(y=\text{男}) + P(y=\text{女}) = 1\)，这是先验概率 (Prior Probability)。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>在观察到特定数据 \(x\)（例如，身高 \(x=170\)）之后，其对应的后验概率之和也必须为 1：$$P(y=\text{男}</td>
+      <td>x=170) + P(y=\text{女}</td>
+      <td>x=170) = 1$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>假设特征 \(x\) 在每个类别下服从<strong>正态分布</strong>（高斯分布），另外假设<strong>方差 \(\sigma^2\) 相等</strong>，即两个类别（\(y=1\) 和 \(y=0\)）的方差相等，即 \(\sigma_1^2 = \sigma_0^2 = \sigma^2\)。</p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>类别 \(y=1\) 的分布：$$P(x</td>
+          <td>y=1) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu_1)^2}{2\sigma^2}}$$</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>类别 \(y=0\) 的分布：$$P(x</td>
+          <td>y=0) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu_0)^2}{2\sigma^2}}$$</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>计算两个类别似然项的比值 $$\frac{P(x</td>
+      <td>y=1)}{P(x</td>
+      <td>y=0)}$$：</td>
+    </tr>
+  </tbody>
+</table>
+
+\[\frac{P(x|y=1)}{P(x|y=0)} = \frac{\frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu_1)^2}{2\sigma^2}}}{\frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu_0)^2}{2\sigma^2}}}\]
+
+<p>由于 \(\sigma^2\) 相等，系数 \(\frac{1}{\sqrt{2\pi\sigma^2}}\) 被抵消：</p>
+
+\[\frac{P(x|y=1)}{P(x|y=0)} = e^{-\frac{1}{2\sigma^2} \left[ (x - \mu_1)^2 - (x - \mu_0)^2 \right]}\]
+
+<p>化简指数上的项 \((x - \mu_1)^2 - (x - \mu_0)^2\) 的负值：</p>
+
+\[\begin{aligned} \text{指数项} &amp;= -(x - \mu_1)^2 + (x - \mu_0)^2 \\ &amp;= - (x^2 - 2x\mu_1 + \mu_1^2) + (x^2 - 2x\mu_0 + \mu_0^2) \\ &amp;= -x^2 + 2x\mu_1 - \mu_1^2 + x^2 - 2x\mu_0 + \mu_0^2 \\ &amp;=  (2x\mu_1 - 2x\mu_0) + (\mu_0^2 - \mu_1^2) \\ &amp;= 2x(\mu_1 - \mu_0) + (\mu_0^2 - \mu_1^2) \end{aligned}\]
+
+<p>将化简后的结果代回似然比的指数：</p>
+
+\[\log \left( \frac{P(x|y=1)}{P(x|y=0)} \right) = \frac{1}{2\sigma^2} \left[ 2x(\mu_1 - \mu_0) + (\mu_0^2 - \mu_1^2) \right]\]
+
+<table>
+  <tbody>
+    <tr>
+      <td>最终目标是后验概率 $$P(y=1</td>
+      <td>x)$$。在贝叶斯公式中：</td>
+    </tr>
+  </tbody>
+</table>
+
+\[\frac{P(y=1|x)}{P(y=0|x)} = \frac{P(x|y=1) P(y=1)}{P(x|y=0) P(y=0)} = \left( \frac{P(x|y=1)}{P(x|y=0)} \right) \cdot \left( \frac{P(y=1)}{P(y=0)} \right)\]
+
+<p>取对数，得到<strong>对数几率 (Log-Odds)</strong>：</p>
+
+\[\log \left( \frac{P(y=1|x)}{P(y=0|x)} \right) = \log \left( \frac{P(x|y=1)}{P(x|y=0)} \right) + \log \left( \frac{P(y=1)}{P(y=0)} \right)\]
+
+<p>将结果代入：</p>
+
+\[\log \left( \frac{P(y=1|x)}{P(y=0|x)} \right) = \underbrace{\left[ \frac{1}{\sigma^2} (\mu_1 - \mu_0) \right]}_{W} x + \underbrace{\left[ \frac{1}{2\sigma^2} (\mu_0^2 - \mu_1^2) + \log \left( \frac{P(y=1)}{P(y=0)} \right) \right]}_{W_0}\]
+
+<p>模型的对数几率被表示成了特征 \(x\) 的<strong>线性函数</strong> \(W x + W_0\)。</p>
+
+\[\log \left( \frac{P(y=1|x)}{P(y=0|x)} \right) = W x + W_0 = \mathbf{z}\]
+
+<p>两边同时取 \(e\) 的指数：</p>
+
+\[\frac{P(y=1|x)}{P(y=0|x)} = e^{\mathbf{z}}\]
+
+<p>在二分类问题中，事件 \(y=1\) 和 \(y=0\) 是互斥且穷尽的，因此它们的概率之和必须为 1：</p>
+
+\[P(y=1|x) + P(y=0|x) = 1\]
+
+<p>从上式可得：</p>
+
+\[P(y=0|x) = 1 - P(y=1|x)\]
+
+<p>代入：</p>
+
+\[\frac{P(y=1|x)}{1 - P(y=1|x)} = e^{\mathbf{z}}\]
+
+<table>
+  <tbody>
+    <tr>
+      <td>现在开始代数求解 $$P(y=1</td>
+      <td>x)\(（设\)\hat{y} = P(y=1</td>
+      <td>x)$$ 方便书写）：</td>
+    </tr>
+  </tbody>
+</table>
+
+\[\frac{\hat{y}}{1 - \hat{y}} = e^{\mathbf{z}}\]
+
+\[\hat{y} = e^{\mathbf{z}} (1 - \hat{y})\]
+
+\[\hat{y} = e^{\mathbf{z}} - \hat{y} e^{\mathbf{z}}\]
+
+<p>将包含 \(\hat{y}\) 的项移到等式左侧：</p>
+
+\[\hat{y} + \hat{y} e^{\mathbf{z}} = e^{\mathbf{z}}\]
+
+<p>提取 \(\hat{y}\)：</p>
+
+\[\hat{y} (1 + e^{\mathbf{z}}) = e^{\mathbf{z}}\]
+
+<p>最终解出 \(\hat{y}\)：</p>
+
+\[\hat{y} = \frac{e^{\mathbf{z}}}{1 + e^{\mathbf{z}}}\]
+
+<p>为了得到更标准的 Sigmoid 形式，我们将分子和分母同时除以 \(e^{\mathbf{z}}\)：</p>
+
+\[\hat{y} = \frac{e^{\mathbf{z}} / e^{\mathbf{z}}}{(1 + e^{\mathbf{z}}) / e^{\mathbf{z}}} = \frac{1}{1/e^{\mathbf{z}} + e^{\mathbf{z}}/e^{\mathbf{z}}} = \frac{1}{e^{-\mathbf{z}} + 1}\]
+
+<p>最后，用 \(\mathbf{z} = W x + W_0\) 替换 \(\mathbf{z}\)：</p>
+
+\[P(y=1|x) = \frac{1}{1 + e^{-(W x + W_0)}}\]
+
+<p>这就是<strong>逻辑函数（Sigmoid 函数）</strong> 的形式。</p>
+
+<p>这证明了在特征服从高斯分布且<strong>方差相等</strong>的假设下，<strong>线性判别分析 (LDA)</strong> 的结果在数学上与 <strong>逻辑回归</strong> 是等价的。</p>
+
+<p>或者说上面的内容论证了<strong>生成模型</strong>（基于贝叶斯公式和高斯分布假设）如何<strong>推导出</strong>这个判别模型的形式。</p>
+
+<p><strong>将生成模型（假设特征服从高斯分布的贝叶斯分类器）推导至逻辑回归形式</strong>所需的特定条件：</p>
+
+<ul>
+  <li>满足正态分布</li>
+  <li>方差相等</li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>当数据满足“高斯分布”和“同方差”这两个条件时，基于贝叶斯和高斯分布的生成模型（即LDA）的决策边界形式，会自然地推导出与判别模型“逻辑回归”完全一致的形式。</strong> 换句话说，在这些假设下，两个模型本质上是相同的线性分类器。如果<strong>类别条件概率</strong>服从<strong>同方差高斯分布</strong>，那么从贝叶斯公式推导出的<strong>后验概率</strong> $$P(y</td>
+      <td>x)$$ 必然是<strong>逻辑回归</strong>的Sigmoid形式。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="5最大似然估计到bcekl散度">5.最大似然估计到BCE/KL散度</h1>
+
+<p>对于二分类问题，最大似然估计（Maximum Likelihood Estimation, MLE）的目标是找到一组参数 \(\mathbf{W}\) 和 \(b\) (或 \(\mathbf{W}\) 和 \(W_0\))，使得观测到的训练数据出现的<strong>总概率最大化</strong>。</p>
+
+<p>对于逻辑回归（Logistic Regression）模型，最大化似然函数（Likelihood Function）的等价操作就是最小化<strong>二元交叉熵损失（Binary Cross-Entropy Loss, BCE）</strong>。</p>
+
+<p>下面是详细的推导过程。</p>
+
+<hr />
+
+<p>【1】逻辑回归的二分类模型</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>在二分类问题中，我们通常使用逻辑回归（Sigmoid 函数）来建模<strong>后验概率</strong> $$P(y=1</td>
+      <td>x)$$。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>设输入特征为 \(\mathbf{x}\)，模型参数为 \(\boldsymbol{\theta} = \{\mathbf{W}, b\}\)。</p>
+
+<ol>
+  <li>
+    <p>线性组合 (Logit):</p>
+
+\[z = \mathbf{W}^T \mathbf{x} + b\]
+  </li>
+  <li>
+    <p>类别 1 的概率 (Sigmoid 函数):</p>
+
+\[\hat{y} = P(y=1|\mathbf{x}; \boldsymbol{\theta}) = \frac{1}{1 + e^{-z}}\]
+  </li>
+  <li>
+    <p>类别 0 的概率:</p>
+
+\[P(y=0|\mathbf{x}; \boldsymbol{\theta}) = 1 - \hat{y} = 1 - \frac{1}{1 + e^{-z}} = \frac{e^{-z}}{1 + e^{-z}}\]
+  </li>
+</ol>
+
+<p>【2】似然函数</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>对于单个训练样本 \((\mathbf{x}_i, y_i)\)，其中 \(y_i \in \{0, 1\}\)，我们可以将 $$P(y_i</td>
+      <td>\mathbf{x}_i; \boldsymbol{\theta})$$ 写成一个紧凑的形式：</td>
+    </tr>
+  </tbody>
+</table>
+
+\[P(y_i|\mathbf{x}_i; \boldsymbol{\theta}) = (\hat{y}_i)^{y_i} \cdot (1 - \hat{y}_i)^{1 - y_i}\]
+
+<ul>
+  <li>如果 \(y_i = 1\)，则概率为 \(\hat{y}_i^1 (1 - \hat{y}_i)^0 = \hat{y}_i\)。</li>
+  <li>如果 \(y_i = 0\)，则概率为 \(\hat{y}_i^0 (1 - \hat{y}_i)^1 = 1 - \hat{y}_i\)。</li>
+</ul>
+
+<p>假设我们有 \(N\) 个独立同分布的训练样本 \((\mathbf{x}_1, y_1), \dots, (\mathbf{x}_N, y_N)\)。<strong>似然函数 \(\mathcal{L}(\boldsymbol{\theta})\)</strong> 是所有样本概率的乘积：</p>
+
+\[\mathcal{L}(\boldsymbol{\theta}) = P(Y|\mathbf{X}; \boldsymbol{\theta}) = \prod_{i=1}^{N} P(y_i|\mathbf{x}_i; \boldsymbol{\theta})\]
+
+\[\mathcal{L}(\boldsymbol{\theta}) = \prod_{i=1}^{N} (\hat{y}_i)^{y_i} \cdot (1 - \hat{y}_i)^{1 - y_i}\]
+
+<p>最大似然估计（MLE）的目标是找到 \(\boldsymbol{\theta}\) 使得 \(\mathcal{L}(\boldsymbol{\theta})\) 最大化：</p>
+
+\[\boldsymbol{\theta}_{\text{MLE}} = \arg \max_{\boldsymbol{\theta}} \mathcal{L}(\boldsymbol{\theta})\]
+
+<p>【3】对数似然函数（Log-Likelihood Function）</p>
+
+<p>为了简化计算（将乘积转化为求和，且避免浮点数下溢），我们通常最大化<strong>对数似然函数 \(\ell(\boldsymbol{\theta})\)</strong>：</p>
+
+\[\ell(\boldsymbol{\theta}) = \log \mathcal{L}(\boldsymbol{\theta}) = \log \left( \prod_{i=1}^{N} (\hat{y}_i)^{y_i} \cdot (1 - \hat{y}_i)^{1 - y_i} \right)\]
+
+<p>根据对数运算的性质:</p>
+
+\[\ell(\boldsymbol{\theta}) = \sum_{i=1}^{N} \left[ \log \left( (\hat{y}_i)^{y_i} \right) + \log \left( (1 - \hat{y}_i)^{1 - y_i} \right) \right]\]
+
+\[\ell(\boldsymbol{\theta}) = \sum_{i=1}^{N} \left[ y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i) \right]\]
+
+<p>最大化对数似然函数的等价于最大化原始似然函数：</p>
+
+\[\boldsymbol{\theta}_{\text{MLE}} = \arg \max_{\boldsymbol{\theta}} \ell(\boldsymbol{\theta})\]
+
+<p>【4】损失函数：最小化负对数似然（Negative Log-Likelihood）</p>
+
+<p>在优化领域，习惯于将优化问题转化为<strong>最小化损失函数</strong>的形式。因此，我们定义<strong>损失函数 \(J(\boldsymbol{\theta})\)</strong> 为负的对数似然函数（Negative Log-Likelihood, NLL）：</p>
+
+\[J(\boldsymbol{\theta}) = - \ell(\boldsymbol{\theta})\]
+
+\[\boldsymbol{\theta}_{\text{MLE}} = \arg \min_{\boldsymbol{\theta}} J(\boldsymbol{\theta})\]
+
+<p>将 NLL 展开：</p>
+
+\[J(\boldsymbol{\theta}) = - \sum_{i=1}^{N} \left[ y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i) \right]\]
+
+<p>【5】得到二元交叉熵损失 (BCE Loss)</p>
+
+<p>最终得到的这个损失函数 \(J(\boldsymbol{\theta})\) <strong>正是二元交叉熵损失（Binary Cross-Entropy Loss, BCE）</strong>，通常也称为对数损失（Log Loss）。</p>
+
+<p>通常，损失函数还会在前面加上 \(\frac{1}{N}\) 进行平均：</p>
+
+\[L_{\text{BCE}}(\boldsymbol{\theta}) = - \frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i) \right]\]
+
+<hr />
+
+<p>总结来说：对于逻辑回归模型，<strong>最大化似然函数</strong> \(\mathcal{L}(\boldsymbol{\theta})\) 在数学上等价于<strong>最小化二元交叉熵损失函数 \(L_{\text{BCE}}(\boldsymbol{\theta})\)</strong>。交叉熵损失来源于最大似然估计在伯努利分布假设下的自然推导。</p>
 
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2025/04/06/%E7%AE%97%E6%B3%95026/" data-toggle="tooltip" data-placement="top" title="026 哈希表，有序表和比较器的用法">
+                        <a href="/2025/11/20/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9908/" data-toggle="tooltip" data-placement="top" title="【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化 ">
                         Previous<br>
-                        <span>026 哈希表，有序表和比较器的用法</span>
+                        <span>【AI思想启蒙08】逻辑回归4让模型看的更准更稳，正则优化 </span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2025/04/07/Ollama%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="ollama工具-自定义模型">
-                        Next<br>
-                        <span>ollama工具-自定义模型</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
