@@ -12,26 +12,27 @@
 
     <!-- Open Graph -->
     <meta property="og:title"
-        content="Burpsuite - Hilda的博客 | Your genius girlfriend's blog">
+        content="【AI思想启蒙12】深度学习第2篇-梯度下降法和矩阵求导术  - Hilda的博客 | Your genius girlfriend's blog">
     
     <meta property="og:type" content="article">
-    <meta property="og:description" content="Burpsuite Repeater模块无法返回response
+    <meta property="og:description" content="
+
 ">
     
-    <meta property="article:published_time" content=" 2024-05-26T00:00:00Z">
+    <meta property="article:published_time" content=" 2025-11-24T00:00:00Z">
     
     
     <meta property="article:author" content="Hilda">
     
     
-    <meta property="article:tag" content="Burpsuite">
+    <meta property="article:tag" content="AI思想启蒙">
     
     
     <meta property="og:image" content="https://kirsten-1.github.io">
-    <meta property="og:url" content="https://kirsten-1.github.io/2024/05/26/burpsuite/">
+    <meta property="og:url" content="https://kirsten-1.github.io/2025/11/24/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9912/">
     <meta property="og:site_name" content="Hilda的博客 | Your genius girlfriend's blog">
 
-    <title>Burpsuite - Hilda的博客 | Your genius girlfriend's blog</title>
+    <title>【AI思想启蒙12】深度学习第2篇-梯度下降法和矩阵求导术  - Hilda的博客 | Your genius girlfriend's blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -40,7 +41,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://kirsten-1.github.io/2024/05/26/burpsuite/">
+    <link rel="canonical" href="https://kirsten-1.github.io/2025/11/24/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9912/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href=" /css/bootstrap.min.css">
@@ -271,13 +272,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/archive/?tag=Burpsuite" title="Burpsuite">Burpsuite</a>
+                        <a class="tag" href="/archive/?tag=AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%99" title="AI思想启蒙">AI思想启蒙</a>
                         
                     </div>
-                    <h1>Burpsuite</h1>
+                    <h1>【AI思想启蒙12】深度学习第2篇-梯度下降法和矩阵求导术 </h1>
                     
-                    <h2 class="subheading">Repeater模块无法返回response</h2>
-                    <span class="meta">Posted by Hilda on May 26, 2024</span>
+                    <h2 class="subheading">Softmax偏导；交叉熵+Softmax梯度统一，即“预测概率-真实标签”误差乘输入；最后附矩阵/向量求导常用公式表。完整推导清晰，适合反向传播实现参考</h2>
+                    <span class="meta">Posted by Hilda on November 24, 2025</span>
                 </div>
             </div>
         </div>
@@ -304,85 +305,218 @@
                 <!-- Multi-Lingual -->
                 
 
-				<h1 id="burpsuite-repeater模块无法返回response">Burpsuite Repeater模块无法返回response</h1>
+				<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
 
-<p>真是逆天了，今天下午打开很久没用的burp suite，但是抓包之后send to repeater，repeater模块无法返回response了：</p>
+<h1 id="1softmax函数求导">1.Softmax函数求导</h1>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421151020698.png" alt="image-20240421151020698" /></p>
+<p>Softmax 函数将这个向量转化为概率向量 \(\mathbf{y} = [y_1, y_2, \dots, y_N]^T\)，其中每个元素 \(y_i\) 表示输入属于第 \(i\) 个类别的概率：</p>
 
-<p>点了无数遍“send”，也重启了burp 都无法响应response。</p>
+\[y_i = P(Y=i|\mathbf{d}) = \frac{e^{d_i}}{\sum_{j=1}^{N} e^{d_j}}\]
 
-<p>如果burp放行，浏览器还会出现下面的提示：</p>
+<p>在神经网络的反向传播过程中，我们需要计算 Softmax 输出 \(y_i\) 对其输入 \(d_k\) 的偏导数 \(\frac{\partial y_i}{\partial d_k}\)。由于输出 \(y_i\) 取决于所有的输入 \(d_1, d_2, \dots, d_N\)，求导需要分两种情况讨论：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421152817414.png" alt="image-20240421152817414" /></p>
+<p>符号定义：</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre>Burp Suite Professional
-Error
+<p>令 \(S = \sum_{j=1}^{N} e^{d_j}\)，则 Softmax 函数可以简写为 \(y_i = \frac{e^{d_i}}{S}\)。</p>
 
-No response received from remote server.
-</pre></td></tr></tbody></table></code></pre></div></div>
+<p>情况一：\(i=k\)（对角线元素）</p>
 
-<p>可能网站本身具有反 burp 的措施。</p>
+<p>我们需要计算 \(\frac{\partial y_i}{\partial d_i}\)。使用<strong>除法法则</strong> \(\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}\)，其中 \(u = e^{d_i}\)， \(v = S = \sum_{j=1}^{N} e^{d_j}\)。</p>
 
-<p>于是我又部署了另外一个靶场。还是一样的结果。这就证明是burp的配置出现了问题。</p>
+<ol>
+  <li>
+    <p>计算 \(u\) 对 \(d_i\) 的导数：</p>
 
-<h2 id="解决方法一插件disable">解决方法一：插件disable</h2>
+\[\frac{\partial u}{\partial d_i} = \frac{\partial (e^{d_i})}{\partial d_i} = e^{d_i}\]
+  </li>
+  <li>
+    <p>计算 \(v\) 对 \(d_i\) 的导数：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421153216429.png" alt="image-20240421153216429" /></p>
+\[\frac{\partial v}{\partial d_i} = \frac{\partial (\sum_{j=1}^{N} e^{d_j})}{\partial d_i} = e^{d_i} \quad (\text{因为求和项中只有 } e^{d_i} \text{ 对 } d_i \text{求导不为零})\]
+  </li>
+  <li>
+    <p>应用除法法则：</p>
 
-<p>重启burp，并勾选如下两个选项 <code class="language-plaintext highlighter-rouge">Use Burp defaults</code> 、<code class="language-plaintext highlighter-rouge">Disable extensions</code></p>
+\[\frac{\partial y_i}{\partial d_i} = \frac{\frac{\partial u}{\partial d_i} \cdot v - u \cdot \frac{\partial v}{\partial d_i}}{v^2} = \frac{e^{d_i} \cdot S - e^{d_i} \cdot e^{d_i}}{S^2}\]
+  </li>
+  <li>
+    <p>化简：</p>
 
-<p>这个方法对我没有用。</p>
+\[\frac{\partial y_i}{\partial d_i} = \frac{e^{d_i}}{S} \cdot \frac{S - e^{d_i}}{S} = \frac{e^{d_i}}{S} \cdot \left(1 - \frac{e^{d_i}}{S}\right) = y_i (1 - y_i)\]
+  </li>
+</ol>
 
-<h2 id="解决方法二禁用http2">解决方法二：禁用<code class="language-plaintext highlighter-rouge">http/2</code></h2>
+<p>情况二：\(i \ne k\)（非对角线元素）</p>
 
-<p>取消勾选下面的<code class="language-plaintext highlighter-rouge">http/2</code></p>
+<p>我们需要计算 \(\frac{\partial y_i}{\partial d_k}\)。其中 \(u = e^{d_i}\)， \(v = S = \sum_{j=1}^{N} e^{d_j}\)。</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421153606341.png" alt="image-20240421153606341" /></p>
+<ol>
+  <li>
+    <p>计算 \(u\) 对 \(d_k\) 的导数：</p>
 
-<p>还是不行。</p>
+\[\frac{\partial u}{\partial d_k} = \frac{\partial (e^{d_i})}{\partial d_k} = 0 \quad (\text{因为 } e^{d_i} \text{ 不包含 } d_k)\]
+  </li>
+  <li>
+    <p>计算 \(v\) 对 \(d_k\) 的导数：</p>
 
-<h2 id="解决方法三证书">解决方法三：证书</h2>
+\[\frac{\partial v}{\partial d_k} = \frac{\partial (\sum_{j=1}^{N} e^{d_j})}{\partial d_k} = e^{d_k} \quad (\text{因为求和项中只有 } e^{d_k} \text{ 对 } d_k \text{求导不为零})\]
+  </li>
+  <li>
+    <p>应用除法法则：</p>
 
-<p>这个问题是我自己发现的。因为前面的方法都不管用，于是我用fire fox的百度（之前一直用的Google）搜索了报错，出现了下面的报错：</p>
+\[\frac{\partial y_i}{\partial d_k} = \frac{\frac{\partial u}{\partial d_k} \cdot v - u \cdot \frac{\partial v}{\partial d_k}}{v^2} = \frac{0 \cdot S - e^{d_i} \cdot e^{d_k}}{S^2}\]
+  </li>
+  <li>
+    <p>化简：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421154703126.png" alt="image-20240421154703126" /></p>
+\[\frac{\partial y_i}{\partial d_k} = -\frac{e^{d_i} e^{d_k}}{S^2} = -\frac{e^{d_i}}{S} \cdot \frac{e^{d_k}}{S} = -y_i y_k\]
+  </li>
+</ol>
 
-<p>怀疑是证书过期。</p>
+<p>总结softmax 雅可比矩阵</p>
 
-<p>去下载证书：</p>
+<p>Softmax 函数的求导结果是紧凑且优美的，可以直接用于反向传播：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421154858727.png" alt="image-20240421154858727" /></p>
+\[\frac{\partial y_i}{\partial d_k} = \begin{cases} y_i (1 - y_i) &amp; \text{if } i = k \\ -y_i y_k &amp; \text{if } i \ne k \end{cases}\]
 
-<p>选择一个合适的位置下载证书：</p>
+<h1 id="2交叉熵损失-梯度下降">2.交叉熵损失-梯度下降</h1>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421155023930.png" alt="image-20240421155023930" /></p>
+<p>现在来推导 Softmax 回归损失函数（多分类交叉熵）相对于模型参数 \(\theta_j\) 的梯度。这个梯度是训练模型时使用梯度下降法的核心。</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421155043086.png" alt="image-20240421155043086" style="zoom:50%;" /></p>
+<p>为了简洁，我们只推导<strong>单个样本</strong>的损失函数 \(J^{(i)}(\theta)\) 相对于<strong>某个特定类别 \(j\) 的参数向量 \(\theta_j\)</strong> 的梯度。</p>
 
-<p>firefox—》设置—〉隐私与安全—》查看证书—〉导入，但是又报错：此证书已在此前安装为一个证书颁发机构：</p>
+<p>单个样本 \((x, y)\) 的损失函数（负对数似然）为：</p>
 
-<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20240421155419974.png" alt="image-20240421155419974" style="zoom:50%;" /></p>
+\[J(\theta) = - \log\left( \phi_{y} \right)\]
 
-<p>可以尝试关闭浏览器，删除C:\Users\xx\AppData\Roaming\Mozilla\Firefox\Profiles\ufc3lps8.default\cert8.db</p>
+<p>其中，\(\phi_{y}\) 是模型对真实类别 \(y\) 预测的概率。</p>
 
-<p>也可以更新firefox，重新导入证书。安装完成打开最新版，选择“创建新配置文件”。</p>
+<p>\(\phi_j\) 是 Softmax 函数：</p>
 
-<p>重新配置插件foxy proxy</p>
+\[\phi_j = \frac{e^{\eta_j}}{\sum_{l=1}^{k} e^{\eta_l}}\]
 
-<p>结果一顿操作还是不行。。。</p>
+<p>并且 \(\eta_j = \theta_j^T x\)。</p>
 
-<p>于是我决定换浏览器。</p>
+<p>我们的目标是计算损失函数 \(J(\theta)\) 对第 \(j\) 个类别的参数向量 \(\theta_j\) 的偏导数：</p>
 
-<p>在Chrome导入证书的时候需要注意，要将证书全部选为信任。不知道在firefox当中是不是因为没有选择信任菜不行。。。Chrome导入证书参考下面这篇博客：https://www.cnblogs.com/Hi-blog/p/How-To-Import-BurpSuite-Certificate-To-Chrome-On-MacOS.html</p>
+\[\nabla_{\theta_j} J(\theta) = \frac{\partial J(\theta)}{\partial \theta_j}\]
 
-<p>还是不行。</p>
+<hr />
 
-<p>无语。换了一台ubuntu重新安装burp suite</p>
+<p>\(J(\theta)\) 是关于 \(\phi_y\) 的函数，\(\phi_y\) 是关于 \(\eta_l\) 的函数，而 \(\eta_l\) 是关于 \(\theta_j\) 的函数，我们需要使用链式法则：</p>
+
+\[\frac{\partial J(\theta)}{\partial \theta_j} = \sum_{l=1}^{k} \left( \frac{\partial J(\theta)}{\partial \phi_l} \cdot \frac{\partial \phi_l}{\partial \eta_j} \cdot \frac{\partial \eta_j}{\partial \theta_j} \right)\]
+
+<p>\(\frac{\partial J(\theta)}{\partial \phi_l}\) 只有在 \(l=y\) 时非零，所以简化为：</p>
+
+\[\frac{\partial J(\theta)}{\partial \theta_j} = \frac{\partial J(\theta)}{\partial \phi_y} \cdot \frac{\partial \phi_y}{\partial \eta_j} \cdot \frac{\partial \eta_j}{\partial \theta_j}\]
+
+<p>然后计算各部分偏导数：</p>
+
+<p>A. \(\frac{\partial J(\theta)}{\partial \phi_y}\) (损失函数对概率的导数)</p>
+
+\[J(\theta) = - \log(\phi_y)\]
+
+\[\frac{\partial J(\theta)}{\partial \phi_y} = \frac{\partial (-\log(\phi_y))}{\partial \phi_y} = - \frac{1}{\phi_y}\]
+
+<p>B. \(\frac{\partial \eta_j}{\partial \theta_j}\) (自然参数对参数的导数)</p>
+
+\[\eta_j = \theta_j^T x\]
+
+\[\frac{\partial \eta_j}{\partial \theta_j} = x\]
+
+<p>(注意 \(\frac{\partial}{\partial \theta_j}\) 意味着对向量 \(\theta_j\) 求梯度，结果是向量 \(x\)。)</p>
+
+<p>C. \(\frac{\partial \phi_y}{\partial \eta_j}\) (Softmax 对原始分数的导数)</p>
+
+<p>这是最复杂的一步，需要根据 \(j\) 是否等于真实类别 \(y\) 进行分情况讨论：</p>
+
+<p><strong>Case 1: \(j = y\) (计算 \(\phi_y\) 对 \(\eta_y\) 的导数)</strong></p>
+
+\[\phi_y = \frac{e^{\eta_y}}{\sum_{l=1}^{k} e^{\eta_l}}\]
+
+<p>使用商法则 \(\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}\)，其中 \(u = e^{\eta_y}\)，\(v = \sum_{l=1}^{k} e^{\eta_l}\)。</p>
+
+\[\frac{\partial \phi_y}{\partial \eta_y} = \frac{(e^{\eta_y}) \sum_{l=1}^{k} e^{\eta_l} - e^{\eta_y} (e^{\eta_y})}{\left(\sum_{l=1}^{k} e^{\eta_l}\right)^2}\]
+
+\[= \frac{e^{\eta_y}}{\sum_{l=1}^{k} e^{\eta_l}} - \frac{e^{\eta_y} e^{\eta_y}}{\left(\sum_{l=1}^{k} e^{\eta_l}\right)^2} = \phi_y - \phi_y \cdot \phi_y\]
+
+\[\frac{\partial \phi_y}{\partial \eta_y} = \phi_y (1 - \phi_y)\]
+
+<p><strong>Case 2: \(j \ne y\) (计算 \(\phi_y\) 对 \(\eta_j\) 的导数)</strong></p>
+
+\[\frac{\partial \phi_y}{\partial \eta_j} = \frac{(0) \sum_{l=1}^{k} e^{\eta_l} - e^{\eta_y} (e^{\eta_j})}{\left(\sum_{l=1}^{k} e^{\eta_l}\right)^2}\]
+
+\[= - \frac{e^{\eta_y}}{\sum_{l=1}^{k} e^{\eta_l}} \cdot \frac{e^{\eta_j}}{\sum_{l=1}^{k} e^{\eta_l}} = - \phi_y \cdot \phi_j\]
+
+\[\frac{\partial \phi_y}{\partial \eta_j} = - \phi_y \phi_j\]
+
+<hr />
+
+<p>现在，将 A, B, C 代回链式法则，同样分 \(j=y\) 和 \(j \ne y\) 两种情况。</p>
+
+\[\frac{\partial J(\theta)}{\partial \theta_j} = \frac{\partial J(\theta)}{\partial \phi_y} \cdot \frac{\partial \phi_y}{\partial \eta_j} \cdot \frac{\partial \eta_j}{\partial \theta_j}\]
+
+<p><strong>Case 1: \(j = y\) (真实类别的参数梯度)</strong></p>
+
+\[\nabla_{\theta_y} J(\theta) = \underbrace{\left(- \frac{1}{\phi_y}\right)}_{\text{A}} \cdot \underbrace{\left(\phi_y (1 - \phi_y)\right)}_{\text{C1}} \cdot \underbrace{(x)}_{\text{B}}\]
+
+\[= - (1 - \phi_y) x = (\phi_y - 1) x\]
+
+<p><strong>Case 2: \(j \ne y\) (非真实类别的参数梯度)</strong></p>
+
+\[\nabla_{\theta_j} J(\theta) = \underbrace{\left(- \frac{1}{\phi_y}\right)}_{\text{A}} \cdot \underbrace{\left(- \phi_y \phi_j\right)}_{\text{C2}} \cdot \underbrace{(x)}_{\text{B}}\]
+
+\[= \phi_j x\]
+
+<p>其中\(\phi_j\) 是 Softmax 函数：</p>
+
+\[\phi_j = \frac{e^{\eta_j}}{\sum_{l=1}^{k} e^{\eta_l}}\]
+
+<p>并且 \(\eta_j = \theta_j^T x\)。</p>
+
+<blockquote>
+  <p>可以用一个统一的公式来表达梯度 \(\nabla_{\theta_j} J(\theta)\)：</p>
+
+\[\nabla_{\theta_j} J(\theta) = (\phi_j - \mathbb{I}\{y=j\}) x\]
+
+  <p>其中，\(\mathbb{I}\{y=j\}\) 是指示函数：如果 \(j\) 是真实类别 \(y\)，则为1；否则为0。</p>
+
+  <p>【注意】括号内的项 \((\phi_j - \mathbb{I}\{y=j\})\) 是<strong>预测概率</strong>和<strong>真实标签</strong>之间的<strong>误差</strong>。</p>
+
+  <p><strong>如果 \(j\) 是真实类别 \(y\)：</strong> 误差是 \((\phi_y - 1)\)。由于 \(\phi_y &lt; 1\)，误差是负的。梯度下降会向<strong>增加</strong> \(\phi_y\) 的方向调整 \(\theta_y\)。</p>
+
+  <p><strong>如果 \(j\) 不是真实类别 \(y\)：</strong> 误差是 \((\phi_j - 0) = \phi_j\)。梯度是正的。梯度下降会向<strong>减少</strong> \(\phi_j\) 的方向调整 \(\theta_j\)。</p>
+</blockquote>
+
+<p>模型的参数 \(\theta_j\) 的更新量正比于：</p>
+
+\[\text{误差} \times \text{输入特征}\]
+
+<p><strong>这个公式与线性回归和逻辑回归的梯度公式形式惊人地相似，展现了 GLM 框架的统一性。</strong></p>
+
+<p>有了这个梯度，我们就可以使用梯度下降（或其变体）来迭代更新所有 \(\theta_j\) 向量，直到损失函数收敛到最小值。</p>
+
+<h1 id="2矩阵求导术">2.矩阵求导术</h1>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122224506773.png" alt="image-20251122224506773" /></p>
+
+<h2 id="21向量求导">2.1向量求导</h2>
+
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20251122224527702.png" alt="image-20251122224527702" style="zoom:50%;" /></p>
+
+<h2 id="22矩阵求导">2.2矩阵求导</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122232509775.png" alt="image-20251122232509775" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122224551401.png" alt="image-20251122224551401" style="zoom:50%;" /></p>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122224620015.png" alt="image-20251122224620015" style="zoom: 67%;" /></p>
+
+<h2 id="23矩阵求导链式法则">2.3矩阵求导链式法则</h2>
+
+<p><img src="https://wechat01.oss-cn-hangzhou.aliyuncs.com/img/image-20251122231850423.png" alt="image-20251122231850423" /></p>
 
 
 
@@ -390,19 +524,12 @@ No response received from remote server.
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2024/04/15/spring_%E7%AF%87%E7%AB%A01/" data-toggle="tooltip" data-placement="top" title="手写Spring_篇章1">
+                        <a href="/2025/11/22/AI%E6%80%9D%E6%83%B3%E5%90%AF%E8%92%9911/" data-toggle="tooltip" data-placement="top" title="【AI思想启蒙11】深度神经网络入门">
                         Previous<br>
-                        <span>手写Spring_篇章1</span>
+                        <span>【AI思想启蒙11】深度神经网络入门</span>
                         </a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2024/05/26/Python%E7%81%B0%E5%B8%BD%E5%AD%90-%E9%BB%91%E5%AE%A2%E4%B8%8E%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%9A%84Python%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%81%93%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B01/" data-toggle="tooltip" data-placement="top" title="书籍阅读-Python灰帽子–黑客与逆向工程师的Python编程之道">
-                        Next<br>
-                        <span>书籍阅读-Python灰帽子–黑客与逆向工程师的Python编程之道</span>
-                        </a>
-                    </li>
                     
                 </ul>
                 <hr style="visibility: hidden;">
